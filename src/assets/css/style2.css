@@ -22,14 +22,15 @@ Left Navigation
 .navbar{
    height:10vh !important;
 }
+
+
 .leftNav{
-	width: 50px;
-   min-height: 110vh;
-   height:auto;
+	width: 48px;
    white-space: nowrap; 
    transition: width 0.5s ;
    position: absolute;
    z-index: 1; 
+   height: 100%;
 }
 	.leftNav ul{
 		padding: 0;
@@ -40,7 +41,7 @@ Left Navigation
 		width: auto;
 		height: 60px;
 		line-height: 50px;  
-		padding-left: 18px;
+		padding-left: 15px;
 	}
 	.leftNav li:hover {
 		background: black; 
@@ -62,52 +63,14 @@ Left Navigation
 	} 
 	span.menu{
 		padding-left: 17px;
-	}
+   }
+   
 
 /**
---------------
-Dark Mode
---------------
+----------------
+DASHBOARD GENERAL 
+----------------
 **/
-.MuiDialogContent-root,
-.MuiButton-root,
-.dark-mode{
-   background:#192039 !important;
-   color:#c2c2c2 !important;
-   position: relative;
-}
-
-.dark-mode{
-   height: 100vh;
-}
-
-.dark-mode .leftNav,
-.dark-mode .navbar{
-   background-color:#252d47 !important;
-   color:#c2c2c2 !important;
-}
-
-.dark-mode .navbar a{
-   color:#ffffff !important;
-}
-
-.dark-mode .main-content{
-   background:#192039 !important;
-   color:#c2c2c2 !important;
-   min-height: 100vh;
-
-}
-
-.dark-mode .pageHeader{
-   height:40px;
-   padding-left: 80px;
-   padding-top:6px;
-   background:#23274c;
-   vertical-align: middle;
-   color:#7f63f4;
-   font-weight: bold;
-}
-
 .box-1{
    background:linear-gradient(to right, #e36cd9 5%, #fe60ae 90%);
 }
@@ -124,8 +87,90 @@ Dark Mode
    background:linear-gradient(to right, #23bdb8 5%, #43e794 90%);
 }
 
-.box-farm-1,
-.box-farm-2{
-   min-height: 300px;
+.box-farm ul {
+   list-style: none; /* Remove default bullets */
+ }
+.box-farm ul li:nth-child(1)::before,
+.box-farm ul li:nth-child(2)::before,
+.box-farm ul li:nth-child(3)::before,
+.box-farm ul li:nth-child(4)::before,
+.box-farm ul li:nth-child(5)::before{
+  content: "\2022";  
+  display: inline-block; 
+  width: 1em; 
+  font-weight: bolder; 
+}
+.box-farm ul li:nth-child(1)::before{
+   color: #00e251;
+}
+.box-farm ul li:nth-child(2)::before{
+   color: #ffb500;
+ }
+ .box-farm ul li:nth-child(3)::before{
+   color: #8c58c8;
+ }
+ .box-farm ul li:nth-child(4)::before{
+   color: #ef3790;
+ }
+.box-farm ul li:nth-child(5)::before{
+   color: #4e9ce0;
+ }
+
+/**
+--------------
+Dark Mode
+--------------
+**/
+.MuiDialogContent-root,
+.MuiButton-root{
+   background:#192039 !important;
+   color:#c2c2c2 !important;
+   position: relative;
+   
+}
+
+
+
+.dark-mode,
+.dark-mode .leftNav,
+.dark-mode .navbar,
+.dark-mode .leftNavBG{
+   background-color:#252d47 !important;
+   color:#c2c2c2 !important;
+}
+
+.dark-mode .navbar a{
+   color:#ffffff !important;
+}
+
+.dark-mode .main-content{
+   background:#192039 !important;
+   color:#c2c2c2 !important;
+   min-height:100vh;
+   height: 100%;
+   margin-left:2px;
+
+}
+
+.dark-mode .pageHeader{
+   height:40px;
+   padding-left: 80px;
+   padding-top:6px;
+   background:#23274c;
+   vertical-align: middle;
+   color:#7f63f4;
+   font-weight: bold;
+}
+
+
+
+.dark-mode .box-farm{
+   min-height: 250px;
    background: #252d47;
 }
+
+.dark-mode .section-title{
+   color:#7f63f4;
+   font-weight: bold;
+}
+
