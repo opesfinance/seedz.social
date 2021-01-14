@@ -90,7 +90,7 @@ class Header extends React.Component {
       <>
             <nav className="navbar navbar-expand-lg ">
                 <Link to="/#"  className="navbar-brand">
-                    <img  src={require("../../assets/opes-logo-big.png")} height="30" alt="Company Logo"  />
+                    <img  src={require("../../assets/Capa.png")} height="30" alt="Company Logo"  />
                 </Link>
                 <button className="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                     <FaBars/>

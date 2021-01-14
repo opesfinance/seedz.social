@@ -25,7 +25,7 @@ class LeftNav extends React.Component{
 
         return (
             <>
-                <div className="leftNav ">
+                <div className="leftNav">
                     <ul>
                         <Link to="/#">
                             <li className="item-menu">
@@ -35,19 +35,31 @@ class LeftNav extends React.Component{
                         </Link> 
                         <Link to="/hives">
                             <li className="item-menu">
-                                <FaThLarge/>
+                                <img
+                                    alt=""
+                                    src={require('../../assets/house.png')}
+                                    width="20"
+                                /> 
                                 <span className="menu">Hive</span>
                             </li>
                         </Link>
                         <Link to="/farm">
                             <li className="item-menu">
-                                <FaThLarge/>
+                                <img
+                                    alt=""
+                                    src={require('../../assets/honey.png')}
+                                    width="20"
+                                /> 
                                 <span className="menu">Farm</span>
                             </li>
                         </Link>    
                         <Link to="/whaletank">
                             <li className="item-menu">
-                                <FaThLarge/> 
+                                <img
+                                    alt=""
+                                    src={require('../../assets/whale-tail.png')}
+                                    width="20"
+                                /> 
                                 <span className="menu">Whale Tank</span>
                             </li>
                         </Link> 
