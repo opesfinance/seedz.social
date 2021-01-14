@@ -60,7 +60,7 @@ class Account extends Component {
             <LeftNav />
 
 
-            <div className="main-content p-5 ml-5 text-center ">
+            <div className="main-content p-5 ml-5 text-center  ">
               <h1 >GET THE POWER YOU DESERVE</h1>
                     <h4>The fairest distribution model the world has ever seen.</h4>
                     <h6>Yield Farmers can now utilize the most valuable asset in the world to gain themselves an inside position on the next Mega-Corporation we build.</h6>

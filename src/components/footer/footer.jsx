@@ -14,9 +14,7 @@ class Footer extends Component {
 
     return (
       <>
-         <nav class="navbar navbar-expand-small">
-
-         </nav>
+         
 
       </>
     )
