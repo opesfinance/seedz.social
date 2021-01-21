@@ -44,8 +44,8 @@ class Home extends Component {
                     />
                   </div>
                   <div className='col-8 m-0 my-auto text-left small font-weight-bold text-white'>
-                    <h3 class='p-0 m-0 text-bottom'>45 M</h3>
-                    <p class='p-0 m-0 text-bottom small font-weight-bold'>
+                    <h3 className='p-0 m-0 text-bottom'>45 M</h3>
+                    <p className='p-0 m-0 text-bottom small font-weight-bold'>
                       LIQUIDITY LOCK
                     </p>
                   </div>
@@ -62,8 +62,8 @@ class Home extends Component {
                     />
                   </div>
                   <div className='col-8 m-0 my-auto text-left small font-weight-bold text-white'>
-                    <h3 class='p-0 m-0 text-bottom'>45 M</h3>
-                    <p class='p-0 m-0 text-bottom small font-weight-bold'>
+                    <h3 className='p-0 m-0 text-bottom'>45 M</h3>
+                    <p className='p-0 m-0 text-bottom small font-weight-bold'>
                       BEAST MODE AMOUNT
                     </p>
                   </div>
@@ -80,8 +80,8 @@ class Home extends Component {
                     />
                   </div>
                   <div className='col-8 m-0 my-auto text-left small font-weight-bold text-white'>
-                    <h3 class='p-0 m-0 text-bottom'>45 M</h3>
-                    <p class='p-0 m-0 text-bottom small font-weight-bold'>
+                    <h3 className='p-0 m-0 text-bottom'>45 M</h3>
+                    <p className='p-0 m-0 text-bottom small font-weight-bold'>
                       MINTED SEEDZ
                     </p>
                   </div>
@@ -98,8 +98,8 @@ class Home extends Component {
                     />
                   </div>
                   <div className='col-8 m-0 my-auto text-left small font-weight-bold text-white'>
-                    <h3 class='p-0 m-0 text-bottom'>45 M</h3>
-                    <p class='p-0 m-0 text-bottom small font-weight-bold'>
+                    <h3 className='p-0 m-0 text-bottom'>45 M</h3>
+                    <p className='p-0 m-0 text-bottom small font-weight-bold'>
                       WPE PRICE
                     </p>
                   </div>
