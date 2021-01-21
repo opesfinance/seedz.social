@@ -1,40 +1,38 @@
-import React from 'react'
+import React from 'react';
 import { Link } from 'react-router-dom';
 
-import UnlockModal from '../unlock/unlockModal.jsx'
+import UnlockModal from '../unlock/unlockModal.jsx';
 import {
   ERROR,
   CONNECTION_CONNECTED,
   CONNECTION_DISCONNECTED,
-  CONFIGURE_RETURNED
-} from '../../constants'
+  CONFIGURE_RETURNED,
+} from '../../constants';
 
-import {  Navbar, Button} from 'react-bootstrap';
-import { FaBars } from "react-icons/fa";
+import { Navbar, Button } from 'react-bootstrap';
+import { FaBars } from 'react-icons/fa';
 
-import Store from "../../stores";
+import Store from '../../stores';
 
-const emitter = Store.emitter
-const store = Store.store
+const emitter = Store.emitter;
+const store = Store.store;
 
 class Header extends React.Component {
-  
-  constructor(props){
-    super(props)
-    const account = store.getStore('account')
-    const themeType = store.getStore('themeType')
-    const activeClass = store.getStore('activeClass')
+  constructor(props) {
+    super(props);
+    const account = store.getStore('account');
+    const themeType = store.getStore('themeType');
+    const activeClass = store.getStore('activeClass');
 
     this.state = {
-      activeClass : activeClass,
+      activeClass: activeClass,
       loading: false,
       account: account,
       assets: store.getStore('assets'),
       modalOpen: false,
-      themeType : themeType
-    }
+      themeType: themeType,
+    };
   }
-
 
   componentWillMount() {
     emitter.on(ERROR, this.errorReturned);
@@ -46,21 +44,24 @@ class Header extends React.Component {
   componentWillUnmount() {
     emitter.removeListener(ERROR, this.errorReturned);
     emitter.removeListener(CONNECTION_CONNECTED, this.connectionConnected);
-    emitter.removeListener(CONNECTION_DISCONNECTED, this.connectionDisconnected);
+    emitter.removeListener(
+      CONNECTION_DISCONNECTED,
+      this.connectionDisconnected
+    );
     emitter.removeListener(CONFIGURE_RETURNED, this.configureReturned);
-  };
+  }
 
   connectionConnected = () => {
     // this.setState({ account: store.getStore('account') })
   };
 
   configureReturned = () => {
-     //.this.props.history.push('/')
-  }
+    //.this.props.history.push('/')
+  };
 
   connectionDisconnected = () => {
-    this.setState({ account: store.getStore('account'), loading: false })
-  }
+    this.setState({ account: store.getStore('account'), loading: false });
+  };
 
   errorReturned = (error) => {
     //TODO: handle errors
@@ -68,52 +69,74 @@ class Header extends React.Component {
 
   renderModal = () => {
     return (
-      <UnlockModal closeModal={ this.closeModal } modalOpen={ this.state.modalOpen } />
-    )
-  }
+      <UnlockModal
+        closeModal={this.closeModal}
+        modalOpen={this.state.modalOpen}
+      />
+    );
+  };
 
   unlockClicked = () => {
-    this.setState({ modalOpen: true, loading: true })
-  }
+    this.setState({ modalOpen: true, loading: true });
+  };
 
   closeModal = () => {
-    this.setState({ modalOpen: false, loading: false })
-  }
+    this.setState({ modalOpen: false, loading: false });
+  };
 
-  render(){
-    const { account, modalOpen} = this.state
+  render() {
+    const { account, modalOpen } = this.state;
     var address = null;
     if (account.address) {
-      address = account.address.substring(0,6)+'...'+account.address.substring(account.address.length-4,account.address.length)
+      address =
+        account.address.substring(0, 6) +
+        '...' +
+        account.address.substring(
+          account.address.length - 4,
+          account.address.length
+        );
     }
     return (
       <>
-            <nav className="navbar navbar-expand-lg ">
-                <Link to="/#"  className="navbar-brand">
-                    <img  src={require("../../assets/Capa.png")} height="30" alt="Company Logo"  />
-                </Link>
-                <button className="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                    <FaBars/>
-                </button>
-               
-                <Navbar.Collapse className="justify-content-end">
-                  {  address &&
-                      <Link to="/#" onClick={this.unlockClicked}>
-                        <img alt=""
-                          src={require("../../assets/wallet-logo.png")}
-                          height="30" /> &nbsp;
-                        { address }</Link>
-                   }
-                  { !address &&<Button className="btn btn-primary" onClick={this.unlockClicked }>
-                    Connect Wallet
-                  </Button> }
-                </Navbar.Collapse>
-            </nav>
+        <nav className='navbar navbar-expand-lg '>
+          <Link to='/#' className='navbar-brand'>
+            <img
+              src={require('../../assets/Capa.png')}
+              height='30'
+              alt='Company Logo'
+            />
+          </Link>
+          <button
+            className='navbar-toggler'
+            data-toggle='collapse'
+            data-target='#navbarCollapse'
+          >
+            <FaBars />
+          </button>
 
-            { modalOpen && this.renderModal() }
-            
-        </>
-    )
+          <Navbar.Collapse className='justify-content-end'>
+            {address && (
+              <Link to='/#' onClick={this.unlockClicked}>
+                <img
+                  alt=''
+                  src={require('../../assets/wallet-logo.png')}
+                  height='30'
+                />{' '}
+                &nbsp;
+                {address}
+              </Link>
+            )}
+            {!address && (
+              <Button className='btn btn-primary' onClick={this.unlockClicked}>
+                Connect Wallet
+              </Button>
+            )}
+          </Navbar.Collapse>
+        </nav>
+
+        {modalOpen && this.renderModal()}
+      </>
+    );
   }
 }
 

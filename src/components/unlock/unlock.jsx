@@ -1,43 +1,36 @@
-import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
-import {
-  Typography,
-  Button,
-  CircularProgress
-} from '@material-ui/core';
+import { Typography, Button, CircularProgress } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { withNamespaces } from 'react-i18next';
 
-import {
-  Web3ReactProvider,
-  useWeb3React,
-} from "@web3-react/core";
-import { Web3Provider } from "@ethersproject/providers";
+import { Web3ReactProvider, useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
 
 import {
   ERROR,
   CONNECTION_DISCONNECTED,
-  CONNECTION_CONNECTED
-} from '../../constants'
+  CONNECTION_CONNECTED,
+} from '../../constants';
 
-import Store from "../../stores";
-const emitter = Store.emitter
-const store = Store.store
+import Store from '../../stores';
+const emitter = Store.emitter;
+const store = Store.store;
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     flex: 1,
     height: 'auto',
     display: 'flex',
-    position: 'relative'
+    position: 'relative',
   },
   contentContainer: {
     margin: 'auto',
     textAlign: 'center',
     padding: '5px',
     display: 'flex',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
   },
   cardContainer: {
     marginTop: '60px',
@@ -45,10 +38,10 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-around',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   unlockCard: {
-    padding: '24px'
+    padding: '24px',
   },
   buttonText: {
     marginLeft: '12px',
@@ -57,7 +50,7 @@ const styles = theme => ({
   instruction: {
     maxWidth: '400px',
     marginBottom: '32px',
-    marginTop: '32px'
+    marginTop: '32px',
   },
   actionButton: {
     padding: '12px',
@@ -67,95 +60,104 @@ const styles = theme => ({
     fontWeight: 100,
     [theme.breakpoints.up('md')]: {
       padding: '15px',
-    }
+    },
   },
   connect: {
-    width: '100%'
+    width: '100%',
   },
   closeIcon: {
     position: 'fixed',
     right: '12px',
     top: '12px',
-    cursor: 'pointer'
-  }
+    cursor: 'pointer',
+  },
 });
 
 class Unlock extends Component {
-
   constructor(props) {
-    super()
+    super();
 
     this.state = {
       error: null,
       metamaskLoading: false,
-      ledgerLoading: false
-    }
+      ledgerLoading: false,
+    };
   }
 
   componentWillMount() {
     emitter.on(CONNECTION_CONNECTED, this.connectionConnected);
     emitter.on(CONNECTION_DISCONNECTED, this.connectionDisconnected);
     emitter.on(ERROR, this.error);
-  };
+  }
 
   componentWillUnmount() {
     emitter.removeListener(CONNECTION_CONNECTED, this.connectionConnected);
-    emitter.removeListener(CONNECTION_DISCONNECTED, this.connectionDisconnected);
+    emitter.removeListener(
+      CONNECTION_DISCONNECTED,
+      this.connectionDisconnected
+    );
     emitter.removeListener(ERROR, this.error);
-  };
+  }
 
   error = (err) => {
-    this.setState({ loading: false, error: err, metamaskLoading: false, ledgerLoading: false })
+    this.setState({
+      loading: false,
+      error: err,
+      metamaskLoading: false,
+      ledgerLoading: false,
+    });
   };
 
   connectionConnected = () => {
-    if(this.props.closeModal != null) {
-      this.props.closeModal()
+    if (this.props.closeModal != null) {
+      this.props.closeModal();
     }
-  }
+  };
 
   connectionDisconnected = () => {
-    if(this.props.closeModal != null) {
-      this.props.closeModal()
+    if (this.props.closeModal != null) {
+      this.props.closeModal();
     }
-  }
+  };
 
   metamaskUnlocked = () => {
-    this.setState({ metamaskLoading: false })
-    if(this.props.closeModal != null) {
-      this.props.closeModal()
+    this.setState({ metamaskLoading: false });
+    if (this.props.closeModal != null) {
+      this.props.closeModal();
     }
-  }
+  };
 
   ledgerUnlocked = () => {
-    this.setState({ ledgerLoading: false })
-    if(this.props.closeModal != null) {
-      this.props.closeModal()
+    this.setState({ ledgerLoading: false });
+    if (this.props.closeModal != null) {
+      this.props.closeModal();
     }
-  }
+  };
 
   cancelLedger = () => {
-    this.setState({ ledgerLoading: false })
-  }
+    this.setState({ ledgerLoading: false });
+  };
 
   cancelMetamask = () => {
-    this.setState({ metamaskLoading: false })
-  }
+    this.setState({ metamaskLoading: false });
+  };
 
   render() {
     const { classes, closeModal, t } = this.props;
 
     return (
-      <div className={ classes.root }>
-        <div className={ classes.closeIcon } onClick={ closeModal }><CloseIcon /></div>
-        <div className={ classes.contentContainer }>
+      <div className={classes.root}>
+        <div className={classes.closeIcon} onClick={closeModal}>
+          <CloseIcon />
+        </div>
+        <div className={classes.contentContainer}>
           <Web3ReactProvider getLibrary={getLibrary}>
-            <MyComponent closeModal={ closeModal} t={t} />
+            <MyComponent closeModal={closeModal} t={t} />
           </Web3ReactProvider>
         </div>
       </div>
-    )
-  };
+    );
+  }
 }
 
 function getLibrary(provider) {
@@ -164,30 +166,34 @@ function getLibrary(provider) {
   return library;
 }
 
-function onConnectionClicked(currentConnector, name, setActivatingConnector, activate) {
-  const connectorsByName = store.getStore('connectorsByName')
+function onConnectionClicked(
+  currentConnector,
+  name,
+  setActivatingConnector,
+  activate
+) {
+  const connectorsByName = store.getStore('connectorsByName');
   setActivatingConnector(currentConnector);
   activate(connectorsByName[name]);
 }
 
 function onDeactivateClicked(deactivate, connector) {
-  if(deactivate) {
-    deactivate()
+  if (deactivate) {
+    deactivate();
   }
-  if(connector && connector.close) {
-    connector.close()
+  if (connector && connector.close) {
+    connector.close();
   }
-  store.setStore({ account: { }, web3context: null })
-  emitter.emit(CONNECTION_DISCONNECTED)
+  store.setStore({ account: {}, web3context: null });
+  emitter.emit(CONNECTION_DISCONNECTED);
 }
 
 function MyComponent(props) {
-
   const context = useWeb3React();
   const localContext = store.getStore('web3context');
   var localConnector = null;
   if (localContext) {
-    localConnector = localContext.connector
+    localConnector = localContext.connector;
   }
   const {
     connector,
@@ -196,11 +202,11 @@ function MyComponent(props) {
     activate,
     deactivate,
     active,
-    error
+    error,
   } = context;
-  var connectorsByName = store.getStore('connectorsByName')
+  var connectorsByName = store.getStore('connectorsByName');
 
-  const { closeModal, t } = props
+  const { closeModal, t } = props;
 
   const [activatingConnector, setActivatingConnector] = React.useState();
   React.useEffect(() => {
@@ -211,8 +217,8 @@ function MyComponent(props) {
 
   React.useEffect(() => {
     if (account && active && library) {
-      store.setStore({ account: { address: account }, web3context: context })
-      emitter.emit(CONNECTION_CONNECTED)
+      store.setStore({ account: { address: account }, web3context: context });
+      emitter.emit(CONNECTION_CONNECTED);
     }
   }, [account, active, closeModal, context, library]);
 
@@ -228,50 +234,64 @@ function MyComponent(props) {
 
   // handle logic to connect in reaction to certain events on the injected ethereum provider, if it exists
   // useInactiveListener(!triedEager || !!activatingConnector);
-  const width = window.innerWidth
+  const width = window.innerWidth;
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: (width > 650 ? 'space-between' : 'center'), alignItems: 'center' }}>
-      {Object.keys(connectorsByName).map(name => {
+    <div
+      style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: width > 650 ? 'space-between' : 'center',
+        alignItems: 'center',
+      }}
+    >
+      {Object.keys(connectorsByName).map((name) => {
         const currentConnector = connectorsByName[name];
         const activating = currentConnector === activatingConnector;
-        const connected = (currentConnector === connector||currentConnector === localConnector);
-        const disabled =
-           !!activatingConnector || !!error;
+        const connected =
+          currentConnector === connector || currentConnector === localConnector;
+        const disabled = !!activatingConnector || !!error;
 
         var url;
         var display = name;
         if (name === 'MetaMask') {
-          url = require('../../assets/icn-metamask.svg')
+          url = require('../../assets/icn-metamask.svg');
         } else if (name === 'WalletConnect') {
-          url = require('../../assets/walletConnectIcon.svg')
+          url = require('../../assets/walletConnectIcon.svg');
         } else if (name === 'TrustWallet') {
-          url = require('../../assets/trustWallet.png')
+          url = require('../../assets/trustWallet.png');
         } else if (name === 'Portis') {
-          url = require('../../assets/portisIcon.png')
+          url = require('../../assets/portisIcon.png');
         } else if (name === 'Fortmatic') {
-          url = require('../../assets/fortmaticIcon.png')
+          url = require('../../assets/fortmaticIcon.png');
         } else if (name === 'Ledger') {
-          url = require('../../assets/icn-ledger.svg')
+          url = require('../../assets/icn-ledger.svg');
         } else if (name === 'Squarelink') {
-          url = require('../../assets/squarelink.png')
+          url = require('../../assets/squarelink.png');
         } else if (name === 'Trezor') {
-          url = require('../../assets/trezor.png')
+          url = require('../../assets/trezor.png');
         } else if (name === 'Torus') {
-          url = require('../../assets/torus.jpg')
+          url = require('../../assets/torus.jpg');
         } else if (name === 'Authereum') {
-          url = require('../../assets/icn-aethereum.svg')
+          url = require('../../assets/icn-aethereum.svg');
         } else if (name === 'WalletLink') {
-          display = 'Coinbase Wallet'
-          url = require('../../assets/coinbaseWalletIcon.svg')
+          display = 'Coinbase Wallet';
+          url = require('../../assets/coinbaseWalletIcon.svg');
         } else if (name === 'Frame') {
-          return ''
+          return '';
         }
 
         return (
-          <div key={name} style={{ padding: '12px 0px', display: 'flex', justifyContent: 'space-between'  }}>
-        
-            <Button style={ {
+          <div
+            key={name}
+            style={{
+              padding: '12px 0px',
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Button
+              style={{
                 padding: '16px',
                 backgroundColor: '#4a5e72',
                 borderRadius: '1rem',
@@ -279,42 +299,67 @@ function MyComponent(props) {
                 fontWeight: 500,
                 display: 'flex',
                 justifyContent: 'space-between',
-                minWidth: '250px'                
-              } }
+                minWidth: '250px',
+              }}
               variant='outlined'
               color='primary'
               onClick={() => {
-                onConnectionClicked(currentConnector, name, setActivatingConnector, activate)
+                onConnectionClicked(
+                  currentConnector,
+                  name,
+                  setActivatingConnector,
+                  activate
+                );
               }}
-              disabled={ disabled }>
-              <Typography style={ {
+              disabled={disabled}
+            >
+              <Typography
+                style={{
                   margin: '0px 12px',
                   color: '#FFF',
                   fontWeight: 200,
                   fontSize: '1rem',
-                } }
-                variant={ 'h3'}>
-                { display }
+                }}
+                variant={'h3'}
+              >
+                {display}
               </Typography>
 
-              { (!activating && !connected) && <img style={
-                {
-                  position: 'absolute',
-                  right: '20px',
+              {!activating && !connected && (
+                <img
+                  style={{
+                    position: 'absolute',
+                    right: '20px',
 
-                  width: '30px',
-                  height: '30px'
-                }
-              } src={url} alt=""/> }
-              { activating && <CircularProgress size={ 15 } style={{marginRight: '10px'}} /> }
-              { (!activating && connected) && <div style={{ background: '#4caf50', borderRadius: '10px', width: '10px', height: '10px', marginRight: '10px' }}></div> }
+                    width: '30px',
+                    height: '30px',
+                  }}
+                  src={url}
+                  alt=''
+                />
+              )}
+              {activating && (
+                <CircularProgress size={15} style={{ marginRight: '10px' }} />
+              )}
+              {!activating && connected && (
+                <div
+                  style={{
+                    background: '#4caf50',
+                    borderRadius: '10px',
+                    width: '10px',
+                    height: '10px',
+                    marginRight: '10px',
+                  }}
+                ></div>
+              )}
             </Button>
           </div>
-        )
-      }) }
+        );
+      })}
 
-      <div style={{ width: '252px', margin: '12px 0px'  }}>
-        <Button style={ {
+      <div style={{ width: '252px', margin: '12px 0px' }}>
+        <Button
+          style={{
             padding: '16px',
             backgroundColor: '#4a5e72',
             borderRadius: '1rem',
@@ -322,26 +367,30 @@ function MyComponent(props) {
             fontWeight: 200,
             display: 'flex',
             justifyContent: 'space-between',
-            minWidth: '250px'    
-          } }
+            minWidth: '250px',
+          }}
           variant='outlined'
           color='primary'
-          onClick={() => { onDeactivateClicked(deactivate, connector); }}>
-          <Typography style={ {
-               margin: '0px 12px',
-               color: '#FFF',
-               fontWeight: 200,
-               fontSize: '1rem',
-            } }
-            variant={ 'h3'}
-            color='#FFF'>
-            { t('Unlock.Deactivate') }
+          onClick={() => {
+            onDeactivateClicked(deactivate, connector);
+          }}
+        >
+          <Typography
+            style={{
+              margin: '0px 12px',
+              color: '#FFF',
+              fontWeight: 200,
+              fontSize: '1rem',
+            }}
+            variant={'h3'}
+            color='#FFF'
+          >
+            {t('Unlock.Deactivate')}
           </Typography>
         </Button>
       </div>
     </div>
-  )
-
+  );
 }
 
 export default withNamespaces()(withRouter(withStyles(styles)(Unlock)));

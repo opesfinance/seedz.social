@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { useWeb3React } from "@web3-react/core";
+import { useState, useEffect } from 'react';
+import { useWeb3React } from '@web3-react/core';
 
-import { injected } from "../../stores/connectors";
+import { injected } from '../../stores/connectors';
 
 export function useEagerConnect() {
   const { activate, active } = useWeb3React();
@@ -9,9 +9,8 @@ export function useEagerConnect() {
   const [tried, setTried] = useState(false);
 
   useEffect(() => {
-    injected.isAuthorized().then(isAuthorized => {
+    injected.isAuthorized().then((isAuthorized) => {
       if (isAuthorized) {
-
         activate(injected, undefined, true).catch(() => {
           setTried(true);
         });
@@ -37,29 +36,29 @@ export function useInactiveListener(suppress = false) {
   useEffect(() => {
     const { ethereum } = window;
     if (ethereum && ethereum.on && !active && !error && !suppress) {
-      const handleChainChanged = chainId => {
+      const handleChainChanged = (chainId) => {
         activate(injected);
       };
 
-      const handleAccountsChanged = accounts => {
+      const handleAccountsChanged = (accounts) => {
         if (accounts.length > 0) {
           activate(injected);
         }
       };
 
-      const handleNetworkChanged = networkId => {
+      const handleNetworkChanged = (networkId) => {
         activate(injected);
       };
 
-      ethereum.on("chainChanged", handleChainChanged);
-      ethereum.on("accountsChanged", handleAccountsChanged);
-      ethereum.on("networkChanged", handleNetworkChanged);
+      ethereum.on('chainChanged', handleChainChanged);
+      ethereum.on('accountsChanged', handleAccountsChanged);
+      ethereum.on('networkChanged', handleNetworkChanged);
 
       return () => {
         if (ethereum.removeListener) {
-          ethereum.removeListener("chainChanged", handleChainChanged);
-          ethereum.removeListener("accountsChanged", handleAccountsChanged);
-          ethereum.removeListener("networkChanged", handleNetworkChanged);
+          ethereum.removeListener('chainChanged', handleChainChanged);
+          ethereum.removeListener('accountsChanged', handleAccountsChanged);
+          ethereum.removeListener('networkChanged', handleNetworkChanged);
         }
       };
     }
