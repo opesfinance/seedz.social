@@ -6,7 +6,7 @@ import { CONFIGURE_RETURNED } from '../../constants';
 import LeftNav from '../leftnav/leftnav';
 import Header from '../header/header';
 import Footer from '../footer/footer';
-import Store from '../../stores';
+import Store from '../../stores/store';
 const emitter = Store.emitter;
 const store = Store.store;
 

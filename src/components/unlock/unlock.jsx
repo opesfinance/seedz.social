@@ -14,7 +14,7 @@ import {
   CONNECTION_CONNECTED,
 } from '../../constants';
 
-import Store from '../../stores';
+import Store from '../../stores/store';
 const emitter = Store.emitter;
 const store = Store.store;
 
