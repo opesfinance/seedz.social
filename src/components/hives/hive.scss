@@ -1,0 +1,42 @@
+.hive-wrapper {
+  background-color: white;
+  min-height: 400px;
+  min-width: 300px;
+  max-height: 400px;
+  max-width: 300px;
+  margin: 0 15px;
+  padding: 15px 25px;
+}
+
+.hive-header {
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.acronym-title {
+  background: url('../../assets/hives/bg-acronym.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  width: auto;
+  height: 100px;
+  padding: 35px;
+}
+
+.hive-details {
+  padding-top: 10px;
+  text-align: left;
+  font-weight: bold;
+}
+
+.hive-value {
+  display: flex;
+  justify-content: space-between;
+}
