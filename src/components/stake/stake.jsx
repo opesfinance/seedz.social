@@ -3,8 +3,8 @@ import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography, TextField, InputAdornment } from '@material-ui/core';
 
-import Loader from '../loader';
-import Snackbar from '../snackbar';
+import Loader from '../loader/loader';
+import Snackbar from '../snackbar/snackbar';
 
 import Store from '../../stores/store';
 
