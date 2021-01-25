@@ -131,11 +131,11 @@ Dark Mode
   color: #ffffff !important;
 }
 
-.dark-mode .main-content {
+.main-content {
   background: #192039 !important;
   color: #c2c2c2 !important;
-  min-height: 90vh;
-  height: 90%;
+  min-height: 100vh !important;
+  // height: 100% !important;
   /* margin-left: 2px; */
 }
 

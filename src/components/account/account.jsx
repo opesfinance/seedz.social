@@ -50,4 +50,4 @@ class Account extends Component {
   }
 }
 
-export default withRouter(Account);
+export default Account;

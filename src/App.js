@@ -101,16 +101,14 @@ class App extends Component {
     const { account } = this.state;
 
     return (
-      <div className='dark-mode'>
+      <div className='dark-mode main-content'>
         <IpfsRouter>
           <Header />
           <Leftnav />
           {!account ? (
-            <div className='main-content'>
-              <Account />
-            </div>
+            <Account />
           ) : (
-            <div className='main-content'>
+            <>
               <Switch>
                 <Route path='/stake'>
                   <Stake />
@@ -128,7 +126,7 @@ class App extends Component {
                   <Home />
                 </Route>
               </Switch>
-            </div>
+            </>
           )}
         </IpfsRouter>
       </div>
