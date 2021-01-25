@@ -6,14 +6,12 @@ import IpfsRouter from 'ipfs-react-router';
 import './i18n';
 
 import Account from './components/account';
-import Home from './components/home';
+import Home from './components/home/home';
 import Farm from './components/farm';
 import Hives from './components/hives';
 import WhaleTank from './components/whalestank';
 import Stake from './components/stake';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './assets/css/style2.css';
 import {
   CONNECTION_CONNECTED,
   CONNECTION_DISCONNECTED,
