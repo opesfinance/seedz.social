@@ -32,7 +32,7 @@ import { injected, walletconnect, walletlink } from './connectors';
 
 const rp = require('request-promise');
 
-const Dispatcher = require('flux').Dispatcher;
+const { Dispatcher } = require('flux');
 const Emitter = require('events').EventEmitter;
 
 const dispatcher = new Dispatcher();
@@ -223,8 +223,8 @@ class Store {
     );
   }
 
-  getStore(index) {
-    return this.store[index];
+  getStore(key) {
+    return this.store[key];
   }
 
   setStore(obj) {
@@ -387,7 +387,7 @@ class Store {
               ],
               (err, data) => {
                 if (err) {
-                  console.log(err);
+                  // console.log(err);
                   return callbackInner(err);
                 }
 
@@ -409,7 +409,7 @@ class Store {
           },
           (err, tokensData) => {
             if (err) {
-              console.log(err);
+              // console.log(err);
               return callback(err);
             }
 
@@ -420,7 +420,7 @@ class Store {
       },
       (err, poolData) => {
         if (err) {
-          console.log(err);
+          // console.log(err);
           return emitter.emit(ERROR, err);
         }
         store.setStore({ rewardPools: poolData });
@@ -1483,7 +1483,7 @@ class Store {
 var store = new Store();
 
 export default {
-  store: store,
-  dispatcher: dispatcher,
-  emitter: emitter,
+  store,
+  dispatcher,
+  emitter,
 };

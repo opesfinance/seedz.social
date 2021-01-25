@@ -95,7 +95,7 @@ class Header extends React.Component {
     }
     return (
       <>
-        <nav className='dark-mode navbar navbar-expand-lg '>
+        <nav className='navbar navbar-expand-lg '>
           <Link to='/#' className='navbar-brand'>
             <img
               src={require('../../assets/Capa.png')}
