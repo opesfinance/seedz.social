@@ -4,7 +4,7 @@ import './hive.scss';
 const bgSrc = require('../../assets/vault.png');
 
 const Hive = (props) => {
-  console.log(props);
+  // console.log(props);
 
   return (
     <div className=''>
