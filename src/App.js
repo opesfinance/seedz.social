@@ -5,12 +5,12 @@ import IpfsRouter from 'ipfs-react-router';
 
 import './i18n';
 
-import Account from './components/account';
+import Account from './components/account/account';
 import Home from './components/home/home';
-import Farm from './components/farm';
-import Hives from './components/hives';
-import WhaleTank from './components/whalestank';
-import Stake from './components/stake';
+import Farm from './components/farm/farm';
+import Hives from './components/hives/hives';
+import WhaleTank from './components/whalestank/whaletank';
+import Stake from './components/stake/stake';
 
 import {
   CONNECTION_CONNECTED,
@@ -23,7 +23,7 @@ import {
 
 import { injected } from './stores/connectors';
 
-import Store from './stores';
+import Store from './stores/store';
 
 const emitter = Store.emitter;
 const dispatcher = Store.dispatcher;

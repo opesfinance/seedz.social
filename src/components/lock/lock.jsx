@@ -9,12 +9,12 @@ import {
   InputAdornment,
 } from '@material-ui/core';
 
-import Loader from '../loader';
-import Snackbar from '../snackbar';
+import Loader from '../loader/loader';
+import Snackbar from '../snackbar/snackbar';
 import UnlockModal from '../unlock/unlockModal.jsx';
 
-import Store from '../../stores';
-import { colors } from '../../theme';
+import Store from '../../stores/store';
+import { colors } from '../../theme/theme';
 
 import {
   ERROR,

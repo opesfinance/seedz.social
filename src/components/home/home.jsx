@@ -5,7 +5,7 @@ import { withNamespaces } from 'react-i18next';
 import LeftNav from '../leftnav/leftnav';
 import Header from '../header/header';
 import Footer from '../footer/footer';
-import Store from '../../stores';
+import Store from '../../stores/store';
 
 const store = Store.store;
 

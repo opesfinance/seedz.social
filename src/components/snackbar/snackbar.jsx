@@ -7,7 +7,7 @@ import {
   SvgIcon,
 } from '@material-ui/core';
 
-import { colors } from '../../theme';
+import { colors } from '../../theme/theme';
 import { withNamespaces } from 'react-i18next';
 
 const iconStyle = {

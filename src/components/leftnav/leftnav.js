@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Store from '../../stores';
+import Store from '../../stores/store';
 import { FaThLarge } from 'react-icons/fa';
 
 const store = Store.store;

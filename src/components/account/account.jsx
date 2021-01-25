@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import '../../assets/css/style2.css';
 import { ERROR } from '../../constants';
 
-import Store from '../../stores';
+import Store from '../../stores/store';
 import LeftNav from '../leftnav/leftnav';
 import Header from '../header/header';
 import Footer from '../footer/footer';

@@ -12,7 +12,7 @@ import {
 import { Navbar, Button } from 'react-bootstrap';
 import { FaBars } from 'react-icons/fa';
 
-import Store from '../../stores';
+import Store from '../../stores/store';
 
 const emitter = Store.emitter;
 const store = Store.store;

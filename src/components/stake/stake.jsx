@@ -6,7 +6,7 @@ import { Typography, TextField, InputAdornment } from '@material-ui/core';
 import Loader from '../loader';
 import Snackbar from '../snackbar';
 
-import Store from '../../stores';
+import Store from '../../stores/store';
 
 import { Col, Row, Card } from 'react-bootstrap';
 
