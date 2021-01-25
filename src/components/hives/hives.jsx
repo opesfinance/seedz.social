@@ -20,8 +20,8 @@ const Hives = (props) => {
   const account = store.getStore('account');
   // const rewardPools = store.getStore('rewardPools');
   // themeType activeClass should be retrieved from React context
-  const themeType = store.getStore('themeType');
-  const activeClass = store.getStore('activeClass');
+  // const themeType = store.getStore('themeType');
+  // const activeClass = store.getStore('activeClass');
 
   console.log('themeType -----------', themeType); // why is this #true?
 
@@ -30,9 +30,8 @@ const Hives = (props) => {
 
   const [loading, setLoading] = useState(!(account && rewardPools));
 
-  dispatcher.dispatch({ type: GET_BALANCES, content: {} });
-
   useEffect(() => {
+    dispatcher.dispatch({ type: GET_BALANCES, content: {} });
     emitter.on(CONFIGURE_RETURNED, configureReturned);
     emitter.on(GET_BALANCES_RETURNED, balancesReturned);
     emitter.on(GET_BOOSTEDBALANCES_RETURNED, balancesReturned);
@@ -48,12 +47,6 @@ const Hives = (props) => {
     const rewardPools = store.getStore('rewardPools');
     setRewardPools(rewardPools);
   }, []);
-
-  // this is not used and does the same logic as balancesReturned
-  // const boostInfoReturned = useCallback(() => {
-  //   const rewardPools = store.getStore('rewardPools');
-  //   setRewardPools(rewardPools);
-  // });
 
   const configureReturned = useCallback(() => setLoading(false));
 
