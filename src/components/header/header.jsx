@@ -13,10 +13,7 @@ import { Navbar, Button } from 'react-bootstrap';
 import { FaBars } from 'react-icons/fa';
 
 import Store from '../../stores/store';
-
-const emitter = Store.emitter;
-const store = Store.store;
-
+const { emitter, store } = Store;
 class Header extends React.Component {
   constructor(props) {
     super(props);
@@ -98,7 +95,7 @@ class Header extends React.Component {
     }
     return (
       <>
-        <nav className='navbar navbar-expand-lg '>
+        <nav className='dark-mode navbar navbar-expand-lg '>
           <Link to='/#' className='navbar-brand'>
             <img
               src={require('../../assets/Capa.png')}

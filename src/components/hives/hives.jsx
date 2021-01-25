@@ -10,15 +10,11 @@ import {
   GET_BALANCES_RETURNED,
   GET_BOOSTEDBALANCES_RETURNED,
 } from '../../constants/constants';
-import LeftNav from '../leftnav/leftnav';
-import Header from '../header/header';
-import Footer from '../footer/footer';
+
 import Store from '../../stores/store';
 import Hive from './hive';
 
-const emitter = Store.emitter;
-const dispatcher = Store.dispatcher;
-const store = Store.store;
+const { emitter, dispatcher, store } = Store;
 
 const Hives = (props) => {
   const account = store.getStore('account');
@@ -47,19 +43,6 @@ const Hives = (props) => {
       emitter.removeListener(GET_BOOSTEDBALANCES_RETURNED, balancesReturned);
     };
   }, []);
-  // }
-
-  // componentWillMount() {
-  //   emitter.on(CONFIGURE_RETURNED, this.configureReturned);
-  //   emitter.on(GET_BALANCES_RETURNED, this.balancesReturned);
-  //   emitter.on(GET_BOOSTEDBALANCES_RETURNED, this.balancesReturned);
-  // }
-
-  // componentWillUnmount() {
-  //   emitter.removeListener(CONFIGURE_RETURNED, this.configureReturned);
-  //   emitter.removeListener(GET_BALANCES_RETURNED, this.balancesReturned);
-  //   emitter.removeListener(GET_BOOSTEDBALANCES_RETURNED, this.balancesReturned);
-  // }
 
   const balancesReturned = useCallback(() => {
     const rewardPools = store.getStore('rewardPools');
@@ -114,19 +97,10 @@ const Hives = (props) => {
   });
 
   return (
-    <>
-      <div className='dark-mode m-0 p-0'>
-        <Header />
-        <LeftNav />
-
-        <div className='main-content p-5 ml-5'>
-          <h1 className='text-center'>Hives</h1>
-          <div className='hives-wrapper'>{hives}</div>
-        </div>
-
-        <Footer />
-      </div>
-    </>
+    <div className='p-5 ml-5'>
+      <h1 className='text-center'>Hives</h1>
+      <div className='hives-wrapper'>{hives}</div>
+    </div>
   );
 };
 

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import { Switch, Route } from 'react-router-dom';
 import IpfsRouter from 'ipfs-react-router';
+import Leftnav from './components/leftnav/leftnav';
+import Header from './components/header/header';
 
 import './i18n';
 
@@ -24,10 +26,7 @@ import {
 import { injected } from './stores/connectors';
 
 import Store from './stores/store';
-
-const emitter = Store.emitter;
-const dispatcher = Store.dispatcher;
-const store = Store.store;
+const { emitter, dispatcher, store } = Store;
 
 class App extends Component {
   state = {
@@ -102,30 +101,37 @@ class App extends Component {
     const { account } = this.state;
 
     return (
-      <>
+      <div className='dark-mode'>
         <IpfsRouter>
-          {!account && <Account />}
-          {account && (
-            <Switch>
-              <Route path='/stake'>
-                <Stake />
-              </Route>
-              <Route path='/whaletank'>
-                <WhaleTank />
-              </Route>
-              <Route path='/hives'>
-                <Hives />
-              </Route>
-              <Route path='/farm'>
-                <Farm />
-              </Route>
-              <Route path='/'>
-                <Home />
-              </Route>
-            </Switch>
+          <Header />
+          <Leftnav />
+          {!account ? (
+            <div className='main-content'>
+              <Account />
+            </div>
+          ) : (
+            <div className='main-content'>
+              <Switch>
+                <Route path='/stake'>
+                  <Stake />
+                </Route>
+                <Route path='/whaletank'>
+                  <WhaleTank />
+                </Route>
+                <Route path='/hives'>
+                  <Hives />
+                </Route>
+                <Route path='/farm'>
+                  <Farm />
+                </Route>
+                <Route path='/'>
+                  <Home />
+                </Route>
+              </Switch>
+            </div>
           )}
         </IpfsRouter>
-      </>
+      </div>
     );
   }
 }

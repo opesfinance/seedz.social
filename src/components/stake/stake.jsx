@@ -10,10 +10,6 @@ import Store from '../../stores/store';
 
 import { Col, Row, Card } from 'react-bootstrap';
 
-import LeftNav from '../leftnav/leftnav';
-import Header from '../header/header';
-import Footer from '../footer/footer';
-
 import {
   ERROR,
   STAKE,
@@ -61,9 +57,7 @@ const styles = (theme) => ({
   },
 });
 
-const emitter = Store.emitter;
-const dispatcher = Store.dispatcher;
-const store = Store.store;
+const { emitter, dispatcher, store } = Store;
 
 class Stake extends Component {
   constructor(props) {
@@ -158,25 +152,16 @@ class Stake extends Component {
     }
 
     return (
-      <>
-        <div className='dark-mode m-0 p-0'>
-          <Header />
-          <LeftNav />
+      <div className='p-5 ml-5 text-center '>
+        {/* CONTENT */}
+        <h1>Stake page</h1>
 
-          <div className='main-content p-5 ml-5 text-center '>
-            {/* CONTENT */}
-            <h1>Stake page</h1>
+        {value === 'options' && this.renderOptions2()}
+        {value === 'buyboost' && this.renderBuyBoost()}
 
-            {value === 'options' && this.renderOptions2()}
-            {value === 'buyboost' && this.renderBuyBoost()}
-
-            {snackbarMessage && this.renderSnackbar()}
-            {loading && <Loader />}
-          </div>
-
-          <Footer />
-        </div>
-      </>
+        {snackbarMessage && this.renderSnackbar()}
+        {loading && <Loader />}
+      </div>
     );
   }
 

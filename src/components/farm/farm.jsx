@@ -3,8 +3,6 @@ import { withRouter } from 'react-router-dom';
 import { withNamespaces } from 'react-i18next';
 
 import { CONFIGURE_RETURNED } from '../../constants';
-import LeftNav from '../leftnav/leftnav';
-import Header from '../header/header';
 import Footer from '../footer/footer';
 import Store from '../../stores/store';
 const emitter = Store.emitter;
@@ -42,19 +40,10 @@ class Farm extends Component {
 
   render() {
     return (
-      <>
-        <div className='dark-mode m-0 p-0'>
-          <Header />
-          <LeftNav />
-
-          <div className='main-content p-5 ml-5 text-center '>
-            {/* CONTENT */}
-            <h1>FARM</h1>
-          </div>
-
-          <Footer />
-        </div>
-      </>
+      <div className='p-5 ml-5 text-center '>
+        {/* CONTENT */}
+        <h1>FARM</h1>
+      </div>
     );
   }
 }
