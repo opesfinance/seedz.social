@@ -23,8 +23,7 @@ Left Navigation
   transition: width 0.5s;
   position: absolute;
   z-index: 1;
-  height: 90%;
-  box-shadow: 5px 0 1px -3px #eee;
+  height: 100%;
 }
 .leftNav ul {
   padding: 0;
@@ -38,7 +37,7 @@ Left Navigation
   padding-left: 15px;
 }
 .leftNav li:hover {
-  background: #f1eeff;
+  background: black;
 }
 
 .leftNav:hover {
@@ -48,7 +47,7 @@ Left Navigation
 .leftNav .item-menu {
   height: 50px;
   overflow: hidden;
-  color: #7c6ebb;
+  color: #fff;
 }
 .leftNav a {
   color: white;
@@ -123,8 +122,9 @@ Dark Mode
 
 .dark-mode,
 .dark-mode .leftNav,
-.dark-mode .navbar {
-  background-color: #fff !important;
+.dark-mode .navbar,
+.dark-mode .leftNavBG {
+  background-color: #252d47 !important;
   color: #c2c2c2 !important;
 }
 
@@ -132,19 +132,19 @@ Dark Mode
   color: #ffffff !important;
 }
 
-.main-content {
-  background: #f3f6f9 !important;
+.dark-mode .main-content {
+  background: #192039 !important;
   color: #c2c2c2 !important;
-  min-height: 100vh !important;
-  // height: 100% !important;
-  /* margin-left: 2px; */
+  min-height: 100vh;
+  height: 100%;
+  margin-left: 2px;
 }
 
 .dark-mode .pageHeader {
   height: 40px;
   padding-left: 80px;
   padding-top: 6px;
-  background: #e7e6f8;
+  background: #23274c;
   vertical-align: middle;
   color: #7f63f4;
   font-weight: bold;
@@ -152,53 +152,10 @@ Dark Mode
 
 .dark-mode .box-farm {
   min-height: 250px;
-  background: #fff;
+  background: #252d47;
 }
 
 .dark-mode .section-title {
   color: #7f63f4;
   font-weight: bold;
-}
-
-.info-header {
-  background-color: #cccccc;
-  min-height: 12vh;
-}
-
-.info-header-down {
-  background-color: #fafafa;
-  min-height: 10vh;
-}
-
-.pool-logo {
-  margin-top: -43vh;
-  max-width: 100%;
-  max-height: 20vh;
-}
-
-.pool-header {
-  margin-top: -19vh;
-  margin-left: -1vw;
-  font-size: 0.8rem;
-}
-
-.pool-name {
-  font-size: 1rem;
-  font-weight: bold;
-}
-
-.pool-boxes {
-  margin-top: -10vh;
-}
-
-.text-purple {
-  color: #7c6ebb;
-}
-
-.text-gray {
-  color: #abafb3;
-}
-
-.text-gray:hover {
-  color: #abafb3;
 }
