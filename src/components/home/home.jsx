@@ -46,7 +46,7 @@ class Home extends Component {
             </div>
 
             <div className='col-lg-3 col-md-12 col-sm-12'>
-              <div className='row box-2  m-1 p-2 rounded '>
+              <div className='row box-2  m-1 p-2 rounded'>
                 <div className='col-4 m-0 my-auto text-right'>
                   <img
                     alt=''

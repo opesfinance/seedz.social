@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { withRouter } from 'react-router-dom';
 import { withNamespaces } from 'react-i18next';
+import { AiOutlineWarning } from 'react-icons/ai';
 
 import './hives.scss';
 
@@ -23,7 +24,7 @@ const Hives = (props) => {
   // const themeType = store.getStore('themeType');
   // const activeClass = store.getStore('activeClass');
 
-  console.log('themeType -----------', themeType); // why is this #true?
+  // console.log('themeType -----------', themeType); // why is this #true?
 
   const [rewardPools, setRewardPools] = useState(store.getStore('rewardPools'));
   console.log('rewardPools -----------', rewardPools); // why is this #true?
@@ -75,24 +76,37 @@ const Hives = (props) => {
 
   const hives = dummyHivesData.map((h) => {
     return (
-      <Hive
-        key={h.address}
-        acronym={h.acronym}
-        address={h.address}
-        inPool={h.inPool}
-        beastBonus={h.beastBonus}
-        bonusReductionIn={h.bonusReductionIn}
-        weeklyRewards={h.weeklyRewards}
-        myBeastModes={h.myBeastModes}
-        myRewards={h.myRewards}
-      />
+      <div className='col-md-3' key={h.address}>
+        <Hive
+          acronym={h.acronym}
+          address={h.address}
+          inPool={h.inPool}
+          beastBonus={h.beastBonus}
+          bonusReductionIn={h.bonusReductionIn}
+          weeklyRewards={h.weeklyRewards}
+          myBeastModes={h.myBeastModes}
+          myRewards={h.myRewards}
+        />
+      </div>
     );
   });
 
   return (
     <div className='p-5 ml-5'>
       <h1 className='text-center'>Hives</h1>
-      <div className='hives-wrapper'>{hives}</div>
+      <div className='row'>
+        <div className='col-md-6 offset-md-3'>
+          <div className='alert alert-success' role='alert'>
+            <AiOutlineWarning /> A simple success alert—check it out!
+          </div>
+        </div>
+      </div>
+
+      <div className='row'>
+        {hives.length <= 2 ? <div className='col-md-3'></div> : null}
+
+        {hives}
+      </div>
     </div>
   );
 };
