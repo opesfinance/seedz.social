@@ -229,16 +229,14 @@ class Store {
 
   setStore(obj) {
     this.store = { ...this.store, ...obj };
-    console.log('Store');
-    console.log(this.store);
-    return emitter.emit('StoreUpdated');
+    console.log('Store ---', this.store);
+    emitter.emit('StoreUpdated');
   }
 
   configure = async () => {
     const web3 = new Web3(store.getStore('web3context').library.provider);
     const currentBlock = await web3.eth.getBlockNumber();
-
-    store.setStore({ currentBlock: currentBlock });
+    store.setStore({ currentBlock });
 
     window.setTimeout(() => {
       emitter.emit(CONFIGURE_RETURNED);
@@ -252,7 +250,7 @@ class Store {
     const web3 = new Web3(store.getStore('web3context').library.provider);
 
     const currentBlock = await web3.eth.getBlockNumber();
-    store.setStore({ currentBlock: currentBlock });
+    store.setStore({ currentBlock });
 
     async.map(
       pools,

@@ -24,7 +24,7 @@ const HivesList = (props) => {
 
   const [rewardPools, setRewardPools] = useState(store.getStore('rewardPools'));
   const [account, setAccount] = useState(store.getStore('account'));
-  console.log('rewardPools -----------', JSON.stringify(rewardPools)); // why is this #true?
+  // console.log('rewardPools -----------', JSON.stringify(rewardPools)); // why is this #true?
 
   const [loading, setLoading] = useState(!(account && rewardPools));
 
