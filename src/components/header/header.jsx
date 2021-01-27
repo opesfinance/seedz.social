@@ -49,7 +49,7 @@ class Header extends React.Component {
   }
 
   connectionConnected = () => {
-    // this.setState({ account: store.getStore('account') })
+    this.setState({ account: store.getStore('account') });
   };
 
   configureReturned = () => {
