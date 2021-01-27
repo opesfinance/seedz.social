@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { withNamespaces } from 'react-i18next';
 import { AiOutlineWarning } from 'react-icons/ai';
 
-import './hives.scss';
+import './hives-list.scss';
 
 import {
   CONFIGURE_RETURNED,
@@ -94,6 +94,7 @@ const Hives = (props) => {
   return (
     <div className='p-5 ml-5'>
       <h1 className='text-center'>Hives</h1>
+
       <div className='row'>
         <div className='col-md-6 offset-md-3'>
           <div className='alert alert-success' role='alert'>
@@ -102,11 +103,7 @@ const Hives = (props) => {
         </div>
       </div>
 
-      <div className='row'>
-        {hives.length <= 2 ? <div className='col-md-3'></div> : null}
-
-        {hives}
-      </div>
+      <div className='row hives-wrapper'>{hives}</div>
     </div>
   );
 };
