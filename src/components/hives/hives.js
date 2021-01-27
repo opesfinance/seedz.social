@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { withNamespaces } from 'react-i18next';
 import { AiOutlineWarning } from 'react-icons/ai';

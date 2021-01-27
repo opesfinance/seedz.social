@@ -9,8 +9,6 @@ const { emitter, store } = Store;
 
 const Farm = () => {
   const account = store.getStore('account');
-  const themeType = store.getStore('themeType');
-  const activeClass = store.getStore('activeClass');
   // constructor(props) {
   //   super();
   const [rewardPools, setRewardPools] = useState(store.getStore('rewardPools'));

@@ -22,7 +22,7 @@ class Header extends React.Component {
     const activeClass = store.getStore('activeClass');
 
     this.state = {
-      activeClass: activeClass,
+      activeClass,
       loading: false,
       account: account,
       assets: store.getStore('assets'),
