@@ -64,7 +64,9 @@ class Stake extends Component {
     super();
 
     const account = store.getStore('account');
-    const pool = store.getStore('currentPool');
+    const pool = store.getStore('rewardPools')[1];
+    console.log(pool);
+
     const themeType = store.getStore('themeType');
     const activeClass = store.getStore('activeClass');
 
@@ -152,16 +154,22 @@ class Stake extends Component {
     }
 
     return (
-      <div className='p-5 ml-5 text-center '>
-        {/* CONTENT */}
-        <h1>Stake page</h1>
+      <>
+        <Row className='info-header'></Row>
+        <Row className='info-header-down'></Row>
 
-        {value === 'options' && this.renderOptions2()}
-        {value === 'buyboost' && this.renderBuyBoost()}
+        <div className='p-5 ml-5 text-center '>
+          <div className='main-content p-5 ml-5 text-center '>
+            {/* CONTENT */}
 
-        {snackbarMessage && this.renderSnackbar()}
-        {loading && <Loader />}
-      </div>
+            {value === 'options' && this.renderOptions2()}
+            {value === 'buyboost' && this.renderBuyBoost()}
+
+            {snackbarMessage && this.renderSnackbar()}
+            {loading && <Loader />}
+          </div>
+        </div>
+      </>
     );
   }
 
@@ -179,11 +187,26 @@ class Stake extends Component {
     return (
       <>
         <Row>
-          <Col lg='4' md='12' xs='12' className='p-1'>
-            <div className='mt-2 text-center rounded p-2'>
-              <h4 className='p-2 rounded text-white'>{pool.name}</h4>
+          <Col lg='2' md='2' xs='6' className='text-left'>
+            <img
+              className='pool-logo'
+              alt=''
+              src={require('../../assets/BPT.png')}
+            />
+          </Col>
+          <Col lg='10' md='10' xs='6' className='text-left pool-header'>
+            <div className='text-left'>
+              <div className='text-purple pool-name'>{pool.name}</div>
+              <a
+                href={'https://etherscan.io/address/' + addy}
+                rel='noopener noreferrer'
+                target='_blank'
+                className='text-gray'
+              >
+                {address}
+              </a>
               <p>
-                Total deposited:{' '}
+                {/*Total deposited:{' '}
                 {pool.tokens[0].stakedBalance
                   ? pool.tokens[0].stakedBalance.toFixed(pool.displayDecimal)
                   : '0'}
@@ -191,20 +214,11 @@ class Stake extends Component {
                 Pool Rate:{' '}
                 {pool.ratePerWeek ? pool.ratePerWeek.toFixed(4) : '0.0'}{' '}
                 {pool.tokens[0].poolRateSymbol}
-                <br />
-                Contract Address:{' '}
-                <a
-                  href={'https://etherscan.io/address/' + addy}
-                  rel='noopener noreferrer'
-                  target='_blank'
-                >
-                  {address}
-                </a>
-                .
+                <br />*/}
               </p>
             </div>
           </Col>
-          <Col lg='8' md='12' xs='12' className='p-1'>
+          {/*<Col lg='8' md='12' xs='12' className='p-1'>
             <table className='table mt-5'>
               <thead>
                 <tr>
@@ -250,7 +264,7 @@ class Stake extends Component {
                 </tr>
               </tbody>
             </table>
-          </Col>
+          </Col>*/}
         </Row>
 
         {stakevalue === 'main' && this.stakeMain()}
@@ -266,8 +280,21 @@ class Stake extends Component {
     const { pool } = this.state;
 
     return (
-      <Row>
+      <Row className='pool-boxes'>
         <Col lg='4' md='12' xs='12' className='p-1'>
+          <Card>
+            <Card.Body className='text-left'>
+              Current Level
+              <br></br>
+              Next Level in
+              <br></br>
+              Weekly Rewards
+              <br></br>
+              Current Gas Price
+            </Card.Body>
+          </Card>
+        </Col>
+        {/*<Col lg='4' md='12' xs='12' className='p-1'>
           <Card>
             <Card.Body>
               <Card.Title>STAKE</Card.Title>
@@ -287,12 +314,33 @@ class Stake extends Component {
               )}
             </Card.Body>
           </Card>
+        </Col>*/}
+
+        <Col lg='4' md='12' xs='12' className='p-1'>
+          <Card>
+            <Card.Body className='text-left'>
+              YOUR BALANCE
+              <br></br>
+              CURRENTLY STAKED
+              <br></br>
+              BEAST MODE X<br></br>
+              REWARDS AVAILABLE
+            </Card.Body>
+          </Card>
         </Col>
 
         <Col lg='4' md='12' xs='12' className='p-1'>
           <Card>
             <Card.Body>
-              <Card.Title>UN-STAKE</Card.Title>
+              {this.renderAssetInput(pool.tokens[0], 'unstake')}
+              <div
+                className='myButton btn-block'
+                onClick={() => {
+                  this.onUnstake();
+                }}
+              >
+                UNSTAKE
+              </div>
               {this.renderAssetInput(pool.tokens[0], 'unstake')}
               <div
                 className='myButton btn-block'
@@ -306,7 +354,7 @@ class Stake extends Component {
           </Card>
         </Col>
 
-        <Col lg='4' md='12' xs='12' className='p-3'>
+        {/*<Col lg='4' md='12' xs='12' className='p-3'>
           <p className='p-0 m-1 text-center'>
             <div
               className='myButton btn-block'
@@ -339,7 +387,7 @@ class Stake extends Component {
               Exit: Claim & Unstake
             </div>
           </p>
-        </Col>
+        </Col>*/}
 
         <Col lg='8' md='12' xs='12'></Col>
       </Row>
@@ -641,13 +689,7 @@ class Stake extends Component {
               className={classes.value}
               noWrap
             >
-              {'Max Balance: ' +
-                (asset && asset.balance
-                  ? (
-                      Math.floor(asset.balance * 1000000000) / 1000000000
-                    ).toFixed(9)
-                  : '0.000000000')}{' '}
-              {asset ? asset.symbol : ''}
+              {'Use Max Balance'}
             </Typography>
           )}
           {type === 'unstake' && (
@@ -669,19 +711,12 @@ class Stake extends Component {
               className={classes.value}
               noWrap
             >
-              {'Max Balance: ' +
-                (asset && asset.stakedBalance
-                  ? (
-                      Math.floor(asset.stakedBalance * 1000000000) / 1000000000
-                    ).toFixed(9)
-                  : '0.000000000')}{' '}
-              {asset ? asset.symbol : ''}
+              {'Use Max Balance'}
             </Typography>
           )}
         </div>
         <div>
           <TextField
-            fullWidth
             disabled={loading}
             className={
               amountStakeError && fieldid === asset.id + '_' + type

@@ -229,7 +229,8 @@ class Store {
 
   setStore(obj) {
     this.store = { ...this.store, ...obj };
-    // console.log(this.store)
+    console.log('Store');
+    console.log(this.store);
     return emitter.emit('StoreUpdated');
   }
 
