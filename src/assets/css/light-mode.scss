@@ -6,6 +6,7 @@ $primary-color: #7f63f4;
 
 .bg-main-blue {
   background-color: $primary-color;
+  border: none !important;
 }
 
 /**
@@ -211,4 +212,37 @@ Dark Mode
 
 .text-gray:hover {
   color: #abafb3;
+}
+
+.pool-card {
+  box-shadow: 1px 2px 2px 2px #eee;
+  border: none;
+}
+
+.pool-stake-button {
+  text-transform: capitalize;
+  background-color: #14bd51;
+  color: white;
+  height: 3vh;
+  border-radius: 3px;
+}
+
+.pool-unstake-button {
+  text-transform: capitalize;
+  background-color: #d14b0e;
+  color: white;
+  height: 3vh;
+  border-radius: 3px;
+}
+
+.pool-max-balance {
+  color: #abafb3;
+  font-size: 0.8rem !important;
+}
+
+.pool-card-info {
+  padding: 10px;
+  margin: 6px;
+  box-shadow: 1px 2px 2px 2px #eee;
+  border: none;
 }

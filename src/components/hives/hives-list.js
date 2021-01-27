@@ -20,7 +20,7 @@ const HivesList = (props) => {
   // const themeType = store.getStore('themeType');
   // const activeClass = store.getStore('activeClass');
 
-  // console.log('themeType -----------', themeType); // why is this #true?
+  //console.log('themeType -----------', themeType); // why is this #true?
 
   const [rewardPools, setRewardPools] = useState(store.getStore('rewardPools'));
   const [account, setAccount] = useState(store.getStore('account'));
