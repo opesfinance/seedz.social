@@ -295,25 +295,47 @@ class Stake extends Component {
         <Col lg='4' md='12' xs='12' className='p-1'>
           <Card className='pool-card'>
             <Card.Body className='text-left'>
-              <div className='col-12 p-0 small box-farm'>
-                <ul className='text-left pl-4'>
-                  <li className=''>
+              <div className='hive-details'>
+                <div className='hive-value'>
+                  <div>
+                    <span className='dot green'></span>
                     YOUR BALANCE
-                    <span className='float-right pr-4'>138 %</span>
-                  </li>
-                  <li>
+                  </div>
+                  <div className='text-right main-blue'>{}</div>
+                </div>
+                <div className='hive-value'>
+                  <div>
+                    <span className='dot yellow'></span>
                     CURRENTLY STAKED
-                    <span className='float-right pr-4'>265 DAYS</span>
-                  </li>
-                  <li>
+                  </div>
+                  <div className='text-right main-blue'>{} days</div>
+                </div>
+                <div className='hive-value'>
+                  <div>
+                    <span className='dot purple'></span>
                     BEAST MODE X
-                    <span className='float-right pr-4'>630 PIXEL</span>
-                  </li>
-                  <li>
+                  </div>
+                  <div className='text-right main-blue'>{} Seedz</div>
+                </div>
+                <div className='hive-value'>
+                  <div>
+                    <span className='dot light-blue'></span>
                     REWARDS AVAILABLE
-                    <span className='float-right pr-4'>4</span>
-                  </li>
-                </ul>
+                  </div>
+                  <div className='text-right main-blue'>{}</div>
+                </div>
+                <Row className='pt-4'>
+                  <Col className='text-center'>
+                    <a href='#' className='btn btn-primary bg-main-blue'>
+                      Claim Rewards
+                    </a>
+                  </Col>
+                  <Col className='text-center'>
+                    <a href='#' className='btn btn-primary bg-main-blue'>
+                      Claim & Unstake
+                    </a>
+                  </Col>
+                </Row>
               </div>
             </Card.Body>
           </Card>
