@@ -27,7 +27,7 @@ const Hives = (props) => {
 
   const [rewardPools, setRewardPools] = useState(store.getStore('rewardPools'));
   const [account, setAccount] = useState(store.getStore('account'));
-  console.log('rewardPools -----------', rewardPools); // why is this #true?
+  console.log('rewardPools -----------', JSON.stringify(rewardPools)); // why is this #true?
 
   const [loading, setLoading] = useState(!(account && rewardPools));
 
@@ -74,22 +74,24 @@ const Hives = (props) => {
     },
   ];
 
-  const hives = dummyHivesData.map((h) => {
-    return (
-      <div className='col-md-3' key={h.address}>
-        <Hive
-          acronym={h.acronym}
-          address={h.address}
-          inPool={h.inPool}
-          beastBonus={h.beastBonus}
-          bonusReductionIn={h.bonusReductionIn}
-          weeklyRewards={h.weeklyRewards}
-          myBeastModes={h.myBeastModes}
-          myRewards={h.myRewards}
-        />
-      </div>
-    );
-  });
+  const hives = rewardPools
+    .flatMap((rp) => rp.tokens[0])
+    .map((t) => {
+      return (
+        <div className='col-md-3' key={t.rewardsAddress}>
+          <Hive
+            acronym={t.symbol}
+            address={t.rewardsAddress}
+            inPool={t.inPool}
+            beastBonus={t.beastBonus}
+            bonusReductionIn={t.bonusReductionIn}
+            weeklyRewards={t.poolRatePerWeek}
+            myBeastModes={t.currentActiveBooster || 0}
+            myRewards={t.rewardsAvailable}
+          />
+        </div>
+      );
+    });
 
   return (
     <div className='p-5 ml-5'>
