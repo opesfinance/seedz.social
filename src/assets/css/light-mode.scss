@@ -30,6 +30,10 @@ Top Menu Navigation
   justify-content: flex-end;
 }
 
+.navbar-expand-lg {
+  justify-content: space-between;
+}
+
 .navbar {
   height: 10vh !important;
 }

@@ -103,22 +103,15 @@ class Header extends React.Component {
               alt='Bees Social'
             />
           </Link>
-          <button
-            className='navbar-toggler'
-            data-toggle='collapse'
-            data-target='#navbarCollapse'
-          >
-            <FaBars />
-          </button>
 
-          <Navbar.Collapse className='justify-content-end'>
+          <div>
             {address && (
               <Link to='/#' onClick={this.unlockClicked}>
                 <img
                   alt=''
                   src={require('../../assets/wallet-logo.png')}
                   height='30'
-                />{' '}
+                />
                 &nbsp;
                 {address}
               </Link>
@@ -128,7 +121,9 @@ class Header extends React.Component {
                 Connect Wallet
               </Button>
             )}
-          </Navbar.Collapse>
+          </div>
+          {/* <Navbar.Collapse className='justify-content-end'>
+          </Navbar.Collapse> */}
         </nav>
 
         {modalOpen && this.renderModal()}
