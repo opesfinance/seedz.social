@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { withRouter } from 'react-router-dom';
 import { withNamespaces } from 'react-i18next';
 
@@ -8,48 +8,43 @@ import './whaletank.scss';
 
 const { emitter, store } = Store;
 
-class WhaleTank extends Component {
-  constructor(props) {
-    super();
+const WhaleTank = (props) => {
+  const account = store.getStore('account');
+  const themeType = store.getStore('themeType');
+  // const activeClass = store.getStore('activeClass');
 
-    const account = store.getStore('account');
-    const themeType = store.getStore('themeType');
-    const activeClass = store.getStore('activeClass');
+  // no logic implemented yet.
+  // useEffect(() => {
+  //   emitter.on(CONFIGURE_RETURNED, configureReturned);
 
-    this.state = {
-      activeClass: activeClass,
-      account: account,
-      themeType: themeType,
-    };
-  }
+  //   return () => {
+  //     emitter.removeListener(CONFIGURE_RETURNED, configureReturned);
+  //   };
+  // }, []);
 
-  componentWillMount() {
-    emitter.on(CONFIGURE_RETURNED, this.configureReturned);
-  }
+  // componentWillMount() {
+  //   emitter.on(CONFIGURE_RETURNED, this.configureReturned);
+  // }
 
-  componentWillUnmount() {
-    emitter.removeListener(CONFIGURE_RETURNED, this.configureReturned);
-  }
+  // componentWillUnmount() {
+  //   emitter.removeListener(CONFIGURE_RETURNED, this.configureReturned);
+  // }
 
-  configureReturned = () => {
-    this.setState({ loading: false });
-  };
+  // const configureReturned = useCallback(() => setLoading(false));
 
-  render() {
-    return (
-      <div>
-        <div className='pageHeader my-auto'>WhaleTank</div>
+  return (
+    <div>
+      <div className='pageHeader my-auto'>WhaleTank</div>
 
-        <div className='mt-5 whaletank-wrapper'>
-          <img
-            alt=''
-            src={require('../../assets/whaletank-comingsoon.png')}
-            style={{ width: '65%' }}
-          />
-        </div>
+      <div className='mt-5 whaletank-wrapper'>
+        <img
+          alt=''
+          src={require('../../assets/whaletank-comingsoon.png')}
+          style={{ width: '65%' }}
+        />
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default withNamespaces()(withRouter(WhaleTank));
