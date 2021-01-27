@@ -4,7 +4,10 @@ import { withNamespaces } from 'react-i18next';
 
 import { CONFIGURE_RETURNED } from '../../constants';
 import Store from '../../stores/store';
+import './whaletank.scss';
+
 const { emitter, store } = Store;
+
 class WhaleTank extends Component {
   constructor(props) {
     super();
@@ -34,9 +37,16 @@ class WhaleTank extends Component {
 
   render() {
     return (
-      <div className='p-5 ml-5 text-center'>
-        {/* CONTENT */}
-        <h1>Whale Tank</h1>
+      <div>
+        <div className='pageHeader my-auto'>WhaleTank</div>
+
+        <div className='mt-5 whaletank-wrapper'>
+          <img
+            alt=''
+            src={require('../../assets/whaletank-comingsoon.png')}
+            style={{ width: '65%' }}
+          />
+        </div>
       </div>
     );
   }

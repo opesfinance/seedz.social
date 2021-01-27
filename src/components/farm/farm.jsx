@@ -3,10 +3,9 @@ import { withRouter } from 'react-router-dom';
 import { withNamespaces } from 'react-i18next';
 
 import { CONFIGURE_RETURNED } from '../../constants';
-import Footer from '../footer/footer';
+// import Footer from '../footer/footer';
 import Store from '../../stores/store';
-const emitter = Store.emitter;
-const store = Store.store;
+const { emitter, store } = Store;
 
 class Farm extends Component {
   constructor(props) {
