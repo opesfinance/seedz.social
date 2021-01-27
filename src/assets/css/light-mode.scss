@@ -19,14 +19,19 @@ Top Menu Navigation
   background: #2f2f2f;
 }
 
+.justify-content-end {
+  justify-content: flex-end;
+}
+
+.navbar {
+  height: 10vh !important;
+}
+
 /**
 --------------
 Left Navigation
 --------------
 **/
-.navbar {
-  height: 10vh !important;
-}
 
 .leftNav {
   width: 48px;
