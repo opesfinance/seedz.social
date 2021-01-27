@@ -22,13 +22,13 @@ const LeftNav = (props) => {
         <Link to='/hives'>
           <li className='item-menu'>
             <img alt='' src={require('../../assets/house.png')} width='20' />
-            <span className='menu'>Hive</span>
+            <span className='menu'>Hives</span>
           </li>
         </Link>
         <Link to='/farm'>
           <li className='item-menu'>
             <img alt='' src={require('../../assets/honey.png')} width='20' />
-            <span className='menu'>Farm</span>
+            <span className='menu'>Farms</span>
           </li>
         </Link>
         <Link to='/whaletank'>
