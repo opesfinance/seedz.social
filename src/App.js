@@ -10,7 +10,7 @@ import './i18n';
 import Account from './components/account/account';
 import Home from './components/home/home';
 import Farm from './components/farm/farm';
-import Hives from './components/hives/hives-list';
+import Hives from './components/hives/hives';
 import WhaleTank from './components/whalestank/whaletank';
 import Stake from './components/stake/stake';
 

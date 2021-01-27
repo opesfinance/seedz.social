@@ -1,7 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { withRouter } from 'react-router-dom';
-import { withNamespaces } from 'react-i18next';
-import { AiOutlineWarning } from 'react-icons/ai';
 
 import './hives-list.scss';
 
@@ -17,7 +14,7 @@ import Hive from './hive';
 
 const { emitter, dispatcher, store } = Store;
 
-const Hives = (props) => {
+const HivesList = (props) => {
   // const rewardPools = store.getStore('rewardPools');
   // themeType activeClass should be retrieved from React context
   // const themeType = store.getStore('themeType');
@@ -51,29 +48,6 @@ const Hives = (props) => {
 
   const configureReturned = useCallback(() => setLoading(false));
 
-  const dummyHivesData = [
-    {
-      acronym: 'BPT',
-      address: 'aaw98eyna0wznxvz87597zs9z7d6v08zds078v',
-      inPool: '406.23BPT',
-      beastBonus: '32,128',
-      bonusReductionIn: '20',
-      weeklyRewards: '15,323',
-      myBeastModes: '26',
-      myRewards: '23,913',
-    },
-    {
-      acronym: 'BPT',
-      address: 'aa78698av7s078ayv6v08zds078v',
-      inPool: '406.23BPT',
-      beastBonus: '32,128',
-      bonusReductionIn: '20',
-      weeklyRewards: '15,323',
-      myBeastModes: '26',
-      myRewards: '23,913',
-    },
-  ];
-
   const hives = rewardPools
     .flatMap((rp) => rp.tokens[0])
     .map((t) => {
@@ -83,8 +57,8 @@ const Hives = (props) => {
             acronym={t.symbol}
             address={t.rewardsAddress}
             inPool={t.inPool}
-            beastBonus={t.beastBonus}
-            bonusReductionIn={t.bonusReductionIn}
+            beastBonus={t.beastBonus || 0}
+            bonusReductionIn={t.bonusReductionIn || 0}
             weeklyRewards={t.poolRatePerWeek}
             myBeastModes={t.currentActiveBooster || 0}
             myRewards={t.rewardsAvailable}
@@ -94,20 +68,15 @@ const Hives = (props) => {
     });
 
   return (
-    <div className='p-5 ml-5'>
-      <h1 className='text-center'>Hives</h1>
-
-      <div className='row'>
-        <div className='col-md-6 offset-md-3'>
-          <div className='alert alert-success' role='alert'>
-            <AiOutlineWarning /> Bonus only applies on your first stake.
-          </div>
-        </div>
-      </div>
-
-      <div className='row hives-wrapper'>{hives}</div>
+    <div
+      className='row hives-wrapper'
+      style={{
+        justifyContent: props.justifyContent ? props.justifyContent : 'center',
+      }}
+    >
+      {hives}
     </div>
   );
 };
 
-export default withNamespaces()(withRouter(Hives));
+export default HivesList;

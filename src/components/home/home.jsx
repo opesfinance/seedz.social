@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { withNamespaces } from 'react-i18next';
 
 import Store from '../../stores/store';
+import HivesList from '../hives/hives-list';
 
 const { store } = Store;
 
@@ -13,8 +14,9 @@ const Home = () => {
   return (
     <>
       <div className='pageHeader my-auto'>Dashboard</div>
-
-      <div className='ml-5 px-5'>
+      <div className='ml-5 px-5 pb-5'>
+        <div className='section-title text-left mt-4 mb-2 p-0'>Hives</div>
+        <HivesList justifyContent='flex-start' />
         {/* <div className=' row'>
           <div className='col-lg-3 col-md-12 col-sm-12'>
             <div className='row box-1  m-1 p-2 rounded '>
@@ -89,7 +91,7 @@ const Home = () => {
           </div>
         </div> */}
 
-        <div className=' row '>
+        {/* <div className=' row '>
           <div className='section-title col-12 text-left mt-4'>FARMS</div>
           <div className='col-lg-3 p-1 col-md-12 col-sm-12 pb-0'>
             <div className='row m-1 box-farm pb-0 mb-0'>
@@ -138,12 +140,11 @@ const Home = () => {
           <div className='col-lg-3 p-1 col-md-12 col-sm-12'>
             <div className='row m-1 box-farm'></div>
           </div>
-        </div>
+        </div> */}
 
-        <div className=' row'>
-          <div className='col-lg-6 col-md-12 col-sm-12'></div>
+        <div className='row'>
           <div className='col-lg-6 col-md-12 col-sm-12'>
-            <div className='section-title text-left mt-4 p-0'>
+            <div className='section-title text-left mt-4 mb-2 p-0'>
               Whale Tank (Coming Soon)
             </div>
             <img
