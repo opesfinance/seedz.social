@@ -1,3 +1,13 @@
+$primary-color: #7f63f4;
+
+.main-blue {
+  color: $primary-color;
+}
+
+.bg-main-blue {
+  background-color: $primary-color;
+}
+
 /**
 --------------
 Top Menu Navigation
