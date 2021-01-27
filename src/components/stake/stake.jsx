@@ -33,7 +33,7 @@ const styles = (theme) => ({
 
   inputAdornment: {
     fontWeight: '600',
-    fontSize: '1.5rem',
+    fontSize: '1.2rem',
   },
   assetIcon: {
     display: 'inline-block',
@@ -44,6 +44,7 @@ const styles = (theme) => ({
     width: '30px',
     textAlign: 'center',
     marginRight: '16px',
+    marginBottom: '5px',
   },
   balances: {
     width: '100%',
@@ -282,74 +283,50 @@ class Stake extends Component {
     return (
       <Row className='pool-boxes'>
         <Col lg='4' md='12' xs='12' className='p-1'>
-          <Card>
+          <Card className='pool-card'>
             <Card.Body className='text-left'>
-              Current Level
-              <br></br>
-              Next Level in
-              <br></br>
-              Weekly Rewards
-              <br></br>
-              Current Gas Price
+              <Card className='pool-card-info'>Current Level</Card>
+              <Card className='pool-card-info'>Next Level in</Card>
+              <Card className='pool-card-info'>Weekly Rewards</Card>
+              <Card className='pool-card-info'>Current Gas Price</Card>
             </Card.Body>
           </Card>
         </Col>
-        {/*<Col lg='4' md='12' xs='12' className='p-1'>
-          <Card>
+        <Col lg='4' md='12' xs='12' className='p-1'>
+          <Card className='pool-card'>
+            <Card.Body className='text-left'>
+              <div className='col-12 p-0 small box-farm'>
+                <ul className='text-left pl-4'>
+                  <li className=''>
+                    YOUR BALANCE
+                    <span className='float-right pr-4'>138 %</span>
+                  </li>
+                  <li>
+                    CURRENTLY STAKED
+                    <span className='float-right pr-4'>265 DAYS</span>
+                  </li>
+                  <li>
+                    BEAST MODE X
+                    <span className='float-right pr-4'>630 PIXEL</span>
+                  </li>
+                  <li>
+                    REWARDS AVAILABLE
+                    <span className='float-right pr-4'>4</span>
+                  </li>
+                </ul>
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+
+        <Col lg='4' md='12' xs='12' className='p-1'>
+          <Card className='pool-card'>
             <Card.Body>
-              <Card.Title>STAKE</Card.Title>
               {this.renderAssetInput(pool.tokens[0], 'stake')}
-              {pool.depositsEnabled && (
-                <div
-                  className='myButton'
-                  onClick={() => {
-                    this.onStake();
-                  }}
-                >
-                  STAKE
-                </div>
-              )}
-              {!pool.depositsEnabled && (
-                <div className='myButton-disable'>STAKE</div>
-              )}
-            </Card.Body>
-          </Card>
-        </Col>*/}
-
-        <Col lg='4' md='12' xs='12' className='p-1'>
-          <Card>
-            <Card.Body className='text-left'>
-              YOUR BALANCE
-              <br></br>
-              CURRENTLY STAKED
-              <br></br>
-              BEAST MODE X<br></br>
-              REWARDS AVAILABLE
-            </Card.Body>
-          </Card>
-        </Col>
-
-        <Col lg='4' md='12' xs='12' className='p-1'>
-          <Card>
-            <Card.Body>
+              <br />
               {this.renderAssetInput(pool.tokens[0], 'unstake')}
-              <div
-                className='myButton btn-block'
-                onClick={() => {
-                  this.onUnstake();
-                }}
-              >
-                UNSTAKE
-              </div>
-              {this.renderAssetInput(pool.tokens[0], 'unstake')}
-              <div
-                className='myButton btn-block'
-                onClick={() => {
-                  this.onUnstake();
-                }}
-              >
-                UNSTAKE
-              </div>
+              <br />
+              Apply a multiplier to your membership
             </Card.Body>
           </Card>
         </Col>
@@ -670,98 +647,109 @@ class Stake extends Component {
 
     return (
       <div className={classes.valContainer} key={asset.id + '_' + type}>
-        <div className={classes.balances}>
-          {type === 'stake' && (
-            <Typography
-              variant='h6'
-              onClick={() => {
-                this.setAmount(
-                  asset.id,
-                  type,
-                  asset
-                    ? (
-                        Math.floor(asset.balance * 1000000000) / 1000000000
-                      ).toFixed(9)
-                    : 0
-                );
+        <Row>
+          <Col lg='8' md='8' sm='10' xs='12'>
+            {type === 'stake' && (
+              <Typography
+                onClick={() => {
+                  this.setAmount(
+                    asset.id,
+                    type,
+                    asset
+                      ? (
+                          Math.floor(asset.balance * 1000000000) / 1000000000
+                        ).toFixed(9)
+                      : 0
+                  );
+                }}
+                className='pool-max-balance text-right'
+              >
+                {'Use Max Balance'}
+              </Typography>
+            )}
+            {type === 'unstake' && (
+              <Typography
+                onClick={() => {
+                  this.setAmount(
+                    asset.id,
+                    type,
+                    asset
+                      ? (
+                          Math.floor(asset.stakedBalance * 1000000000) /
+                          1000000000
+                        ).toFixed(9)
+                      : 0
+                  );
+                }}
+                className='pool-max-balance text-right'
+              >
+                {'Use Max Balance'}
+              </Typography>
+            )}
+          </Col>
+        </Row>
+        <Row>
+          <Col lg='8' md='12' sm='12' xs='12'>
+            <TextField
+              disabled={loading}
+              className={
+                amountStakeError && fieldid === asset.id + '_' + type
+                  ? 'border-btn-error mb-1'
+                  : 'border-btn mb-1'
+              }
+              inputRef={(input) =>
+                input &&
+                fieldid === asset.id + '_' + type &&
+                amountStakeError &&
+                input.focus()
+              }
+              id={'' + asset.id + '_' + type}
+              value={amount}
+              error={amountError}
+              onChange={this.onChange}
+              placeholder='0.0000000'
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment>
+                    <Typography variant='h8'>{asset.symbol}</Typography>
+                  </InputAdornment>
+                ),
+                startAdornment: (
+                  <InputAdornment
+                    position='end'
+                    className={classes.inputAdornment}
+                  >
+                    <div className={classes.assetIcon}>
+                      <img
+                        alt=''
+                        src={require('../../assets/' +
+                          asset.symbol +
+                          '-logo.png')}
+                        height='30px'
+                      />
+                    </div>
+                  </InputAdornment>
+                ),
               }}
-              color='error'
-              className={classes.value}
-              noWrap
-            >
-              {'Use Max Balance'}
-            </Typography>
-          )}
-          {type === 'unstake' && (
-            <Typography
-              variant='h6'
-              onClick={() => {
-                this.setAmount(
-                  asset.id,
-                  type,
-                  asset
-                    ? (
-                        Math.floor(asset.stakedBalance * 1000000000) /
-                        1000000000
-                      ).toFixed(9)
-                    : 0
-                );
-              }}
-              color='error'
-              className={classes.value}
-              noWrap
-            >
-              {'Use Max Balance'}
-            </Typography>
-          )}
-        </div>
-        <div>
-          <TextField
-            disabled={loading}
+            />
+          </Col>
+          <Col
+            lg='4'
+            md='12'
+            sm='12'
+            xs='12'
             className={
-              amountStakeError && fieldid === asset.id + '_' + type
-                ? 'border-btn-error mb-1'
-                : 'border-btn mb-1'
+              'pool-' +
+              type +
+              '-button d-flex align-items-center justify-content-center'
             }
-            inputRef={(input) =>
-              input &&
-              fieldid === asset.id + '_' + type &&
-              amountStakeError &&
-              input.focus()
-            }
-            id={'' + asset.id + '_' + type}
-            value={amount}
-            error={amountError}
-            onChange={this.onChange}
-            placeholder='0.0000000'
-            InputProps={{
-              endAdornment: (
-                <InputAdornment
-                  position='end'
-                  className={classes.inputAdornment}
-                >
-                  <Typography variant='h6'>{asset.symbol}</Typography>
-                </InputAdornment>
-              ),
-              startAdornment: (
-                <InputAdornment
-                  position='end'
-                  className={classes.inputAdornment}
-                >
-                  <div className={classes.assetIcon}>
-                    <img
-                      alt=''
-                      src={require('../../assets/' +
-                        asset.symbol +
-                        '-logo.png')}
-                      height='30px'
-                    />
-                  </div>
-                </InputAdornment>
-              ),
+            onClick={() => {
+              this.onUnstake();
             }}
-          />
-        </div>
+          >
+            {type}
+          </Col>
+        </Row>
       </div>
     );
   };
