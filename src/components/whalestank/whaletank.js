@@ -40,7 +40,7 @@ const WhaleTank = (props) => {
         <img
           alt=''
           src={require('../../assets/whaletank-comingsoon.png')}
-          style={{ width: '65%' }}
+          className='img-fluid'
         />
       </div>
     </div>

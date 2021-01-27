@@ -29,12 +29,12 @@ const Farm = () => {
   return (
     <div>
       <div className='pageHeader my-auto'>Farm</div>
-      <div className='p-5 ml-5 text-center '>
-        <div className='mt-5 whaletank-wrapper'>
+      <div className='mt-5 text-center '>
+        <div className='whaletank-wrapper'>
           <img
             alt=''
             src={require('../../assets/farmsGreen.webp')}
-            style={{ width: '65%' }}
+            className='img-fluid'
           />
         </div>
       </div>
