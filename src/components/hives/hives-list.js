@@ -100,7 +100,7 @@ const Hives = (props) => {
       <div className='row'>
         <div className='col-md-6 offset-md-3'>
           <div className='alert alert-success' role='alert'>
-            <AiOutlineWarning /> A simple success alert—check it out!
+            <AiOutlineWarning /> Bonus only applies on your first stake.
           </div>
         </div>
       </div>
