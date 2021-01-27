@@ -18,7 +18,6 @@ import Hive from './hive';
 const { emitter, dispatcher, store } = Store;
 
 const Hives = (props) => {
-  const account = store.getStore('account');
   // const rewardPools = store.getStore('rewardPools');
   // themeType activeClass should be retrieved from React context
   // const themeType = store.getStore('themeType');
@@ -27,6 +26,7 @@ const Hives = (props) => {
   // console.log('themeType -----------', themeType); // why is this #true?
 
   const [rewardPools, setRewardPools] = useState(store.getStore('rewardPools'));
+  const [account, setAccount] = useState(store.getStore('account'));
   console.log('rewardPools -----------', rewardPools); // why is this #true?
 
   const [loading, setLoading] = useState(!(account && rewardPools));
