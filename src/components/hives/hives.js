@@ -7,18 +7,20 @@ import HivesList from './hives-list';
 
 const Hives = (props) => {
   return (
-    <div className='p-5 ml-5'>
-      <h1 className='text-center'>Hives</h1>
+    <div>
+      <div className='pageHeader my-auto'>Hives</div>
 
-      <div className='row'>
-        <div className='col-md-6 offset-md-3'>
-          <div className='alert alert-success' role='alert'>
-            <AiOutlineWarning /> Bonus only applies on your first stake.
+      <div className='p-5 ml-5'>
+        <div className='row'>
+          <div className='col-md-6 offset-md-3'>
+            <div className='alert alert-success' role='alert'>
+              <AiOutlineWarning /> Bonus only applies on your first stake.
+            </div>
           </div>
         </div>
-      </div>
 
-      <HivesList />
+        <HivesList />
+      </div>
     </div>
   );
 };
