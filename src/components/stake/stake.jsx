@@ -279,16 +279,87 @@ class Stake extends Component {
 
   stakeMain = () => {
     const { pool } = this.state;
+    const t = pool.tokens[0];
 
     return (
       <Row className='pool-boxes'>
         <Col lg='4' md='12' xs='12' className='p-1'>
           <Card className='pool-card'>
             <Card.Body className='text-left'>
-              <Card className='pool-card-info'>Current Level</Card>
-              <Card className='pool-card-info'>Next Level in</Card>
-              <Card className='pool-card-info'>Weekly Rewards</Card>
-              <Card className='pool-card-info'>Current Gas Price</Card>
+              <Card className='pool-card-info'>
+                <Row>
+                  <Col>Beast Bonus:</Col>
+                  <Col className='text-right'>
+                    {t.beastBonus ? t.beastBonus : '0'}
+                  </Col>
+                </Row>
+              </Card>
+              <Card className='pool-card-info'>
+                <Row>
+                  <Col> Bonus Reduction in:</Col>
+                  <Col className='text-right'>
+                    {t.beastBonus ? t.beastBonus : '0'}
+                  </Col>
+                </Row>
+              </Card>
+              <Card className='pool-card-info'>
+                <Row>
+                  <Col>Weekly Rewards:</Col>
+                  <Col className='text-right'>
+                    {t.beastBonus ? t.beastBonus : '0'}
+                  </Col>
+                </Row>
+              </Card>
+              <Card className='pool-card-info'>
+                <Row>
+                  <Col>Current Gas Price:</Col>
+                  <Col className='text-right'>
+                    {t.beastBonus ? t.beastBonus : '0'}
+                  </Col>
+                </Row>
+              </Card>
+              <Row className='pt-4'>
+                <Col className='text-center'>
+                  <a
+                    href='https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b'
+                    className='btn btn-primary bg-main-white'
+                    target='_blank'
+                  >
+                    Buy WPE
+                  </a>
+                </Col>
+                <Col className='text-center'>
+                  <a href='#' className='btn btn-primary bg-main-white'>
+                    Add liquidity
+                  </a>
+                </Col>
+              </Row>
+              <Row className='pt-4'>
+                <Col className='text-center'>
+                  <a href='#' className='btn btn-primary bg-main-white'>
+                    Add Seedz to{' '}
+                    <img
+                      alt=''
+                      src='data:image/png;base64,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'
+                      width='15'
+                      height='15'
+                      class='d-inline-block align-top'
+                    ></img>
+                  </a>
+                </Col>
+                <Col className='text-center'>
+                  <a href='#' className='btn btn-primary bg-main-white'>
+                    Add BPT to{' '}
+                    <img
+                      alt=''
+                      src='data:image/png;base64,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'
+                      width='15'
+                      height='15'
+                      class='d-inline-block align-top'
+                    ></img>
+                  </a>
+                </Col>
+              </Row>
             </Card.Body>
           </Card>
         </Col>
@@ -326,14 +397,24 @@ class Stake extends Component {
                 </div>
                 <Row className='pt-4'>
                   <Col className='text-center'>
-                    <a href='#' className='btn btn-primary bg-main-blue'>
+                    <div
+                      className='btn btn-primary bg-main-blue'
+                      onClick={() => {
+                        this.onClaim();
+                      }}
+                    >
                       Claim Rewards
-                    </a>
+                    </div>
                   </Col>
                   <Col className='text-center'>
-                    <a href='#' className='btn btn-primary bg-main-blue'>
+                    <div
+                      className='btn btn-primary bg-main-blue'
+                      onClick={() => {
+                        this.onExit();
+                      }}
+                    >
                       Claim & Unstake
-                    </a>
+                    </div>
                   </Col>
                 </Row>
               </div>
@@ -349,45 +430,21 @@ class Stake extends Component {
               {this.renderAssetInput(pool.tokens[0], 'unstake')}
               <br />
               Apply a multiplier to your membership
+              <Row className='pt-4'>
+                <Col className='text-center'>
+                  <div
+                    className='btn btn-primary bg-main-blue'
+                    onClick={() => {
+                      this.navigateInternal('buyboost');
+                    }}
+                  >
+                    Beast Mode
+                  </div>
+                </Col>
+              </Row>
             </Card.Body>
           </Card>
         </Col>
-
-        {/*<Col lg='4' md='12' xs='12' className='p-3'>
-          <p className='p-0 m-1 text-center'>
-            <div
-              className='myButton btn-block'
-              onClick={() => {
-                this.navigateInternal('buyboost');
-              }}
-            >
-              BEAST MODE
-            </div>
-          </p>
-
-          <p className='p-0 m-1 text-center'>
-            <div
-              className='myButton btn-block'
-              onClick={() => {
-                this.onClaim();
-              }}
-            >
-              CLAIM REWARDS
-            </div>
-          </p>
-
-          <p className='p-0 m-1 text-center'>
-            <div
-              className='myButton btn-block'
-              onClick={() => {
-                this.onExit();
-              }}
-            >
-              Exit: Claim & Unstake
-            </div>
-          </p>
-        </Col>*/}
-
         <Col lg='8' md='12' xs='12'></Col>
       </Row>
     );
