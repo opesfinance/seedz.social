@@ -7,7 +7,7 @@ import './whaletank.scss';
 const WhaleTank = (props) => {
   return (
     <div>
-      <div className='pageHeader my-auto'>WhaleTank</div>
+      <div className='pageHeader my-auto'>Whale Tank</div>
 
       <div className='mt-5 whaletank-wrapper'>
         <img

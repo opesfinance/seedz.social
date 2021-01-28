@@ -145,7 +145,7 @@ const Home = () => {
         <div className='row'>
           <div className='col-lg-6 col-md-12 col-sm-12'>
             <div className='section-title text-left mt-4 mb-2 p-0'>
-              Whale Tank (Coming Soon)
+              Whale Tank (Splashing Soon)
             </div>
             <img
               alt=''

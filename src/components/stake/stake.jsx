@@ -7,6 +7,7 @@ import Loader from '../loader/loader';
 import Snackbar from '../snackbar/snackbar';
 
 import Store from '../../stores/store';
+import Web3 from 'web3';
 
 import { Col, Row, Card } from 'react-bootstrap';
 
@@ -160,7 +161,7 @@ class Stake extends Component {
         <Row className='info-header-down'></Row>
 
         <div className='p-5 ml-5 text-center '>
-          <div className='main-content p-5 ml-5 text-center '>
+          <div className='p-5 ml-5 text-center '>
             {/* CONTENT */}
 
             {value === 'options' && this.renderOptions2()}
@@ -206,66 +207,8 @@ class Stake extends Component {
               >
                 {address}
               </a>
-              <p>
-                {/*Total deposited:{' '}
-                {pool.tokens[0].stakedBalance
-                  ? pool.tokens[0].stakedBalance.toFixed(pool.displayDecimal)
-                  : '0'}
-                <br></br>
-                Pool Rate:{' '}
-                {pool.ratePerWeek ? pool.ratePerWeek.toFixed(4) : '0.0'}{' '}
-                {pool.tokens[0].poolRateSymbol}
-                <br />*/}
-              </p>
             </div>
           </Col>
-          {/*<Col lg='8' md='12' xs='12' className='p-1'>
-            <table className='table mt-5'>
-              <thead>
-                <tr>
-                  <th>Your Balance</th>
-                  <th>Currently Staked</th>
-                  <th>Beast Mode X</th>
-                  <th>Rewards Available</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    {pool.tokens[0].balance
-                      ? pool.tokens[0].balance.toFixed(pool.displayDecimal)
-                      : '0'}{' '}
-                    {pool.tokens[0].symbol}
-                  </td>
-                  <td>
-                    {pool.tokens[0].stakedBalance
-                      ? pool.tokens[0].stakedBalance.toFixed(
-                          pool.displayDecimal
-                        )
-                      : '0'}
-                  </td>
-                  <td>
-                    {pool.tokens[0].currentActiveBooster
-                      ? pool.tokens[0].currentActiveBooster.toFixed(2)
-                      : '0'}
-                  </td>
-                  <td>
-                    {pool.tokens[0].rewardsSymbol === '$'
-                      ? pool.tokens[0].rewardsSymbol
-                      : ''}{' '}
-                    {pool.tokens[0].rewardsAvailable
-                      ? pool.tokens[0].rewardsAvailable.toFixed(
-                          pool.displayDecimal
-                        )
-                      : '0'}{' '}
-                    {pool.tokens[0].rewardsSymbol !== '$'
-                      ? pool.tokens[0].rewardsSymbol
-                      : ''}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </Col>*/}
         </Row>
 
         {stakevalue === 'main' && this.stakeMain()}
@@ -298,7 +241,7 @@ class Stake extends Component {
                 <Row>
                   <Col> Bonus Reduction in:</Col>
                   <Col className='text-right'>
-                    {t.beastBonus ? t.beastBonus : '0'}
+                    {t.bonusReduction ? t.bonusReduction : '0'}
                   </Col>
                 </Row>
               </Card>
@@ -306,7 +249,7 @@ class Stake extends Component {
                 <Row>
                   <Col>Weekly Rewards:</Col>
                   <Col className='text-right'>
-                    {t.beastBonus ? t.beastBonus : '0'}
+                    {t.ratePerWeek ? t.ratePerWeek : '0'}
                   </Col>
                 </Row>
               </Card>
@@ -322,21 +265,56 @@ class Stake extends Component {
                 <Col className='text-center'>
                   <a
                     href='https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b'
-                    className='btn btn-primary bg-main-white'
+                    className='btn btn-primary bg-main-white pool-titles'
                     target='_blank'
                   >
                     Buy WPE
                   </a>
                 </Col>
                 <Col className='text-center'>
-                  <a href='#' className='btn btn-primary bg-main-white'>
+                  <a
+                    href='#'
+                    className='btn btn-primary bg-main-white pool-titles'
+                  >
                     Add liquidity
                   </a>
                 </Col>
               </Row>
               <Row className='pt-4'>
                 <Col className='text-center'>
-                  <a href='#' className='btn btn-primary bg-main-white'>
+                  <div
+                    onClick={async (event) => {
+                      let provider = new Web3(
+                        store.getStore('web3context').library.provider
+                      );
+                      provider = provider.currentProvider;
+                      provider.sendAsync(
+                        {
+                          method: 'metamask_watchAsset',
+                          params: {
+                            type: 'ERC20',
+                            options: {
+                              address: pool.tokenAddress,
+                              symbol: pool.tokenSymbol,
+                              decimals: 18,
+                              image: '',
+                            },
+                          },
+                          id: Math.round(Math.random() * 100000),
+                        },
+                        (err, added) => {
+                          console.log('provider returned', err, added);
+                          if (err || 'error' in added) {
+                            return emitter.emit(
+                              ERROR,
+                              'There was a problem adding the token.'
+                            );
+                          }
+                        }
+                      );
+                    }}
+                    className='btn btn-primary bg-main-white pool-titles'
+                  >
                     Add Seedz to{' '}
                     <img
                       alt=''
@@ -345,10 +323,13 @@ class Stake extends Component {
                       height='15'
                       class='d-inline-block align-top'
                     ></img>
-                  </a>
+                  </div>
                 </Col>
                 <Col className='text-center'>
-                  <a href='#' className='btn btn-primary bg-main-white'>
+                  <a
+                    href='#'
+                    className='btn btn-primary bg-main-white pool-titles'
+                  >
                     Add BPT to{' '}
                     <img
                       alt=''
@@ -367,34 +348,61 @@ class Stake extends Component {
           <Card className='pool-card'>
             <Card.Body className='text-left'>
               <div className='hive-details'>
-                <div className='hive-value'>
-                  <div>
-                    <span className='dot green'></span>
-                    YOUR BALANCE
-                  </div>
-                  <div className='text-right main-blue'>{}</div>
-                </div>
-                <div className='hive-value'>
-                  <div>
+                <Row>
+                  <Col className='pool-titles'>
+                    <span className='dot green'></span>YOUR BALANCE
+                  </Col>
+                  <Col className='text-right pool-info'>
+                    {pool.tokens[0].boostBalance
+                      ? pool.tokens[0].boostBalance.toFixed(pool.displayDecimal)
+                      : '0'}{' '}
+                    ETH{' '}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col className='pool-titles'>
                     <span className='dot yellow'></span>
                     CURRENTLY STAKED
-                  </div>
-                  <div className='text-right main-blue'>{} days</div>
-                </div>
-                <div className='hive-value'>
-                  <div>
+                  </Col>
+                  <Col className='text-right pool-info'>
+                    {pool.tokens[0].stakedBalance
+                      ? pool.tokens[0].stakedBalance.toFixed(
+                          pool.displayDecimal
+                        )
+                      : '0'}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col className='pool-titles'>
                     <span className='dot purple'></span>
                     BEAST MODE X
-                  </div>
-                  <div className='text-right main-blue'>{} Seedz</div>
-                </div>
-                <div className='hive-value'>
-                  <div>
+                  </Col>
+                  <Col className='text-right pool-info'>
+                    {pool.tokens[0].currentActiveBooster
+                      ? pool.tokens[0].currentActiveBooster.toFixed(2)
+                      : '0'}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col className='pool-titles'>
                     <span className='dot light-blue'></span>
                     REWARDS AVAILABLE
-                  </div>
-                  <div className='text-right main-blue'>{}</div>
-                </div>
+                  </Col>
+                  <Col className='text-right pool-info'>
+                    {pool.tokens[0].rewardsSymbol === '$'
+                      ? pool.tokens[0].rewardsSymbol
+                      : ''}{' '}
+                    {pool.tokens[0].rewardsAvailable
+                      ? pool.tokens[0].rewardsAvailable.toFixed(
+                          pool.displayDecimal
+                        )
+                      : '0'}{' '}
+                    {pool.tokens[0].rewardsSymbol !== '$'
+                      ? pool.tokens[0].rewardsSymbol
+                      : ''}
+                  </Col>
+                </Row>
+
                 <Row className='pt-4'>
                   <Col className='text-center'>
                     <div
@@ -429,7 +437,9 @@ class Stake extends Component {
               <br />
               {this.renderAssetInput(pool.tokens[0], 'unstake')}
               <br />
-              Apply a multiplier to your membership
+              <span className='pool-titles'>
+                Apply a multiplier to your membership
+              </span>
               <Row className='pt-4'>
                 <Col className='text-center'>
                   <div
@@ -456,167 +466,249 @@ class Stake extends Component {
 
   renderBuyBoost = () => {
     const { pool } = this.state;
+    var address = null;
+    let addy = '';
+    if (pool.tokens && pool.tokens[0]) {
+      addy = pool.tokens[0].rewardsAddress;
+      address =
+        addy.substring(0, 6) +
+        '...' +
+        addy.substring(addy.length - 4, addy.length);
+    }
 
     return (
-      <Row>
-        <Col lg='6' md='12' xs='12' className='p-1'>
-          <div className='mt-2 text-center rounded p-2'>
-            <h4 className='p-2 rounded text-white'>{pool.name}</h4>
-            <p>
-              Total deposited:{' '}
-              {pool.tokens[0].stakedBalance
-                ? pool.tokens[0].stakedBalance.toFixed(pool.displayDecimal)
-                : '0'}
-              <br></br>
-              Pool Rate:{' '}
-              {pool.ratePerWeek ? pool.ratePerWeek.toFixed(4) : '0.0'}{' '}
-              {pool.tokens[0].poolRateSymbol}
-            </p>
-          </div>
-
-          <table className='table'>
-            <thead>
-              <tr>
-                <th>Your Balance</th>
-                <th>Currently Staked</th>
-                <th>Beast Mode X</th>
-                <th>Rewards Available</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  {pool.tokens[0].boostBalance
-                    ? pool.tokens[0].boostBalance.toFixed(pool.displayDecimal)
-                    : '0'}{' '}
-                  ETH{' '}
-                </td>
-                <td>
-                  {pool.tokens[0].stakedBalance
-                    ? pool.tokens[0].stakedBalance.toFixed(pool.displayDecimal)
-                    : '0'}
-                </td>
-                <td>
-                  {pool.tokens[0].currentActiveBooster
-                    ? pool.tokens[0].currentActiveBooster.toFixed(2)
-                    : '0'}
-                </td>
-                <td>
-                  {pool.tokens[0].rewardsSymbol === '$'
-                    ? pool.tokens[0].rewardsSymbol
-                    : ''}{' '}
-                  {pool.tokens[0].rewardsAvailable
-                    ? pool.tokens[0].rewardsAvailable.toFixed(
-                        pool.displayDecimal
-                      )
-                    : '0'}{' '}
-                  {pool.tokens[0].rewardsSymbol !== '$'
-                    ? pool.tokens[0].rewardsSymbol
-                    : ''}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </Col>
-        <Col lg='6' md='12' xs='12' className='p-4'>
-          <table className='table'>
-            <tbody>
-              <tr>
-                <td className='text-left'>Ethereum Price (USD)</td>
-                <td className='text-right'>
-                  ${' '}
-                  {pool.tokens[0].ethPrice
-                    ? pool.tokens[0].ethPrice.toFixed(2)
-                    : '0.00'}
-                </td>
-              </tr>
-
-              <tr>
-                <td className='text-left'>Token Balance</td>
-                <td className='text-right'>
-                  {pool.tokens[0].boostBalance
-                    ? pool.tokens[0].boostBalance.toFixed(7)
-                    : '0'}{' '}
-                  ETH
-                </td>
-              </tr>
-              <tr>
-                <td className='text-left'>Cost of Beast Mode</td>
-                <td className='text-right'>
-                  {pool.tokens[0].costBooster
-                    ? pool.tokens[0].costBooster.toFixed(7)
-                    : '0'}{' '}
-                  ETH
-                </td>
-              </tr>
-              <tr>
-                <td className='text-left'>Cost of Beast Mode (USD)</td>
-                <td className='text-right'>
-                  ${' '}
-                  {pool.tokens[0].costBoosterUSD
-                    ? pool.tokens[0].costBoosterUSD.toFixed(2)
-                    : '0.00'}
-                </td>
-              </tr>
-              <tr>
-                <td className='text-left'>Time to next BEAST powerup</td>
-                <td className='text-right'>
-                  {pool.tokens[0].timeToNextBoost -
-                    new Date().getTime() / 1000 >
-                  0
-                    ? (
-                        (pool.tokens[0].timeToNextBoost -
-                          new Date().getTime() / 1000) /
-                        60
-                      ).toFixed(0)
-                    : '0'}{' '}
-                  Minutes
-                </td>
-              </tr>
-              <tr>
-                <td className='text-left'>Beast Modes currently active</td>
-                <td className='text-right'>
-                  {pool.tokens[0].currentActiveBooster
-                    ? pool.tokens[0].currentActiveBooster.toFixed(2)
-                    : '0'}
-                </td>
-              </tr>
-              <tr>
-                <td className='text-left'>Current Beast Mode stake value</td>
-                <td className='text-right'>
-                  {pool.tokens[0].currentBoosterStakeValue
-                    ? pool.tokens[0].currentBoosterStakeValue.toFixed(7)
-                    : '0'}{' '}
-                  {pool.tokens[0].symbol}
-                </td>
-              </tr>
-              <tr>
-                <td className='text-left'>
-                  Staked value after next Beast Mode
-                </td>
-                <td className='text-right'>
-                  {pool.tokens[0].stakeValueNextBooster
-                    ? pool.tokens[0].stakeValueNextBooster.toFixed(7)
-                    : '0'}{' '}
-                  {pool.tokens[0].symbol}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          {pool.boost && (
-            <div
-              className='myButton'
-              onClick={() => {
-                this.validateBoost();
-              }}
-            >
-              BEAST MODE
+      <>
+        <Row>
+          <Col lg='2' md='2' xs='6' className='text-left'>
+            <img
+              className='pool-logo'
+              alt=''
+              src={require('../../assets/BPT.png')}
+            />
+          </Col>
+          <Col lg='10' md='10' xs='6' className='text-left pool-header'>
+            <div className='text-left'>
+              <div className='text-purple pool-name'>{pool.name}</div>
+              <a
+                href={'https://etherscan.io/address/' + addy}
+                rel='noopener noreferrer'
+                target='_blank'
+                className='text-gray'
+              >
+                {address}
+              </a>
             </div>
-          )}
-
-          {!pool.boost && <div className='myButton-disable'>BEAST MODE</div>}
-        </Col>
-      </Row>
+          </Col>
+        </Row>
+        <Row className='pool-boxes pool-titles'>
+          <Col>
+            <Row>
+              <Col>
+                <Card>
+                  <Card.Body className='text-left'>
+                    Total deposited:{' '}
+                    <span className='pool-info'>
+                      {pool.tokens[0].stakedBalance
+                        ? pool.tokens[0].stakedBalance.toFixed(
+                            pool.displayDecimal
+                          )
+                        : '0'}
+                    </span>
+                    <br></br>
+                    Pool Rate:{' '}
+                    <span className='pool-info'>
+                      {pool.ratePerWeek ? pool.ratePerWeek.toFixed(4) : '0.0'}{' '}
+                      {pool.tokens[0].poolRateSymbol}
+                    </span>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+            <br />
+            <Row>
+              <Col>
+                <Card className='pool-card'>
+                  <Card.Body className='text-left'>
+                    <div className='hive-details'>
+                      <Row>
+                        <Col>
+                          <span className='dot green pool-titles'></span>YOUR
+                          BALANCE
+                        </Col>
+                        <Col className='text-right pool-info'>
+                          {pool.tokens[0].boostBalance
+                            ? pool.tokens[0].boostBalance.toFixed(
+                                pool.displayDecimal
+                              )
+                            : '0'}{' '}
+                          ETH{' '}
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>
+                          <span className='dot yellow'></span>
+                          CURRENTLY STAKED
+                        </Col>
+                        <Col className='text-right pool-info'>
+                          {pool.tokens[0].stakedBalance
+                            ? pool.tokens[0].stakedBalance.toFixed(
+                                pool.displayDecimal
+                              )
+                            : '0'}
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>
+                          <span className='dot purple'></span>
+                          BEAST MODE X
+                        </Col>
+                        <Col className='text-right pool-info'>
+                          {pool.tokens[0].currentActiveBooster
+                            ? pool.tokens[0].currentActiveBooster.toFixed(2)
+                            : '0'}
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>
+                          <span className='dot light-blue'></span>
+                          REWARDS AVAILABLE
+                        </Col>
+                        <Col className='text-right pool-info'>
+                          {pool.tokens[0].rewardsSymbol === '$'
+                            ? pool.tokens[0].rewardsSymbol
+                            : ''}{' '}
+                          {pool.tokens[0].rewardsAvailable
+                            ? pool.tokens[0].rewardsAvailable.toFixed(
+                                pool.displayDecimal
+                              )
+                            : '0'}{' '}
+                          {pool.tokens[0].rewardsSymbol !== '$'
+                            ? pool.tokens[0].rewardsSymbol
+                            : ''}
+                        </Col>
+                      </Row>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+          </Col>
+          <Col>
+            <Card>
+              <Card.Body>
+                <Card className='pool-card-info text-left'>
+                  <Row>
+                    <Col>Ethereum Price (USD)</Col>
+                    <Col className='text-right pool-info'>
+                      ${' '}
+                      {pool.tokens[0].ethPrice
+                        ? pool.tokens[0].ethPrice.toFixed(2)
+                        : '0.00'}
+                    </Col>
+                  </Row>
+                </Card>
+                <Card className='pool-card-info text-left'>
+                  <Row>
+                    <Col>Token Balance</Col>
+                    <Col className='text-right pool-info'>
+                      {pool.tokens[0].boostBalance
+                        ? pool.tokens[0].boostBalance.toFixed(7)
+                        : '0'}{' '}
+                      ETH
+                    </Col>
+                  </Row>
+                </Card>
+                <Card className='pool-card-info text-left'>
+                  <Row>
+                    <Col>Cost of Beast Mode</Col>
+                    <Col className='text-right pool-info'>
+                      {pool.tokens[0].costBooster
+                        ? pool.tokens[0].costBooster.toFixed(7)
+                        : '0'}{' '}
+                      ETH
+                    </Col>
+                  </Row>
+                </Card>
+                <Card className='pool-card-info text-left'>
+                  <Row>
+                    <Col>Cost of Beast Mode (USD)</Col>
+                    <Col className='text-right pool-info'>
+                      ${' '}
+                      {pool.tokens[0].costBoosterUSD
+                        ? pool.tokens[0].costBoosterUSD.toFixed(2)
+                        : '0.00'}
+                    </Col>
+                  </Row>
+                </Card>
+                <Card className='pool-card-info text-left'>
+                  <Row>
+                    <Col>Time to next BEAST powerup</Col>
+                    <Col className='text-right pool-info'>
+                      {pool.tokens[0].timeToNextBoost -
+                        new Date().getTime() / 1000 >
+                      0
+                        ? (
+                            (pool.tokens[0].timeToNextBoost -
+                              new Date().getTime() / 1000) /
+                            60
+                          ).toFixed(0)
+                        : '0'}{' '}
+                      Minutes
+                    </Col>
+                  </Row>
+                </Card>
+                <Card className='pool-card-info text-left'>
+                  <Row>
+                    <Col>Beast Modes currently active</Col>
+                    <Col className='text-right pool-info'>
+                      {pool.tokens[0].currentActiveBooster
+                        ? pool.tokens[0].currentActiveBooster.toFixed(2)
+                        : '0'}
+                    </Col>
+                  </Row>
+                </Card>
+                <Card className='pool-card-info text-left'>
+                  <Row>
+                    <Col>Current Beast Mode stake value</Col>
+                    <Col className='text-right pool-info'>
+                      {pool.tokens[0].currentBoosterStakeValue
+                        ? pool.tokens[0].currentBoosterStakeValue.toFixed(7)
+                        : '0'}{' '}
+                      {pool.tokens[0].symbol}
+                    </Col>
+                  </Row>
+                </Card>
+                <Card className='pool-card-info text-left'>
+                  <Row>
+                    <Col>Staked value after next Beast Mode</Col>
+                    <Col className='text-right pool-info'>
+                      {pool.tokens[0].stakeValueNextBooster
+                        ? pool.tokens[0].stakeValueNextBooster.toFixed(7)
+                        : '0'}{' '}
+                      {pool.tokens[0].symbol}
+                    </Col>
+                  </Row>
+                </Card>
+                <br />
+                <Row>
+                  <Col></Col>
+                  <Col>
+                    <div
+                      className='btn btn-primary bg-main-blue'
+                      onClick={() => {
+                        this.validateBoost();
+                      }}
+                    >
+                      Beast Mode
+                    </div>
+                  </Col>
+                  <Col></Col>
+                </Row>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </>
     );
   };
 
@@ -814,9 +906,9 @@ class Stake extends Component {
           </Col>
           <Col
             lg='4'
-            md='12'
-            sm='12'
-            xs='12'
+            md='4'
+            sm='4'
+            xs='4'
             className={
               'pool-' +
               type +
@@ -826,7 +918,7 @@ class Stake extends Component {
               this.onUnstake();
             }}
           >
-            {type}
+            <span className='text-align-center'>{type}</span>
           </Col>
         </Row>
       </div>

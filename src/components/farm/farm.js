@@ -26,7 +26,7 @@ const Farm = () => {
 
   return (
     <div>
-      <div className='pageHeader my-auto'>Farm</div>
+      <div className='pageHeader my-auto'>Farms</div>
       <div className='mt-5 text-center '>
         <div className='whaletank-wrapper'>
           <img
