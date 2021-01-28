@@ -37,14 +37,13 @@ class Account extends Component {
 
   render() {
     return (
-      <div className='p-5 ml-5 text-center'>
-        <h1>GET THE POWER YOU DESERVE</h1>
-        <h4>The fairest distribution model the world has ever seen.</h4>
-        <h6>
-          Yield Farmers can now utilize the most valuable asset in the world to
-          gain themselves an inside position on the next Mega-Corporation we
-          build.
-        </h6>
+      <div className='p-5 ml-5 text-center text-purple'>
+        <h1>Welcome to</h1>
+        <img
+          src={require('../../assets/bees-logo.png')}
+          className='bees-logo'
+        ></img>
+        <h4>Click in "Connect Wallet" and be ready to start buzzing</h4>
       </div>
     );
   }
