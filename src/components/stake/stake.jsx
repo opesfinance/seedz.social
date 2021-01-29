@@ -67,7 +67,6 @@ class Stake extends Component {
 
     const account = store.getStore('account');
     const pool = store.getStore('currentPool');
-    console.log(pool);
 
     const themeType = store.getStore('themeType');
     const activeClass = store.getStore('activeClass');
@@ -239,9 +238,10 @@ class Stake extends Component {
               </Card>
               <Card className='pool-card-info'>
                 <Row>
-                  <Col> Bonus Reduction in:</Col>
+                  <Col>Bonus Reduction in:</Col>
                   <Col className='text-right'>
-                    {pool.bonusReduction ? pool.bonusReduction : '0'}
+                    {pool.bonusReductionIn}{' '}
+                    {pool.bonusReductionIn > 1 ? 'days' : 'day'}
                   </Col>
                 </Row>
               </Card>
@@ -249,16 +249,14 @@ class Stake extends Component {
                 <Row>
                   <Col>Weekly Rewards:</Col>
                   <Col className='text-right'>
-                    {pool.ratePerWeek ? pool.ratePerWeek : '0'}
+                    {pool.weeklyRewards} {pool.rewardsSymbol}
                   </Col>
                 </Row>
               </Card>
               <Card className='pool-card-info'>
                 <Row>
                   <Col>Current Gas Price:</Col>
-                  <Col className='text-right'>
-                    {pool.beastBonus ? pool.beastBonus : '0'}
-                  </Col>
+                  <Col className='text-right'>-</Col>
                 </Row>
               </Card>
               <Row className='pt-4'>
@@ -365,9 +363,7 @@ class Stake extends Component {
                     CURRENTLY STAKED
                   </Col>
                   <Col className='text-right pool-info'>
-                    {pool.stakedBalance
-                      ? pool.stakedBalance.toFixed(pool.displayDecimal)
-                      : '0'}
+                    {pool.stakedBalance}
                   </Col>
                 </Row>
                 <Row>
@@ -376,9 +372,7 @@ class Stake extends Component {
                     BEAST MODE X
                   </Col>
                   <Col className='text-right pool-info'>
-                    {pool.currentActiveBooster
-                      ? pool.currentActiveBooster.toFixed(2)
-                      : '0'}
+                    {pool.myBeastModes}
                   </Col>
                 </Row>
                 <Row>
@@ -388,9 +382,7 @@ class Stake extends Component {
                   </Col>
                   <Col className='text-right pool-info'>
                     {pool.rewardsSymbol === '$' ? pool.rewardsSymbol : ''}{' '}
-                    {pool.rewardsAvailable
-                      ? pool.rewardsAvailable.toFixed(pool.displayDecimal)
-                      : '0'}{' '}
+                    {pool.myRewards}{' '}
                     {pool.rewardsSymbol !== '$' ? pool.rewardsSymbol : ''}
                   </Col>
                 </Row>
@@ -561,9 +553,7 @@ class Stake extends Component {
                         </Col>
                         <Col className='text-right pool-info'>
                           {pool.rewardsSymbol === '$' ? pool.rewardsSymbol : ''}{' '}
-                          {pool.rewardsAvailable
-                            ? pool.rewardsAvailable.toFixed(pool.displayDecimal)
-                            : '0'}{' '}
+                          {pool.myRewards}{' '}
                           {pool.rewardsSymbol !== '$' ? pool.rewardsSymbol : ''}
                         </Col>
                       </Row>

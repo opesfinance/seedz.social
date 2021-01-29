@@ -106,6 +106,8 @@ class Store {
               address: '0x5B2dC8c02728e8FB6aeA03a622c3849875A48801', // BPT
               symbol: 'BPT',
               abi: config.erc20ABI,
+              beastBonus: 200,
+              bonusReductionIn: 1,
               decimals: 18,
               rewardsAddress: config.seedzAddress,
               rewardsABI: config.seedzABI,
@@ -160,6 +162,8 @@ class Store {
               address: '0x75f89ffbe5c25161cbc7e97c988c9f391eaefaf9', // UNI
               symbol: 'UNI-v2',
               abi: config.erc20ABI,
+              beastBonus: 200,
+              bonusReductionIn: 1,
               decimals: 18,
               rewardsAddress: config.seedzAddressTwo,
               rewardsABI: config.seedzABI,

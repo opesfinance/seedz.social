@@ -61,9 +61,16 @@ const HivesList = (props) => {
             beastBonus={t.beastBonus || 0}
             bonusReductionIn={t.bonusReductionIn || 0}
             weeklyRewards={t.poolRatePerWeek}
-            myBeastModes={t.currentActiveBooster || 0}
+            myBeastModes={t.currentActiveBooster}
             myRewards={t.rewardsAvailable}
             symbol={t.symbol}
+            rewardsSymbol={t.rewardsSymbol}
+            stakedBalance={t.stakedBalance}
+            costBooster={t.costBooster}
+            costBoosterUSD={t.costBoosterUSD}
+            timeToNextBoost={t.timeToNextBoost}
+            currentBoosterStakeValue={t.currentBoosterStakeValue}
+            stakeValueNextBooster={t.stakeValueNextBooster}
           />
         </div>
       );

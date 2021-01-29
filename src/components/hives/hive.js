@@ -51,7 +51,8 @@ const Hive = (props) => {
               Beast reduction in
             </div>
             <div className='text-right main-blue'>
-              {props.bonusReductionIn} days
+              {props.bonusReductionIn}{' '}
+              {props.bonusReductionIn > 1 ? 'days' : 'day'}
             </div>
           </div>
           <div className='hive-value'>
@@ -60,7 +61,7 @@ const Hive = (props) => {
               Weekly Rewards
             </div>
             <div className='text-right main-blue'>
-              {props.weeklyRewards} Seedz
+              {props.weeklyRewards} {props.rewardsSymbol}
             </div>
           </div>
           <hr />
@@ -76,7 +77,9 @@ const Hive = (props) => {
               <span className='dot orange'></span>
               My Rewards
             </div>
-            <div className='text-right main-blue'>{props.myRewards} Seedz</div>
+            <div className='text-right main-blue'>
+              {props.myRewards} {props.rewardsSymbol}
+            </div>
           </div>
           <div className='text-center pt-4'>
             <div
