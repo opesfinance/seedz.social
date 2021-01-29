@@ -1,11 +1,12 @@
 import React from 'react';
 import './hive.scss';
 import { BiPlus } from 'react-icons/bi';
+import { withRouter } from 'react-router-dom';
+import Store from '../../stores/store';
 
 const bgSrc = require('../../assets/vault.png');
 
 const Hive = (props) => {
-  // console.log(props);
   function address(address) {
     return `${props.address.substring(0, 5)}...${props.address.substring(
       props.address.length - 4,
@@ -13,17 +14,27 @@ const Hive = (props) => {
     )}`;
   }
 
+  function navigateStake(rewardPool) {
+    Store.store.setStore({ currentPool: rewardPool });
+    props.history.push('/stake');
+  }
+
   return (
-    <div className='hive-wrapper card'>
+    <div className='hive-wrapper card '>
       <div className='card-body'>
         <div className='hive-header'>
           <div className=''>
             <div className='acronym-title main-blue'>{props.acronym}</div>
-            <div className='main-blue'>Balancer Pool {props.acronym}</div>
-            <div className='address'>{address(props.address)}</div>
-            <div className='inPool main-blue'>
+            <div className='main-blue'>{props.name}</div>
+            <a
+              href={'https://etherscan.io/' + address(props.address)}
+              className='address'
+            >
+              {address(props.address)}
+            </a>
+            {/*<div className='inPool main-blue'>
               {props.acronym} in pool: {props.inPool}
-            </div>
+  </div>*/}
           </div>
         </div>
         <div className='hive-details'>
@@ -68,9 +79,16 @@ const Hive = (props) => {
             <div className='text-right main-blue'>{props.myRewards} Seedz</div>
           </div>
           <div className='text-center pt-4'>
-            <a href='#' className='btn btn-primary bg-main-blue'>
+            <div
+              onClick={() => {
+                if (props.id != 'balancer-pool') {
+                  navigateStake(props);
+                }
+              }}
+              className='btn btn-primary bg-main-blue'
+            >
               <BiPlus /> Stake
-            </a>
+            </div>
           </div>
         </div>
       </div>
@@ -78,4 +96,4 @@ const Hive = (props) => {
   );
 };
 
-export default Hive;
+export default withRouter(Hive);

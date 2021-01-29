@@ -66,7 +66,7 @@ class Stake extends Component {
     super();
 
     const account = store.getStore('account');
-    const pool = store.getStore('rewardPools')[1];
+    const pool = store.getStore('currentPool');
     console.log(pool);
 
     const themeType = store.getStore('themeType');
@@ -110,6 +110,7 @@ class Stake extends Component {
 
   balancesReturned = () => {
     const currentPool = store.getStore('currentPool');
+    console.log('CURRENT POOL ' + currentPool);
     const pools = store.getStore('rewardPools');
     let newPool = pools.filter((pool) => {
       return pool.id === currentPool.id;
@@ -179,8 +180,8 @@ class Stake extends Component {
     const { pool, stakevalue } = this.state;
     var address = null;
     let addy = '';
-    if (pool.tokens && pool.tokens[0]) {
-      addy = pool.tokens[0].rewardsAddress;
+    if (pool.tokens && pool) {
+      addy = pool.rewardsAddress;
       address =
         addy.substring(0, 6) +
         '...' +
@@ -222,7 +223,6 @@ class Stake extends Component {
 
   stakeMain = () => {
     const { pool } = this.state;
-    const t = pool.tokens[0];
 
     return (
       <Row className='pool-boxes'>
@@ -233,7 +233,7 @@ class Stake extends Component {
                 <Row>
                   <Col>Beast Bonus:</Col>
                   <Col className='text-right'>
-                    {t.beastBonus ? t.beastBonus : '0'}
+                    {pool.beastBonus ? pool.beastBonus : '0'}
                   </Col>
                 </Row>
               </Card>
@@ -241,7 +241,7 @@ class Stake extends Component {
                 <Row>
                   <Col> Bonus Reduction in:</Col>
                   <Col className='text-right'>
-                    {t.bonusReduction ? t.bonusReduction : '0'}
+                    {pool.bonusReduction ? pool.bonusReduction : '0'}
                   </Col>
                 </Row>
               </Card>
@@ -249,7 +249,7 @@ class Stake extends Component {
                 <Row>
                   <Col>Weekly Rewards:</Col>
                   <Col className='text-right'>
-                    {t.ratePerWeek ? t.ratePerWeek : '0'}
+                    {pool.ratePerWeek ? pool.ratePerWeek : '0'}
                   </Col>
                 </Row>
               </Card>
@@ -257,7 +257,7 @@ class Stake extends Component {
                 <Row>
                   <Col>Current Gas Price:</Col>
                   <Col className='text-right'>
-                    {t.beastBonus ? t.beastBonus : '0'}
+                    {pool.beastBonus ? pool.beastBonus : '0'}
                   </Col>
                 </Row>
               </Card>
@@ -353,8 +353,8 @@ class Stake extends Component {
                     <span className='dot green'></span>YOUR BALANCE
                   </Col>
                   <Col className='text-right pool-info'>
-                    {pool.tokens[0].boostBalance
-                      ? pool.tokens[0].boostBalance.toFixed(pool.displayDecimal)
+                    {pool.boostBalance
+                      ? pool.boostBalance.toFixed(pool.displayDecimal)
                       : '0'}{' '}
                     ETH{' '}
                   </Col>
@@ -365,10 +365,8 @@ class Stake extends Component {
                     CURRENTLY STAKED
                   </Col>
                   <Col className='text-right pool-info'>
-                    {pool.tokens[0].stakedBalance
-                      ? pool.tokens[0].stakedBalance.toFixed(
-                          pool.displayDecimal
-                        )
+                    {pool.stakedBalance
+                      ? pool.stakedBalance.toFixed(pool.displayDecimal)
                       : '0'}
                   </Col>
                 </Row>
@@ -378,8 +376,8 @@ class Stake extends Component {
                     BEAST MODE X
                   </Col>
                   <Col className='text-right pool-info'>
-                    {pool.tokens[0].currentActiveBooster
-                      ? pool.tokens[0].currentActiveBooster.toFixed(2)
+                    {pool.currentActiveBooster
+                      ? pool.currentActiveBooster.toFixed(2)
                       : '0'}
                   </Col>
                 </Row>
@@ -389,17 +387,11 @@ class Stake extends Component {
                     REWARDS AVAILABLE
                   </Col>
                   <Col className='text-right pool-info'>
-                    {pool.tokens[0].rewardsSymbol === '$'
-                      ? pool.tokens[0].rewardsSymbol
-                      : ''}{' '}
-                    {pool.tokens[0].rewardsAvailable
-                      ? pool.tokens[0].rewardsAvailable.toFixed(
-                          pool.displayDecimal
-                        )
+                    {pool.rewardsSymbol === '$' ? pool.rewardsSymbol : ''}{' '}
+                    {pool.rewardsAvailable
+                      ? pool.rewardsAvailable.toFixed(pool.displayDecimal)
                       : '0'}{' '}
-                    {pool.tokens[0].rewardsSymbol !== '$'
-                      ? pool.tokens[0].rewardsSymbol
-                      : ''}
+                    {pool.rewardsSymbol !== '$' ? pool.rewardsSymbol : ''}
                   </Col>
                 </Row>
 
@@ -433,9 +425,9 @@ class Stake extends Component {
         <Col lg='4' md='12' xs='12' className='p-1'>
           <Card className='pool-card'>
             <Card.Body>
-              {this.renderAssetInput(pool.tokens[0], 'stake')}
+              {this.renderAssetInput(pool, 'stake')}
               <br />
-              {this.renderAssetInput(pool.tokens[0], 'unstake')}
+              {this.renderAssetInput(pool, 'unstake')}
               <br />
               <span className='pool-titles'>
                 Apply a multiplier to your membership
@@ -468,8 +460,8 @@ class Stake extends Component {
     const { pool } = this.state;
     var address = null;
     let addy = '';
-    if (pool.tokens && pool.tokens[0]) {
-      addy = pool.tokens[0].rewardsAddress;
+    if (pool.tokens && pool) {
+      addy = pool.rewardsAddress;
       address =
         addy.substring(0, 6) +
         '...' +
@@ -508,17 +500,15 @@ class Stake extends Component {
                   <Card.Body className='text-left'>
                     Total deposited:{' '}
                     <span className='pool-info'>
-                      {pool.tokens[0].stakedBalance
-                        ? pool.tokens[0].stakedBalance.toFixed(
-                            pool.displayDecimal
-                          )
+                      {pool.stakedBalance
+                        ? pool.stakedBalance.toFixed(pool.displayDecimal)
                         : '0'}
                     </span>
                     <br></br>
                     Pool Rate:{' '}
                     <span className='pool-info'>
                       {pool.ratePerWeek ? pool.ratePerWeek.toFixed(4) : '0.0'}{' '}
-                      {pool.tokens[0].poolRateSymbol}
+                      {pool.poolRateSymbol}
                     </span>
                   </Card.Body>
                 </Card>
@@ -536,10 +526,8 @@ class Stake extends Component {
                           BALANCE
                         </Col>
                         <Col className='text-right pool-info'>
-                          {pool.tokens[0].boostBalance
-                            ? pool.tokens[0].boostBalance.toFixed(
-                                pool.displayDecimal
-                              )
+                          {pool.boostBalance
+                            ? pool.boostBalance.toFixed(pool.displayDecimal)
                             : '0'}{' '}
                           ETH{' '}
                         </Col>
@@ -550,10 +538,8 @@ class Stake extends Component {
                           CURRENTLY STAKED
                         </Col>
                         <Col className='text-right pool-info'>
-                          {pool.tokens[0].stakedBalance
-                            ? pool.tokens[0].stakedBalance.toFixed(
-                                pool.displayDecimal
-                              )
+                          {pool.stakedBalance
+                            ? pool.stakedBalance.toFixed(pool.displayDecimal)
                             : '0'}
                         </Col>
                       </Row>
@@ -563,8 +549,8 @@ class Stake extends Component {
                           BEAST MODE X
                         </Col>
                         <Col className='text-right pool-info'>
-                          {pool.tokens[0].currentActiveBooster
-                            ? pool.tokens[0].currentActiveBooster.toFixed(2)
+                          {pool.currentActiveBooster
+                            ? pool.currentActiveBooster.toFixed(2)
                             : '0'}
                         </Col>
                       </Row>
@@ -574,17 +560,11 @@ class Stake extends Component {
                           REWARDS AVAILABLE
                         </Col>
                         <Col className='text-right pool-info'>
-                          {pool.tokens[0].rewardsSymbol === '$'
-                            ? pool.tokens[0].rewardsSymbol
-                            : ''}{' '}
-                          {pool.tokens[0].rewardsAvailable
-                            ? pool.tokens[0].rewardsAvailable.toFixed(
-                                pool.displayDecimal
-                              )
+                          {pool.rewardsSymbol === '$' ? pool.rewardsSymbol : ''}{' '}
+                          {pool.rewardsAvailable
+                            ? pool.rewardsAvailable.toFixed(pool.displayDecimal)
                             : '0'}{' '}
-                          {pool.tokens[0].rewardsSymbol !== '$'
-                            ? pool.tokens[0].rewardsSymbol
-                            : ''}
+                          {pool.rewardsSymbol !== '$' ? pool.rewardsSymbol : ''}
                         </Col>
                       </Row>
                     </div>
@@ -600,10 +580,7 @@ class Stake extends Component {
                   <Row>
                     <Col>Ethereum Price (USD)</Col>
                     <Col className='text-right pool-info'>
-                      ${' '}
-                      {pool.tokens[0].ethPrice
-                        ? pool.tokens[0].ethPrice.toFixed(2)
-                        : '0.00'}
+                      $ {pool.ethPrice ? pool.ethPrice.toFixed(2) : '0.00'}
                     </Col>
                   </Row>
                 </Card>
@@ -611,9 +588,7 @@ class Stake extends Component {
                   <Row>
                     <Col>Token Balance</Col>
                     <Col className='text-right pool-info'>
-                      {pool.tokens[0].boostBalance
-                        ? pool.tokens[0].boostBalance.toFixed(7)
-                        : '0'}{' '}
+                      {pool.boostBalance ? pool.boostBalance.toFixed(7) : '0'}{' '}
                       ETH
                     </Col>
                   </Row>
@@ -622,10 +597,7 @@ class Stake extends Component {
                   <Row>
                     <Col>Cost of Beast Mode</Col>
                     <Col className='text-right pool-info'>
-                      {pool.tokens[0].costBooster
-                        ? pool.tokens[0].costBooster.toFixed(7)
-                        : '0'}{' '}
-                      ETH
+                      {pool.costBooster ? pool.costBooster.toFixed(7) : '0'} ETH
                     </Col>
                   </Row>
                 </Card>
@@ -634,8 +606,8 @@ class Stake extends Component {
                     <Col>Cost of Beast Mode (USD)</Col>
                     <Col className='text-right pool-info'>
                       ${' '}
-                      {pool.tokens[0].costBoosterUSD
-                        ? pool.tokens[0].costBoosterUSD.toFixed(2)
+                      {pool.costBoosterUSD
+                        ? pool.costBoosterUSD.toFixed(2)
                         : '0.00'}
                     </Col>
                   </Row>
@@ -644,11 +616,9 @@ class Stake extends Component {
                   <Row>
                     <Col>Time to next BEAST powerup</Col>
                     <Col className='text-right pool-info'>
-                      {pool.tokens[0].timeToNextBoost -
-                        new Date().getTime() / 1000 >
-                      0
+                      {pool.timeToNextBoost - new Date().getTime() / 1000 > 0
                         ? (
-                            (pool.tokens[0].timeToNextBoost -
+                            (pool.timeToNextBoost -
                               new Date().getTime() / 1000) /
                             60
                           ).toFixed(0)
@@ -661,8 +631,8 @@ class Stake extends Component {
                   <Row>
                     <Col>Beast Modes currently active</Col>
                     <Col className='text-right pool-info'>
-                      {pool.tokens[0].currentActiveBooster
-                        ? pool.tokens[0].currentActiveBooster.toFixed(2)
+                      {pool.currentActiveBooster
+                        ? pool.currentActiveBooster.toFixed(2)
                         : '0'}
                     </Col>
                   </Row>
@@ -671,10 +641,10 @@ class Stake extends Component {
                   <Row>
                     <Col>Current Beast Mode stake value</Col>
                     <Col className='text-right pool-info'>
-                      {pool.tokens[0].currentBoosterStakeValue
-                        ? pool.tokens[0].currentBoosterStakeValue.toFixed(7)
+                      {pool.currentBoosterStakeValue
+                        ? pool.currentBoosterStakeValue.toFixed(7)
                         : '0'}{' '}
-                      {pool.tokens[0].symbol}
+                      {pool.symbol}
                     </Col>
                   </Row>
                 </Card>
@@ -682,10 +652,10 @@ class Stake extends Component {
                   <Row>
                     <Col>Staked value after next Beast Mode</Col>
                     <Col className='text-right pool-info'>
-                      {pool.tokens[0].stakeValueNextBooster
-                        ? pool.tokens[0].stakeValueNextBooster.toFixed(7)
+                      {pool.stakeValueNextBooster
+                        ? pool.stakeValueNextBooster.toFixed(7)
                         : '0'}{' '}
-                      {pool.tokens[0].symbol}
+                      {pool.symbol}
                     </Col>
                   </Row>
                 </Card>
@@ -714,12 +684,9 @@ class Stake extends Component {
 
   validateBoost = () => {
     const { pool } = this.state;
-    if (pool.tokens[0].costBooster > pool.tokens[0].boostBalance) {
+    if (pool.costBooster > pool.boostBalance) {
       emitter.emit(ERROR, 'insufficient funds to activate Beast Mode');
-    } else if (
-      pool.tokens[0].timeToNextBoost - new Date().getTime() / 1000 >
-      0
-    ) {
+    } else if (pool.timeToNextBoost - new Date().getTime() / 1000 > 0) {
       emitter.emit(ERROR, 'Too soon to activate BEAST Mode again');
     } else {
       this.onBuyBoost();
@@ -777,7 +744,7 @@ class Stake extends Component {
     this.setState({ loading: true });
     dispatcher.dispatch({
       type: GET_REWARDS,
-      content: { asset: pool.tokens[0] },
+      content: { asset: pool },
     });
   };
 
@@ -788,15 +755,15 @@ class Stake extends Component {
     const { pool } = this.state;
 
     this.setState({ fieldid: '' });
-    const amount = this.state[pool.tokens[0].id + '_unstake'];
+    const amount = this.state[pool.id + '_unstake'];
     if (amount > 0) {
       this.setState({ loading: true });
       dispatcher.dispatch({
         type: WITHDRAW,
-        content: { asset: pool.tokens[0], amount: amount },
+        content: { asset: pool, amount: amount },
       });
     } else {
-      this.setState({ fieldid: pool.tokens[0].id + '_unstake' });
+      this.setState({ fieldid: pool.id + '_unstake' });
       this.setState({ amountStakeError: true });
       emitter.emit(ERROR, 'Please enter the amount on the Un-Stake field');
     }
@@ -805,7 +772,7 @@ class Stake extends Component {
   onExit = () => {
     const { pool } = this.state;
     this.setState({ loading: true });
-    dispatcher.dispatch({ type: EXIT, content: { asset: pool.tokens[0] } });
+    dispatcher.dispatch({ type: EXIT, content: { asset: pool } });
   };
 
   renderAssetInput = (asset, type) => {
@@ -904,21 +871,20 @@ class Stake extends Component {
               }}
             />
           </Col>
-          <Col
-            lg='4'
-            md='4'
-            sm='4'
-            xs='4'
-            className={
-              'pool-' +
-              type +
-              '-button d-flex align-items-center justify-content-center'
-            }
-            onClick={() => {
-              this.onUnstake();
-            }}
-          >
-            <span className='text-align-center'>{type}</span>
+
+          <Col className='text-center'>
+            <div
+              className={
+                'pool-' +
+                type +
+                '-button d-flex align-items-center justify-content-center'
+              }
+              onClick={() => {
+                this.onUnstake();
+              }}
+            >
+              {type}
+            </div>
           </Col>
         </Row>
       </div>

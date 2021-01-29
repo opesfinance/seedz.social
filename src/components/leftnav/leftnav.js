@@ -40,16 +40,6 @@ const LeftNav = (props) => {
             <span className='menu'>Whale Tank</span>
           </li>
         </Link>
-        <Link to='/stake'>
-          <li className='item-menu'>
-            <img
-              alt=''
-              src={require('../../assets/whale-tail.png')}
-              width='20'
-            />
-            <span className='menu'>Stake</span>
-          </li>
-        </Link>
       </ul>
     </div>
   );

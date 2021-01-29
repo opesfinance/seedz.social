@@ -113,7 +113,7 @@ class Header extends React.Component {
                   height='30'
                 />
                 &nbsp;
-                {address}
+                <span className='text-purple'>{address}</span>
               </Link>
             )}
             {!address && (
