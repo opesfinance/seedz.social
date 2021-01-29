@@ -71,6 +71,9 @@ const HivesList = (props) => {
             timeToNextBoost={t.timeToNextBoost}
             currentBoosterStakeValue={t.currentBoosterStakeValue}
             stakeValueNextBooster={t.stakeValueNextBooster}
+            liquidityLink={t.liquidityLink}
+            tokenAddress={t.tokenAddress}
+            tokenSymbol={t.tokenSymbol}
           />
         </div>
       );

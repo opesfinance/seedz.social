@@ -91,24 +91,24 @@ class Store {
           link:
             'https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',
           linkName: 'Buy WPE',
-          liquidityLink:
-            'https://pools.balancer.exchange/#/pool/0x5B2dC8c02728e8FB6aeA03a622c3849875A48801', //cambiar a lo que regresa
           liquidityValue: 0,
           depositsEnabled: true,
           boost: true,
           displayDecimal: 4,
-          tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
-          tokenSymbol: 'Seedz',
           tokens: [
             {
               id: 'boostrewards',
               name: 'Seedz Balancer Pool',
               address: '0x5B2dC8c02728e8FB6aeA03a622c3849875A48801', // BPT
               symbol: 'BPT',
+              liquidityLink:
+                'https://pools.balancer.exchange/#/pool/0x5B2dC8c02728e8FB6aeA03a622c3849875A48801',
               abi: config.erc20ABI,
               beastBonus: 200,
               bonusReductionIn: 1,
               decimals: 18,
+              tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
+              tokenSymbol: 'Seedz',
               rewardsAddress: config.seedzAddress,
               rewardsABI: config.seedzABI,
               rewardsSymbol: 'Seedz',
@@ -147,24 +147,24 @@ class Store {
           link:
             'https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',
           linkName: 'Buy WPE',
-          liquidityLink:
-            'https://uniswap.info/pair/0x75F89FfbE5C25161cBC7e97c988c9F391EaeFAF9', //cambiar a lo que regresa
           liquidityValue: 0,
           depositsEnabled: true,
           boost: true,
           displayDecimal: 4,
-          tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
-          tokenSymbol: 'Seedz',
           tokens: [
             {
               id: 'boostrewards',
               name: 'Seedz UNI-LP Pool',
               address: '0x75f89ffbe5c25161cbc7e97c988c9f391eaefaf9', // UNI
               symbol: 'UNI-v2',
+              liquidityLink:
+                'https://uniswap.info/pair/0x75F89FfbE5C25161cBC7e97c988c9F391EaeFAF9',
               abi: config.erc20ABI,
               beastBonus: 200,
               bonusReductionIn: 1,
               decimals: 18,
+              tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
+              tokenSymbol: 'Seedz',
               rewardsAddress: config.seedzAddressTwo,
               rewardsABI: config.seedzABI,
               rewardsSymbol: 'Seedz',
