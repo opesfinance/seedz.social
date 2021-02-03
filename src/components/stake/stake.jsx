@@ -177,15 +177,7 @@ class Stake extends Component {
 
   renderOptions2 = () => {
     const { pool, stakevalue } = this.state;
-    var address = null;
-    let addy = '';
-    if (pool.tokens && pool) {
-      addy = pool.rewardsAddress;
-      address =
-        addy.substring(0, 6) +
-        '...' +
-        addy.substring(addy.length - 4, addy.length);
-    }
+
     return (
       <>
         <Row>
@@ -200,12 +192,12 @@ class Stake extends Component {
             <div className='text-left'>
               <div className='text-purple pool-name'>{pool.name}</div>
               <a
-                href={'https://etherscan.io/address/' + addy}
+                href={'https://etherscan.io/address/' + pool.address}
                 rel='noopener noreferrer'
                 target='_blank'
-                className='text-gray'
+                className='text-purple'
               >
-                {address}
+                {pool.address}
               </a>
             </div>
           </Col>
@@ -469,15 +461,6 @@ class Stake extends Component {
 
   renderBuyBoost = () => {
     const { pool } = this.state;
-    var address = null;
-    let addy = '';
-    if (pool.tokens && pool) {
-      addy = pool.rewardsAddress;
-      address =
-        addy.substring(0, 6) +
-        '...' +
-        addy.substring(addy.length - 4, addy.length);
-    }
 
     return (
       <>
@@ -493,12 +476,11 @@ class Stake extends Component {
             <div className='text-left'>
               <div className='text-purple pool-name'>{pool.name}</div>
               <a
-                href={'https://etherscan.io/address/' + addy}
-                rel='noopener noreferrer'
+                href={'https://etherscan.io/address/' + pool.address}
                 target='_blank'
-                className='text-gray'
+                className='text-purple address'
               >
-                {address}
+                {pool.address}
               </a>
             </div>
           </Col>
@@ -589,7 +571,7 @@ class Stake extends Component {
                   <Row>
                     <Col>Ethereum Price (USD)</Col>
                     <Col className='text-right pool-info'>
-                      $ {pool.ethPrice ? pool.ethPrice.toFixed(2) : '0.00'}
+                      $ {pool.ethPrice}
                     </Col>
                   </Row>
                 </Card>
@@ -597,8 +579,7 @@ class Stake extends Component {
                   <Row>
                     <Col>Token Balance</Col>
                     <Col className='text-right pool-info'>
-                      {pool.boostBalance ? pool.boostBalance.toFixed(7) : '0'}{' '}
-                      ETH
+                      {pool.boostBalance} ETH
                     </Col>
                   </Row>
                 </Card>
@@ -606,7 +587,7 @@ class Stake extends Component {
                   <Row>
                     <Col>Cost of Beast Mode</Col>
                     <Col className='text-right pool-info'>
-                      {pool.costBooster ? pool.costBooster.toFixed(7) : '0'} ETH
+                      {pool.costBooster} ETH
                     </Col>
                   </Row>
                 </Card>

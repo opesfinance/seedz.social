@@ -27,8 +27,9 @@ const Hive = (props) => {
             <div className='acronym-title main-blue'>{props.acronym}</div>
             <div className='main-blue'>{props.name}</div>
             <a
-              href={'https://etherscan.io/' + address(props.address)}
+              href={'https://etherscan.io/address/' + props.address}
               className='address'
+              target='_blank'
             >
               {address(props.address)}
             </a>

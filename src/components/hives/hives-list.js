@@ -74,6 +74,8 @@ const HivesList = (props) => {
             liquidityLink={t.liquidityLink}
             tokenAddress={t.tokenAddress}
             tokenSymbol={t.tokenSymbol}
+            ethPrice={t.ethPrice}
+            boostBalance={t.boostBalance}
           />
         </div>
       );
