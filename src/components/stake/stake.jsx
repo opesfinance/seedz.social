@@ -267,7 +267,7 @@ class Stake extends Component {
                     target='_blank'
                     className='btn btn-primary bg-main-white pool-titles'
                   >
-                    Add liquidity
+                    Add liquidity to pool
                   </a>
                 </Col>
               </Row>
@@ -461,6 +461,7 @@ class Stake extends Component {
 
   renderBuyBoost = () => {
     const { pool } = this.state;
+    console.log(pool);
 
     return (
       <>
@@ -491,7 +492,7 @@ class Stake extends Component {
               <Col>
                 <Card>
                   <Card.Body className='text-left'>
-                    Total deposited:{' '}
+                    Total deposited:
                     <span className='pool-info'>
                       {pool.stakedBalance
                         ? pool.stakedBalance.toFixed(pool.displayDecimal)
@@ -542,9 +543,7 @@ class Stake extends Component {
                           BEAST MODE X
                         </Col>
                         <Col className='text-right pool-info'>
-                          {pool.currentActiveBooster
-                            ? pool.currentActiveBooster.toFixed(2)
-                            : '0'}
+                          {pool.myBeastModes}
                         </Col>
                       </Row>
                       <Row>
@@ -621,9 +620,7 @@ class Stake extends Component {
                   <Row>
                     <Col>Beast Modes currently active</Col>
                     <Col className='text-right pool-info'>
-                      {pool.currentActiveBooster
-                        ? pool.currentActiveBooster.toFixed(2)
-                        : '0'}
+                      {pool.myBeastModes}
                     </Col>
                   </Row>
                 </Card>

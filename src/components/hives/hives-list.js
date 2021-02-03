@@ -7,6 +7,7 @@ import {
   GET_BALANCES,
   GET_BALANCES_RETURNED,
   GET_BOOSTEDBALANCES_RETURNED,
+  GET_BOOSTEDBALANCES,
 } from '../../constants/constants';
 
 import Store from '../../stores/store';
@@ -30,6 +31,7 @@ const HivesList = (props) => {
 
   useEffect(() => {
     dispatcher.dispatch({ type: GET_BALANCES, content: {} });
+    dispatcher.dispatch({ type: GET_BOOSTEDBALANCES, content: {} });
     emitter.on(CONFIGURE_RETURNED, configureReturned);
     emitter.on(GET_BALANCES_RETURNED, balancesReturned);
     emitter.on(GET_BOOSTEDBALANCES_RETURNED, balancesReturned);

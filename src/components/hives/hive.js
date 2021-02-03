@@ -51,10 +51,7 @@ const Hive = (props) => {
               <span className='dot yellow'></span>
               Beast reduction in
             </div>
-            <div className='text-right main-blue'>
-              {props.bonusReductionIn}{' '}
-              {props.bonusReductionIn > 1 ? 'days' : 'day'}
-            </div>
+            <div className='text-right main-blue'>{props.bonusReductionIn}</div>
           </div>
           <div className='hive-value'>
             <div>
