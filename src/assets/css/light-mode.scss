@@ -44,6 +44,24 @@ Left Navigation
 --------------
 **/
 
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  padding: 10vh 0 0;
+}
+
+.sidebar-sticky {
+  position: sticky;
+  top: 0;
+  height: calc(100vh - 10vh);
+  padding-top: 0.5rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 .leftNav {
   width: 48px;
   white-space: nowrap;
@@ -163,8 +181,7 @@ Dark Mode
   background: #f3f6f9 !important;
   color: #c2c2c2 !important;
   min-height: 100vh !important;
-  // height: 100% !important;
-  /* margin-left: 2px; */
+  padding-top: 10vh;
 }
 
 .dark-mode .pageHeader {

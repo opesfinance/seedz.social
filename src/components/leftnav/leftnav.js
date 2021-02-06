@@ -10,37 +10,39 @@ const LeftNav = (props) => {
   // const activeclass = store.getStore('activeclass');
 
   return (
-    <div className='leftNav'>
-      <ul>
-        <Link to='/#'>
-          <li className='item-menu'>
-            <FaThLarge />
-            <span className='menu'>Dashboard</span>
-          </li>
-        </Link>
-        <Link to='/hives'>
-          <li className='item-menu'>
-            <img alt='' src={require('../../assets/house.png')} width='20' />
-            <span className='menu'>Hives</span>
-          </li>
-        </Link>
-        <Link to='/farm'>
-          <li className='item-menu'>
-            <img alt='' src={require('../../assets/honey.png')} width='20' />
-            <span className='menu'>Farms</span>
-          </li>
-        </Link>
-        <Link to='/whaletank'>
-          <li className='item-menu'>
-            <img
-              alt=''
-              src={require('../../assets/whale-tail.png')}
-              width='20'
-            />
-            <span className='menu'>Whale Tank</span>
-          </li>
-        </Link>
-      </ul>
+    <div className='sidebar'>
+      <div className='leftNav sidbar-sticky'>
+        <ul>
+          <Link to='/#'>
+            <li className='item-menu'>
+              <FaThLarge />
+              <span className='menu'>Dashboard</span>
+            </li>
+          </Link>
+          <Link to='/hives'>
+            <li className='item-menu'>
+              <img alt='' src={require('../../assets/house.png')} width='20' />
+              <span className='menu'>Hives</span>
+            </li>
+          </Link>
+          <Link to='/farm'>
+            <li className='item-menu'>
+              <img alt='' src={require('../../assets/honey.png')} width='20' />
+              <span className='menu'>Farms</span>
+            </li>
+          </Link>
+          <Link to='/whaletank'>
+            <li className='item-menu'>
+              <img
+                alt=''
+                src={require('../../assets/whale-tail.png')}
+                width='20'
+              />
+              <span className='menu'>Whale Tank</span>
+            </li>
+          </Link>
+        </ul>
+      </div>
     </div>
   );
 };
