@@ -1,0 +1,66 @@
+/**
+--------------
+Top Menu Navigation
+--------------
+**/
+
+.navbar {
+  background: #2f2f2f;
+}
+
+.justify-content-end {
+  justify-content: flex-end;
+}
+
+.navbar-expand-lg {
+  justify-content: space-between;
+}
+
+.navbar {
+  height: 10vh !important;
+}
+
+/**
+--------------
+Left Navigation
+--------------
+**/
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  padding: 10vh 0 0;
+}
+
+.sidebar-sticky {
+  position: sticky;
+  top: 0;
+  height: calc(100vh - 10vh);
+  padding-top: 0.5rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.leftNav {
+  width: 48px;
+  white-space: nowrap;
+  transition: width 0.5s;
+  position: absolute;
+  z-index: 1;
+  height: 90%;
+  box-shadow: 5px 0 1px -3px #eee;
+}
+.leftNav ul {
+  padding: 0;
+  list-style-type: none;
+  text-align: left;
+}
+.leftNav li {
+  width: auto;
+  height: 60px;
+  line-height: 50px;
+  padding-left: 15px;
+}

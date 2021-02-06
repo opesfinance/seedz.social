@@ -1,0 +1,49 @@
+/**
+----------------
+DASHBOARD GENERAL 
+----------------
+**/
+.box-1 {
+  background: linear-gradient(to right, #e36cd9 5%, #fe60ae 90%);
+}
+
+.box-2 {
+  background: linear-gradient(to right, #f48665 5%, #fda23f 90%);
+}
+
+.box-3 {
+  background: linear-gradient(to right, #9a56ff 5%, #d78afd 90%);
+}
+
+.box-4 {
+  background: linear-gradient(to right, #23bdb8 5%, #43e794 90%);
+}
+
+.box-farm ul {
+  list-style: none; /* Remove default bullets */
+}
+.box-farm ul li:nth-child(1)::before,
+.box-farm ul li:nth-child(2)::before,
+.box-farm ul li:nth-child(3)::before,
+.box-farm ul li:nth-child(4)::before,
+.box-farm ul li:nth-child(5)::before {
+  content: '\2022';
+  display: inline-block;
+  width: 1em;
+  font-weight: bolder;
+}
+.box-farm ul li:nth-child(1)::before {
+  color: #00e251;
+}
+.box-farm ul li:nth-child(2)::before {
+  color: #ffb500;
+}
+.box-farm ul li:nth-child(3)::before {
+  color: #8c58c8;
+}
+.box-farm ul li:nth-child(4)::before {
+  color: #ef3790;
+}
+.box-farm ul li:nth-child(5)::before {
+  color: #4e9ce0;
+}
