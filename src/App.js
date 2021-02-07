@@ -110,7 +110,7 @@ class App extends Component {
           ) : (
             <>
               <Switch>
-                <Route path='/stake'>
+                <Route path='/stake/:address'>
                   <Stake />
                 </Route>
                 <Route path='/whaletank'>
