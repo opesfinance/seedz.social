@@ -9,7 +9,7 @@ import Snackbar from '../snackbar/snackbar';
 import Store from '../../stores/store';
 
 import { Col, Row, Card } from 'react-bootstrap';
-import Stakemain from './stakemain';
+import StakeMain from './stakemain';
 import StakeBuyBoost from './stakeBuyBoost';
 
 import {
@@ -25,44 +25,11 @@ import {
   BOOST_STAKE,
 } from '../../constants';
 import rewardsMapper from '../utils/rewardsMapper';
+import styles from './stakeStyles';
 
 const setState = (params) => {
   console.log('set state params', params);
 };
-
-const styles = (theme) => ({
-  valContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-  },
-
-  inputAdornment: {
-    fontWeight: '600',
-    fontSize: '1.2rem',
-  },
-  assetIcon: {
-    display: 'inline-block',
-    verticalAlign: 'middle',
-    borderRadius: '25px',
-    background: '#dedede',
-    height: '30px',
-    width: '30px',
-    textAlign: 'center',
-    marginRight: '16px',
-    marginBottom: '5px',
-  },
-  balances: {
-    width: '100%',
-    textAlign: 'right',
-    paddingRight: '20px',
-    cursor: 'pointer',
-  },
-
-  voteLockMessage: {
-    margin: '20px',
-  },
-});
 
 const { emitter, dispatcher, store } = Store;
 
@@ -91,7 +58,7 @@ const Stake = (props) => {
   const [activeClass, setActiveClass] = useState(store.getStore('activeClass')); // not used
   const [amountStakeError, setAmountStakeError] = useState(false);
   const [fieldId, setFieldId] = useState('');
-  const [amount, setAmount2] = useState(0);
+  const [amount, setAmount2] = useState(null);
   const [amountError, setAmountError] = useState(false);
 
   useEffect(() => {
@@ -133,29 +100,25 @@ const Stake = (props) => {
   };
 
   const showHash = (txHash) => {
-    setState({
-      snackbarMessage: null,
-      snackbarType: null,
-      loading: false,
-    });
+    setSnackbarType(null);
+    setSnackbarMessage(null);
+    setLoading(false);
 
     setTimeout(() => {
-      const snackbarObj = { snackbarMessage: txHash, snackbarType: 'Hash' };
-      setState(snackbarObj);
+      setSnackbarMessage(txHash);
+      setSnackbarType('Hash');
     });
   };
 
   const errorReturned = (error) => {
-    const snackbarObj = { snackbarMessage: null, snackbarType: null };
-    setState(snackbarObj);
-    setState({ loading: false });
+    console.log('error returned', error);
+    setSnackbarMessage(null);
+    setSnackbarType(null);
+    setLoading(false);
 
     setTimeout(() => {
-      const snackbarObj = {
-        snackbarMessage: error.toString(),
-        snackbarType: 'Error',
-      };
-      setState(snackbarObj);
+      setSnackbarMessage(error.toString());
+      setSnackbarType('Error');
     });
   };
 
@@ -170,23 +133,23 @@ const Stake = (props) => {
   };
 
   // not used
-  const overlayClicked = () => {
-    setState({ modalOpen: true });
-  };
+  // const overlayClicked = () => {
+  //   setState({ modalOpen: true });
+  // };
 
   // not used
-  const closeModal = () => {
-    setState({ modalOpen: false });
-  };
+  // const closeModal = () => {
+  //   setState({ modalOpen: false });
+  // };
 
   const onBuyBoost = () => {
-    setState({ amountError: false });
+    setAmountError(false);
     const tokens = pool.tokens;
     const selectedToken = tokens[0];
     // const amount = state[selectedToken.id + '_stake'];
     const value = (selectedToken.costBooster + 0.0001).toFixed(10).toString();
 
-    setState({ loading: true });
+    loading(true);
     dispatcher.dispatch({
       type: BOOST_STAKE,
       content: { asset: selectedToken, amount: amount, value: value },
@@ -194,7 +157,7 @@ const Stake = (props) => {
   };
 
   const onClaim = () => {
-    setState({ loading: true });
+    loading(true);
     dispatcher.dispatch({
       type: GET_REWARDS,
       content: { asset: pool },
@@ -202,65 +165,63 @@ const Stake = (props) => {
   };
 
   const onUnstake = () => {
-    setState({ amountError: false });
-    setState({ amountStakeError: false });
-
-    setState({ fieldId: '' });
+    setAmountError(false);
+    setAmountStakeError(false);
+    setFieldId('');
     // const amount = state[pool.id + '_unstake'];
     if (amount > 0) {
-      setState({ loading: true });
+      loading(true);
       dispatcher.dispatch({
         type: WITHDRAW,
         content: { asset: pool, amount: amount },
       });
     } else {
-      setState({ fieldId: pool.id + '_unstake' });
-      setState({ amountStakeError: true });
+      setFieldId(`${pool.id}_unstake`);
+      setAmountStakeError(true);
       emitter.emit(ERROR, 'Please enter the amount on the Un-Stake field');
     }
   };
 
   const onExit = () => {
-    setState({ loading: true });
+    loading(true);
     dispatcher.dispatch({ type: EXIT, content: { asset: pool } });
   };
 
-  const renderAssetInput = (asset, type) => {
+  const renderAssetInput = (pool, type) => {
     const { classes } = props; // ni recibe props???
-    // const amount = state[asset.id + '_' + type];
-    // let amountError = state[asset.id + '_' + type + '_error'];
-
+    // const amount = state[pool.id + '_' + type];
+    // let amountError = state[pool.id + '_' + type + '_error'];
     return (
-      <div className={classes.valContainer} key={asset.id + '_' + type}>
+      <div className={classes.valContainer} key={pool.id + '_' + type}>
         <Row>
           <Col lg='8' md='8' sm='10' xs='12'>
             {type === 'stake' && (
               <Typography
                 onClick={() => {
                   setAmount(
-                    asset.id,
+                    pool.id,
                     type,
-                    asset
+                    pool
                       ? (
-                          Math.floor(asset.balance * 1000000000) / 1000000000
+                          Math.floor(pool.balance * 1000000000) / 1000000000
                         ).toFixed(9)
                       : 0
                   );
                 }}
                 className='pool-max-balance text-right'
               >
-                {'Use Max Balance'}
+                Use Max Balance
               </Typography>
             )}
             {type === 'unstake' && (
               <Typography
                 onClick={() => {
                   setAmount(
-                    asset.id,
+                    pool.id,
                     type,
-                    asset
+                    pool
                       ? (
-                          Math.floor(asset.stakedBalance * 1000000000) /
+                          Math.floor(pool.stakedBalance * 1000000000) /
                           1000000000
                         ).toFixed(9)
                       : 0
@@ -278,17 +239,17 @@ const Stake = (props) => {
             <TextField
               disabled={loading}
               className={
-                amountStakeError && fieldId === asset.id + '_' + type
+                amountStakeError && fieldId === pool.id + '_' + type
                   ? 'border-btn-error mb-1'
                   : 'border-btn mb-1'
               }
               inputRef={(input) =>
                 input &&
-                fieldId === asset.id + '_' + type &&
+                fieldId === pool.id + '_' + type &&
                 amountStakeError &&
                 input.focus()
               }
-              id={'' + asset.id + '_' + type}
+              id={`${pool.id}_${type}`}
               value={amount}
               error={amountError}
               onChange={onChange}
@@ -296,7 +257,7 @@ const Stake = (props) => {
               InputProps={{
                 endAdornment: (
                   <InputAdornment>
-                    <Typography variant='h6'>{asset.symbol}</Typography>
+                    <Typography variant='h6'>{pool.symbol}</Typography>
                   </InputAdornment>
                 ),
                 startAdornment: (
@@ -308,7 +269,7 @@ const Stake = (props) => {
                       <img
                         alt=''
                         src={require('../../assets/' +
-                          asset.symbol +
+                          pool.symbol +
                           '-logo.png')}
                         height='30px'
                       />
@@ -341,7 +302,8 @@ const Stake = (props) => {
   const onChange = (event) => {
     let val = [];
     val[event.target.id] = event.target.value;
-    setState({ amountStakeError: false });
+    setAmountStakeError(false);
+    console.log('on change 000', val);
     setState(val);
   };
 
@@ -351,36 +313,41 @@ const Stake = (props) => {
     ).toFixed(9);
     let amount = [];
     amount[id + '_' + type] = rounded;
-    setState(amount);
+    setAmount2(amount);
+  };
+
+  const stakeHeader = (params) => {
+    return (
+      <Row>
+        <Col lg='2' md='2' xs='6' className='text-left'>
+          <img
+            className='pool-logo'
+            alt=''
+            src={require('../../assets/BPT.png')}
+          />
+        </Col>
+        <Col lg='10' md='10' xs='6' className='text-left pool-header'>
+          <div className='text-left'>
+            <div className='text-purple pool-name'>{pool.name}</div>
+            <a
+              href={'https://etherscan.io/address/' + pool.address}
+              rel='noopener noreferrer'
+              target='_blank'
+              className='text-purple'
+            >
+              {pool.address}
+            </a>
+          </div>
+        </Col>
+      </Row>
+    );
   };
 
   const mainRender = () => {
     return (
       <>
-        <Row>
-          <Col lg='2' md='2' xs='6' className='text-left'>
-            <img
-              className='pool-logo'
-              alt=''
-              src={require('../../assets/BPT.png')}
-            />
-          </Col>
-          <Col lg='10' md='10' xs='6' className='text-left pool-header'>
-            <div className='text-left'>
-              <div className='text-purple pool-name'>{pool.name}</div>
-              <a
-                href={'https://etherscan.io/address/' + pool.address}
-                rel='noopener noreferrer'
-                target='_blank'
-                className='text-purple'
-              >
-                {pool.address}
-              </a>
-            </div>
-          </Col>
-        </Row>
         {stakevalue === 'main' && (
-          <Stakemain
+          <StakeMain
             renderAssetInput={renderAssetInput}
             pool={pool}
             onExit={onExit}
@@ -394,11 +361,12 @@ const Stake = (props) => {
 
   return (
     <>
-      <Row className='info-header'></Row>
-      <Row className='info-header-down'></Row>
+      <div className='info-header'></div>
+      <div className='info-header-down'></div>
 
       <div className='p-5 ml-5 text-center '>
         <div className='p-5 ml-5 text-center '>
+          {stakeHeader()}
           {value === 'options' && mainRender()}
           {value === 'buyboost' && (
             <StakeBuyBoost validateBoost={validateBoost} pool={pool} />
