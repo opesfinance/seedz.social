@@ -1,26 +1,47 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import './hive.scss';
 import { BiPlus } from 'react-icons/bi';
 import { withRouter } from 'react-router-dom';
 import Store from '../../stores/store';
 
-const bgSrc = require('../../assets/vault.png');
-
 const Hive = (props) => {
-  function address(address) {
-    return `${props.address.substring(0, 5)}...${props.address.substring(
-      props.address.length - 4,
-      props.address.length
-    )}`;
+  const [gasCost, setGasCost] = useState(0);
+  const address = `${props.address.substring(0, 5)}...${props.address.substring(
+    props.address.length - 4,
+    props.address.length
+  )}`;
+
+  function navigateStake(token) {
+    Store.store.setStore({ currentPool: token });
+    props.history.push('/stake/' + props.address);
   }
 
-  function navigateStake(rewardPool) {
-    Store.store.setStore({ currentPool: rewardPool });
-    props.history.push('/stake');
+  async function fetchData(source) {
+    try {
+      let {
+        data,
+      } = await axios.get(
+        'https://ethgasstation.info/api/ethgasAPI.json?api-key=3f07e80ab9c6bdd0ca11a37358fc8f1a291551dd701f8eccdaf6eb8e59be',
+        { cancelToken: source.token }
+      );
+      console.log('gastCost', data.fastest);
+      setGasCost(data.fastest);
+    } catch (error) {}
   }
+
+  useEffect(() => {
+    const cancelToken = axios.CancelToken;
+    const source = cancelToken.source();
+
+    fetchData(source);
+    return () => {
+      source.cancel('');
+    };
+  }, []);
 
   return (
-    <div className='hive-wrapper card '>
+    <div className='hive-wrapper card'>
       <div className='card-body'>
         <div className='hive-header'>
           <div className=''>
@@ -31,11 +52,8 @@ const Hive = (props) => {
               className='address'
               target='_blank'
             >
-              {address(props.address)}
+              {address}
             </a>
-            {/*<div className='inPool main-blue'>
-              {props.acronym} in pool: {props.inPool}
-  </div>*/}
           </div>
         </div>
         <div className='hive-details'>
@@ -82,8 +100,8 @@ const Hive = (props) => {
           <div className='text-center pt-4'>
             <div
               onClick={() => {
-                if (props.id != 'balancer-pool') {
-                  navigateStake(props);
+                if (props.id !== 'balancer-pool') {
+                  navigateStake(props.token);
                 }
               }}
               className='btn btn-primary bg-main-blue'

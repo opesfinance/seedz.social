@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import rewardsMapper from '../utils/rewardsMapper';
 
 import './hives-list.scss';
 
@@ -50,38 +51,37 @@ const HivesList = (props) => {
 
   const configureReturned = useCallback(() => setLoading(false));
 
-  const hives = rewardPools
-    .flatMap((rp) => rp.tokens[0])
-    .map((t) => {
-      return (
-        <div className='col-md-3' key={t.rewardsAddress}>
-          <Hive
-            acronym={t.symbol}
-            name={t.name}
-            address={t.rewardsAddress}
-            inPool={t.inPool}
-            beastBonus={t.beastBonus || 0}
-            bonusReductionIn={t.bonusReductionIn || 0}
-            weeklyRewards={t.poolRatePerWeek}
-            myBeastModes={t.currentActiveBooster}
-            myRewards={t.rewardsAvailable}
-            symbol={t.symbol}
-            rewardsSymbol={t.rewardsSymbol}
-            stakedBalance={t.stakedBalance}
-            costBooster={t.costBooster}
-            costBoosterUSD={t.costBoosterUSD}
-            timeToNextBoost={t.timeToNextBoost}
-            currentBoosterStakeValue={t.currentBoosterStakeValue}
-            stakeValueNextBooster={t.stakeValueNextBooster}
-            liquidityLink={t.liquidityLink}
-            tokenAddress={t.tokenAddress}
-            tokenSymbol={t.tokenSymbol}
-            ethPrice={t.ethPrice}
-            boostBalance={t.boostBalance}
-          />
-        </div>
-      );
-    });
+  const hives = rewardsMapper(rewardPools).map((t) => {
+    return (
+      <div className='col-md-3' key={t.address}>
+        <Hive
+          acronym={t.acronym}
+          name={t.name}
+          address={t.address}
+          inPool={t.inPool}
+          beastBonus={t.beastBonus}
+          bonusReductionIn={t.bonusReductionIn}
+          weeklyRewards={t.weeklyRewards}
+          myBeastModes={t.myBeastModes}
+          myRewards={t.myRewards}
+          symbol={t.symbol}
+          rewardsSymbol={t.rewardsSymbol}
+          stakedBalance={t.stakedBalance}
+          costBooster={t.costBooster}
+          costBoosterUSD={t.costBoosterUSD}
+          timeToNextBoost={t.timeToNextBoost}
+          currentBoosterStakeValue={t.currentBoosterStakeValue}
+          stakeValueNextBooster={t.stakeValueNextBooster}
+          liquidityLink={t.liquidityLink}
+          tokenAddress={t.tokenAddress}
+          tokenSymbol={t.tokenSymbol}
+          ethPrice={t.ethPrice}
+          boostBalance={t.boostBalance}
+          token={t.token}
+        />
+      </div>
+    );
+  });
 
   return (
     <div
