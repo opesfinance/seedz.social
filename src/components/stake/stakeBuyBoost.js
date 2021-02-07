@@ -4,27 +4,6 @@ import { Col, Row, Card } from 'react-bootstrap';
 const StakeBuyBoost = (props) => {
   return (
     <>
-      <Row>
-        <Col lg='2' md='2' xs='6' className='text-left'>
-          <img
-            className='pool-logo'
-            alt=''
-            src={require('../../assets/BPT.png')}
-          />
-        </Col>
-        <Col lg='10' md='10' xs='6' className='text-left pool-header'>
-          <div className='text-left'>
-            <div className='text-purple pool-name'>{props.pool.name}</div>
-            <a
-              href={'https://etherscan.io/address/' + props.pool.address}
-              target='_blank'
-              className='text-purple address'
-            >
-              {props.pool.address}
-            </a>
-          </div>
-        </Col>
-      </Row>
       <Row className='pool-boxes pool-titles'>
         <Col>
           <Row>

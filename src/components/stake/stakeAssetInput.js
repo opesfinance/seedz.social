@@ -1,5 +1,5 @@
 const React = require('react');
-
+// THIS COMPONENT IS NOT USED YET
 import { Typography, TextField, InputAdornment } from '@material-ui/core';
 
 const stakeAssetInput = (props) => {
@@ -103,9 +103,7 @@ const stakeAssetInput = (props) => {
               type +
               '-button d-flex align-items-center justify-content-center'
             }
-            onClick={() => {
-              onUnstake();
-            }}
+            onClick={onUnstake}
           >
             {type}
           </div>

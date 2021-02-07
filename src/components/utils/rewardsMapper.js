@@ -4,6 +4,7 @@ const rewardsMapper = (rewards) => {
     .flatMap((rp) => rp.tokens[0])
     .map((t) => {
       return {
+        id: t.id,
         acronym: t.symbol,
         name: t.name,
         address: t.rewardsAddress,
