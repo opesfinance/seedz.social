@@ -9,8 +9,7 @@ import {
   CONFIGURE_RETURNED,
 } from '../../constants';
 
-import { Navbar, Button } from 'react-bootstrap';
-import { FaBars } from 'react-icons/fa';
+import { Button } from 'react-bootstrap';
 
 import Store from '../../stores/store';
 const { emitter, store } = Store;

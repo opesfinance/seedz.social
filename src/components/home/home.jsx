@@ -8,8 +8,8 @@ import HivesList from '../hives/hives-list';
 const { store } = Store;
 
 const Home = () => {
-  const [account, setAccount] = useState(store.getStore('account'));
-  const [themeType, setThemeType] = useState(store.getStore('themeType'));
+  // const [account, setAccount] = useState(store.getStore('account'));
+  // const [themeType, setThemeType] = useState(store.getStore('themeType'));
 
   return (
     <>
