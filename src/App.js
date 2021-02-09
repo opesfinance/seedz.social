@@ -9,7 +9,7 @@ import './i18n';
 
 import Account from './components/account/account';
 import Home from './components/home/home';
-import Farm from './components/farm/farm';
+import Farm from './components/farms/farms';
 import Hives from './components/hives/hives';
 import WhaleTank from './components/whalestank/whaletank';
 import Stake from './components/stake/stake';
@@ -119,7 +119,7 @@ class App extends Component {
                 <Route path='/hives'>
                   <Hives />
                 </Route>
-                <Route path='/farm'>
+                <Route path='/farms'>
                   <Farm />
                 </Route>
                 <Route path='/'>

@@ -25,7 +25,7 @@ const LeftNav = (props) => {
               <span className='menu'>Hives</span>
             </li>
           </Link>
-          <Link to='/farm'>
+          <Link to='/farms'>
             <li className='item-menu'>
               <img alt='' src={require('../../assets/honey.png')} width='20' />
               <span className='menu'>Farms</span>

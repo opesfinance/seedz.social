@@ -196,6 +196,72 @@ class Store {
           ],
         },
       ],
+      farmPools: [
+        {
+          id: 'farmpixel',
+          poolAddress: config.farmpixel,
+          name: 'iUPixel',
+          token: 'PIXEL',
+          website: '',
+          description: '',
+          liquidityValue: 0,
+          depositsEnabled: true,
+          boost: true,
+          apy: 0,
+          timeLeft: '',
+          weeklyRewards: 0,
+          myBeastModes: 0,
+          myRewards: 0,
+        },
+        {
+          id: 'farmyfu',
+          poolAddress: config.farmyfu,
+          name: 'YFU',
+          token: 'YFU',
+          website: '',
+          description: '',
+          liquidityValue: 0,
+          depositsEnabled: true,
+          boost: true,
+          apy: 0,
+          timeLeft: '',
+          weeklyRewards: 0,
+          myBeastModes: 0,
+          myRewards: 0,
+        },
+        {
+          id: 'farmlift',
+          poolAddress: config.farmlift,
+          name: 'Missions Fund',
+          token: 'LIFT',
+          website: '',
+          description: '',
+          liquidityValue: 0,
+          depositsEnabled: true,
+          boost: true,
+          apy: 0,
+          timeLeft: '',
+          weeklyRewards: 0,
+          myBeastModes: 0,
+          myRewards: 0,
+        },
+        {
+          id: 'farmstr',
+          poolAddress: config.farmstr,
+          name: 'Starwire',
+          token: 'STR',
+          website: '',
+          description: '',
+          liquidityValue: 0,
+          depositsEnabled: true,
+          boost: true,
+          apy: 0,
+          timeLeft: '',
+          weeklyRewards: 0,
+          myBeastModes: 0,
+          myRewards: 0,
+        },
+      ],
     };
 
     dispatcher.register(
@@ -228,7 +294,6 @@ class Store {
           case EXIT:
             this.exit(payload);
             break;
-
           case GET_CLAIMABLE_ASSET:
             this.getClaimableAsset(payload);
             break;

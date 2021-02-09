@@ -55,15 +55,15 @@ const HivesList = (props) => {
     return (
       <div className='col-md-3' key={t.address}>
         <Hive
-          acronym={t.acronym}
+          acronym={t.symbol}
           name={t.name}
           address={t.address}
           inPool={t.inPool}
-          beastBonus={t.beastBonus}
-          bonusReductionIn={t.bonusReductionIn}
-          weeklyRewards={t.weeklyRewards}
-          myBeastModes={t.myBeastModes}
-          myRewards={t.myRewards}
+          beastBonus={t.beastBonus || 0}
+          bonusReductionIn={t.bonusReductionIn || 0}
+          weeklyRewards={t.poolRatePerWeek}
+          myBeastModes={t.currentActiveBooster}
+          myRewards={t.rewardsAvailable}
           symbol={t.symbol}
           rewardsSymbol={t.rewardsSymbol}
           stakedBalance={t.stakedBalance}

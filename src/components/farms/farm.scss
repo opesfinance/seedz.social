@@ -1,0 +1,71 @@
+.farm-logo {
+  padding-bottom: 1rem;
+  margin: 0;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.farm-image {
+  max-height: 10vh;
+}
+
+.farm-plant {
+  padding-bottom: 1rem;
+  padding-left: 1rem;
+}
+
+.acronym-title {
+  background: url('../../assets/hives/bg-acronym.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  width: auto;
+  height: 100px;
+  // padding: 35px;
+  line-height: 100px;
+}
+
+.farms-details {
+  padding-top: 10px;
+  text-align: left;
+  // font-weight: bold;
+}
+
+.farms-value {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dot {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 0.5rem;
+  background-color: #eee;
+
+  &.green {
+    background-color: #00e251;
+  }
+
+  &.yellow {
+    background-color: #ffb501;
+  }
+
+  &.purple {
+    background-color: #8c59c8;
+  }
+
+  &.light-blue {
+    background-color: #4e9ce0;
+  }
+
+  &.orange {
+    background-color: #df6c17;
+  }
+}
