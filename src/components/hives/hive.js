@@ -32,21 +32,21 @@ const Hive = (props) => {
           </div>
         </div>
         <div className='hive-details'>
-          <div className='hive-value'>
+          <div className='d-flex justify-content-between'>
             <div>
               <span className='dot green'></span>
               Beast Bonus
             </div>
             <div className='text-right main-blue'>{props.beastBonus}</div>
           </div>
-          <div className='hive-value'>
+          <div className='d-flex justify-content-between'>
             <div>
               <span className='dot yellow'></span>
               Beast reduction in
             </div>
             <div className='text-right main-blue'>{props.bonusReductionIn}</div>
           </div>
-          <div className='hive-value'>
+          <div className='d-flex justify-content-between'>
             <div>
               <span className='dot purple'></span>
               Weekly Rewards
@@ -56,14 +56,14 @@ const Hive = (props) => {
             </div>
           </div>
           <hr />
-          <div className='hive-value'>
+          <div className='d-flex justify-content-between'>
             <div>
               <span className='dot light-blue'></span>
               My Beast Modes
             </div>
             <div className='text-right main-blue'>{props.myBeastModes}</div>
           </div>
-          <div className='hive-value'>
+          <div className='d-flex justify-content-between'>
             <div>
               <span className='dot orange'></span>
               My Rewards

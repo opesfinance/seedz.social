@@ -57,39 +57,31 @@ const StakeMain = (props) => {
       <Col lg='4' md='12' xs='12' className='p-1'>
         <Card className='pool-card'>
           <Card.Body className='text-left'>
-            <div className='pool-card-info'>
-              <Row>
-                <Col>Beast Bonus:</Col>
-                <Col className='text-right'>
-                  {props.pool.beastBonus ? props.pool.beastBonus : '0'}
-                </Col>
-              </Row>
+            <div className='d-flex justify-content-between'>
+              <span>Beast Bonus:</span>
+              <span>{props.pool.beastBonus ? props.pool.beastBonus : '0'}</span>
             </div>
-            <Card className='pool-card-info'>
-              <Row>
-                <Col>Bonus Reduction in:</Col>
-                <Col className='text-right'>
-                  {props.pool.bonusReductionIn}{' '}
-                  {props.pool.bonusReductionIn > 1 ? 'days' : 'day'}
-                </Col>
-              </Row>
-            </Card>
-            <Card className='pool-card-info'>
-              <Row>
-                <Col>Weekly Rewards:</Col>
-                <Col className='text-right'>
-                  {props.pool.weeklyRewards} {props.pool.rewardsSymbol}
-                </Col>
-              </Row>
-            </Card>
-            <Card className='pool-card-info'>
-              <Row>
-                <Col>Current Gas Price:</Col>
-                <Col className='text-right'>
-                  {currency.format(props.gasPrice / 10)}
-                </Col>
-              </Row>
-            </Card>
+            <hr />
+            <div className='d-flex justify-content-between'>
+              <span>Bonus Reduction in:</span>
+              <span>
+                {props.pool.bonusReductionIn}{' '}
+                {props.pool.bonusReductionIn > 1 ? 'days' : 'day'}
+              </span>
+            </div>
+            <hr />
+            <div className='d-flex justify-content-between'>
+              <span>Weekly Rewards:</span>
+              <span>
+                {props.pool.weeklyRewards} {props.pool.rewardsSymbol}
+              </span>
+            </div>
+            <hr />
+            <div className='d-flex justify-content-between'>
+              <span>Current Gas Price:</span>
+              <span>{currency.format(props.gasPrice / 10)}</span>
+            </div>
+            <hr />
             <Row className='pt-4'>
               <Col className='text-center'>
                 <a

@@ -1,6 +1,95 @@
 import React from 'react';
 import { Col, Row, Card } from 'react-bootstrap';
 
+const secondCol = (props) => {
+  return (
+    <Col>
+      <Card>
+        <Card.Body>
+          <div className='d-flex justify-content-between'>
+            <span>Ethereum Price (USD)</span>
+            <span>$ {props.pool.ethPrice}</span>
+          </div>
+          <hr />
+          <div className='d-flex justify-content-between'>
+            <span>Token Balance</span>
+            <span>{props.pool.boostBalance} ETH</span>
+          </div>
+          <hr />
+          <div className='d-flex justify-content-between'>
+            <span>Cost of Beast Mode</span>
+            <span>{props.pool.costBooster} ETH</span>
+          </div>
+          <hr />
+          <div className='d-flex justify-content-between'>
+            <span>Cost of Beast Mode (.)</span>
+            <span>
+              ${' '}
+              {props.pool.costBoosterUSD
+                ? props.pool.costBoosterUSD.toFixed(2)
+                : '0.00'}
+            </span>
+          </div>
+          <hr />
+          <div className='d-flex justify-content-between'>
+            <span>Time to next BEAST powerup</span>
+            <span>
+              {props.pool.timeToNextBoost - new Date().getTime() / 1000 > 0
+                ? (
+                    (props.pool.timeToNextBoost - new Date().getTime() / 1000) /
+                    60
+                  ).toFixed(0)
+                : '0'}{' '}
+              Minutes
+            </span>
+          </div>
+          <hr />
+          <div className='d-flex justify-content-between'>
+            <span>Beast Modes currently active</span>
+            <span className='text-right pool-info'>
+              {props.pool.myBeastModes}
+            </span>
+          </div>
+          <hr />
+          <div className='d-flex justify-content-between'>
+            <span>Current Beast Mode stake value</span>
+            <span className='text-right pool-info'>
+              {props.pool.currentBoosterStakeValue
+                ? props.pool.currentBoosterStakeValue.toFixed(7)
+                : '0'}{' '}
+              {props.pool.symbol}
+            </span>
+          </div>
+          <hr />
+          <div className='d-flex justify-content-between'>
+            <span>Staked value after next Beast Mode</span>
+            <span className='text-right pool-info'>
+              {props.pool.stakeValueNextBooster
+                ? props.pool.stakeValueNextBooster.toFixed(7)
+                : '0'}{' '}
+              {props.pool.symbol}
+            </span>
+          </div>
+
+          <br />
+          <Row>
+            <Col></Col>
+            <Col>
+              <div
+                className='btn btn-primary bg-main-blue'
+                onClick={props.validateBoost}
+              >
+                Beast Mode
+              </div>
+            </Col>
+            <Col></Col>
+          </Row>
+        </Card.Body>
+      </Card>
+    </Col>
+  );
+};
+
 const StakeBuyBoost = (props) => {
   return (
     <>
@@ -38,8 +127,8 @@ const StakeBuyBoost = (props) => {
                   <div className='hive-details'>
                     <Row>
                       <Col>
-                        <span className='dot green pool-titles'></span>YOUR
-                        BALANCE
+                        <span className='dot green'></span>
+                        YOUR BALANCE
                       </Col>
                       <Col className='text-right pool-info'>
                         {props.pool.boostBalance
@@ -93,106 +182,7 @@ const StakeBuyBoost = (props) => {
             </Col>
           </Row>
         </Col>
-        <Col>
-          <Card>
-            <Card.Body>
-              <Card className='pool-card-info text-left'>
-                <Row>
-                  <Col>Ethereum Price (USD)</Col>
-                  <Col className='text-right pool-info'>
-                    $ {props.pool.ethPrice}
-                  </Col>
-                </Row>
-              </Card>
-              <Card className='pool-card-info text-left'>
-                <Row>
-                  <Col>Token Balance</Col>
-                  <Col className='text-right pool-info'>
-                    {props.pool.boostBalance} ETH
-                  </Col>
-                </Row>
-              </Card>
-              <Card className='pool-card-info text-left'>
-                <Row>
-                  <Col>Cost of Beast Mode</Col>
-                  <Col className='text-right pool-info'>
-                    {props.pool.costBooster} ETH
-                  </Col>
-                </Row>
-              </Card>
-              <Card className='pool-card-info text-left'>
-                <Row>
-                  <Col>Cost of Beast Mode (USD)</Col>
-                  <Col className='text-right pool-info'>
-                    ${' '}
-                    {props.pool.costBoosterUSD
-                      ? props.pool.costBoosterUSD.toFixed(2)
-                      : '0.00'}
-                  </Col>
-                </Row>
-              </Card>
-              <Card className='pool-card-info text-left'>
-                <Row>
-                  <Col>Time to next BEAST powerup</Col>
-                  <Col className='text-right pool-info'>
-                    {props.pool.timeToNextBoost - new Date().getTime() / 1000 >
-                    0
-                      ? (
-                          (props.pool.timeToNextBoost -
-                            new Date().getTime() / 1000) /
-                          60
-                        ).toFixed(0)
-                      : '0'}{' '}
-                    Minutes
-                  </Col>
-                </Row>
-              </Card>
-              <Card className='pool-card-info text-left'>
-                <Row>
-                  <Col>Beast Modes currently active</Col>
-                  <Col className='text-right pool-info'>
-                    {props.pool.myBeastModes}
-                  </Col>
-                </Row>
-              </Card>
-              <Card className='pool-card-info text-left'>
-                <Row>
-                  <Col>Current Beast Mode stake value</Col>
-                  <Col className='text-right pool-info'>
-                    {props.pool.currentBoosterStakeValue
-                      ? props.pool.currentBoosterStakeValue.toFixed(7)
-                      : '0'}{' '}
-                    {props.pool.symbol}
-                  </Col>
-                </Row>
-              </Card>
-              <Card className='pool-card-info text-left'>
-                <Row>
-                  <Col>Staked value after next Beast Mode</Col>
-                  <Col className='text-right pool-info'>
-                    {props.pool.stakeValueNextBooster
-                      ? props.pool.stakeValueNextBooster.toFixed(7)
-                      : '0'}{' '}
-                    {props.pool.symbol}
-                  </Col>
-                </Row>
-              </Card>
-              <br />
-              <Row>
-                <Col></Col>
-                <Col>
-                  <div
-                    className='btn btn-primary bg-main-blue'
-                    onClick={props.validateBoost}
-                  >
-                    Beast Mode
-                  </div>
-                </Col>
-                <Col></Col>
-              </Row>
-            </Card.Body>
-          </Card>
-        </Col>
+        {secondCol(props)}
       </Row>
     </>
   );
