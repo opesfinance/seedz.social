@@ -85,9 +85,7 @@ const StakeMain = (props) => {
             <Card className='pool-card-info'>
               <Row>
                 <Col>Current Gas Price:</Col>
-                <Col className='text-right'>
-                  {currency.format(props.gasPrice / 10)}
-                </Col>
+                <Col className='text-right'>{props.gasPrice / 10} gwei</Col>
               </Row>
             </Card>
             <Row className='pt-4'>
