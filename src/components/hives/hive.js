@@ -20,7 +20,13 @@ const Hive = (props) => {
       <div className='card-body'>
         <div className='hive-header'>
           <div className=''>
-            <div className='acronym-title main-blue'>{props.acronym}</div>
+            <div className='hive-logo'>
+              <img
+                alt=''
+                className='hive-image'
+                src={require(`../../assets/logos/${props.symbol}.png`)}
+              />
+            </div>
             <div className='main-blue'>{props.name}</div>
             <a
               href={'https://etherscan.io/address/' + props.address}

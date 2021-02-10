@@ -342,7 +342,7 @@ const Stake = (props) => {
               }
               onClick={action}
             >
-              {type} --
+              {type}
             </div>
           </Col>
         </Row>
