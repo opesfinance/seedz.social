@@ -173,8 +173,8 @@ const Stake = (props) => {
 
   const onBuyBoost = () => {
     setAmountError(false);
-    const tokens = pool.tokens;
-    const selectedToken = tokens[0];
+    console.log('pool ----------', pool);
+    const selectedToken = pool.token;
     const amount = amounts[selectedToken.id + '_stake'];
     const value = (selectedToken.costBooster + 0.0001).toFixed(10).toString();
 
