@@ -4,6 +4,7 @@ import Web3 from 'web3';
 import { Col, Row, Card } from 'react-bootstrap';
 
 import { ERROR } from '../../constants';
+import currency from '../utils/currency';
 
 const { emitter, store } = Store;
 
@@ -84,7 +85,9 @@ const StakeMain = (props) => {
             <Card className='pool-card-info'>
               <Row>
                 <Col>Current Gas Price:</Col>
-                <Col className='text-right'>-</Col>
+                <Col className='text-right'>
+                  {currency.format(props.gasPrice)}
+                </Col>
               </Row>
             </Card>
             <Row className='pt-4'>

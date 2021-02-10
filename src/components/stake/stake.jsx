@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography, TextField, InputAdornment } from '@material-ui/core';
+import axios from 'axios';
 
 import Loader from '../loader/loader';
 import Snackbar from '../snackbar/snackbar';
@@ -64,9 +65,33 @@ const Stake = (props) => {
   // const [amount, setAmount2] = useState('');
   const [amounts, setAmounts] = useState({});
   const [amountError, setAmountError] = useState(false);
+  const [gasPrice, setGasPrice] = useState(0);
 
   useEffect(() => {
     if (!pool) props.history.push('/');
+  }, []);
+
+  async function fetchData(source) {
+    try {
+      let {
+        data,
+      } = await axios.get(
+        'https://ethgasstation.info/api/ethgasAPI.json?api-key=3f07e80ab9c6bdd0ca11a37358fc8f1a291551dd701f8eccdaf6eb8e59be',
+        { cancelToken: source.token }
+      );
+      console.log('gastPrice', data.fastest);
+      setGasPrice(data.fastest);
+    } catch (error) {}
+  }
+
+  useEffect(() => {
+    const cancelToken = axios.CancelToken;
+    const source = cancelToken.source();
+
+    fetchData(source);
+    return () => {
+      source.cancel('');
+    };
   }, []);
 
   useEffect(() => {
@@ -382,6 +407,7 @@ const Stake = (props) => {
             renderAssetInput={renderAssetInput}
             pool={pool}
             onExit={onExit}
+            gasPrice={gasPrice}
             onClaim={onClaim}
             navigateInternal={setValue}
           />

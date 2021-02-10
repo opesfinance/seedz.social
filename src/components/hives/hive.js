@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import './hive.scss';
 import { BiPlus } from 'react-icons/bi';
 import { withRouter } from 'react-router-dom';
 import Store from '../../stores/store';
 
 const Hive = (props) => {
-  const [gasCost, setGasCost] = useState(0);
   const address = `${props.address.substring(0, 5)}...${props.address.substring(
     props.address.length - 4,
     props.address.length
@@ -16,29 +14,6 @@ const Hive = (props) => {
     Store.store.setStore({ currentPool: token });
     props.history.push('/stake/' + props.address);
   }
-
-  async function fetchData(source) {
-    try {
-      let {
-        data,
-      } = await axios.get(
-        'https://ethgasstation.info/api/ethgasAPI.json?api-key=3f07e80ab9c6bdd0ca11a37358fc8f1a291551dd701f8eccdaf6eb8e59be',
-        { cancelToken: source.token }
-      );
-      console.log('gastCost', data.fastest);
-      setGasCost(data.fastest);
-    } catch (error) {}
-  }
-
-  useEffect(() => {
-    const cancelToken = axios.CancelToken;
-    const source = cancelToken.source();
-
-    fetchData(source);
-    return () => {
-      source.cancel('');
-    };
-  }, []);
 
   return (
     <div className='hive-wrapper card'>
