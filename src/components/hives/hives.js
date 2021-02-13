@@ -19,7 +19,7 @@ const Hives = (props) => {
           </div>
         </div>
 
-        <HivesList />
+        <HivesList justifyContent='flex-start' />
       </div>
     </div>
   );

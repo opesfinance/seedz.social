@@ -277,7 +277,7 @@ class Store {
               decimals: 18,
               tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
               tokenSymbol: 'Seedz',
-              rewardsAddress: config.seedzAddressTwo,
+              rewardsAddress: config.yfuHiveAddress,
               rewardsABI: config.seedzABI,
               rewardsSymbol: 'Seedz',
               decimals: 18,
@@ -333,7 +333,7 @@ class Store {
               decimals: 18,
               tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
               tokenSymbol: 'Seedz',
-              rewardsAddress: config.seedzAddressTwo,
+              rewardsAddress: config.liftHiveAddress,
               rewardsABI: config.seedzABI,
               rewardsSymbol: 'Seedz',
               decimals: 18,
@@ -389,7 +389,7 @@ class Store {
               decimals: 18,
               tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
               tokenSymbol: 'Seedz',
-              rewardsAddress: config.seedzAddressTwo,
+              rewardsAddress: config.strHiveAddress,
               rewardsABI: config.seedzABI,
               rewardsSymbol: 'Seedz',
               decimals: 18,
