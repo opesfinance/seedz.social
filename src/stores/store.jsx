@@ -195,7 +195,7 @@ class Store {
             },
           ],
         },
-        {
+        /*{
           id: 'pixelhive',
           name: 'iUPixel',
           website: 'Uniswap',
@@ -418,7 +418,7 @@ class Store {
               poolRateSymbol: 'Seedz/Week',
             },
           ],
-        },
+        },*/
       ],
       farmPools: [
         {

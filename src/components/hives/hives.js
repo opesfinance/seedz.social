@@ -12,7 +12,7 @@ const Hives = (props) => {
 
       <div className='p-5 ml-5'>
         <div className='row'>
-          <div className='col-md-6 offset-md-3'>
+          <div className='col-md-6'>
             <div className='alert alert-success' role='alert'>
               <AiOutlineWarning /> Bonus only applies on your first stake.
             </div>
