@@ -79,7 +79,7 @@ const StakeMain = (props) => {
             <hr />
             <div className='d-flex justify-content-between'>
               <span>Current Gas Price:</span>
-              <span>{currency.format(props.gasPrice / 10)}</span>
+              <span>{props.gasPrice / 10} gwei</span>
             </div>
             <hr />
             <Row className='pt-4'>
