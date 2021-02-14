@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 import IpfsRouter from 'ipfs-react-router';
 import Leftnav from './components/leftnav/leftnav';
 import Header from './components/header/header';
+import Exchange from './components/exchange/exchange';
 
 import './i18n';
 
@@ -121,6 +122,9 @@ class App extends Component {
                 </Route>
                 <Route path='/farms'>
                   <Farm />
+                </Route>
+                <Route path='/exchange'>
+                  <Exchange />
                 </Route>
                 <Route path='/'>
                   <Home />

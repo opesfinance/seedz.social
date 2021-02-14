@@ -41,6 +41,16 @@ const LeftNav = (props) => {
               <span className='menu'>Whale Tank</span>
             </li>
           </Link>
+          <Link to='/exchange'>
+            <li className='item-menu'>
+              <img
+                alt=''
+                src={require('../../assets/exchange.png')}
+                width='20'
+              />
+              <span className='menu'>Exchange</span>
+            </li>
+          </Link>
         </ul>
       </div>
     </div>
