@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IoSwapVerticalOutline } from 'react-icons/io5';
 import { IconContext } from 'react-icons';
 import {
@@ -75,14 +75,14 @@ const inputOptions = (options) => {
 };
 
 const Exchange = (props) => {
-  const [inputOptionsFrom, setInputOptionsFrom] = useState(optionsOne);
+  const [fromOptions, setFromOptions] = useState(optionsOne);
   const [inputOptionsTo, setInputOptionsTo] = useState(optionsTwo);
-  const [fromVal, setFromVal] = useState(0);
-  const [fromOption, setFromOption] = useState(inputOptionsFrom[0].address);
-  const [toVal, setToVal] = useState(0);
-  const [toOption, setToOption] = useState(inputOptionsTo[0].address);
+  const [fromAmount, setFromAmount] = useState(0);
+  const [fromAddress, setFromAddress] = useState(fromOptions[0].address);
+  const [toAmount, setToAmount] = useState(0);
+  const [toAddress, setToAddress] = useState(inputOptionsTo[0].address);
   const [error, setError] = useState('');
-  const [boxValues, setBoxValues] = useState([
+  const [boxes, setBoxValues] = useState([
     { label: 'STR', value: '45 M', color: 'pink' },
     { label: 'PIXEL', value: '45 M', color: 'orange' },
     { label: 'LIFT', value: '45 M', color: 'purple' },
@@ -93,35 +93,35 @@ const Exchange = (props) => {
 
   const onChangeFrom = (value) => {
     setError('');
-    setFromVal(value);
+    setFromAmount(value);
   };
 
   const onChangeTo = (value) => {
     setError('');
-    setToVal(value);
+    setToAmount(value);
   };
 
   const onChangeFromSelect = (value) => {
     setError('');
     console.log(value);
-    setFromOption(value);
+    setFromAddress(value);
   };
 
   const onChangeToSelect = (value) => {
     setError('');
-    setToOption(value);
+    setToAddress(value);
     console.log(value);
   };
 
   const onExchange = () => {
-    if (fromVal && fromOption && toVal && toOption) {
+    if (fromAmount && fromAddress && toAmount && toAddress) {
       const assetIn = {
-        amount: fromVal,
-        asset: inputOptionsFrom.find((i) => i.address == fromOption),
+        amount: fromAmount,
+        asset: fromOptions.find((i) => i.address == fromAddress),
       };
       const assetOut = {
-        amount: toVal,
-        asset: inputOptionsTo.find((i) => i.address == toOption),
+        amount: toAmount,
+        asset: inputOptionsTo.find((i) => i.address == toAddress),
       };
 
       console.log('assetIn --', assetIn);
@@ -132,24 +132,24 @@ const Exchange = (props) => {
   };
 
   const swapClickHandler = () => {
-    const tempFromVal = fromVal;
-    const tempFromOption = fromOption;
-    const tempFromOptions = JSON.parse(JSON.stringify(inputOptionsFrom));
+    const tempFromVal = fromAmount;
+    const tempFromOption = fromAddress;
+    const tempFromOptions = JSON.parse(JSON.stringify(fromOptions));
 
-    setFromVal(toVal);
-    setFromOption(toOption);
-    setInputOptionsFrom(inputOptionsTo);
+    setFromAmount(toAmount);
+    setFromAddress(toAddress);
+    setFromOptions(inputOptionsTo);
 
-    setToVal(tempFromVal);
-    setToOption(tempFromOption);
+    setToAmount(tempFromVal);
+    setToAddress(tempFromOption);
     setInputOptionsTo(tempFromOptions);
   };
 
-  const boxes = (
+  const boxesLayout = (
     <div className=' row'>
-      {boxValues.map((b) => {
+      {boxes.map((b) => {
         return (
-          <div className='col-lg-2 col-md-12 col-sm-12'>
+          <div className='col-lg-2 col-md-12 col-sm-12' key={b.label}>
             <div
               className={'row m-1 p-2 rounded box-' + boxColorMapper[b.color]}
             >
@@ -171,7 +171,7 @@ const Exchange = (props) => {
       <div className='pageHeader my-auto'>Exchange</div>
 
       <div className='p-5 ml-5'>
-        {boxes}
+        {boxesLayout}
         <div className='row'>
           <div className='col-md-6 offset-md-3'>
             <div className='card'>
@@ -182,20 +182,20 @@ const Exchange = (props) => {
                   <Form.Control
                     as='select'
                     onChange={(e) => onChangeFromSelect(e.target.value)}
-                    value={fromOption}
+                    value={fromAddress}
                     custom
                   >
-                    {inputOptions(inputOptionsFrom)}
+                    {inputOptions(fromOptions)}
                   </Form.Control>
 
                   <Form.Control
                     style={{ width: '55%' }}
-                    value={fromVal}
+                    value={fromAmount}
                     onChange={(e) => onChangeFrom(e.target.value)}
                     aria-describedby='basic-addon1'
                   />
                 </InputGroup>
-                {/* {<div className='mb-3'>{fromOption}</div>} */}
+                {/* {<div className='mb-3'>{fromAddress}</div>} */}
 
                 <IconContext.Provider value={{ size: '2em' }}>
                   <IoSwapVerticalOutline onClick={swapClickHandler} />
@@ -205,19 +205,19 @@ const Exchange = (props) => {
                   <Form.Control
                     as='select'
                     onChange={(e) => onChangeToSelect(e.target.value)}
-                    value={toOption}
+                    value={toAddress}
                     custom
                   >
                     {inputOptions(inputOptionsTo)}
                   </Form.Control>
                   <Form.Control
                     style={{ width: '55%' }}
-                    value={toVal}
+                    value={toAmount}
                     onChange={(e) => onChangeTo(e.target.value)}
                     aria-describedby='basic-addon1'
                   />
                 </InputGroup>
-                {/* {<div className='mb-3'>{toOption}</div>} */}
+                {/* {<div className='mb-3'>{toAddress}</div>} */}
                 <div className='text-center'>
                   {error && error.length && <div>{error}</div>}
                   <button
