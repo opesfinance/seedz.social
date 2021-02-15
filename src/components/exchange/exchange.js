@@ -57,6 +57,13 @@ const optionsTwo = [
   },
 ];
 
+const boxColorMapper = {
+  pink: 1,
+  orange: 2,
+  purple: 3,
+  green: 4,
+};
+
 const inputOptions = (options) => {
   return options.map((o, i) => {
     return (
@@ -68,13 +75,21 @@ const inputOptions = (options) => {
 };
 
 const Exchange = (props) => {
-  const [fromVal, setFromVal] = useState(0);
-  const [fromOption, setFromOption] = useState('ETHEREUM');
-  const [toVal, setToVal] = useState(0);
-  const [toOption, setToOption] = useState('');
-  const [error, setError] = useState('');
   const [inputOptionsFrom, setInputOptionsFrom] = useState(optionsOne);
   const [inputOptionsTo, setInputOptionsTo] = useState(optionsTwo);
+  const [fromVal, setFromVal] = useState(0);
+  const [fromOption, setFromOption] = useState(inputOptionsFrom[0].address);
+  const [toVal, setToVal] = useState(0);
+  const [toOption, setToOption] = useState(inputOptionsTo[0].address);
+  const [error, setError] = useState('');
+  const [boxValues, setBoxValues] = useState([
+    { label: 'STR', value: '45 M', color: 'pink' },
+    { label: 'PIXEL', value: '45 M', color: 'orange' },
+    { label: 'LIFT', value: '45 M', color: 'purple' },
+    { label: 'YFU', value: '45 M', color: 'green' },
+    { label: 'ETH', value: '45 M', color: 'orange' },
+    { label: 'USDC', value: '45 M', color: 'purple' },
+  ]);
 
   const onChangeFrom = (value) => {
     setError('');
@@ -100,10 +115,17 @@ const Exchange = (props) => {
 
   const onExchange = () => {
     if (fromVal && fromOption && toVal && toOption) {
-      console.log('fromVal', fromVal);
-      console.log('fromOption', fromOption);
-      console.log('toVal', toVal);
-      console.log('toOption', toOption);
+      const assetIn = {
+        amount: fromVal,
+        asset: inputOptionsFrom.find((i) => i.address == fromOption),
+      };
+      const assetOut = {
+        amount: toVal,
+        asset: inputOptionsTo.find((i) => i.address == toOption),
+      };
+
+      console.log('assetIn --', assetIn);
+      console.log('assetOut --', assetOut);
     } else {
       setError('Select both tokens and a value for each');
     }
@@ -123,11 +145,33 @@ const Exchange = (props) => {
     setInputOptionsTo(tempFromOptions);
   };
 
+  const boxes = (
+    <div className=' row'>
+      {boxValues.map((b) => {
+        return (
+          <div className='col-lg-2 col-md-12 col-sm-12'>
+            <div
+              className={'row m-1 p-2 rounded box-' + boxColorMapper[b.color]}
+            >
+              <div className='col-12 m-0 my-auto text-left small font-weight-bold text-white'>
+                <h3 className='p-0 m-0 text-bottom'>{b.value}</h3>
+                <p className='p-0 m-0 text-bottom small font-weight-bold'>
+                  {b.label}
+                </p>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+
   return (
     <div>
       <div className='pageHeader my-auto'>Exchange</div>
 
       <div className='p-5 ml-5'>
+        {boxes}
         <div className='row'>
           <div className='col-md-6 offset-md-3'>
             <div className='card'>
