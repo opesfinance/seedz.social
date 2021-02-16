@@ -25,6 +25,8 @@ import {
   GET_BOOSTEDBALANCES,
   GET_BOOSTEDBALANCES_RETURNED,
   BOOST_STAKE,
+  EXCHANGE,
+  EXCHANGE_RETURNED,
 } from '../constants';
 import Web3 from 'web3';
 
@@ -486,6 +488,97 @@ class Store {
           myRewards: 0,
         },
       ],
+      exchangeAssets: [
+        {
+          tokens: [
+            {
+              label: 'WPE',
+              logo: 'logo-eth.png',
+              address: '0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',
+              decimals: 18,
+              group: 'base',
+              denomination: 'ETH',
+              price: 2.0670,
+            },
+            {
+              label: 'ETH',
+              logo: 'logo-eth.png',
+              address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+              decimals: 18,
+              group: 'inputs',
+              denomination: 'USD',
+              price: 1829.0000,
+            },
+            {
+              label: 'USDC',
+              logo: 'USD_Coin_icon.webp',
+              address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+              decimals: 6,
+              group: 'inputs',
+              denomination: 'USD',
+              price: 1.0000,
+            },
+            {
+              label: 'DAI',
+              logo: 'dai-multi-collateral-mcd.webp',
+              address: '0x6b175474e89094c44da98b954eedeac495271d0f',
+              decimals: 18,
+              group: 'inputs',
+              denomination: 'USD',
+              price: 1.0000,
+            },
+            {
+              label: 'USDT',
+              logo: 'tether_32.webp',
+              address: '0xdac17f958d2ee523a2206206994597c13d831ec7',
+              decimals: 6,
+              group: 'inputs',
+              denomination: 'USD',
+              price: 1.0000,
+            },
+            {
+              label: 'STR',
+              logo: 'tether_32.webp',
+              address: '0x11C1a6B3Ed6Bb362954b29d3183cfA97A0c806Aa',
+              decimals: 18,
+              group: 'outputs',
+              denomination: 'WPE',
+              price: 0.0000,
+              route: ['0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2','0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b'],
+            },
+            {
+              label: 'PIXEL',
+              logo: 'tether_32.webp',
+              address: '0x89045d0Af6A12782Ec6f701eE6698bEaF17d0eA2',
+              decimals: 18,
+              group: 'outputs',
+              denomination: 'WPE',
+              price: 0.0000,
+              route: ['0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2','0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b'],
+            },
+            {
+              label: 'LIFT',
+              logo: 'tether_32.webp',
+              address: '0x47bd5114c12421FBC8B15711cE834AFDedea05D9',
+              decimals: 18,
+              group: 'outputs',
+              denomination: 'WPE',
+              price: 0.0000,
+              route: ['0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2','0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b'],
+            },
+            {
+              label: 'YFU',
+              logo: 'tether_32.webp',
+              address: '0xa279dab6ec190eE4Efce7Da72896EB58AD533262',
+              decimals: 18,
+              group: 'outputs',
+              denomination: 'WPE',
+              price: 0.0000,
+              route: ['0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2','0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b'],
+            },
+          ],
+        }
+      ],
     };
 
     dispatcher.register(
@@ -508,6 +601,9 @@ class Store {
             break;
           case STAKE:
             this.stake(payload);
+            break;
+          case EXCHANGE:
+            this.exchange(payload);
             break;
           case WITHDRAW:
             this.withdraw(payload);
@@ -848,6 +944,26 @@ class Store {
     );
   };
 
+  _getOutputForInputVal = async (web3, assetIn, assetOut, route, amountIn, account, callback) => {
+    let uniswapRouter = new web3.eth.Contract(
+      config.uniswapRouterABI,
+      config.uniswapRouterAddress
+    );
+    var amountToSend = web3.utils.toWei(amountIn, 'ether');
+    if (assetIn.decimals !== 18) {
+      amountToSend = (amountIn * 10 ** assetIn.decimals).toFixed(0);
+    }
+    try {
+      var amounts = await uniswapRouter.methods
+        .getAmountsOut(amountIn, route)//[assetIn.address, assetOut.address])
+        .call({ from: account.address });
+
+      callback(null, amounts);
+    } catch (ex) {
+      return callback(ex);
+    }
+  };
+
   _getUniswapLiquidity = async (callback) => {
     try {
       var myHeaders = new Headers();
@@ -1017,12 +1133,41 @@ class Store {
       return callback(ex);
     }
   };
+  _checkApprovalExchange = async (asset, account, amount, callback) => {
+    try {
+      const web3 = new Web3(store.getStore('web3context').library.provider);
 
+      const erc20Contract = new web3.eth.Contract(config.erc20ABI, asset.address);
+      const allowance = await erc20Contract.methods
+        .allowance(account.address, config.exchangeAddress)
+        .call({ from: account.address });
+
+      const ethAllowance = web3.utils.fromWei(allowance, 'ether');
+
+      if (parseFloat(ethAllowance) < parseFloat(amount)) {
+        await erc20Contract.methods
+          .approve(config.exchangeAddress, web3.utils.toWei('999999999999999', 'ether'))
+          .send({
+            from: account.address,
+            gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
+          });
+        callback();
+      } else {
+        callback();
+      }
+    } catch (error) {
+      console.log(error);
+      if (error.message) {
+        return callback(error.message);
+      }
+      callback(error);
+    }
+  };
   _checkApproval = async (asset, account, amount, contract, callback) => {
     try {
       const web3 = new Web3(store.getStore('web3context').library.provider);
 
-      const erc20Contract = new web3.eth.Contract(asset.abi, asset.address);
+      const erc20Contract = new web3.eth.Contract(config.erc20ABI, asset.address);
       const allowance = await erc20Contract.methods
         .allowance(account.address, contract)
         .call({ from: account.address });
@@ -1266,6 +1411,306 @@ class Store {
     }
   };
 
+  /**
+   * -------------------------
+   * EXCHANGE LOGIC
+   * ----------------------------
+   */
+
+   buyWithEth = (payload) => {
+
+     const account = store.getStore('account');
+     const { assetIn, assetOut, amountIn, amountOut} = payload.content;
+
+     this._buyWithEthCall(assetOut, account, amountOut, amountIn, (err, res) => {
+       if (err) {
+         return emitter.emit(ERROR, err);
+       }
+
+       return emitter.emit(EXCHANGE_RETURNED, res);//EXCHANGEETHFORTOKEN_RETURNED
+     });
+   };
+   _buyWithEthCall = async (asset, account, amount, value, callback) => {
+     const web3 = new Web3(store.getStore('web3context').library.provider);
+
+     const exchangeContract = new web3.eth.Contract(
+       config.exchangeABI,
+       config.exchangeAddress
+     );
+
+     exchangeContract.methods
+       .buyTokenWithEth(asset.address, 0)//address tokenOut, uint256 amountOut SET TO 0 FOR TEST PURPOSES
+       .send({
+         from: account.address,
+         gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
+         value: web3.utils.toWei(value, 'ether'),
+       })
+       .on('transactionHash', function (hash) {
+         console.log(hash);
+         callback(null, hash);
+       })
+       .on('confirmation', function (confirmationNumber, receipt) {
+         if (confirmationNumber === 2) {
+           dispatcher.dispatch({ type: GET_BALANCES, content: {} });
+         }
+       })
+       .on('receipt', function (receipt) {
+         console.log(receipt);
+       })
+       .on('error', function (error) {
+         if (!error.toString().includes('-32601')) {
+           if (error.message) {
+             return callback(error.message);
+           }
+           callback(error);
+         }
+       })
+       .catch((error) => {
+         if (!error.toString().includes('-32601')) {
+           if (error.message) {
+             return callback(error.message);
+           }
+           callback(error);
+         }
+       });
+   };
+   buyWithToken = (payload) => {
+     const account = store.getStore('account');
+     const { assetIn, assetOut, amountIn, amountOut} = payload.content;
+
+     this._checkApprovalExchange(assetIn, account, amountIn, (err) => {
+       if (err) {
+         return emitter.emit(ERROR, err);
+       }
+
+       this._buyWithTokenCall(assetIn, assetOut, amountIn, amountOut, account, (err, res) => {
+         if (err) {
+           return emitter.emit(ERROR, err);
+         }
+
+         return emitter.emit(EXCHANGE_RETURNED, res);
+       });
+     });
+   };
+   _buyWithTokenCall = async (assetIn, assetOut, amountIn, amountOut, account, callback) => {
+     const web3 = new Web3(store.getStore('web3context').library.provider);
+
+     const exchangeContract = new web3.eth.Contract(
+       config.exchangeABI,
+       config.exchangeAddress
+     );
+
+     var amountToSend = web3.utils.toWei(amountIn, 'ether');
+     if (assetIn.decimals !== 18) {
+       amountToSend = (amountIn * 10 ** assetIn.decimals).toFixed(0);
+     }
+     console.log("Amount to send ", amountToSend);
+     console.log("Asset In ", assetIn.address);
+     console.log("Amount In ", amountIn);
+     console.log("Asset Out ", assetOut.address);
+     //console.log("Asset In ", assetIn.address);
+
+     exchangeContract.methods
+       .buyTokenWithToken(assetIn.address, assetOut.address, amountToSend, 0)//IERC20 tokenIn, address tokenOut, uint256 amountIn, uint256 amountOut
+       .send({
+         from: account.address,
+         gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
+       })
+       .on('transactionHash', function (hash) {
+         console.log(hash);
+         callback(null, hash);
+       })
+       .on('confirmation', function (confirmationNumber, receipt) {
+         console.log(confirmationNumber, receipt);
+         if (confirmationNumber === 2) {
+           dispatcher.dispatch({ type: GET_BALANCES, content: {} });
+         }
+       })
+       .on('receipt', function (receipt) {
+         console.log(receipt);
+       })
+       .on('error', function (error) {
+         if (!error.toString().includes('-32601')) {
+           if (error.message) {
+             return callback(error.message);
+           }
+           callback(error);
+         }
+       })
+       .catch((error) => {
+         if (!error.toString().includes('-32601')) {
+           if (error.message) {
+             return callback(error.message);
+           }
+           callback(error);
+         }
+       });
+   };
+   sellWithToken = (payload) => {
+     const account = store.getStore('account');
+     const { assetIn, assetOut, amountIn, amountOut} = payload.content;
+
+     this._checkApprovalExchange(assetIn, account, amountIn,  (err) => {
+       if (err) {
+         return emitter.emit(ERROR, err);
+       }
+
+       this._sellWithTokenCall(assetIn, assetOut, amountIn, amountOut, account, (err, res) => {
+         if (err) {
+           return emitter.emit(ERROR, err);
+         }
+
+         return emitter.emit(EXCHANGE_RETURNED, res);
+       });
+     });
+   };
+   _sellWithTokenCall = async (assetIn, assetOut, amountIn, amountOut, account, callback) => {
+     const web3 = new Web3(store.getStore('web3context').library.provider);
+
+     const exchangeContract = new web3.eth.Contract(
+       config.exchangeABI,
+       config.exchangeAddress
+     );
+
+     var amountToSend = web3.utils.toWei(amountIn, 'ether');
+     if (assetIn.decimals !== 18) {
+       amountToSend = (amountIn * 10 ** assetIn.decimals).toFixed(0);
+     }
+     console.log("Amount to send ", amountToSend);
+     console.log("Asset In ", assetIn.address);
+     console.log("Amount In ", amountIn);
+     console.log("Asset Out ", assetOut.address);
+     //console.log("Asset In ", assetIn.address);
+
+     exchangeContract.methods
+       .sellTokenToToken(assetIn.address, assetOut.address, amountToSend, 0)//IERC20 tokenIn, address tokenOut, uint256 amountIn, uint256 amountOut
+       .send({
+         from: account.address,
+         gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
+       })
+       .on('transactionHash', function (hash) {
+         console.log(hash);
+         callback(null, hash);
+       })
+       .on('confirmation', function (confirmationNumber, receipt) {
+         console.log(confirmationNumber, receipt);
+         if (confirmationNumber === 2) {
+           dispatcher.dispatch({ type: GET_BALANCES, content: {} });
+         }
+       })
+       .on('receipt', function (receipt) {
+         console.log(receipt);
+       })
+       .on('error', function (error) {
+         if (!error.toString().includes('-32601')) {
+           if (error.message) {
+             return callback(error.message);
+           }
+           callback(error);
+         }
+       })
+       .catch((error) => {
+         if (!error.toString().includes('-32601')) {
+           if (error.message) {
+             return callback(error.message);
+           }
+           callback(error);
+         }
+       });
+   };
+   sellWithTokenToEth = (payload) => {
+     const account = store.getStore('account');
+     const { assetIn, assetOut, amountIn, amountOut} = payload.content;
+
+     this._checkApprovalExchange(assetIn, account, amountIn,  (err) => {
+       if (err) {
+         return emitter.emit(ERROR, err);
+       }
+
+       this._sellWithTokenToEthCall(assetIn, assetOut, amountIn, amountOut, account, (err, res) => {
+         if (err) {
+           return emitter.emit(ERROR, err);
+         }
+
+         return emitter.emit(EXCHANGE_RETURNED, res);
+       });
+     });
+   };
+   _sellWithTokenToEthCall = async (assetIn, assetOut, amountIn, amountOut, account, callback) => {
+     const web3 = new Web3(store.getStore('web3context').library.provider);
+
+     const exchangeContract = new web3.eth.Contract(
+       config.exchangeABI,
+       config.exchangeAddress
+     );
+
+     var amountToSend = web3.utils.toWei(amountIn, 'ether');
+     if (assetIn.decimals !== 18) {
+       amountToSend = (amountIn * 10 ** assetIn.decimals).toFixed(0);
+     }
+     console.log("Amount to send ", amountToSend);
+     console.log("Asset In ", assetIn.address);
+     console.log("Amount In ", amountIn);
+     console.log("Asset Out ", assetOut.address);
+     //console.log("Asset In ", assetIn.address);
+
+     exchangeContract.methods
+       .sellTokenToEth(assetIn.address, amountToSend, 0)//IERC20 tokenIn, address tokenOut, uint256 amountIn, uint256 amountOut
+       .send({
+         from: account.address,
+         gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
+       })
+       .on('transactionHash', function (hash) {
+         console.log(hash);
+         callback(null, hash);
+       })
+       .on('confirmation', function (confirmationNumber, receipt) {
+         console.log(confirmationNumber, receipt);
+         if (confirmationNumber === 2) {
+           dispatcher.dispatch({ type: GET_BALANCES, content: {} });
+         }
+       })
+       .on('receipt', function (receipt) {
+         console.log(receipt);
+       })
+       .on('error', function (error) {
+         if (!error.toString().includes('-32601')) {
+           if (error.message) {
+             return callback(error.message);
+           }
+           callback(error);
+         }
+       })
+       .catch((error) => {
+         if (!error.toString().includes('-32601')) {
+           if (error.message) {
+             return callback(error.message);
+           }
+           callback(error);
+         }
+       });
+   };
+   exchange = (payload) => {
+     const {assetIn, assetOut, amountIn, amountOut} = payload.content;
+     if(assetIn.group == "inputs" ) // buscar en que gerupo
+     {
+       if(assetIn.label == "ETH"){
+          this.buyWithEth(payload);
+       }
+       else{
+          this.buyWithToken(payload);
+       }
+     }
+     else // vender tokens
+     {
+       if(assetOut.label == "ETH"){
+          this.sellWithTokenToEth(payload);
+       }
+       else{
+          this.sellWithToken(payload);
+       }
+     }
+   }
   /**
    * -------------------------
    * START STAKE ON BOOST

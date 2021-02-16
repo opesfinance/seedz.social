@@ -9,27 +9,45 @@ import {
   Form,
 } from 'react-bootstrap';
 import './exchange.scss';
+import Store from '../../stores/store';
+import {
+  ERROR,
+  EXCHANGE,
+  EXCHANGE_RETURNED,
+  EXIT,
+  EXIT_RETURNED,
+} from '../../constants';
+
+const { emitter, dispatcher, store } = Store;
 
 const optionsOne = [
   {
     label: 'ETH',
     logo: 'logo-eth.png',
-    address: 'ETHEREUM',
+    address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+    decimals: 18,
+    group: 'inputs',
   },
   {
     label: 'USDC',
     logo: 'USD_Coin_icon.webp',
     address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+    decimals: 6,
+    group: 'inputs',
   },
   {
     label: 'DAI',
     logo: 'dai-multi-collateral-mcd.webp',
     address: '0x6b175474e89094c44da98b954eedeac495271d0f',
+    decimals: 18,
+    group: 'inputs',
   },
   {
     label: 'USDT',
     logo: 'tether_32.webp',
     address: '0xdac17f958d2ee523a2206206994597c13d831ec7',
+    decimals: 6,
+    group: 'inputs',
   },
 ];
 
@@ -39,23 +57,36 @@ const optionsTwo = [
     label: 'STR',
     logo: 'tether_32.webp',
     address: '0x11C1a6B3Ed6Bb362954b29d3183cfA97A0c806Aa',
+    decimals: 18,
+    group: 'outputs',
+
   },
   {
     label: 'PIXEL',
     logo: 'tether_32.webp',
     address: '0x89045d0Af6A12782Ec6f701eE6698bEaF17d0eA2',
+    decimals: 18,
+    group: 'outputs',
+
   },
   {
     label: 'LIFT',
     logo: 'tether_32.webp',
     address: '0x47bd5114c12421FBC8B15711cE834AFDedea05D9',
+    decimals: 18,
+    group: 'outputs',
+
   },
   {
     label: 'YFU',
     logo: 'tether_32.webp',
     address: '0xa279dab6ec190eE4Efce7Da72896EB58AD533262',
+    decimals: 18,
+    group: 'outputs',
+
   },
 ];
+
 
 const boxColorMapper = {
   pink: 1,
@@ -126,6 +157,16 @@ const Exchange = (props) => {
 
       console.log('assetIn --', assetIn);
       console.log('assetOut --', assetOut);
+      console.log('exchanging ------------');
+
+      const amount = assetIn.amount;
+      if (amount > 0) {
+        //this.setState({ loading: true });
+        dispatcher.dispatch({
+          type: EXCHANGE,
+          content: { assetIn: assetIn.asset, assetOut: assetOut.asset, amountIn: assetIn.amount, amountOut: assetOut.amount }
+        });
+      }
     } else {
       setError('Select both tokens and a value for each');
     }
