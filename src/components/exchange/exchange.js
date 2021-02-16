@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { IoSwapVerticalOutline } from 'react-icons/io5';
 import { IconContext } from 'react-icons';
-import {
-  InputGroup,
-  Dropdown,
-  FormControl,
-  DropdownButton,
-  Form,
-} from 'react-bootstrap';
+import { InputGroup, Dropdown, Form } from 'react-bootstrap';
 import './exchange.scss';
 
 const optionsOne = [
@@ -64,6 +58,9 @@ const boxColorMapper = {
   green: 4,
 };
 
+// seconds to update interval
+const BOXES_INTERVAL = 2000;
+
 const inputOptions = (options) => {
   return options.map((o, i) => {
     return (
@@ -74,13 +71,32 @@ const inputOptions = (options) => {
   });
 };
 
+const dropdownOptions = (options) => {
+  return options.map(({ address, label, logo }) => {
+    return (
+      <Dropdown.Item key={address} eventKey={address}>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <img
+            style={{
+              maxHeight: '22px',
+            }}
+            src={require(`../../assets/logos/${logo}`)}
+            alt=''
+          />
+          <span>{label}</span>
+        </div>
+      </Dropdown.Item>
+    );
+  });
+};
+
 const Exchange = (props) => {
   const [fromOptions, setFromOptions] = useState(optionsOne);
-  const [inputOptionsTo, setInputOptionsTo] = useState(optionsTwo);
+  const [toOptions, setToOptions] = useState(optionsTwo);
   const [fromAmount, setFromAmount] = useState(0);
   const [fromAddress, setFromAddress] = useState(fromOptions[0].address);
   const [toAmount, setToAmount] = useState(0);
-  const [toAddress, setToAddress] = useState(inputOptionsTo[0].address);
+  const [toAddress, setToAddress] = useState(toOptions[0].address);
   const [error, setError] = useState('');
   const [boxes, setBoxValues] = useState([
     { label: 'STR', value: '45 M', color: 'pink' },
@@ -90,6 +106,25 @@ const Exchange = (props) => {
     { label: 'ETH', value: '45 M', color: 'orange' },
     { label: 'USDC', value: '45 M', color: 'purple' },
   ]);
+
+  const [fromToggleContents, setFromToggleContents] = useState('Choose');
+  const [toToggleContents, setToToggleContents] = useState('Choose');
+
+  useEffect(() => {
+    let interval = setInterval(() => {
+      let valueFromStore = {
+        label: 'STR',
+        value: `${Math.floor(Math.random() * 45)} M`,
+      };
+      let boxesCopy = [...boxes];
+      let boxToModify = boxesCopy.find((b) => b.label == valueFromStore.label);
+      if (boxToModify) boxToModify.value = valueFromStore.value;
+      setBoxValues(boxesCopy);
+    }, BOXES_INTERVAL);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [boxes]);
 
   const onChangeFrom = (value) => {
     setError('');
@@ -103,17 +138,17 @@ const Exchange = (props) => {
 
   const onChangeFromSelect = (value) => {
     setError('');
-    console.log(value);
+    console.log('from', value);
     setFromAddress(value);
   };
 
   const onChangeToSelect = (value) => {
     setError('');
     setToAddress(value);
-    console.log(value);
   };
 
   const onExchange = () => {
+    console.log(fromAddress);
     if (fromAmount && fromAddress && toAmount && toAddress) {
       const assetIn = {
         amount: fromAmount,
@@ -121,7 +156,7 @@ const Exchange = (props) => {
       };
       const assetOut = {
         amount: toAmount,
-        asset: inputOptionsTo.find((i) => i.address == toAddress),
+        asset: toOptions.find((i) => i.address == toAddress),
       };
 
       console.log('assetIn --', assetIn);
@@ -135,14 +170,17 @@ const Exchange = (props) => {
     const tempFromVal = fromAmount;
     const tempFromOption = fromAddress;
     const tempFromOptions = JSON.parse(JSON.stringify(fromOptions));
+    const tempFromToggle = fromToggleContents;
 
     setFromAmount(toAmount);
     setFromAddress(toAddress);
-    setFromOptions(inputOptionsTo);
+    setFromOptions(toOptions);
+    setFromToggleContents(toToggleContents);
 
     setToAmount(tempFromVal);
     setToAddress(tempFromOption);
-    setInputOptionsTo(tempFromOptions);
+    setToOptions(tempFromOptions);
+    setToToggleContents(tempFromToggle);
   };
 
   const boxesLayout = (
@@ -179,14 +217,40 @@ const Exchange = (props) => {
                 <h4>Exchange</h4>
 
                 <InputGroup className='mb-3'>
-                  <Form.Control
-                    as='select'
-                    onChange={(e) => onChangeFromSelect(e.target.value)}
-                    value={fromAddress}
-                    custom
+                  <Dropdown
+                    onSelect={(eventKey) => {
+                      // console.log(eventKey);
+                      const { label, address, logo } = fromOptions.find(
+                        ({ address }) => eventKey === address
+                      );
+                      onChangeFromSelect(address);
+                      setFromToggleContents(
+                        <>
+                          <img
+                            style={{
+                              maxHeight: '22px',
+                              marginRight: '5px',
+                            }}
+                            src={require(`../../assets/logos/${logo}`)}
+                            alt=''
+                          />
+                          {label}
+                        </>
+                      );
+                    }}
                   >
-                    {inputOptions(fromOptions)}
-                  </Form.Control>
+                    <Dropdown.Toggle
+                      variant='outline-primary'
+                      id='dropdown-flags'
+                      className='text-left'
+                    >
+                      {fromToggleContents}
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                      {dropdownOptions(fromOptions)}
+                    </Dropdown.Menu>
+                  </Dropdown>
 
                   <Form.Control
                     style={{ width: '55%' }}
@@ -202,14 +266,38 @@ const Exchange = (props) => {
                 </IconContext.Provider>
 
                 <InputGroup className='mt-3'>
-                  <Form.Control
-                    as='select'
-                    onChange={(e) => onChangeToSelect(e.target.value)}
-                    value={toAddress}
-                    custom
+                  <Dropdown
+                    onSelect={(eventKey) => {
+                      // console.log(eventKey);
+                      const { label, address, logo } = toOptions.find(
+                        ({ address }) => eventKey === address
+                      );
+                      onChangeToSelect(address);
+                      setToToggleContents(
+                        <>
+                          <img
+                            style={{
+                              maxHeight: '22px',
+                              marginRight: '5px',
+                            }}
+                            src={require(`../../assets/logos/${logo}`)}
+                            alt=''
+                          />
+                          {label}
+                        </>
+                      );
+                    }}
                   >
-                    {inputOptions(inputOptionsTo)}
-                  </Form.Control>
+                    <Dropdown.Toggle
+                      variant='outline-primary'
+                      id='dropdown-flags'
+                      className='text-left'
+                    >
+                      {toToggleContents}
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>{dropdownOptions(toOptions)}</Dropdown.Menu>
+                  </Dropdown>
                   <Form.Control
                     style={{ width: '55%' }}
                     value={toAmount}
