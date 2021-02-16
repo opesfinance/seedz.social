@@ -53,7 +53,6 @@ const optionsTwo = [
     address: '0x11C1a6B3Ed6Bb362954b29d3183cfA97A0c806Aa',
     decimals: 18,
     group: 'outputs',
-
   },
   {
     label: 'PIXEL',
@@ -61,7 +60,6 @@ const optionsTwo = [
     address: '0x89045d0Af6A12782Ec6f701eE6698bEaF17d0eA2',
     decimals: 18,
     group: 'outputs',
-
   },
   {
     label: 'LIFT',
@@ -69,7 +67,6 @@ const optionsTwo = [
     address: '0x47bd5114c12421FBC8B15711cE834AFDedea05D9',
     decimals: 18,
     group: 'outputs',
-
   },
   {
     label: 'YFU',
@@ -77,10 +74,8 @@ const optionsTwo = [
     address: '0xa279dab6ec190eE4Efce7Da72896EB58AD533262',
     decimals: 18,
     group: 'outputs',
-
   },
 ];
-
 
 const boxColorMapper = {
   pink: 1,
@@ -169,7 +164,6 @@ const Exchange = (props) => {
 
   const onChangeFromSelect = (value) => {
     setError('');
-    console.log('from', value);
     setFromAddress(value);
   };
 
@@ -179,7 +173,6 @@ const Exchange = (props) => {
   };
 
   const onExchange = () => {
-    console.log(fromAddress);
     if (fromAmount && fromAddress && toAmount && toAddress) {
       const assetIn = {
         amount: fromAmount,
@@ -199,7 +192,12 @@ const Exchange = (props) => {
         //this.setState({ loading: true });
         dispatcher.dispatch({
           type: EXCHANGE,
-          content: { assetIn: assetIn.asset, assetOut: assetOut.asset, amountIn: assetIn.amount, amountOut: assetOut.amount }
+          content: {
+            assetIn: assetIn.asset,
+            assetOut: assetOut.asset,
+            amountIn: assetIn.amount,
+            amountOut: assetOut.amount,
+          },
         });
       }
     } else {
