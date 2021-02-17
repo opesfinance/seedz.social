@@ -14,6 +14,7 @@ import Farm from './components/farms/farms';
 import Hives from './components/hives/hives';
 import WhaleTank from './components/whalestank/whaletank';
 import Stake from './components/stake/stake';
+import Swarm from './components/swarm/swarm';
 
 import {
   CONNECTION_CONNECTED,
@@ -125,6 +126,9 @@ class App extends Component {
                 </Route>
                 <Route path='/exchange'>
                   <Exchange />
+                </Route>
+                <Route path='/swarm'>
+                  <Swarm />
                 </Route>
                 <Route path='/'>
                   <Home />

@@ -19,6 +19,16 @@ const LeftNav = (props) => {
               <span className='menu'>Dashboard</span>
             </li>
           </Link>
+          <Link to='/exchange'>
+            <li className='item-menu'>
+              <img
+                alt=''
+                src={require('../../assets/exchange.png')}
+                width='20'
+              />
+              <span className='menu'>Exchange</span>
+            </li>
+          </Link>
           <Link to='/hives'>
             <li className='item-menu'>
               <img alt='' src={require('../../assets/house.png')} width='20' />
@@ -31,6 +41,12 @@ const LeftNav = (props) => {
               <span className='menu'>Farms</span>
             </li>
           </Link>
+          <Link to='/swarm'>
+            <li className='item-menu'>
+              <img alt='' src={require('../../assets/swarm.png')} width='20' />
+              <span className='menu'>Swarm</span>
+            </li>
+          </Link>
           <Link to='/whaletank'>
             <li className='item-menu'>
               <img
@@ -39,16 +55,6 @@ const LeftNav = (props) => {
                 width='20'
               />
               <span className='menu'>Whale Tank</span>
-            </li>
-          </Link>
-          <Link to='/exchange'>
-            <li className='item-menu'>
-              <img
-                alt=''
-                src={require('../../assets/exchange.png')}
-                width='20'
-              />
-              <span className='menu'>Exchange</span>
             </li>
           </Link>
         </ul>
