@@ -8,22 +8,29 @@ const secondCol = (props) => {
         <Card.Body>
           <div className='d-flex justify-content-between'>
             <span>Ethereum Price (USD)</span>
-            <span>$ {props.pool.ethPrice}</span>
+            <span className='text-right pool-info'>
+              $ {props.pool.ethPrice}
+            </span>
           </div>
           <hr />
           <div className='d-flex justify-content-between'>
             <span>Token Balance</span>
-            <span>{props.pool.boostBalance} ETH</span>
+            <span className='text-right pool-info'>
+              {' '}
+              {props.pool.boostBalance} ETH
+            </span>
           </div>
           <hr />
           <div className='d-flex justify-content-between'>
             <span>Cost of Beast Mode</span>
-            <span>{props.pool.costBooster} ETH</span>
+            <span className='text-right pool-info'>
+              {props.pool.costBooster} ETH
+            </span>
           </div>
           <hr />
           <div className='d-flex justify-content-between'>
-            <span>Cost of Beast Mode (.)</span>
-            <span>
+            <span>Cost of Beast Mode</span>
+            <span className='text-right pool-info'>
               ${' '}
               {props.pool.costBoosterUSD
                 ? props.pool.costBoosterUSD.toFixed(2)
@@ -33,7 +40,7 @@ const secondCol = (props) => {
           <hr />
           <div className='d-flex justify-content-between'>
             <span>Time to next BEAST powerup</span>
-            <span>
+            <span className='text-right pool-info'>
               {props.pool.timeToNextBoost - new Date().getTime() / 1000 > 0
                 ? (
                     (props.pool.timeToNextBoost - new Date().getTime() / 1000) /
@@ -45,9 +52,9 @@ const secondCol = (props) => {
           </div>
           <hr />
           <div className='d-flex justify-content-between'>
-            <span>Beast Modes currently active</span>
+            <span>Beast Mode active</span>
             <span className='text-right pool-info'>
-              {props.pool.myBeastModes}
+              {props.pool.myBeastModes}%
             </span>
           </div>
           <hr />
@@ -95,7 +102,7 @@ const StakeBuyBoost = (props) => {
     <>
       <Row className='pool-boxes pool-titles'>
         <Col>
-          <Row>
+          {/* <Row>
             <Col>
               <Card>
                 <Card.Body className='text-left'>
@@ -119,7 +126,7 @@ const StakeBuyBoost = (props) => {
               </Card>
             </Col>
           </Row>
-          <br />
+          <br />*/}
           <Row>
             <Col>
               <Card className='pool-card'>
@@ -155,10 +162,10 @@ const StakeBuyBoost = (props) => {
                     <Row>
                       <Col>
                         <span className='dot purple'></span>
-                        BEAST MODE X
+                        BEAST MODE (leverage)
                       </Col>
                       <Col className='text-right pool-info'>
-                        {props.pool.myBeastModes}
+                        {props.pool.myBeastModes}%
                       </Col>
                     </Row>
                     <Row>

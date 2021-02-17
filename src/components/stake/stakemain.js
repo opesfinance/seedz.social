@@ -58,16 +58,15 @@ const StakeMain = (props) => {
         <Card className='pool-card'>
           <Card.Body className='text-left'>
             <div className='d-flex justify-content-between'>
-              <span>Beast Bonus:</span>
-              <span>{props.pool.beastBonus ? props.pool.beastBonus : '0'}</span>
+              <span>Beast Bonus (leverage):</span>
+              <span>
+                {props.pool.beastBonus ? props.pool.beastBonus : '0'}%
+              </span>
             </div>
             <hr />
             <div className='d-flex justify-content-between'>
               <span>Bonus Reduction in:</span>
-              <span>
-                {props.pool.bonusReductionIn}{' '}
-                {props.pool.bonusReductionIn > 1 ? 'days' : 'day'}
-              </span>
+              <span>{props.pool.bonusReductionIn} </span>
             </div>
             <hr />
             <div className='d-flex justify-content-between'>
@@ -164,7 +163,7 @@ const StakeMain = (props) => {
               <Row>
                 <Col className='pool-titles'>
                   <span className='dot purple'></span>
-                  BEAST MODE X
+                  BEAST MODE (leverage)
                 </Col>
                 <Col className='text-right pool-info'>
                   {props.pool.myBeastModes}
@@ -218,7 +217,7 @@ const StakeMain = (props) => {
             {props.renderAssetInput(props.pool, 'unstake')}
             <br />
             <span className='pool-titles'>
-              Apply a multiplier to your membership
+              Add leverage to your staked capital
             </span>
             <Row className='pt-4'>
               <Col className='text-center'>
