@@ -85,7 +85,7 @@ const boxColorMapper = {
 };
 
 // seconds to update interval
-const BOXES_INTERVAL = 2000;
+const BOXES_INTERVAL = 3000;
 
 const inputOptions = (options) => {
   return options.map((o, i) => {
@@ -125,27 +125,58 @@ const Exchange = (props) => {
   const [toAddress, setToAddress] = useState(toOptions[0].address);
   const [error, setError] = useState('');
   const [boxes, setBoxValues] = useState([
-    { label: 'STR', value: '45 M', color: 'pink' },
-    { label: 'PIXEL', value: '45 M', color: 'orange' },
-    { label: 'LIFT', value: '45 M', color: 'purple' },
-    { label: 'YFU', value: '45 M', color: 'green' },
-    { label: 'ETH', value: '45 M', color: 'orange' },
-    { label: 'USDC', value: '45 M', color: 'purple' },
+    { label: 'STR', value: '$ 0.00', color: 'pink' },
+    { label: 'PIXEL', value: '$ 0.00', color: 'orange' },
+    { label: 'LIFT', value: '$ 0.00', color: 'purple' },
+    { label: 'YFU', value: '$ 0.00', color: 'green' },
+    { label: 'ETH', value: '$ 0.00', color: 'orange' },
+    { label: 'WPE', value: '$ 0.00', color: 'purple' },
   ]);
 
   const [fromToggleContents, setFromToggleContents] = useState('Choose');
   const [toToggleContents, setToToggleContents] = useState('Choose');
 
   useEffect(() => {
+    const assetIn = optionsOne.find((i) => i.address == '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'); //USDT
+    //const assetOut = optionsTwo.find((i) => i.address == '0x11C1a6B3Ed6Bb362954b29d3183cfA97A0c806Aa');
+    for (const assetOut of optionsTwo){
+        store.getPrice(assetIn, assetOut);
+    }
+    console.log(assetIn);
+
     let interval = setInterval(() => {
-      let valueFromStore = {
-        label: 'STR',
-        value: `${Math.floor(Math.random() * 45)} M`,
-      };
-      let boxesCopy = [...boxes];
-      let boxToModify = boxesCopy.find((b) => b.label == valueFromStore.label);
-      if (boxToModify) boxToModify.value = valueFromStore.value;
-      setBoxValues(boxesCopy);
+      //store.getPrice(assetIn, assetOut);
+      const assets = store.getStore('exchangeAssets').tokens;
+
+      for (const assetOut of optionsTwo){
+          //store.getPrice(assetIn, assetOut);
+          var current = assets.find((i) => i.address == assetOut.address);
+          var strPrice = current.price;
+          console.log(strPrice);
+          let valueFromStore = {
+            label: assetOut.label,
+            value: `\$ ${parseFloat(strPrice).toFixed(4)}`,//Math.floor(strPrice)} M`,
+          };
+          let boxesCopy = [...boxes];
+          let boxToModify = boxesCopy.find((b) => b.label == valueFromStore.label);
+          if (boxToModify) boxToModify.value = valueFromStore.value;
+          setBoxValues(boxesCopy);
+      }
+      for (const other of ["ETH", "WPE"]){
+          //store.getPrice(assetIn, assetOut);
+          var current = assets.find((i) => i.label == other);
+          var tempPrice = current.price;
+          console.log(tempPrice);
+          let valueFromStore = {
+            label: current.label,
+            value: `\$ ${parseFloat(tempPrice).toFixed(4)}`,//Math.floor(strPrice)} M`,
+          };
+          let boxesCopy = [...boxes];
+          let boxToModify = boxesCopy.find((b) => b.label == valueFromStore.label);
+          if (boxToModify) boxToModify.value = valueFromStore.value;
+          setBoxValues(boxesCopy);
+      }
+
     }, BOXES_INTERVAL);
     return () => {
       clearInterval(interval);

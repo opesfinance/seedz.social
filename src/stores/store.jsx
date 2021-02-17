@@ -488,7 +488,7 @@ class Store {
           myRewards: 0,
         },
       ],
-      exchangeAssets: [
+      exchangeAssets:
         {
           tokens: [
             {
@@ -577,8 +577,7 @@ class Store {
               route: ['0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2','0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b'],
             },
           ],
-        }
-      ],
+        },
     };
 
     dispatcher.register(
@@ -944,7 +943,87 @@ class Store {
     );
   };
 
-  _getOutputForInputVal = async (web3, assetIn, assetOut, route, amountIn, account, callback) => {
+  getPrice = async (assetIn, assetOut) => {
+    const pools = store.getStore('rewardPools');
+    const account = store.getStore('account');
+
+    const web3 = new Web3(store.getStore('web3context').library.provider);
+    const assets = store.getStore('exchangeAssets').tokens;
+
+    //const { assetIn, assetOut} = payload.content;
+    var route = [];
+    if(assetIn.label != "ETH"){
+        route.push(assetIn.address);
+    }
+    route = route.concat(['0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2','0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b'])
+    route.push(assetOut.address);
+
+    let test = await this._getOutputForInputVal(web3, assetIn, assetOut, route, "100", account);// => {
+
+    console.log(test);
+
+    let amountOut = (test[test.length - 1] / 10 ** assetOut.decimals).toFixed(4);
+    var price = 100/amountOut;
+    console.log(price);
+
+    //ETH price
+
+    var currentETH = assets.find((i) => i.label == 'ETH');
+    currentETH.price = 100/(test[test.length - 3] / 10 ** currentETH.decimals).toFixed(4);
+
+    //WPE price
+
+    var currentWPE = assets.find((i) => i.label == 'WPE');
+    var wpeTemp = (test[test.length - 2] / 10 ** currentWPE.decimals).toFixed(4);
+    currentWPE.price =100/wpeTemp;
+    console.log(wpeTemp);
+    console.log("WPE ", currentWPE);
+
+    var current = assets.find((i) => i.address == assetOut.address);
+    current.price = price;
+    console.log(assets);
+    return(price);
+    //   if (err) {
+    //     return emitter.emit(ERROR, err);
+    //   }
+    //   console.log(res);
+    // });
+
+  }
+  getAmountOut = async (assetIn, assetOut, amountIn) => {
+    const pools = store.getStore('rewardPools');
+    const account = store.getStore('account');
+
+    const web3 = new Web3(store.getStore('web3context').library.provider);
+    const assets = store.getStore('exchangeAssets').tokens;
+    var current = assets.find((i) => i.address == assetOut.address);
+    //const { assetIn, assetOut} = payload.content;
+
+    if(assetIn.group == "outputs"){
+
+    }
+
+    var route = [];
+
+    if(assetIn.label != "ETH"){
+        route.push(assetIn.address);
+    }
+    //Default route
+    route = route.concat(current.route);
+    route.push(assetOut.address);
+
+    let dataBack = await this._getOutputForInputVal(web3, assetIn, assetOut, route, amountIn, account);// => {
+
+    console.log(dataBack);
+
+    let amountOut = (dataBack[dataBack.length - 1] / 10 ** assetOut.decimals).toFixed(4);
+
+    console.log(amountOut);
+
+
+  }
+
+  _getOutputForInputVal = async (web3, assetIn, assetOut, route, amountIn, account) => {
     let uniswapRouter = new web3.eth.Contract(
       config.uniswapRouterABI,
       config.uniswapRouterAddress
@@ -955,12 +1034,12 @@ class Store {
     }
     try {
       var amounts = await uniswapRouter.methods
-        .getAmountsOut(amountIn, route)//[assetIn.address, assetOut.address])
+        .getAmountsOut(amountToSend, route)//[assetIn.address, assetOut.address])
         .call({ from: account.address });
-
-      callback(null, amounts);
+        return amounts;
+        //callback(null, amounts);
     } catch (ex) {
-      return callback(ex);
+      return ex;
     }
   };
 
