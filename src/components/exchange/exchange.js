@@ -85,7 +85,7 @@ const boxColorMapper = {
 };
 
 // seconds to update interval
-const BOXES_INTERVAL = 3000;
+const BOXES_INTERVAL = 10000;
 
 const inputOptions = (options) => {
   return options.map((o, i) => {
@@ -137,10 +137,11 @@ const Exchange = (props) => {
   const [toToggleContents, setToToggleContents] = useState('Choose');
 
   useEffect(() => {
-    const assetIn = optionsOne.find((i) => i.address == '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'); //USDT
+    const assetIn = optionsOne.find((i) => i.address == '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'); //USDC
     //const assetOut = optionsTwo.find((i) => i.address == '0x11C1a6B3Ed6Bb362954b29d3183cfA97A0c806Aa');
     for (const assetOut of optionsTwo){
         store.getPrice(assetIn, assetOut);
+        //store.getAmountOut(assetOut, assetIn , "522.7370");  EXAMPLE YFU --> USDC amounts
     }
     console.log(assetIn);
 

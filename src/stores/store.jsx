@@ -999,26 +999,40 @@ class Store {
     var current = assets.find((i) => i.address == assetOut.address);
     //const { assetIn, assetOut} = payload.content;
 
-    if(assetIn.group == "outputs"){
+    var inputToken = assetIn;
+    var outputToken = assetOut;
+    var midRoute = current.route;
 
+    if(assetIn.group == "outputs"){
+        inputToken = assetOut;
+        outputToken = assetIn;
+        var temp = assets.find((i) => i.address == outputToken.address);
+        midRoute = temp.route;
     }
+
 
     var route = [];
 
-    if(assetIn.label != "ETH"){
-        route.push(assetIn.address);
+    if(inputToken.label != "ETH"){
+        route.push(inputToken.address);
     }
     //Default route
-    route = route.concat(current.route);
-    route.push(assetOut.address);
+    route = route.concat(midRoute);
+    route.push(outputToken.address);
+
+    if(assetIn.group == "outputs"){
+      route = route.reverse();
+    }
+
 
     let dataBack = await this._getOutputForInputVal(web3, assetIn, assetOut, route, amountIn, account);// => {
 
     console.log(dataBack);
 
     let amountOut = (dataBack[dataBack.length - 1] / 10 ** assetOut.decimals).toFixed(4);
-
-    console.log(amountOut);
+    console.log("Asset IN ", assetIn.label);
+    console.log("Asset Out ", assetOut.label);
+    console.log("AMOUNT OUT ", amountOut);
 
 
   }
