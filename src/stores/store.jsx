@@ -1034,8 +1034,16 @@ class Store {
     console.log("Asset Out ", assetOut.label);
     console.log("AMOUNT OUT ", amountOut);
 
+    let amountOut = (
+      dataBack[dataBack.length - 1] /
+      10 ** assetOut.decimals
+    ).toFixed(9);
+    // console.log('Asset IN ', assetIn.label);
+    // console.log('Asset Out ', assetOut.label);
+    // console.log('AMOUNT IN ', amountIn);
+    // console.log('AMOUNT OUT ', amountOut);
 
-  }
+    return amountOut;
 
   _getOutputForInputVal = async (web3, assetIn, assetOut, route, amountIn, account) => {
     let uniswapRouter = new web3.eth.Contract(
