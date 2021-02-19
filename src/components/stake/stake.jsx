@@ -29,10 +29,6 @@ import {
 import rewardsMapper from '../utils/rewardsMapper';
 import styles from './stakeStyles';
 
-const setState = (params) => {
-  console.log('set state params', params);
-};
-
 const { emitter, dispatcher, store } = Store;
 
 const Stake = (props) => {
@@ -95,7 +91,7 @@ const Stake = (props) => {
   }, []);
 
   useEffect(() => {
-    store.getStore('currentPool');
+    // store.getStore('currentPool');
 
     emitter.on(ERROR, errorReturned);
     emitter.on(STAKE_RETURNED, showHash);
@@ -115,8 +111,8 @@ const Stake = (props) => {
   }, []);
 
   const balancesReturned = () => {
-    const currentPool = store.getStore('currentPool');
-    console.log('CURRENT POOL ' + currentPool);
+    const currentPool = pool; // store.getStore('currentPool');
+    console.log('CURRENT POOL ', currentPool);
     const pools = store.getStore('rewardPools');
     let newPool = pools.filter((pool) => {
       return pool.id === currentPool.id;
