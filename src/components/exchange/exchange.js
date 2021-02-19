@@ -1,81 +1,17 @@
+// mio
 import React, { useState, useEffect } from 'react';
 import { IoSwapVerticalOutline } from 'react-icons/io5';
 import { IconContext } from 'react-icons';
 import { InputGroup, Dropdown, Form } from 'react-bootstrap';
 import './exchange.scss';
 import Store from '../../stores/store';
-import {
-  ERROR,
-  EXCHANGE,
-  EXCHANGE_RETURNED,
-  EXIT,
-  EXIT_RETURNED,
-} from '../../constants';
+// ERROR,
+// EXCHANGE_RETURNED,
+// EXIT,
+// EXIT_RETURNED,
+import { EXCHANGE } from '../../constants';
 
 const { emitter, dispatcher, store } = Store;
-
-const optionsOne = [
-  {
-    label: 'ETH',
-    logo: 'logo-eth.png',
-    address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-    decimals: 18,
-    group: 'inputs',
-  },
-  {
-    label: 'USDC',
-    logo: 'USD_Coin_icon.webp',
-    address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-    decimals: 6,
-    group: 'inputs',
-  },
-  {
-    label: 'DAI',
-    logo: 'dai-multi-collateral-mcd.webp',
-    address: '0x6b175474e89094c44da98b954eedeac495271d0f',
-    decimals: 18,
-    group: 'inputs',
-  },
-  {
-    label: 'USDT',
-    logo: 'tether_32.webp',
-    address: '0xdac17f958d2ee523a2206206994597c13d831ec7',
-    decimals: 6,
-    group: 'inputs',
-  },
-];
-
-// comunidades
-const optionsTwo = [
-  {
-    label: 'STR',
-    logo: 'tether_32.webp',
-    address: '0x11C1a6B3Ed6Bb362954b29d3183cfA97A0c806Aa',
-    decimals: 18,
-    group: 'outputs',
-  },
-  {
-    label: 'PIXEL',
-    logo: 'tether_32.webp',
-    address: '0x89045d0Af6A12782Ec6f701eE6698bEaF17d0eA2',
-    decimals: 18,
-    group: 'outputs',
-  },
-  {
-    label: 'LIFT',
-    logo: 'tether_32.webp',
-    address: '0x47bd5114c12421FBC8B15711cE834AFDedea05D9',
-    decimals: 18,
-    group: 'outputs',
-  },
-  {
-    label: 'YFU',
-    logo: 'tether_32.webp',
-    address: '0xa279dab6ec190eE4Efce7Da72896EB58AD533262',
-    decimals: 18,
-    group: 'outputs',
-  },
-];
 
 const boxColorMapper = {
   pink: 1,
@@ -86,16 +22,6 @@ const boxColorMapper = {
 
 // seconds to update interval
 const BOXES_INTERVAL = 10000;
-
-const inputOptions = (options) => {
-  return options.map((o, i) => {
-    return (
-      <option key={o.address} value={o.address}>
-        {o.label}
-      </option>
-    );
-  });
-};
 
 const dropdownOptions = (options) => {
   return options.map(({ address, label, logo }) => {
@@ -117,13 +43,18 @@ const dropdownOptions = (options) => {
 };
 
 const Exchange = (props) => {
-  const [fromOptions, setFromOptions] = useState(optionsOne);
-  const [toOptions, setToOptions] = useState(optionsTwo);
-  const [fromAmount, setFromAmount] = useState(0);
+  const [fromOptions, setFromOptions] = useState(
+    store.getStore('exchangeAssets').tokens.filter((a) => a.group == 'inputs')
+  );
+  const [toOptions, setToOptions] = useState(
+    store.getStore('exchangeAssets').tokens.filter((a) => a.group == 'outputs')
+  );
+  const [fromAmount, setFromAmount] = useState('0');
   const [fromAddress, setFromAddress] = useState(fromOptions[0].address);
-  const [toAmount, setToAmount] = useState(0);
+  const [toAmount, setToAmount] = useState('0');
   const [toAddress, setToAddress] = useState(toOptions[0].address);
   const [error, setError] = useState('');
+  const [unitPrice, setUnitPrice] = useState('');
   const [boxes, setBoxValues] = useState([
     { label: 'STR', value: '$ 0.00', color: 'pink' },
     { label: 'PIXEL', value: '$ 0.00', color: 'orange' },
@@ -136,57 +67,84 @@ const Exchange = (props) => {
   const [fromToggleContents, setFromToggleContents] = useState('Choose');
   const [toToggleContents, setToToggleContents] = useState('Choose');
 
-  useEffect(() => {
-    const assetIn = optionsOne.find((i) => i.address == '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'); //USDC
-    //const assetOut = optionsTwo.find((i) => i.address == '0x11C1a6B3Ed6Bb362954b29d3183cfA97A0c806Aa');
-    for (const assetOut of optionsTwo){
-        store.getPrice(assetIn, assetOut);
-        //store.getAmountOut(assetOut, assetIn , "522.7370");  EXAMPLE YFU --> USDC amounts
+  const pricePromises = async () => {
+    const assetsOut = store
+      .getStore('exchangeAssets')
+      .tokens.filter((a) => a.group == 'outputs');
+
+    const assetIn = store
+      .getStore('exchangeAssets')
+      .tokens.find((i) => i.label == 'USDC'); //USDC
+
+    let promises = assetsOut.map((assetOut) =>
+      store.getPrice(assetIn, assetOut)
+    );
+    let results = await Promise.all(promises);
+
+    let newBoxes = boxes.map((b, i) => {
+      return { ...b, value: `\$ ${parseFloat(results[i]).toFixed(4)}` };
+    });
+
+    for (const assetLabel of ['ETH', 'WPE']) {
+      let current = store
+        .getStore('exchangeAssets')
+        .tokens.find((i) => i.label == assetLabel);
+
+      let boxToModify = newBoxes.find((b) => b.label == assetLabel);
+      if (boxToModify)
+        boxToModify.value = `\$ ${parseFloat(current.price).toFixed(4)}`;
     }
-    console.log(assetIn);
+
+    setBoxValues(newBoxes);
+  };
+
+  useEffect(() => {
+    console.log('rendering --');
+    pricePromises();
+    // default option
+    onSelectAssetIn(fromAddress);
+    onSelectAssetOut(toAddress);
 
     let interval = setInterval(() => {
-      //store.getPrice(assetIn, assetOut);
-      const assets = store.getStore('exchangeAssets').tokens;
-
-      for (const assetOut of optionsTwo){
-          //store.getPrice(assetIn, assetOut);
-          var current = assets.find((i) => i.address == assetOut.address);
-          var strPrice = current.price;
-          console.log(strPrice);
-          let valueFromStore = {
-            label: assetOut.label,
-            value: `\$ ${parseFloat(strPrice).toFixed(4)}`,//Math.floor(strPrice)} M`,
-          };
-          let boxesCopy = [...boxes];
-          let boxToModify = boxesCopy.find((b) => b.label == valueFromStore.label);
-          if (boxToModify) boxToModify.value = valueFromStore.value;
-          setBoxValues(boxesCopy);
-      }
-      for (const other of ["ETH", "WPE"]){
-          //store.getPrice(assetIn, assetOut);
-          var current = assets.find((i) => i.label == other);
-          var tempPrice = current.price;
-          console.log(tempPrice);
-          let valueFromStore = {
-            label: current.label,
-            value: `\$ ${parseFloat(tempPrice).toFixed(4)}`,//Math.floor(strPrice)} M`,
-          };
-          let boxesCopy = [...boxes];
-          let boxToModify = boxesCopy.find((b) => b.label == valueFromStore.label);
-          if (boxToModify) boxToModify.value = valueFromStore.value;
-          setBoxValues(boxesCopy);
-      }
-
+      pricePromises();
     }, BOXES_INTERVAL);
     return () => {
       clearInterval(interval);
     };
-  }, [boxes]);
+  }, []);
 
-  const onChangeFrom = (value) => {
+  useEffect(() => {
+    calculate();
+  }, [fromAmount, toAddress, fromAddress, boxes]);
+
+  const calculate = async () => {
+    let assetIn, amountOut, assetOut;
+    if (fromAddress)
+      assetIn = fromOptions.find((i) => i.address == fromAddress);
+    if (toAddress) assetOut = toOptions.find((i) => i.address == toAddress);
+
+    if (fromAmount && +fromAmount > 0 && assetIn && assetOut) {
+      amountOut = await store.getAmountOut(assetIn, assetOut, fromAmount);
+      setToAmount(amountOut);
+      getUnitPrice();
+    }
+  };
+
+  const getUnitPrice = async () => {
+    let assetIn, amountOut, assetOut;
+
+    if (fromAddress)
+      assetIn = fromOptions.find((i) => i.address == fromAddress);
+    if (toAddress) assetOut = toOptions.find((i) => i.address == toAddress);
+
+    amountOut = await store.getAmountOut(assetIn, assetOut, '1');
+    console.log(assetIn);
+    setUnitPrice(`1 ${assetIn.label} = ${amountOut} ${assetOut.label}`);
+  };
+
+  const onChangeFrom = async (amountIn) => {
     setError('');
-    setFromAmount(value);
+    setFromAmount(amountIn);
   };
 
   const onChangeTo = (value) => {
@@ -202,6 +160,46 @@ const Exchange = (props) => {
   const onChangeToSelect = (value) => {
     setError('');
     setToAddress(value);
+  };
+
+  const onSelectAssetIn = (eventKey) => {
+    const { label, address, logo } = fromOptions.find(
+      ({ address }) => eventKey === address
+    );
+    onChangeFromSelect(address);
+    setFromToggleContents(
+      <>
+        <img
+          style={{
+            maxHeight: '22px',
+            marginRight: '5px',
+          }}
+          src={require(`../../assets/logos/${logo}`)}
+          alt=''
+        />
+        {label}
+      </>
+    );
+  };
+
+  const onSelectAssetOut = (eventKey) => {
+    const { label, address, logo } = toOptions.find(
+      ({ address }) => eventKey === address
+    );
+    onChangeToSelect(address);
+    setToToggleContents(
+      <>
+        <img
+          style={{
+            maxHeight: '22px',
+            marginRight: '5px',
+          }}
+          src={require(`../../assets/logos/${logo}`)}
+          alt=''
+        />
+        {label}
+      </>
+    );
   };
 
   const onExchange = () => {
@@ -258,12 +256,12 @@ const Exchange = (props) => {
     <div className=' row'>
       {boxes.map((b) => {
         return (
-          <div className='col-lg-2 col-md-12 col-sm-12' key={b.label}>
+          <div className='col-lg-2 col-md-4 col-sm-4' key={b.label}>
             <div
               className={'row m-1 p-2 rounded box-' + boxColorMapper[b.color]}
             >
               <div className='col-12 m-0 my-auto text-left small font-weight-bold text-white'>
-                <h3 className='p-0 m-0 text-bottom'>{b.value}</h3>
+                <h5 className='p-0 m-0 text-bottom'>{b.value}</h5>
                 <p className='p-0 m-0 text-bottom small font-weight-bold'>
                   {b.label}
                 </p>
@@ -274,6 +272,10 @@ const Exchange = (props) => {
       })}
     </div>
   );
+
+  // const unitPrice = () => {
+  //   return <h1>{toAmount}</h1>;
+  // };
 
   return (
     <div>
@@ -286,30 +288,8 @@ const Exchange = (props) => {
             <div className='card'>
               <div className='card-body'>
                 <h4>Exchange</h4>
-
                 <InputGroup className='mb-3'>
-                  <Dropdown
-                    onSelect={(eventKey) => {
-                      // console.log(eventKey);
-                      const { label, address, logo } = fromOptions.find(
-                        ({ address }) => eventKey === address
-                      );
-                      onChangeFromSelect(address);
-                      setFromToggleContents(
-                        <>
-                          <img
-                            style={{
-                              maxHeight: '22px',
-                              marginRight: '5px',
-                            }}
-                            src={require(`../../assets/logos/${logo}`)}
-                            alt=''
-                          />
-                          {label}
-                        </>
-                      );
-                    }}
-                  >
+                  <Dropdown onSelect={onSelectAssetIn}>
                     <Dropdown.Toggle
                       variant='outline-primary'
                       id='dropdown-flags'
@@ -325,40 +305,22 @@ const Exchange = (props) => {
 
                   <Form.Control
                     style={{ width: '55%' }}
+                    // type='number'
                     value={fromAmount}
                     onChange={(e) => onChangeFrom(e.target.value)}
                     aria-describedby='basic-addon1'
                   />
                 </InputGroup>
                 {/* {<div className='mb-3'>{fromAddress}</div>} */}
-
                 <IconContext.Provider value={{ size: '2em' }}>
                   <IoSwapVerticalOutline onClick={swapClickHandler} />
                 </IconContext.Provider>
 
+                {toAmount && +toAmount > 0 && (
+                  <span className='unit-price'>{unitPrice}</span>
+                )}
                 <InputGroup className='mt-3'>
-                  <Dropdown
-                    onSelect={(eventKey) => {
-                      // console.log(eventKey);
-                      const { label, address, logo } = toOptions.find(
-                        ({ address }) => eventKey === address
-                      );
-                      onChangeToSelect(address);
-                      setToToggleContents(
-                        <>
-                          <img
-                            style={{
-                              maxHeight: '22px',
-                              marginRight: '5px',
-                            }}
-                            src={require(`../../assets/logos/${logo}`)}
-                            alt=''
-                          />
-                          {label}
-                        </>
-                      );
-                    }}
-                  >
+                  <Dropdown onSelect={onSelectAssetOut}>
                     <Dropdown.Toggle
                       variant='outline-primary'
                       id='dropdown-flags'
@@ -372,11 +334,11 @@ const Exchange = (props) => {
                   <Form.Control
                     style={{ width: '55%' }}
                     value={toAmount}
+                    disabled
                     onChange={(e) => onChangeTo(e.target.value)}
                     aria-describedby='basic-addon1'
                   />
                 </InputGroup>
-                {/* {<div className='mb-3'>{toAddress}</div>} */}
                 <div className='text-center'>
                   {error && error.length && <div>{error}</div>}
                   <button

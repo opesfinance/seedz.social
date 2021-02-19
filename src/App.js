@@ -57,7 +57,7 @@ class App extends Component {
               web3context: { library: { provider: a.provider } },
             });
             emitter.emit(CONNECTION_CONNECTED);
-            console.log(a);
+            // console.log(a);
           })
           .catch((e) => {
             console.log(e);
