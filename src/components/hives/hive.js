@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './hive.scss';
 import { BiPlus } from 'react-icons/bi';
 import { withRouter } from 'react-router-dom';

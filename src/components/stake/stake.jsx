@@ -9,7 +9,7 @@ import Snackbar from '../snackbar/snackbar';
 
 import Store from '../../stores/store';
 
-import { Col, Row, Card } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import StakeMain from './stakemain';
 import StakeBuyBoost from './stakeBuyBoost';
 
@@ -34,7 +34,7 @@ const { emitter, dispatcher, store } = Store;
 const Stake = (props) => {
   const address = props.match.params.address;
 
-  const [account, setAccount] = useState(store.getStore('account'));
+  const [account] = useState(store.getStore('account'));
   const [themeType, setThemeType] = useState(store.getStore('themeType'));
 
   const [rewardPools, setRewardPools] = useState(
@@ -44,9 +44,6 @@ const Stake = (props) => {
   const getPool = () => rewardPools.find((p) => p.address === address);
 
   const [pool, setPool] = useState(getPool());
-
-  console.log('pool ------------', pool);
-
   const [stakevalue, setStakeValue] = useState('main');
   const [balanceValid, setBalanceValid] = useState(false); // not used
   const [loading, setLoading] = useState(!(account && pool));
@@ -58,10 +55,20 @@ const Stake = (props) => {
   const [activeClass, setActiveClass] = useState(store.getStore('activeClass')); // not used
   const [amountStakeError, setAmountStakeError] = useState(false);
   const [fieldId, setFieldId] = useState('');
-  // const [amount, setAmount2] = useState('');
-  const [amounts, setAmounts] = useState({});
+
+  const initialAmounts = {};
+  initialAmounts[`${pool.id}_stake`] = '0.0000000';
+  initialAmounts[`${pool.id}_unstake`] = '0.0000000';
+  const [amounts, setAmounts] = useState(initialAmounts);
   const [amountError, setAmountError] = useState(false);
   const [gasPrice, setGasPrice] = useState(0);
+
+  console.log('pool ------------', pool);
+
+  const operationMapper = {
+    stake: 'balance',
+    unstake: 'stakedBalance',
+  };
 
   useEffect(() => {
     if (!pool) props.history.push('/');
@@ -124,6 +131,10 @@ const Stake = (props) => {
     }
   };
 
+  const parseAmount = (amount) => {
+    return (Math.floor(amount * 1000000000) / 1000000000).toFixed(9);
+  };
+
   const showHash = (txHash) => {
     setSnackbarType(null);
     setSnackbarMessage(null);
@@ -157,16 +168,6 @@ const Stake = (props) => {
     }
   };
 
-  // not used
-  // const overlayClicked = () => {
-  //   setState({ modalOpen: true });
-  // };
-
-  // not used
-  // const closeModal = () => {
-  //   setState({ modalOpen: false });
-  // };
-
   const onBuyBoost = () => {
     setAmountError(false);
     console.log('pool ----------', pool);
@@ -196,8 +197,11 @@ const Stake = (props) => {
     const selectedToken = pool.token;
     setFieldId('');
     const amount = amounts[selectedToken.id + '_stake'];
+
+    console.log(amount);
+    console.log(selectedToken);
+
     if (amount > 0) {
-      this.setState({ loading: true });
       dispatcher.dispatch({
         type: STAKE,
         content: { asset: pool.token, amount },
@@ -216,7 +220,6 @@ const Stake = (props) => {
     setFieldId('');
     const amount = amounts[pool.id + '_unstake'];
     console.log(amounts);
-    console.log('unstaking ------------', 0.000001);
     if (amount > 0) {
       setLoading(true);
       dispatcher.dispatch({
@@ -237,50 +240,25 @@ const Stake = (props) => {
 
   const renderAssetInput = (pool, type) => {
     const { classes } = props;
-    const amount = amounts[pool.id + '_' + type];
+    const amount = amounts[`${pool.id}_${type}`];
     const action = type === 'unstake' ? onUnstake : onStake;
-    let amountError = amounts[pool.id + '_' + type + '_error'];
+    let amountError = amounts[`${pool.id}_${type}_error`];
     return (
-      <div className={classes.valContainer} key={pool.id + '_' + type}>
+      <div className={classes.valContainer} key={`${pool.id}_${type}`}>
         <Row>
           <Col lg='8' md='8' sm='10' xs='12'>
-            {type === 'stake' && (
-              <Typography
-                onClick={() => {
-                  setAmount(
-                    pool.id,
-                    type,
-                    pool
-                      ? (
-                          Math.floor(pool.balance * 1000000000) / 1000000000
-                        ).toFixed(9)
-                      : 0
-                  );
-                }}
-                className='pool-max-balance text-right'
-              >
-                Use Max Balance
-              </Typography>
-            )}
-            {type === 'unstake' && (
-              <Typography
-                onClick={() => {
-                  setAmount(
-                    pool.id,
-                    type,
-                    pool
-                      ? (
-                          Math.floor(pool.stakedBalance * 1000000000) /
-                          1000000000
-                        ).toFixed(9)
-                      : 0
-                  );
-                }}
-                className='pool-max-balance text-right'
-              >
-                {'Use Max Balance'}
-              </Typography>
-            )}
+            <Typography
+              onClick={() => {
+                setAmount(
+                  pool.id,
+                  type,
+                  pool ? parseAmount(pool.token[operationMapper[type]]) : 0
+                );
+              }}
+              className='pool-max-balance text-right'
+            >
+              Use Max Balance
+            </Typography>
           </Col>
         </Row>
         <Row>
@@ -288,16 +266,10 @@ const Stake = (props) => {
             <TextField
               disabled={loading}
               className={
-                amountStakeError && fieldId === pool.id + '_' + type
+                amountStakeError && fieldId === `${pool.id}_${type}`
                   ? 'border-btn-error mb-1'
                   : 'border-btn mb-1'
               }
-              // inputRef={(input) =>
-              //   input &&
-              //   fieldId === pool.id + '_' + type &&
-              //   amountStakeError &&
-              //   input.focus()
-              // }
               id={`${pool.id}_${type}`}
               value={amount}
               error={amountError}
@@ -361,11 +333,12 @@ const Stake = (props) => {
     const rounded = (
       Math.floor((balance === '' ? '0' : balance) * 1000000000) / 1000000000
     ).toFixed(9);
-    let amount = [];
-    amount[id + '_' + type] = rounded;
+    const newAmounts = { ...amounts };
+    console.log('newAmounts ---', newAmounts);
+    newAmounts[`${id}_${type}`] = rounded;
 
-    console.log('amounts --------', amounts);
-    setAmounts(amount);
+    console.log('newAmounts --------', newAmounts);
+    setAmounts(newAmounts);
   };
 
   const stakeHeader = (params) => {
