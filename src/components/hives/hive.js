@@ -85,7 +85,7 @@ const Hive = (props) => {
                   navigateStake(props.token);
                 }
               }}
-              className='btn btn-primary bg-main-blue'
+              className='btn btn-primary bg-main-blue main-btn'
             >
               <BiPlus /> Stake
             </div>

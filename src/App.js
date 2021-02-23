@@ -103,7 +103,7 @@ class App extends Component {
     const { account } = this.state;
 
     return (
-      <div className='light-mode main-content'>
+      <div className='dark-mode main-content'>
         <IpfsRouter>
           <Header />
           <Leftnav />

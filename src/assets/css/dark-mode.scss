@@ -1,3 +1,12 @@
+$card-bg-color: #262c47;
+
+.dark-mode.main-content {
+  background: #192039 !important;
+  color: #c2c2c2 !important;
+  min-height: 100vh !important;
+  padding-top: 10vh;
+}
+
 /**
 --------------
 Top Menu Navigation
@@ -8,18 +17,32 @@ Top Menu Navigation
   background: #2f2f2f;
 }
 
+.dark-mode .leftNav .item-menu {
+  height: 50px;
+  overflow: hidden;
+  color: #7c6ebb;
+}
+
 .leftNav .item-menu {
   height: 50px;
   overflow: hidden;
-  color: #fff;
 }
-.leftNav a {
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-}
+
 span.menu {
   padding-left: 17px;
+}
+
+.dark-mode .leftNav {
+  background-color: #262c47;
+  box-shadow: none;
+}
+
+.dark-mode .leftNav li:hover {
+  background: #192039;
+}
+
+.dark-mode .navbar {
+  background-color: #262c47 !important;
 }
 
 /**
@@ -35,22 +58,13 @@ Dark Mode
 }
 
 .dark-mode,
-.dark-mode .leftNav,
 .dark-mode .navbar {
-  background-color: #252d47 !important;
+  background-color: #19203a;
   color: #c2c2c2 !important;
 }
 
 .dark-mode .navbar a {
   color: #ffffff !important;
-}
-
-.dark-mode .main-content {
-  background: #192039 !important;
-  color: #c2c2c2 !important;
-  min-height: 100vh !important;
-  // height: 100% !important;
-  /* margin-left: 2px; */
 }
 
 .dark-mode .pageHeader {
@@ -71,4 +85,52 @@ Dark Mode
 .dark-mode .section-title {
   color: #7f63f4;
   font-weight: bold;
+}
+
+/* hives */
+
+.dark-mode .hive-wrapper {
+  background-color: $card-bg-color;
+}
+
+.dark-mode .hive-details {
+  color: white;
+  font-size: 0.8em;
+  line-height: 2.3em;
+}
+
+.dark-mode hr {
+  border-top: 2px solid #545c73;
+}
+
+/* exchange */
+.dark-mode .exchange-wrapper {
+  background-color: $card-bg-color;
+}
+
+.dark-mode .dropdown-menu {
+  background-color: $card-bg-color;
+}
+
+.dark-mode .dropdown-item {
+  color: white !important;
+  font-size: 0.9em;
+}
+
+.dark-mode .form-control {
+  border-color: #656565;
+  color: white;
+  background-color: $card-bg-color;
+}
+
+.dark-mode .form-control:disabled {
+  border-color: #656565;
+  color: white;
+  background-color: #848484;
+}
+
+// general button
+.main-btn {
+  background-color: #7f63f4;
+  padding: 0.2em 1.4em !important;
 }

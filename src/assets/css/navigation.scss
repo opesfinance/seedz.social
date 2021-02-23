@@ -4,10 +4,6 @@ Top Menu Navigation
 --------------
 **/
 
-.navbar {
-  background: #2f2f2f;
-}
-
 .justify-content-end {
   justify-content: flex-end;
 }
@@ -53,14 +49,26 @@ Left Navigation
   height: 90%;
   box-shadow: 5px 0 1px -3px #eee;
 }
+
 .leftNav ul {
   padding: 0;
   list-style-type: none;
   text-align: left;
 }
+
 .leftNav li {
   width: auto;
   height: 60px;
   line-height: 50px;
   padding-left: 15px;
+}
+
+.leftNav:hover {
+  width: 250px;
+}
+
+.leftNav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
 }

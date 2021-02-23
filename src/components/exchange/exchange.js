@@ -285,7 +285,7 @@ const Exchange = (props) => {
         {boxesLayout}
         <div className='row'>
           <div className='col-md-6 offset-md-3'>
-            <div className='card'>
+            <div className='exchange-wrapper card'>
               <div className='card-body'>
                 <h4>Exchange</h4>
                 <InputGroup className='mb-3'>
@@ -342,7 +342,7 @@ const Exchange = (props) => {
                 <div className='text-center'>
                   {error && error.length && <div>{error}</div>}
                   <button
-                    className='btn btn-primary mt-3'
+                    className='btn btn-primary mt-3 main-btn'
                     disabled={error && error.length}
                     onClick={onExchange}
                   >

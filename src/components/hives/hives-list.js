@@ -53,7 +53,7 @@ const HivesList = (props) => {
 
   const hives = rewardsMapper(rewardPools).map((t) => {
     return (
-      <div className='col-md-3' key={t.address}>
+      <div className='col-md-3 col-sm-4' key={t.address}>
         <Hive
           acronym={t.symbol}
           name={t.name}

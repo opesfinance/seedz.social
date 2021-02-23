@@ -20,10 +20,6 @@ $primary-color: #7f63f4;
   background: #f1eeff;
 }
 
-.light-mode .leftNav:hover {
-  width: 250px;
-}
-
 .light-mode .leftNav .item-menu {
   height: 50px;
   overflow: hidden;
@@ -179,4 +175,10 @@ Light Mode
 
 .bees-logo {
   height: 20vh;
+}
+
+/* hives */
+.light-mode .hive-details {
+  font-size: 0.8em;
+  line-height: 2.3em;
 }
