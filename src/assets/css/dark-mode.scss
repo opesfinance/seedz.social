@@ -23,6 +23,10 @@ Top Menu Navigation
   color: #7c6ebb;
 }
 
+.dark-mode .active > li {
+  background-color: #192039;
+}
+
 .leftNav .item-menu {
   height: 50px;
   overflow: hidden;

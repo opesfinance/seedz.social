@@ -1,25 +1,21 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { FaThLarge } from 'react-icons/fa';
-
-// import Store from '../../stores/store';
-// const { store } = Store;
+import { WiMoonAltThirdQuarter } from 'react-icons/wi';
+import { IconContext } from 'react-icons';
 
 const LeftNav = (props) => {
-  // const themeType = store.getStore('themeType');
-  // const activeclass = store.getStore('activeclass');
-
   return (
     <div className='sidebar'>
       <div className='leftNav sidbar-sticky'>
         <ul>
-          <Link to='/#'>
+          <NavLink exact to='/'>
             <li className='item-menu'>
               <FaThLarge />
               <span className='menu'>Dashboard</span>
             </li>
-          </Link>
-          <Link to='/exchange'>
+          </NavLink>
+          <NavLink to='/exchange'>
             <li className='item-menu'>
               <img
                 alt=''
@@ -28,26 +24,26 @@ const LeftNav = (props) => {
               />
               <span className='menu'>Exchange</span>
             </li>
-          </Link>
-          <Link to='/hives'>
+          </NavLink>
+          <NavLink to='/hives'>
             <li className='item-menu'>
               <img alt='' src={require('../../assets/house.png')} width='20' />
               <span className='menu'>Hives</span>
             </li>
-          </Link>
-          <Link to='/farms'>
+          </NavLink>
+          <NavLink to='/farms'>
             <li className='item-menu'>
               <img alt='' src={require('../../assets/honey.png')} width='20' />
               <span className='menu'>Farms</span>
             </li>
-          </Link>
-          <Link to='/swarm'>
+          </NavLink>
+          <NavLink to='/swarm'>
             <li className='item-menu'>
               <img alt='' src={require('../../assets/swarm.png')} width='20' />
               <span className='menu'>Swarm</span>
             </li>
-          </Link>
-          <Link to='/whaletank'>
+          </NavLink>
+          <NavLink to='/whaletank'>
             <li className='item-menu'>
               <img
                 alt=''
@@ -56,7 +52,26 @@ const LeftNav = (props) => {
               />
               <span className='menu'>Whale Tank</span>
             </li>
-          </Link>
+          </NavLink>
+
+          <li
+            className='item-menu'
+            style={{ paddingLeft: '10px' }}
+            onClick={props.onSwitchTheme}
+          >
+            <IconContext.Provider value={{ size: '2em' }}>
+              <WiMoonAltThirdQuarter />
+            </IconContext.Provider>
+            {/* <img
+              alt=''
+              src={require('../../assets/whale-tail.png')}
+              width='20'
+            /> */}
+            <span className='menu' style={{ paddingLeft: '10px' }}>
+              Switch to
+              {props.activeStyle == 'light-mode' ? ' dark-mode' : ' light-mode'}
+            </span>
+          </li>
         </ul>
       </div>
     </div>

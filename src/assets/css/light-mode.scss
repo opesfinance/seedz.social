@@ -25,6 +25,11 @@ $primary-color: #7f63f4;
   overflow: hidden;
   color: #7c6ebb;
 }
+
+.light-mode .active > li {
+  background-color: #f1eeff;
+}
+
 .light-mode .leftNav a {
   color: white;
   text-decoration: none;

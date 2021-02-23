@@ -35,6 +35,7 @@ class App extends Component {
     account: null,
     headerValue: null,
     themeType: false,
+    style: 'dark-mode',
   };
 
   setHeaderValue = (newValue) => {
@@ -46,6 +47,9 @@ class App extends Component {
     emitter.on(CONNECTION_DISCONNECTED, this.connectionDisconnected);
     emitter.on(CONFIGURE_RETURNED, this.configureReturned);
     emitter.on(GET_BALANCES_PERPETUAL_RETURNED, this.getBalancesReturned);
+
+    let style = localStorage.getItem('theme');
+    if (style) this.setState({ style });
 
     injected.isAuthorized().then((isAuthorized) => {
       if (isAuthorized) {
@@ -99,14 +103,23 @@ class App extends Component {
     this.setState({ account: store.getStore('account') });
   };
 
+  onSwitchThemeHandler = () => {
+    let style = this.state.style == 'light-mode' ? 'dark-mode' : 'light-mode';
+    localStorage.setItem('theme', style);
+    this.setState({ style });
+  };
+
   render() {
-    const { account } = this.state;
+    const { account, style } = this.state;
 
     return (
-      <div className='dark-mode main-content'>
+      <div className={`${style} main-content`}>
         <IpfsRouter>
           <Header />
-          <Leftnav />
+          <Leftnav
+            onSwitchTheme={this.onSwitchThemeHandler}
+            activeStyle={this.state.style}
+          />
           {!account ? (
             <Account />
           ) : (

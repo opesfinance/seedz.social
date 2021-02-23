@@ -285,7 +285,7 @@ const Exchange = (props) => {
         {boxesLayout}
         <div className='row'>
           <div className='col-md-6 offset-md-3'>
-            <div className='exchange-wrapper card'>
+            <div className='exchange-wrapper mt-5 card'>
               <div className='card-body'>
                 <h4>Exchange</h4>
                 <InputGroup className='mb-3'>
