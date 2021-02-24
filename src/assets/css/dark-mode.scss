@@ -13,7 +13,7 @@ Top Menu Navigation
 --------------
 **/
 
-.navbar {
+.dark-mode .navbar {
   background: #2f2f2f;
 }
 
@@ -93,6 +93,14 @@ Dark Mode
   font-weight: bold;
 }
 
+.dark-mode .base-card {
+  background-color: $card-bg-color;
+  box-shadow: none;
+}
+
+.dark-mode .base-card > .card-body {
+  color: white;
+}
 /* hives */
 
 .dark-mode .hive-wrapper {
@@ -139,9 +147,30 @@ Dark Mode
 .main-btn {
   background-color: #7f63f4;
   padding: 0.2em 1.4em !important;
+  color: white;
+  border: none;
 }
 
 /* exchange */
 .dark-mode .unit-price {
   color: #c2c2c2;
+}
+
+/* stake */
+.dark-mode .pool-card,
+.dark-mode .info-header-down {
+  background-color: $card-bg-color;
+}
+
+.dark-mode .pool-info {
+  color: white;
+}
+
+.dark-mode .info-header {
+  background-color: #7c6ebb;
+}
+
+.dark-mode .MuiTypography-root.MuiTypography-h6,
+.dark-mode .MuiInputBase-input {
+  color: white;
 }

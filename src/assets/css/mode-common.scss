@@ -1,0 +1,97 @@
+.base-card {
+  font-size: 0.8em;
+  line-height: 2.3em;
+}
+
+.pool-name {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.pool-boxes {
+  margin-top: -10vh;
+}
+
+.text-purple {
+  color: #7c6ebb;
+}
+
+.text-gray {
+  color: #abafb3;
+}
+
+.pool-card-info {
+  padding: 10px;
+  margin: 6px;
+  box-shadow: 1px 2px 2px 2px #eee;
+  border: none;
+  color: #808389;
+  font-weight: 600;
+}
+
+.bees-logo {
+  height: 20vh;
+}
+
+.pool-stake-button {
+  text-transform: capitalize;
+  background-color: #14bd51;
+  color: white;
+  height: 3vh;
+  border-radius: 3px;
+}
+
+.pool-unstake-button {
+  text-transform: capitalize;
+  background-color: #d14b0e;
+  color: white;
+  height: 3vh;
+  border-radius: 3px;
+}
+
+.pool-max-balance {
+  cursor: pointer;
+}
+
+.pool-max-balance {
+  color: #abafb3;
+  font-size: 0.8rem !important;
+}
+
+.pool-card {
+  box-shadow: 1px 2px 2px 2px #eee;
+  color: #808389;
+  border: none;
+}
+
+.pool-header {
+  margin-top: -19vh;
+  margin-left: -1vw;
+  font-size: 0.8rem;
+}
+
+.pool-logo {
+  margin-top: -43vh;
+  max-width: 100%;
+  max-height: 20vh;
+}
+
+.info-header-down {
+  min-height: 10vh;
+}
+
+.info-header {
+  min-height: 12vh;
+}
+
+.pool-logo {
+  margin-top: -43vh;
+  max-width: 100%;
+  max-height: 20vh;
+}
+
+.pool-header {
+  margin-top: -19vh;
+  margin-left: -1vw;
+  font-size: 0.8rem;
+}

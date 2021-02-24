@@ -4,7 +4,7 @@ import { Col, Row, Card } from 'react-bootstrap';
 const secondCol = (props) => {
   return (
     <Col>
-      <Card>
+      <Card className='base-card'>
         <Card.Body>
           <div className='d-flex justify-content-between'>
             <span>Ethereum Price (USD)</span>
@@ -129,7 +129,7 @@ const StakeBuyBoost = (props) => {
           <br />*/}
           <Row>
             <Col>
-              <Card className='pool-card'>
+              <Card className='pool-card base-card'>
                 <Card.Body className='text-left'>
                   <div className='hive-details'>
                     <Row>

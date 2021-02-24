@@ -6,6 +6,7 @@ import * as serviceWorker from './serviceWorker';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/css/navigation.scss';
+import './assets/css/mode-common.scss';
 import './assets/css/light-mode.scss';
 import './assets/css/dark-mode.scss';
 import './assets/css/dashboard.scss';

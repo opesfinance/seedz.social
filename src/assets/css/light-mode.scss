@@ -32,6 +32,8 @@ $primary-color: #7f63f4;
 
 .light-mode .active > li {
   background-color: #f1eeff;
+  border-left: 2px solid #7d64fb;
+  padding-left: 13px;
 }
 
 .light-mode .leftNav a {
@@ -93,97 +95,26 @@ Light Mode
   font-weight: bold;
 }
 
-.info-header {
+.light-mode .info-header {
   background-color: #cccccc;
-  min-height: 12vh;
 }
 
-.info-header-down {
+.lightmod .info-header-down {
   background-color: #fafafa;
-  min-height: 10vh;
-}
-
-.pool-logo {
-  margin-top: -43vh;
-  max-width: 100%;
-  max-height: 20vh;
-}
-
-.pool-header {
-  margin-top: -19vh;
-  margin-left: -1vw;
-  font-size: 0.8rem;
-}
-
-.pool-name {
-  font-size: 1rem;
-  font-weight: bold;
-}
-
-.pool-boxes {
-  margin-top: -10vh;
-}
-
-.text-purple {
-  color: #7c6ebb;
-}
-
-.text-gray {
-  color: #abafb3;
 }
 
 .text-gray:hover {
   color: #abafb3;
 }
 
-.pool-card {
-  box-shadow: 1px 2px 2px 2px #eee;
-  color: #808389;
-  border: none;
-}
-
-.pool-stake-button {
-  text-transform: capitalize;
-  background-color: #14bd51;
-  color: white;
-  height: 3vh;
-  border-radius: 3px;
-}
-
-.pool-unstake-button {
-  text-transform: capitalize;
-  background-color: #d14b0e;
-  color: white;
-  height: 3vh;
-  border-radius: 3px;
-}
-
-.pool-max-balance {
-  color: #abafb3;
-  font-size: 0.8rem !important;
-}
-
-.pool-card-info {
-  padding: 10px;
-  margin: 6px;
-  box-shadow: 1px 2px 2px 2px #eee;
-  border: none;
+.light-mode .pool-titles {
   color: #808389;
   font-weight: 600;
 }
 
-.pool-titles {
-  color: #808389;
-  font-weight: 600;
-}
-
-.pool-info {
+.light-mode .pool-info {
   color: #808389 !important;
   font-weight: 300;
-}
-
-.bees-logo {
-  height: 20vh;
 }
 
 /* hives */

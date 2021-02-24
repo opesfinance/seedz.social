@@ -55,7 +55,7 @@ const StakeMain = (props) => {
   return (
     <Row className='pool-boxes'>
       <Col lg='4' md='12' xs='12' className='p-1'>
-        <Card className='pool-card'>
+        <Card className='pool-card base-card'>
           <Card.Body className='text-left'>
             <div className='d-flex justify-content-between'>
               <span>Beast Bonus (leverage):</span>
@@ -85,7 +85,7 @@ const StakeMain = (props) => {
               <Col className='text-center'>
                 <a
                   href='https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b'
-                  className='btn btn-primary bg-main-white pool-titles'
+                  className='btn btn-primary bg-main-white main-btn'
                   target='_blank'
                 >
                   Buy WPE
@@ -95,7 +95,7 @@ const StakeMain = (props) => {
                 <a
                   href={props.pool.liquidityLink}
                   target='_blank'
-                  className='btn btn-primary bg-main-white pool-titles'
+                  className='btn btn-primary bg-main-white main-btn'
                 >
                   Add liquidity to pool
                 </a>
@@ -105,7 +105,7 @@ const StakeMain = (props) => {
               <Col className='text-center'>
                 <div
                   onClick={() => onAddSeeds(props.pool)}
-                  className='btn btn-primary bg-main-white pool-titles'
+                  className='btn btn-primary bg-main-white main-btn'
                 >
                   Add Seedz to{' '}
                   <img
@@ -120,7 +120,7 @@ const StakeMain = (props) => {
               <Col className='text-center'>
                 <div
                   onClick={() => onAddPool(props.pool)}
-                  className='btn btn-primary bg-main-white pool-titles'
+                  className='btn btn-primary bg-main-white main-btn'
                 >
                   Add {props.pool.symbol} to{' '}
                   <img
@@ -137,7 +137,7 @@ const StakeMain = (props) => {
         </Card>
       </Col>
       <Col lg='4' md='12' xs='12' className='p-1'>
-        <Card className='pool-card'>
+        <Card className='pool-card base-card'>
           <Card.Body className='text-left'>
             <div className='hive-details'>
               <Row>
@@ -188,7 +188,7 @@ const StakeMain = (props) => {
               <Row className='pt-4'>
                 <Col className='text-center'>
                   <div
-                    className='btn btn-primary bg-main-blue'
+                    className='btn btn-primary bg-main-blue main-btn'
                     onClick={props.onClaim}
                   >
                     Claim Rewards
@@ -197,7 +197,7 @@ const StakeMain = (props) => {
                 <Col className='text-center'>
                   <div
                     disabled
-                    className='btn btn-primary bg-main-blue'
+                    className='btn btn-primary bg-main-blue main-btn'
                     onClick={props.onExit}
                   >
                     Claim & Unstake
@@ -210,7 +210,7 @@ const StakeMain = (props) => {
       </Col>
 
       <Col lg='4' md='12' xs='12' className='p-1'>
-        <Card className='pool-card'>
+        <Card className='pool-card base-card'>
           <Card.Body>
             {props.renderAssetInput(props.pool, 'stake')}
             <br />
@@ -222,7 +222,7 @@ const StakeMain = (props) => {
             <Row className='pt-4'>
               <Col className='text-center'>
                 <div
-                  className='btn btn-primary bg-main-blue'
+                  className='btn btn-primary bg-main-blue main-btn'
                   onClick={() => props.navigateInternal('buyboost')}
                 >
                   Beast Mode
