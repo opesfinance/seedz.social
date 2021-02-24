@@ -15,6 +15,7 @@ import Hives from './components/hives/hives';
 import WhaleTank from './components/whalestank/whaletank';
 import Stake from './components/stake/stake';
 import Swarm from './components/swarm/swarm';
+import Pools from './components/pools/pools';
 
 import {
   CONNECTION_CONNECTED,
@@ -139,6 +140,13 @@ class App extends Component {
                 </Route>
                 <Route path='/exchange'>
                   <Exchange />
+                </Route>
+                <Route path='/Pools'>
+                  <Pools
+                    assetsStoreKey='exchangeAssets'
+                    extraAssets={['ETH', 'WPE']}
+                    disableSwap={true}
+                  />
                 </Route>
                 <Route path='/swarm'>
                   <Swarm />

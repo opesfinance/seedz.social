@@ -25,6 +25,16 @@ const LeftNav = (props) => {
               <span className='menu'>Exchange</span>
             </li>
           </NavLink>
+          <NavLink to='/pools'>
+            <li className='item-menu'>
+              <img
+                alt=''
+                src={require('../../assets/BPT-logo-gray.png')}
+                width='20'
+              />
+              <span className='menu'>Pools</span>
+            </li>
+          </NavLink>
           <NavLink to='/hives'>
             <li className='item-menu'>
               <img alt='' src={require('../../assets/house.png')} width='20' />
