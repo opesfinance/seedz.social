@@ -84,9 +84,9 @@ const stakeAssetInput = (props) => {
                   <div className={classes.assetIcon}>
                     <img
                       alt=''
-                      src={require('../../assets/' +
+                      src={require('../../assets/logos/' +
                         asset.symbol +
-                        '-logo.png')}
+                        '.png')}
                       height='30px'
                     />
                   </div>
