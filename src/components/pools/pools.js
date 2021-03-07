@@ -1,6 +1,7 @@
 // mio
 import React, { useState, useEffect } from 'react';
 import { IoSwapVerticalOutline } from 'react-icons/io5';
+import { withRouter } from 'react-router-dom';
 import { AiOutlineArrowDown } from 'react-icons/ai';
 import { IconContext } from 'react-icons';
 import { InputGroup, Dropdown, Form } from 'react-bootstrap';
@@ -45,6 +46,7 @@ const dropdownOptions = (options) => {
 
 const Pools = (props) => {
   console.log(props);
+
   const [fromOptions, setFromOptions] = useState(
     store
       .getStore(props.assetsStoreKey)
@@ -58,7 +60,9 @@ const Pools = (props) => {
   const [fromAmount, setFromAmount] = useState('0');
   const [fromAddress, setFromAddress] = useState(fromOptions[0].address);
   const [toAmount, setToAmount] = useState('0');
-  const [toAddress, setToAddress] = useState(toOptions[0].address);
+  let initialToAddress =
+    props.match.params.selectedPool || toOptions[0].address;
+  const [toAddress, setToAddress] = useState(initialToAddress);
   const [error, setError] = useState('');
   const [unitPrice, setUnitPrice] = useState('');
   const [boxes, setBoxValues] = useState([
@@ -199,8 +203,12 @@ const Pools = (props) => {
   };
 
   const onSelectAssetOut = (eventKey) => {
+    console.log('toOptions', toOptions);
+    console.log('eventKey', eventKey);
+
     const { label, address, logo } = toOptions.find(
-      ({ address }) => eventKey === address
+      ({ address, liquidityPoolAddress }) =>
+        eventKey === address || eventKey === liquidityPoolAddress
     );
     onChangeToSelect(address);
     setToToggleContents(
@@ -386,4 +394,4 @@ const Pools = (props) => {
   );
 };
 
-export default Pools;
+export default withRouter(Pools);

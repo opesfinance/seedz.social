@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 import Store from '../../stores/store';
 import Web3 from 'web3';
 import { Col, Row, Card } from 'react-bootstrap';
@@ -92,13 +94,14 @@ const StakeMain = (props) => {
                 </a>
               </Col>
               <Col className='text-center'>
-                <a
-                  href={props.pool.liquidityLink}
-                  target='_blank'
+                <Link
+                  to={{
+                    pathname: `/pools/${props.pool.token.address}`,
+                  }}
                   className='btn btn-primary bg-main-white main-btn'
                 >
                   Add liquidity to pool
-                </a>
+                </Link>
               </Col>
             </Row>
             <Row className='pt-4'>
