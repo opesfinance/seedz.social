@@ -144,7 +144,7 @@ const StakeMain = (props) => {
           <Card.Body className='text-left'>
             <div className='hive-details'>
               <Row>
-                <Col className='pool-titles'>
+                <Col className='pool-titles col-8'>
                   <span className='dot green'></span>YOUR BALANCE
                 </Col>
                 <Col className='text-right pool-info'>
@@ -155,7 +155,7 @@ const StakeMain = (props) => {
                 </Col>
               </Row>
               <Row>
-                <Col className='pool-titles'>
+                <Col className='pool-titles col-8'>
                   <span className='dot yellow'></span>
                   CURRENTLY STAKED
                 </Col>
@@ -164,7 +164,7 @@ const StakeMain = (props) => {
                 </Col>
               </Row>
               <Row>
-                <Col className='pool-titles'>
+                <Col className='pool-titles col-8'>
                   <span className='dot purple'></span>
                   MY BEAST MODE (leverage)
                 </Col>
@@ -173,7 +173,7 @@ const StakeMain = (props) => {
                 </Col>
               </Row>
               <Row>
-                <Col className='pool-titles'>
+                <Col className='pool-titles col-8'>
                   <span className='dot light-blue'></span>
                   REWARDS AVAILABLE
                 </Col>

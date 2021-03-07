@@ -61,7 +61,7 @@ const STORE = {
           liquidityLink:
             'https://pools.balancer.exchange/#/pool/0x5B2dC8c02728e8FB6aeA03a622c3849875A48801',
           abi: config.erc20ABI,
-          beastBonus: 200,
+          beastBonus: 1000,
           bonusReductionIn: '24 hours',
           decimals: 18,
           tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
@@ -118,7 +118,7 @@ const STORE = {
           liquidityLink:
             'https://uniswap.info/pair/0x75F89FfbE5C25161cBC7e97c988c9F391EaeFAF9',
           abi: config.erc20ABI,
-          beastBonus: 200,
+          beastBonus: 1000,
           bonusReductionIn: '24 hours',
           decimals: 18,
           tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
@@ -169,12 +169,12 @@ const STORE = {
         {
           id: 'boostrewards',
           name: 'iUPixel',
-          address: '0x75f89ffbe5c25161cbc7e97c988c9f391eaefaf9', // UNI
+          address: '0x469485cA145D850c0e54367076558dC72b5DCe19', // UNI
           symbol: 'PIXEL',
           liquidityLink:
-            'https://uniswap.info/pair/0x75F89FfbE5C25161cBC7e97c988c9F391EaeFAF9',
+            'https://uniswap.info/pair/0x469485cA145D850c0e54367076558dC72b5DCe19',
           abi: config.erc20ABI,
-          beastBonus: 200,
+          beastBonus: 1000,
           bonusReductionIn: '24 hours',
           decimals: 18,
           tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
@@ -230,7 +230,7 @@ const STORE = {
           liquidityLink:
             'https://uniswap.info/pair/0x8dc082087ee75b528dfd4e68fa28966666de1a60',
           abi: config.erc20ABI,
-          beastBonus: 200,
+          beastBonus: 1000,
           bonusReductionIn: '24 hours',
           decimals: 18,
           tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
@@ -281,12 +281,12 @@ const STORE = {
         {
           id: 'boostrewards',
           name: 'Missions Fund',
-          address: '0x75f89ffbe5c25161cbc7e97c988c9f391eaefaf9', // UNI
+          address: '0xEcEa1bAe3Bb692510693FAc2932C32BeB1FA866E', // UNI
           symbol: 'LIFT',
           liquidityLink:
-            'https://uniswap.info/pair/0x75F89FfbE5C25161cBC7e97c988c9F391EaeFAF9',
+            'https://uniswap.info/pair/0xEcEa1bAe3Bb692510693FAc2932C32BeB1FA866E',
           abi: config.erc20ABI,
-          beastBonus: 200,
+          beastBonus: 1000,
           bonusReductionIn: '24 hours',
           decimals: 18,
           tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
@@ -337,12 +337,12 @@ const STORE = {
         {
           id: 'boostrewards',
           name: 'Starwire',
-          address: '0x75f89ffbe5c25161cbc7e97c988c9f391eaefaf9', // UNI
+          address: '0x8eAA970BE66D4DE446453AEA538173382C2CACE8', // UNI
           symbol: 'STR',
           liquidityLink:
-            'https://uniswap.info/pair/0x75F89FfbE5C25161cBC7e97c988c9F391EaeFAF9',
+            'https://uniswap.info/pair/0x8eAA970BE66D4DE446453AEA538173382C2CACE8',
           abi: config.erc20ABI,
-          beastBonus: 200,
+          beastBonus: 1000,
           bonusReductionIn: '24 hours',
           decimals: 18,
           tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
@@ -495,6 +495,7 @@ const STORE = {
         label: 'STR',
         logo: 'STR.png',
         address: '0x11C1a6B3Ed6Bb362954b29d3183cfA97A0c806Aa',
+        liquidityPoolAddress: '0xE1C0E3c6B0cbA894932a5599e91cCf63E23C1693',
         decimals: 18,
         group: 'outputs',
         denomination: 'WPE',
@@ -508,6 +509,7 @@ const STORE = {
         label: 'PIXEL',
         logo: 'PIXEL.png',
         address: '0x89045d0Af6A12782Ec6f701eE6698bEaF17d0eA2',
+        liquidityPoolAddress: '0x469485cA145D850c0e54367076558dC72b5DCe19',
         decimals: 18,
         group: 'outputs',
         denomination: 'WPE',
@@ -521,6 +523,7 @@ const STORE = {
         label: 'LIFT',
         logo: 'LIFT.png',
         address: '0x47bd5114c12421FBC8B15711cE834AFDedea05D9',
+        liquidityPoolAddress: '0xEcEa1bAe3Bb692510693FAc2932C32BeB1FA866E',
         decimals: 18,
         group: 'outputs',
         denomination: 'WPE',
