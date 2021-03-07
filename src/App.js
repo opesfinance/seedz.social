@@ -126,22 +126,19 @@ class App extends Component {
           ) : (
             <>
               <Switch>
-                <Route path='/stake/:address'>
-                  <Stake />
+                <Route path='/stake/:address' component={Stake} />
+                <Route path='/whaletank' component={WhaleTank} />
+                <Route path='/hives' component={Hives} />
+                <Route path='/farms' component={Farm} />
+                <Route path='/exchange' component={Exchange} />
+                <Route exact path='/pools/:selectedPool'>
+                  <Pools
+                    assetsStoreKey='exchangeAssets'
+                    extraAssets={['ETH', 'WPE']}
+                    disableSwap={true}
+                  />
                 </Route>
-                <Route path='/whaletank'>
-                  <WhaleTank />
-                </Route>
-                <Route path='/hives'>
-                  <Hives />
-                </Route>
-                <Route path='/farms'>
-                  <Farm />
-                </Route>
-                <Route path='/exchange'>
-                  <Exchange />
-                </Route>
-                <Route path='/Pools'>
+                <Route path='/pools'>
                   <Pools
                     assetsStoreKey='exchangeAssets'
                     extraAssets={['ETH', 'WPE']}
