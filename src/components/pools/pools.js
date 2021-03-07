@@ -45,8 +45,6 @@ const dropdownOptions = (options) => {
 };
 
 const Pools = (props) => {
-  console.log(props);
-
   const [fromOptions, setFromOptions] = useState(
     store
       .getStore(props.assetsStoreKey)
@@ -77,20 +75,10 @@ const Pools = (props) => {
   const [fromToggleContents, setFromToggleContents] = useState('Choose');
   const [toToggleContents, setToToggleContents] = useState('Choose');
 
-  // base asset could be passed from props in case this is re used.
-  const baseAssetLabel = 'USDC';
-  const baseAsset = store
-    .getStore(props.assetsStoreKey)
-    .tokens.find((i) => i.label == baseAssetLabel); //USDC
-
   const pricePromises = async () => {
-    const assetsOut = store
-      .getStore(props.assetsStoreKey)
-      .tokens.filter((a) => a.group == 'outputs');
+    const assetsOut = store.getStore('lpTokens');
 
-    let promises = assetsOut.map((assetOut) =>
-      store.getLpPrice(baseAsset, assetOut)
-    );
+    let promises = assetsOut.map((assetOut) => store.getLpPrice(assetOut));
     let results = await Promise.all(promises);
 
     let newBoxes = boxes.map((b, i) => {
@@ -101,25 +89,10 @@ const Pools = (props) => {
       };
     });
 
-    if (props.extraAssets && props.extraAssets.length) {
-      for (const assetLabel of props.extraAssets) {
-        let current = store
-          .getStore(props.assetsStoreKey)
-          .tokens.find((i) => i.label == assetLabel);
-
-        let boxToModify = newBoxes.find((b) => b.label == assetLabel);
-        if (boxToModify) {
-          boxToModify.value = `\$ ${parseFloat(current.price).toFixed(4)}`;
-          boxToModify.intVal = current.price;
-        }
-      }
-    }
-
     setBoxValues(newBoxes);
   };
 
   useEffect(() => {
-    console.log('rendering --');
     pricePromises();
     // default option
     onSelectAssetIn(fromAddress);

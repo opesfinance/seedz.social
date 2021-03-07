@@ -475,52 +475,46 @@ class Store {
       4
     );
     currentWPE.price = 100 / wpeTemp;
-    // console.log(wpeTemp);
-    // console.log('WPE ', currentWPE);
 
     var current = assets.find((i) => i.address == assetOut.address);
     current.price = price;
     return !Number.isNaN(price) ? price : 0;
   };
 
-  getLpPrice = async (assetIn, assetOut) => {
+  getLpPrice = async (assetOut) => {
     const account = store.getStore('account');
     const web3 = new Web3(store.getStore('web3context').library.provider);
     const assets = store.getStore('lpTokens');
+    let price;
 
-    var route = [];
-    if (assetIn.label != 'ETH') {
-      route.push(assetIn.address);
+    if (assetOut.label == 'ETH' || assetOut.label == 'WPE') {
+      const temp = { label: 'STR' };
+      let test = await this._getLPprice(web3, temp, account); //set an LP token address for the moment
+      price = (test[test.length - 3] / 100 / 10 ** 6).toFixed(4);
+
+      if (assetOut.label == 'ETH') {
+        const priceETH = (test[test.length - 2] / 100 / 10 ** 18).toFixed(4);
+        const eth = assets.find((i) => i.label == 'ETH');
+        eth.price = price / priceETH;
+        price = eth.price;
+      } else {
+        const priceWPE = (test[test.length - 1] / 100 / 10 ** 18).toFixed(4);
+        const wpe = assets.find((i) => i.label == 'WPE');
+        wpe.price = price / priceWPE;
+        price = wpe.price;
+      }
+    } else {
+      let test = await this._getLPprice(web3, assetOut, account);
+      //LP price
+      price = (test[test.length - 3] / 100 / 10 ** 6).toFixed(4);
+      const priceETH = (test[test.length - 2] / 100 / 10 ** 18).toFixed(4);
+      const priceWPE = (test[test.length - 1] / 100 / 10 ** 18).toFixed(4);
+      const current = assets.find((i) => i.address == assetOut.address);
+      current.price = !Number.isNaN(price) ? price : 0;
+      current.priceETH = !Number.isNaN(priceETH) ? priceETH : 0;
+      current.priceWPE = !Number.isNaN(priceWPE) ? priceWPE : 0;
     }
-    route = route.concat([
-      '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-      '0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',
-    ]);
-    route.push(assetOut.address);
 
-    let test = await this._getLPprice(web3, assetOut, route, '100', account);
-
-    //LP price
-    var price = (test[test.length - 3] / 100 / 10 ** 6).toFixed(4);
-    var priceETH = (test[test.length - 2] / 100 / 10 ** 18).toFixed(4);
-    var priceWPE = (test[test.length - 1] / 100 / 10 ** 18).toFixed(4);
-
-    //ETH price
-    var currentETH = assets.find((i) => i.label == 'ETH');
-    currentETH.price =
-      100 / (test[test.length - 6] / 10 ** currentETH.decimals).toFixed(4);
-
-    //WPE price
-    var currentWPE = assets.find((i) => i.label == 'WPE');
-    var wpeTemp = (test[test.length - 5] / 10 ** currentWPE.decimals).toFixed(
-      4
-    );
-    currentWPE.price = 100 / wpeTemp;
-
-    var current = assets.find((i) => i.address == assetOut.address);
-    current.price = price;
-    current.priceETH = priceETH;
-    current.priceWPE = priceWPE;
     return !Number.isNaN(price) ? price : 0;
   };
 
@@ -690,13 +684,7 @@ class Store {
     }
   };
 
-  _getLPprice = async (web3, assetOut, route, amountIn, account) => {
-    //FOR WPE AND ETH PRICE
-    let uniswapRouter = new web3.eth.Contract(
-      config.uniswapRouterABI,
-      config.uniswapRouterAddress
-    );
-
+  _getLPprice = async (web3, assetOut, account) => {
     //get coin lp contract address
     let contract = assetOut.label + 'lpAddress';
 
@@ -706,18 +694,11 @@ class Store {
       config[contract]
     );
 
-    var amountToSend = web3.utils.toWei(amountIn, 'ether');
     try {
-      var amounts = await uniswapRouter.methods
-        .getAmountsOut(amountToSend, route)
-        .call({ from: account.address });
-      var coin = await coinRouter.methods
+      let amounts = await coinRouter.methods
         .getPriceFor(web3.utils.toWei('100', 'ether'))
         .call({ from: account.address });
-
-      var join = amounts.concat(coin);
-
-      return join;
+      return amounts;
     } catch (ex) {
       return ex;
     }
