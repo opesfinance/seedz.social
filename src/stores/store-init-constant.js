@@ -447,15 +447,6 @@ const STORE = {
   exchangeAssets: {
     tokens: [
       {
-        label: 'WPE',
-        logo: 'logo-eth.png',
-        address: '0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',
-        decimals: 18,
-        group: 'base',
-        denomination: 'ETH',
-        price: 2.067,
-      },
-      {
         label: 'ETH',
         logo: 'logo-eth.png',
         address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
@@ -463,6 +454,15 @@ const STORE = {
         group: 'inputs',
         denomination: 'USD',
         price: 1829.0,
+      },
+      {
+        label: 'WPE',
+        logo: 'WPE.png',
+        address: '0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',
+        decimals: 18,
+        group: 'inputs',
+        denomination: 'ETH',
+        price: 2.067,
       },
       {
         label: 'USDC',
