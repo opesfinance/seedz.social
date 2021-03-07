@@ -61,7 +61,7 @@ const STORE = {
           liquidityLink:
             'https://pools.balancer.exchange/#/pool/0x5B2dC8c02728e8FB6aeA03a622c3849875A48801',
           abi: config.erc20ABI,
-          beastBonus: 200,
+          beastBonus: 1000,
           bonusReductionIn: '24 hours',
           decimals: 18,
           tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
@@ -118,7 +118,7 @@ const STORE = {
           liquidityLink:
             'https://uniswap.info/pair/0x75F89FfbE5C25161cBC7e97c988c9F391EaeFAF9',
           abi: config.erc20ABI,
-          beastBonus: 200,
+          beastBonus: 1000,
           bonusReductionIn: '24 hours',
           decimals: 18,
           tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
@@ -174,7 +174,7 @@ const STORE = {
           liquidityLink:
             'https://uniswap.info/pair/0x75F89FfbE5C25161cBC7e97c988c9F391EaeFAF9',
           abi: config.erc20ABI,
-          beastBonus: 200,
+          beastBonus: 1000,
           bonusReductionIn: '24 hours',
           decimals: 18,
           tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
@@ -230,7 +230,7 @@ const STORE = {
           liquidityLink:
             'https://uniswap.info/pair/0x8dc082087ee75b528dfd4e68fa28966666de1a60',
           abi: config.erc20ABI,
-          beastBonus: 200,
+          beastBonus: 1000,
           bonusReductionIn: '24 hours',
           decimals: 18,
           tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
@@ -286,7 +286,7 @@ const STORE = {
           liquidityLink:
             'https://uniswap.info/pair/0x75F89FfbE5C25161cBC7e97c988c9F391EaeFAF9',
           abi: config.erc20ABI,
-          beastBonus: 200,
+          beastBonus: 1000,
           bonusReductionIn: '24 hours',
           decimals: 18,
           tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
@@ -342,7 +342,7 @@ const STORE = {
           liquidityLink:
             'https://uniswap.info/pair/0x75F89FfbE5C25161cBC7e97c988c9F391EaeFAF9',
           abi: config.erc20ABI,
-          beastBonus: 200,
+          beastBonus: 1000,
           bonusReductionIn: '24 hours',
           decimals: 18,
           tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
