@@ -153,7 +153,7 @@ const STORE = {
         },
       ],
     },
-    /*{
+    {
       id: 'pixelhive',
       name: 'iUPixel',
       website: 'Uniswap',
@@ -376,7 +376,7 @@ const STORE = {
           poolRateSymbol: 'Seedz/Week',
         },
       ],
-    },*/
+    },
   ],
   farmPools: [
     {
