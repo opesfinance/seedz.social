@@ -29,6 +29,10 @@ import {
 import rewardsMapper from '../utils/rewardsMapper';
 import styles from './stakeStyles';
 
+const setState = (params) => {
+  console.log('set state params', params);
+};
+
 const { emitter, dispatcher, store } = Store;
 
 const Stake = (props) => {
@@ -98,7 +102,7 @@ const Stake = (props) => {
   }, []);
 
   useEffect(() => {
-    // store.getStore('currentPool');
+    store.getStore('currentPool');
 
     emitter.on(ERROR, errorReturned);
     emitter.on(STAKE_RETURNED, showHash);
@@ -118,8 +122,7 @@ const Stake = (props) => {
   }, []);
 
   const balancesReturned = () => {
-    const currentPool = pool; // store.getStore('currentPool');
-    console.log('CURRENT POOL ', currentPool);
+    const currentPool = pool; //store.getStore('currentPool');
     const pools = store.getStore('rewardPools');
     let newPool = pools.filter((pool) => {
       return pool.id === currentPool.id;
@@ -348,7 +351,7 @@ const Stake = (props) => {
           <img
             className='pool-logo'
             alt=''
-            src={require(`../../assets/logos/${pool.symbol}.png`)}
+            src={require(`../../assets/${pool.symbol}.png`)}
           />
         </Col>
         <Col lg='10' md='10' xs='6' className='text-left pool-header'>

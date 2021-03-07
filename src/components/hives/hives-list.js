@@ -9,6 +9,7 @@ import {
   GET_BALANCES_RETURNED,
   GET_BOOSTEDBALANCES_RETURNED,
   GET_BOOSTEDBALANCES,
+  STAKE_RETURNED,
 } from '../../constants/constants';
 
 import Store from '../../stores/store';
@@ -36,13 +37,17 @@ const HivesList = (props) => {
     emitter.on(CONFIGURE_RETURNED, configureReturned);
     emitter.on(GET_BALANCES_RETURNED, balancesReturned);
     emitter.on(GET_BOOSTEDBALANCES_RETURNED, balancesReturned);
+    emitter.on(STAKE_RETURNED, showHash);
 
     return () => {
       emitter.removeListener(CONFIGURE_RETURNED, configureReturned);
       emitter.removeListener(GET_BALANCES_RETURNED, balancesReturned);
       emitter.removeListener(GET_BOOSTEDBALANCES_RETURNED, balancesReturned);
+      emitter.removeListener(STAKE_RETURNED, showHash);
     };
   }, []);
+
+  const showHash = (txHash) => {};
 
   const balancesReturned = useCallback(() => {
     const rewardPools = store.getStore('rewardPools');

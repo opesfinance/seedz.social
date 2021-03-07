@@ -160,16 +160,16 @@ const StakeMain = (props) => {
                   CURRENTLY STAKED
                 </Col>
                 <Col className='text-right pool-info'>
-                  {props.pool.stakedBalance}
+                  {props.pool.stakedBalance} {props.pool.symbol}
                 </Col>
               </Row>
               <Row>
                 <Col className='pool-titles'>
                   <span className='dot purple'></span>
-                  BEAST MODE (leverage)
+                  MY BEAST MODE (leverage)
                 </Col>
                 <Col className='text-right pool-info'>
-                  {props.pool.myBeastModes}
+                  {props.pool.myBeastModes}%
                 </Col>
               </Row>
               <Row>

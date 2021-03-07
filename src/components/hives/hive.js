@@ -15,6 +15,8 @@ const Hive = (props) => {
     props.history.push('/stake/' + props.address);
   }
 
+  console.log(props);
+
   return (
     <div className='hive-wrapper card'>
       <div className='card-body'>
@@ -37,6 +39,8 @@ const Hive = (props) => {
             </a>
           </div>
         </div>
+        <br />
+
         <div className='hive-details'>
           <div className='d-flex justify-content-between'>
             <div>
@@ -48,7 +52,7 @@ const Hive = (props) => {
           <div className='d-flex justify-content-between'>
             <div>
               <span className='dot yellow'></span>
-              Beast reduction in
+              Beast Bonus -10% reduction in
             </div>
             <div className='text-right main-blue'>{props.bonusReductionIn}</div>
           </div>
@@ -65,7 +69,7 @@ const Hive = (props) => {
           <div className='d-flex justify-content-between'>
             <div>
               <span className='dot light-blue'></span>
-              My Beast Mode
+              My Beast Mode (leverage)
             </div>
             <div className='text-right main-blue'>{props.myBeastModes}%</div>
           </div>
@@ -75,7 +79,8 @@ const Hive = (props) => {
               My Rewards
             </div>
             <div className='text-right main-blue'>
-              {props.myRewards} {props.rewardsSymbol}
+              {props.myRewards}
+              {props.rewardsSymbol}
             </div>
           </div>
 

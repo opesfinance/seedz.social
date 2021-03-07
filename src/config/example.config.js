@@ -7323,7 +7323,7 @@ const config = {
       type: 'function',
     },
   ],
-
+  
   uniswapRouterAddress: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D',
   uniswapRouterABI: [
     {
@@ -7690,6 +7690,786 @@ const config = {
       type: 'function',
     },
     { stateMutability: 'payable', type: 'receive' },
+  ],
+
+  YFUlpAddress: '0xaF69d9E9EFD61b7Cf446ba34Ffd506519747368D',
+  YFUlpAddressABI: [
+    {
+      inputs: [
+        {
+          internalType: 'contract IERC20',
+          name: '_lpToken',
+          type: 'address',
+        },
+        {
+          internalType: 'contract IERC20',
+          name: '_wpeToken',
+          type: 'address',
+        },
+        {
+          internalType: 'address',
+          name: '_stableToken',
+          type: 'address',
+        },
+        {
+          internalType: 'address payable',
+          name: '_wallet',
+          type: 'address',
+        },
+        {
+          internalType: 'contract stakeContractInterface',
+          name: 'stakeContract',
+          type: 'address',
+        },
+      ],
+      payable: false,
+>>>>>>> WIP Add methods for LP tokens
+      stateMutability: 'nonpayable',
+      type: 'constructor',
+    },
+    {
+<<<<<<< HEAD
+      inputs: [],
+      name: 'WETH',
+      outputs: [{ internalType: 'address', name: '', type: 'address' }],
+=======
+      anonymous: false,
+      inputs: [
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'previousOwner',
+          type: 'address',
+        },
+        {
+          indexed: true,
+          internalType: 'address',
+          name: 'newOwner',
+          type: 'address',
+        },
+      ],
+      name: 'OwnershipTransferred',
+      type: 'event',
+    },
+    {
+      constant: true,
+      inputs: [],
+      name: '_totalSupply',
+      outputs: [
+        {
+          internalType: 'uint256',
+          name: '',
+          type: 'uint256',
+        },
+      ],
+      payable: false,
+>>>>>>> WIP Add methods for LP tokens
+      stateMutability: 'view',
+      type: 'function',
+    },
+    {
+<<<<<<< HEAD
+      inputs: [
+        { internalType: 'address', name: 'tokenA', type: 'address' },
+        { internalType: 'address', name: 'tokenB', type: 'address' },
+        { internalType: 'uint256', name: 'amountADesired', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountBDesired', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountAMin', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountBMin', type: 'uint256' },
+        { internalType: 'address', name: 'to', type: 'address' },
+        { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      ],
+      name: 'addLiquidity',
+      outputs: [
+        { internalType: 'uint256', name: 'amountA', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountB', type: 'uint256' },
+        { internalType: 'uint256', name: 'liquidity', type: 'uint256' },
+      ],
+=======
+      constant: false,
+      inputs: [
+        {
+          internalType: 'uint256',
+          name: 'amount',
+          type: 'uint256',
+        },
+      ],
+      name: 'buyLPTokensEth',
+      outputs: [],
+      payable: true,
+      stateMutability: 'payable',
+      type: 'function',
+    },
+    {
+      constant: false,
+      inputs: [
+        {
+          internalType: 'uint256',
+          name: 'amount',
+          type: 'uint256',
+        },
+        {
+          internalType: 'address',
+          name: 'tokenIn',
+          type: 'address',
+        },
+      ],
+      name: 'buyLPTokensWithToken',
+      outputs: [],
+      payable: false,
+>>>>>>> WIP Add methods for LP tokens
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },
+    {
+<<<<<<< HEAD
+      inputs: [
+        { internalType: 'address', name: 'token', type: 'address' },
+        {
+          internalType: 'uint256',
+          name: 'amountTokenDesired',
+          type: 'uint256',
+        },
+        { internalType: 'uint256', name: 'amountTokenMin', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountETHMin', type: 'uint256' },
+        { internalType: 'address', name: 'to', type: 'address' },
+        { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      ],
+      name: 'addLiquidityETH',
+      outputs: [
+        { internalType: 'uint256', name: 'amountToken', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountETH', type: 'uint256' },
+        { internalType: 'uint256', name: 'liquidity', type: 'uint256' },
+      ],
+      stateMutability: 'payable',
+      type: 'function',
+    },
+    {
+      inputs: [],
+      name: 'factory',
+      outputs: [{ internalType: 'address', name: '', type: 'address' }],
+=======
+      constant: false,
+      inputs: [
+        {
+          internalType: 'uint256',
+          name: 'amount',
+          type: 'uint256',
+        },
+      ],
+      name: 'deposit',
+      outputs: [],
+      payable: false,
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },
+    {
+      constant: true,
+      inputs: [],
+      name: 'divPrecision',
+      outputs: [
+        {
+          internalType: 'uint256',
+          name: '',
+          type: 'uint256',
+        },
+      ],
+      payable: false,
+>>>>>>> WIP Add methods for LP tokens
+      stateMutability: 'view',
+      type: 'function',
+    },
+    {
+<<<<<<< HEAD
+      inputs: [
+        { internalType: 'uint256', name: 'amountOut', type: 'uint256' },
+        { internalType: 'uint256', name: 'reserveIn', type: 'uint256' },
+        { internalType: 'uint256', name: 'reserveOut', type: 'uint256' },
+      ],
+      name: 'getAmountIn',
+      outputs: [{ internalType: 'uint256', name: 'amountIn', type: 'uint256' }],
+      stateMutability: 'pure',
+      type: 'function',
+    },
+    {
+      inputs: [
+        { internalType: 'uint256', name: 'amountIn', type: 'uint256' },
+        { internalType: 'uint256', name: 'reserveIn', type: 'uint256' },
+        { internalType: 'uint256', name: 'reserveOut', type: 'uint256' },
+      ],
+      name: 'getAmountOut',
+      outputs: [
+        { internalType: 'uint256', name: 'amountOut', type: 'uint256' },
+      ],
+      stateMutability: 'pure',
+      type: 'function',
+    },
+    {
+      inputs: [
+        { internalType: 'uint256', name: 'amountOut', type: 'uint256' },
+        { internalType: 'address[]', name: 'path', type: 'address[]' },
+      ],
+      name: 'getAmountsIn',
+      outputs: [
+        { internalType: 'uint256[]', name: 'amounts', type: 'uint256[]' },
+      ],
+=======
+      constant: true,
+      inputs: [
+        {
+          internalType: 'address',
+          name: '',
+          type: 'address',
+        },
+      ],
+      name: 'enabledIn',
+      outputs: [
+        {
+          internalType: 'bool',
+          name: '',
+          type: 'bool',
+        },
+      ],
+      payable: false,
+      stateMutability: 'view',
+      type: 'function',
+    },
+    {
+      constant: true,
+      inputs: [],
+      name: 'getDiscount',
+      outputs: [
+        {
+          internalType: 'uint256',
+          name: 'discount',
+          type: 'uint256',
+        },
+      ],
+      payable: false,
+      stateMutability: 'view',
+      type: 'function',
+    },
+    {
+      constant: true,
+      inputs: [
+        {
+          internalType: 'uint256',
+          name: 'amount',
+          type: 'uint256',
+        },
+      ],
+      name: 'getPriceFor',
+      outputs: [
+        {
+          internalType: 'uint256[]',
+          name: 'cost',
+          type: 'uint256[]',
+        },
+      ],
+      payable: false,
+>>>>>>> WIP Add methods for LP tokens
+      stateMutability: 'view',
+      type: 'function',
+    },
+    {
+<<<<<<< HEAD
+      inputs: [
+        { internalType: 'uint256', name: 'amountIn', type: 'uint256' },
+        { internalType: 'address[]', name: 'path', type: 'address[]' },
+      ],
+      name: 'getAmountsOut',
+      outputs: [
+        { internalType: 'uint256[]', name: 'amounts', type: 'uint256[]' },
+      ],
+=======
+      constant: true,
+      inputs: [],
+      name: 'isOwner',
+      outputs: [
+        {
+          internalType: 'bool',
+          name: '',
+          type: 'bool',
+        },
+      ],
+      payable: false,
+>>>>>>> WIP Add methods for LP tokens
+      stateMutability: 'view',
+      type: 'function',
+    },
+    {
+<<<<<<< HEAD
+      inputs: [
+        { internalType: 'uint256', name: 'amountA', type: 'uint256' },
+        { internalType: 'uint256', name: 'reserveA', type: 'uint256' },
+        { internalType: 'uint256', name: 'reserveB', type: 'uint256' },
+      ],
+      name: 'quote',
+      outputs: [{ internalType: 'uint256', name: 'amountB', type: 'uint256' }],
+      stateMutability: 'pure',
+      type: 'function',
+    },
+    {
+      inputs: [
+        { internalType: 'address', name: 'tokenA', type: 'address' },
+        { internalType: 'address', name: 'tokenB', type: 'address' },
+        { internalType: 'uint256', name: 'liquidity', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountAMin', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountBMin', type: 'uint256' },
+        { internalType: 'address', name: 'to', type: 'address' },
+        { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      ],
+      name: 'removeLiquidity',
+      outputs: [
+        { internalType: 'uint256', name: 'amountA', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountB', type: 'uint256' },
+      ],
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },
+    {
+      inputs: [
+        { internalType: 'address', name: 'token', type: 'address' },
+        { internalType: 'uint256', name: 'liquidity', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountTokenMin', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountETHMin', type: 'uint256' },
+        { internalType: 'address', name: 'to', type: 'address' },
+        { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      ],
+      name: 'removeLiquidityETH',
+      outputs: [
+        { internalType: 'uint256', name: 'amountToken', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountETH', type: 'uint256' },
+      ],
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },
+    {
+      inputs: [
+        { internalType: 'address', name: 'token', type: 'address' },
+        { internalType: 'uint256', name: 'liquidity', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountTokenMin', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountETHMin', type: 'uint256' },
+        { internalType: 'address', name: 'to', type: 'address' },
+        { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      ],
+      name: 'removeLiquidityETHSupportingFeeOnTransferTokens',
+      outputs: [
+        { internalType: 'uint256', name: 'amountETH', type: 'uint256' },
+      ],
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },
+    {
+      inputs: [
+        { internalType: 'address', name: 'token', type: 'address' },
+        { internalType: 'uint256', name: 'liquidity', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountTokenMin', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountETHMin', type: 'uint256' },
+        { internalType: 'address', name: 'to', type: 'address' },
+        { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+        { internalType: 'bool', name: 'approveMax', type: 'bool' },
+        { internalType: 'uint8', name: 'v', type: 'uint8' },
+        { internalType: 'bytes32', name: 'r', type: 'bytes32' },
+        { internalType: 'bytes32', name: 's', type: 'bytes32' },
+      ],
+      name: 'removeLiquidityETHWithPermit',
+      outputs: [
+        { internalType: 'uint256', name: 'amountToken', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountETH', type: 'uint256' },
+      ],
+=======
+      constant: true,
+      inputs: [],
+      name: 'lpToken',
+      outputs: [
+        {
+          internalType: 'contract IERC20',
+          name: '',
+          type: 'address',
+        },
+      ],
+      payable: false,
+      stateMutability: 'view',
+      type: 'function',
+    },
+    {
+      constant: true,
+      inputs: [],
+      name: 'lpTokenPrice',
+      outputs: [
+        {
+          internalType: 'uint256',
+          name: '',
+          type: 'uint256',
+        },
+      ],
+      payable: false,
+      stateMutability: 'view',
+      type: 'function',
+    },
+    {
+      constant: true,
+      inputs: [],
+      name: 'maxTokens',
+      outputs: [
+        {
+          internalType: 'uint256',
+          name: '',
+          type: 'uint256',
+        },
+      ],
+      payable: false,
+      stateMutability: 'view',
+      type: 'function',
+    },
+    {
+      constant: true,
+      inputs: [],
+      name: 'owner',
+      outputs: [
+        {
+          internalType: 'address',
+          name: '',
+          type: 'address',
+        },
+      ],
+      payable: false,
+      stateMutability: 'view',
+      type: 'function',
+    },
+    {
+      constant: false,
+      inputs: [],
+      name: 'renounceOwnership',
+      outputs: [],
+      payable: false,
+>>>>>>> WIP Add methods for LP tokens
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },
+    {
+<<<<<<< HEAD
+      inputs: [
+        { internalType: 'address', name: 'token', type: 'address' },
+        { internalType: 'uint256', name: 'liquidity', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountTokenMin', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountETHMin', type: 'uint256' },
+        { internalType: 'address', name: 'to', type: 'address' },
+        { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+        { internalType: 'bool', name: 'approveMax', type: 'bool' },
+        { internalType: 'uint8', name: 'v', type: 'uint8' },
+        { internalType: 'bytes32', name: 'r', type: 'bytes32' },
+        { internalType: 'bytes32', name: 's', type: 'bytes32' },
+      ],
+      name: 'removeLiquidityETHWithPermitSupportingFeeOnTransferTokens',
+      outputs: [
+        { internalType: 'uint256', name: 'amountETH', type: 'uint256' },
+      ],
+=======
+      constant: false,
+      inputs: [
+        {
+          internalType: 'address',
+          name: '_contract',
+          type: 'address',
+        },
+      ],
+      name: 'setStakeContract',
+      outputs: [],
+      payable: false,
+>>>>>>> WIP Add methods for LP tokens
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },
+    {
+<<<<<<< HEAD
+      inputs: [
+        { internalType: 'address', name: 'tokenA', type: 'address' },
+        { internalType: 'address', name: 'tokenB', type: 'address' },
+        { internalType: 'uint256', name: 'liquidity', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountAMin', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountBMin', type: 'uint256' },
+        { internalType: 'address', name: 'to', type: 'address' },
+        { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+        { internalType: 'bool', name: 'approveMax', type: 'bool' },
+        { internalType: 'uint8', name: 'v', type: 'uint8' },
+        { internalType: 'bytes32', name: 'r', type: 'bytes32' },
+        { internalType: 'bytes32', name: 's', type: 'bytes32' },
+      ],
+      name: 'removeLiquidityWithPermit',
+      outputs: [
+        { internalType: 'uint256', name: 'amountA', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountB', type: 'uint256' },
+      ],
+=======
+      constant: false,
+      inputs: [
+        {
+          internalType: 'address',
+          name: 'token',
+          type: 'address',
+        },
+        {
+          internalType: 'bool',
+          name: 'value',
+          type: 'bool',
+        },
+      ],
+      name: 'setTokenIn',
+      outputs: [],
+      payable: false,
+>>>>>>> WIP Add methods for LP tokens
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },
+    {
+<<<<<<< HEAD
+      inputs: [
+        { internalType: 'uint256', name: 'amountOut', type: 'uint256' },
+        { internalType: 'address[]', name: 'path', type: 'address[]' },
+        { internalType: 'address', name: 'to', type: 'address' },
+        { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      ],
+      name: 'swapETHForExactTokens',
+      outputs: [
+        { internalType: 'uint256[]', name: 'amounts', type: 'uint256[]' },
+      ],
+      stateMutability: 'payable',
+      type: 'function',
+    },
+    {
+      inputs: [
+        { internalType: 'uint256', name: 'amountOutMin', type: 'uint256' },
+        { internalType: 'address[]', name: 'path', type: 'address[]' },
+        { internalType: 'address', name: 'to', type: 'address' },
+        { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      ],
+      name: 'swapExactETHForTokens',
+      outputs: [
+        { internalType: 'uint256[]', name: 'amounts', type: 'uint256[]' },
+      ],
+      stateMutability: 'payable',
+      type: 'function',
+    },
+    {
+      inputs: [
+        { internalType: 'uint256', name: 'amountOutMin', type: 'uint256' },
+        { internalType: 'address[]', name: 'path', type: 'address[]' },
+        { internalType: 'address', name: 'to', type: 'address' },
+        { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      ],
+      name: 'swapExactETHForTokensSupportingFeeOnTransferTokens',
+      outputs: [],
+      stateMutability: 'payable',
+      type: 'function',
+    },
+    {
+      inputs: [
+        { internalType: 'uint256', name: 'amountIn', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountOutMin', type: 'uint256' },
+        { internalType: 'address[]', name: 'path', type: 'address[]' },
+        { internalType: 'address', name: 'to', type: 'address' },
+        { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      ],
+      name: 'swapExactTokensForETH',
+      outputs: [
+        { internalType: 'uint256[]', name: 'amounts', type: 'uint256[]' },
+      ],
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },
+    {
+      inputs: [
+        { internalType: 'uint256', name: 'amountIn', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountOutMin', type: 'uint256' },
+        { internalType: 'address[]', name: 'path', type: 'address[]' },
+        { internalType: 'address', name: 'to', type: 'address' },
+        { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      ],
+      name: 'swapExactTokensForETHSupportingFeeOnTransferTokens',
+      outputs: [],
+=======
+      constant: false,
+      inputs: [
+        {
+          internalType: 'address payable',
+          name: '_wallet',
+          type: 'address',
+        },
+      ],
+      name: 'setWalletOut',
+      outputs: [],
+      payable: false,
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },
+    {
+      constant: true,
+      inputs: [],
+      name: 'soldTokens',
+      outputs: [
+        {
+          internalType: 'uint256',
+          name: '',
+          type: 'uint256',
+        },
+      ],
+      payable: false,
+      stateMutability: 'view',
+      type: 'function',
+    },
+    {
+      constant: true,
+      inputs: [],
+      name: 'stableToken',
+      outputs: [
+        {
+          internalType: 'address',
+          name: '',
+          type: 'address',
+        },
+      ],
+      payable: false,
+      stateMutability: 'view',
+      type: 'function',
+    },
+    {
+      constant: true,
+      inputs: [],
+      name: 'totalSupply',
+      outputs: [
+        {
+          internalType: 'uint256',
+          name: '',
+          type: 'uint256',
+        },
+      ],
+      payable: false,
+      stateMutability: 'view',
+      type: 'function',
+    },
+    {
+      constant: false,
+      inputs: [
+        {
+          internalType: 'address',
+          name: 'newOwner',
+          type: 'address',
+        },
+      ],
+      name: 'transferOwnership',
+      outputs: [],
+      payable: false,
+>>>>>>> WIP Add methods for LP tokens
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },
+    {
+<<<<<<< HEAD
+      inputs: [
+        { internalType: 'uint256', name: 'amountIn', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountOutMin', type: 'uint256' },
+        { internalType: 'address[]', name: 'path', type: 'address[]' },
+        { internalType: 'address', name: 'to', type: 'address' },
+        { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      ],
+      name: 'swapExactTokensForTokens',
+      outputs: [
+        { internalType: 'uint256[]', name: 'amounts', type: 'uint256[]' },
+      ],
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },
+    {
+      inputs: [
+        { internalType: 'uint256', name: 'amountIn', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountOutMin', type: 'uint256' },
+        { internalType: 'address[]', name: 'path', type: 'address[]' },
+        { internalType: 'address', name: 'to', type: 'address' },
+        { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      ],
+      name: 'swapExactTokensForTokensSupportingFeeOnTransferTokens',
+      outputs: [],
+=======
+      constant: true,
+      inputs: [],
+      name: 'unlockTime',
+      outputs: [
+        {
+          internalType: 'uint256',
+          name: '',
+          type: 'uint256',
+        },
+      ],
+      payable: false,
+      stateMutability: 'view',
+      type: 'function',
+    },
+    {
+      constant: false,
+      inputs: [
+        {
+          internalType: 'uint256',
+          name: 'amount',
+          type: 'uint256',
+        },
+      ],
+      name: 'withdraw',
+      outputs: [],
+      payable: false,
+>>>>>>> WIP Add methods for LP tokens
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },
+    {
+<<<<<<< HEAD
+      inputs: [
+        { internalType: 'uint256', name: 'amountOut', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountInMax', type: 'uint256' },
+        { internalType: 'address[]', name: 'path', type: 'address[]' },
+        { internalType: 'address', name: 'to', type: 'address' },
+        { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      ],
+      name: 'swapTokensForExactETH',
+      outputs: [
+        { internalType: 'uint256[]', name: 'amounts', type: 'uint256[]' },
+      ],
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },
+    {
+      inputs: [
+        { internalType: 'uint256', name: 'amountOut', type: 'uint256' },
+        { internalType: 'uint256', name: 'amountInMax', type: 'uint256' },
+        { internalType: 'address[]', name: 'path', type: 'address[]' },
+        { internalType: 'address', name: 'to', type: 'address' },
+        { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      ],
+      name: 'swapTokensForExactTokens',
+      outputs: [
+        { internalType: 'uint256[]', name: 'amounts', type: 'uint256[]' },
+      ],
+      stateMutability: 'nonpayable',
+      type: 'function',
+    },
+    { stateMutability: 'payable', type: 'receive' },
+=======
+      constant: true,
+      inputs: [],
+      name: 'wpeToken',
+      outputs: [
+        {
+          internalType: 'contract IERC20',
+          name: '',
+          type: 'address',
+        },
+      ],
+      payable: false,
+      stateMutability: 'view',
+      type: 'function',
+    },
+>>>>>>> WIP Add methods for LP tokens
   ],
 };
 

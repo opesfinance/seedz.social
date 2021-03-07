@@ -22,7 +22,7 @@ const secondCol = (props) => {
           </div>
           <hr />
           <div className='d-flex justify-content-between'>
-            <span>Cost of Beast Mode</span>
+            <span>Cost of Beast Mode (USD)</span>
             <span className='text-right pool-info'>
               {props.pool.costBooster} ETH
             </span>
@@ -59,7 +59,7 @@ const secondCol = (props) => {
           </div>
           <hr />
           <div className='d-flex justify-content-between'>
-            <span>Current Beast Mode stake value</span>
+            <span>Your current staked value</span>
             <span className='text-right pool-info'>
               {props.pool.currentBoosterStakeValue
                 ? props.pool.currentBoosterStakeValue.toFixed(7)
@@ -69,7 +69,7 @@ const secondCol = (props) => {
           </div>
           <hr />
           <div className='d-flex justify-content-between'>
-            <span>Staked value after next Beast Mode</span>
+            <span>Next leverage staked value (after Beast Mode)</span>
             <span className='text-right pool-info'>
               {props.pool.stakeValueNextBooster
                 ? props.pool.stakeValueNextBooster.toFixed(7)
@@ -153,16 +153,15 @@ const StakeBuyBoost = (props) => {
                       </Col>
                       <Col className='text-right pool-info'>
                         {props.pool.stakedBalance
-                          ? props.pool.stakedBalance.toFixed(
-                              props.pool.displayDecimal
-                            )
-                          : '0'}
+                          ? props.pool.stakedBalance
+                          : '0'}{' '}
+                        {props.pool.symbol}
                       </Col>
                     </Row>
                     <Row>
                       <Col>
                         <span className='dot purple'></span>
-                        BEAST MODE (leverage)
+                        MY BEAST MODE (leverage)
                       </Col>
                       <Col className='text-right pool-info'>
                         {props.pool.myBeastModes}%

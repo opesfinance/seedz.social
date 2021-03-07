@@ -478,6 +478,47 @@ class Store {
     return !Number.isNaN(price) ? price : 0;
   };
 
+  getLpPrice = async (assetIn, assetOut) => {
+    const account = store.getStore('account');
+    const web3 = new Web3(store.getStore('web3context').library.provider);
+    const assets = store.getStore('lpTokens');
+
+    var route = [];
+    if (assetIn.label != 'ETH') {
+      route.push(assetIn.address);
+    }
+    route = route.concat([
+      '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+      '0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',
+    ]);
+    route.push(assetOut.address);
+
+    let test = await this._getLPprice(web3, assetOut, route, '100', account); // => {
+
+    //LP price
+    var price = (test[test.length - 3] / 100 / 10 ** 6).toFixed(4);
+    var priceETH = (test[test.length - 3] / 100 / 10 ** 6).toFixed(4);
+    var priceWPE = (test[test.length - 3] / 100 / 10 ** 6).toFixed(4);
+
+    //ETH price
+    var currentETH = assets.find((i) => i.label == 'ETH');
+    currentETH.price =
+      100 / (test[test.length - 6] / 10 ** currentETH.decimals).toFixed(4);
+
+    //WPE price
+    var currentWPE = assets.find((i) => i.label == 'WPE');
+    var wpeTemp = (test[test.length - 5] / 10 ** currentWPE.decimals).toFixed(
+      4
+    );
+    currentWPE.price = 100 / wpeTemp;
+
+    var current = assets.find((i) => i.address == assetOut.address);
+    current.price = price;
+    current.priceETH = priceETH;
+    current.priceWPE = priceWPE;
+    return !Number.isNaN(price) ? price : 0;
+  };
+
   /**
    *
    * @param {Token} assetIn
@@ -521,6 +562,58 @@ class Store {
     let dataBack = await this._getOutputForInputVal(
       web3,
       assetIn,
+      assetOut,
+      route,
+      amountIn,
+      account
+    ); // => {
+
+    // console.log(dataBack);
+
+    let amountOut = (
+      dataBack[dataBack.length - 1] /
+      10 ** assetOut.decimals
+    ).toFixed(9);
+    // console.log('Asset IN ', assetIn.label);
+    // console.log('Asset Out ', assetOut.label);
+    // console.log('AMOUNT IN ', amountIn);
+    // console.log('AMOUNT OUT ', amountOut);
+
+    return amountOut;
+  };
+
+  getLpAmountOut = async (assetIn, assetOut, amountIn) => {
+    const account = store.getStore('account');
+    const web3 = new Web3(store.getStore('web3context').library.provider);
+    const assets = store.getStore('lpTokens');
+    var current = assets.find((i) => i.address == assetOut.address);
+
+    var inputToken = assetIn;
+    var outputToken = assetOut;
+    var midRoute = current.route;
+
+    if (assetIn.group == 'outputs') {
+      inputToken = assetOut;
+      outputToken = assetIn;
+      var temp = assets.find((i) => i.address == outputToken.address);
+      midRoute = temp.route;
+    }
+
+    var route = [];
+
+    if (inputToken.label != 'ETH') {
+      route.push(inputToken.address);
+    }
+    //Default route
+    route = route.concat(midRoute);
+    route.push(outputToken.address);
+
+    /*if (assetIn.group == 'outputs') {
+      route = route.reverse();
+    }*/
+
+    let dataBack = await this._getLPprice(
+      web3,
       assetOut,
       route,
       amountIn,
@@ -621,6 +714,40 @@ class Store {
       callback(null, parseFloat(myJson.data.pool.liquidity).toFixed(2));
     } catch (e) {
       return callback(e);
+    }
+  };
+
+  _getLPprice = async (web3, assetOut, route, amountIn, account) => {
+    //FOR WPE AND ETH PRICE
+    let uniswapRouter = new web3.eth.Contract(
+      config.uniswapRouterABI,
+      config.uniswapRouterAddress
+    );
+
+    //TODO: CURRENTLY IS JUST TAKING YFU VALUE NEED THE REST OF THE CONTRACTS
+    let contract = 'YFU' + 'lpAddress';
+    //let contract = assetOut.label + 'lpAddress';
+
+    //FOR THE REST OF THE COINS
+    let coinRouter = new web3.eth.Contract(
+      config.YFUlpAddressABI,
+      config[contract]
+    );
+
+    var amountToSend = web3.utils.toWei(amountIn, 'ether');
+    try {
+      var amounts = await uniswapRouter.methods
+        .getAmountsOut(amountToSend, route)
+        .call({ from: account.address });
+      var coin = await coinRouter.methods
+        .getPriceFor(web3.utils.toWei('100', 'ether'))
+        .call({ from: account.address });
+
+      var join = amounts.concat(coin);
+
+      return join;
+    } catch (ex) {
+      return ex;
     }
   };
 

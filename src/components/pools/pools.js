@@ -66,10 +66,10 @@ const Pools = (props) => {
   const [error, setError] = useState('');
   const [unitPrice, setUnitPrice] = useState('');
   const [boxes, setBoxValues] = useState([
-    { label: 'STR', value: '$ 0.00', color: 'pink' },
-    { label: 'PIXEL', value: '$ 0.00', color: 'orange' },
-    { label: 'LIFT', value: '$ 0.00', color: 'purple' },
-    { label: 'YFU', value: '$ 0.00', color: 'green' },
+    { label: 'STR LP', value: '$ 0.00', color: 'pink' },
+    { label: 'PIXEL LP', value: '$ 0.00', color: 'orange' },
+    { label: 'LIFT LP', value: '$ 0.00', color: 'purple' },
+    { label: 'YFU LP', value: '$ 0.00', color: 'green' },
     { label: 'ETH', value: '$ 0.00', color: 'orange' },
     { label: 'WPE', value: '$ 0.00', color: 'purple' },
   ]);
@@ -89,7 +89,7 @@ const Pools = (props) => {
       .tokens.filter((a) => a.group == 'outputs');
 
     let promises = assetsOut.map((assetOut) =>
-      store.getPrice(baseAsset, assetOut)
+      store.getLpPrice(baseAsset, assetOut)
     );
     let results = await Promise.all(promises);
 
@@ -144,7 +144,7 @@ const Pools = (props) => {
     if (toAddress) assetOut = toOptions.find((i) => i.address == toAddress);
 
     if (fromAmount && +fromAmount > 0 && assetIn && assetOut) {
-      amountOut = await store.getAmountOut(assetIn, assetOut, fromAmount);
+      amountOut = await store.getLpAmountOut(assetIn, assetOut, fromAmount);
       setToAmount(amountOut);
       getUnitPrice();
     }
@@ -157,7 +157,7 @@ const Pools = (props) => {
       assetIn = fromOptions.find((i) => i.address == fromAddress);
     if (toAddress) assetOut = toOptions.find((i) => i.address == toAddress);
 
-    amountOut = await store.getAmountOut(assetIn, assetOut, '1');
+    amountOut = await store.getLpAmountOut(assetIn, assetOut, '1');
     console.log(assetIn);
     setUnitPrice(`1 ${assetIn.label} = ${amountOut} ${assetOut.label}`);
   };
