@@ -164,7 +164,7 @@ const StakeMain = (props) => {
                 </Col>
               </Row>
               <Row>
-                <Col className='pool-titles'>
+                <Col className='pool-titles col-7'>
                   <span className='dot purple'></span>
                   MY BEAST MODE (leverage)
                 </Col>
