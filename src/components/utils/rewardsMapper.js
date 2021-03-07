@@ -27,6 +27,7 @@ const rewardsMapper = (rewards) => {
         tokenSymbol: t.tokenSymbol,
         ethPrice: t.ethPrice,
         boostBalance: t.boostBalance,
+        disableStake: t.disableStake,
         token: t,
       };
     });

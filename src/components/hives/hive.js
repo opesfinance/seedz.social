@@ -78,17 +78,20 @@ const Hive = (props) => {
               {props.myRewards} {props.rewardsSymbol}
             </div>
           </div>
+
           <div className='text-center pt-4'>
-            <div
-              onClick={() => {
-                if (props.id !== 'balancer-pool') {
-                  navigateStake(props.token);
-                }
-              }}
-              className='btn btn-primary bg-main-blue main-btn'
-            >
-              <BiPlus /> Stake
-            </div>
+            {!props.disableStake && (
+              <div
+                onClick={() => {
+                  if (props.id !== 'balancer-pool') {
+                    navigateStake(props.token);
+                  }
+                }}
+                className='btn btn-primary bg-main-blue main-btn'
+              >
+                <BiPlus /> Stake
+              </div>
+            )}
           </div>
         </div>
       </div>

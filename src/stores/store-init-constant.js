@@ -57,6 +57,7 @@ const STORE = {
           name: 'Seedz Balancer Pool',
           address: '0x5B2dC8c02728e8FB6aeA03a622c3849875A48801', // BPT
           symbol: 'BPT',
+          disableStake: true,
           liquidityLink:
             'https://pools.balancer.exchange/#/pool/0x5B2dC8c02728e8FB6aeA03a622c3849875A48801',
           abi: config.erc20ABI,
@@ -113,6 +114,7 @@ const STORE = {
           name: 'Seedz UNI-LP Pool',
           address: '0x75f89ffbe5c25161cbc7e97c988c9f391eaefaf9', // UNI
           symbol: 'UNI-v2',
+          disableStake: true,
           liquidityLink:
             'https://uniswap.info/pair/0x75F89FfbE5C25161cBC7e97c988c9F391EaeFAF9',
           abi: config.erc20ABI,
