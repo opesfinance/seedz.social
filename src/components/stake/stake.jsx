@@ -351,7 +351,7 @@ const Stake = (props) => {
           <img
             className='pool-logo'
             alt=''
-            src={require(`../../assets/${pool.symbol}.png`)}
+            src={require(`../../assets/logos/${pool.symbol}.png`)}
           />
         </Col>
         <Col lg='10' md='10' xs='6' className='text-left pool-header'>
