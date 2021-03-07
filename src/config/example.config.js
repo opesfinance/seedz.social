@@ -7693,7 +7693,10 @@ const config = {
   ],
 
   YFUlpAddress: '0xaF69d9E9EFD61b7Cf446ba34Ffd506519747368D',
-  YFUlpAddressABI: [
+  LIFTlpAddress: '0x8a04e2991496CbC122E3f5d00289246e4e8ab7A9',
+  STRlpAddress: '0x5d35a56d67a7659e252Bb2b5FAa942191911c9c1',
+  PIXELlpAddress: '0xD20B4a71d1F59E37713aba361A0a25a64a7D335D',
+  lpAddressABI: [
     {
       inputs: [
         {

@@ -27,6 +27,8 @@ import {
   BOOST_STAKE,
   EXCHANGE,
   EXCHANGE_RETURNED,
+  BUY_LP,
+  BUY_LP_RETURNED,
 } from '../constants';
 import Web3 from 'web3';
 import STORE from './store-init-constant';
@@ -72,6 +74,9 @@ class Store {
             break;
           case EXCHANGE:
             this.exchange(payload);
+            break;
+          case BUY_LP:
+            this.buyLP(payload);
             break;
           case WITHDRAW:
             this.withdraw(payload);
@@ -493,12 +498,12 @@ class Store {
     ]);
     route.push(assetOut.address);
 
-    let test = await this._getLPprice(web3, assetOut, route, '100', account); // => {
+    let test = await this._getLPprice(web3, assetOut, route, '100', account);
 
     //LP price
     var price = (test[test.length - 3] / 100 / 10 ** 6).toFixed(4);
-    var priceETH = (test[test.length - 3] / 100 / 10 ** 6).toFixed(4);
-    var priceWPE = (test[test.length - 3] / 100 / 10 ** 6).toFixed(4);
+    var priceETH = (test[test.length - 2] / 100 / 10 ** 18).toFixed(4);
+    var priceWPE = (test[test.length - 1] / 100 / 10 ** 18).toFixed(4);
 
     //ETH price
     var currentETH = assets.find((i) => i.label == 'ETH');
@@ -583,53 +588,19 @@ class Store {
   };
 
   getLpAmountOut = async (assetIn, assetOut, amountIn) => {
-    const account = store.getStore('account');
-    const web3 = new Web3(store.getStore('web3context').library.provider);
     const assets = store.getStore('lpTokens');
     var current = assets.find((i) => i.address == assetOut.address);
+    let amountOut;
 
-    var inputToken = assetIn;
-    var outputToken = assetOut;
-    var midRoute = current.route;
-
-    if (assetIn.group == 'outputs') {
-      inputToken = assetOut;
-      outputToken = assetIn;
-      var temp = assets.find((i) => i.address == outputToken.address);
-      midRoute = temp.route;
+    //LP price
+    if (assetIn.label === 'ETH') {
+      amountOut = amountIn * (1 / current.priceETH);
+    } else if (assetIn.label === 'WPE') {
+      amountOut = amountIn * (1 / current.priceWPE);
+    } else {
+      //stable coin
+      amountOut = amountIn * (1 / current.price);
     }
-
-    var route = [];
-
-    if (inputToken.label != 'ETH') {
-      route.push(inputToken.address);
-    }
-    //Default route
-    route = route.concat(midRoute);
-    route.push(outputToken.address);
-
-    /*if (assetIn.group == 'outputs') {
-      route = route.reverse();
-    }*/
-
-    let dataBack = await this._getLPprice(
-      web3,
-      assetOut,
-      route,
-      amountIn,
-      account
-    ); // => {
-
-    // console.log(dataBack);
-
-    let amountOut = (
-      dataBack[dataBack.length - 1] /
-      10 ** assetOut.decimals
-    ).toFixed(9);
-    // console.log('Asset IN ', assetIn.label);
-    // console.log('Asset Out ', assetOut.label);
-    // console.log('AMOUNT IN ', amountIn);
-    // console.log('AMOUNT OUT ', amountOut);
 
     return amountOut;
   };
@@ -654,6 +625,8 @@ class Store {
       var amounts = await uniswapRouter.methods
         .getAmountsOut(amountToSend, route) //[assetIn.address, assetOut.address])
         .call({ from: account.address });
+      console.log('Amounts');
+      console.log(amounts);
       return amounts;
       //callback(null, amounts);
     } catch (ex) {
@@ -724,13 +697,12 @@ class Store {
       config.uniswapRouterAddress
     );
 
-    //TODO: CURRENTLY IS JUST TAKING YFU VALUE NEED THE REST OF THE CONTRACTS
-    let contract = 'YFU' + 'lpAddress';
-    //let contract = assetOut.label + 'lpAddress';
+    //get coin lp contract address
+    let contract = assetOut.label + 'lpAddress';
 
     //FOR THE REST OF THE COINS
     let coinRouter = new web3.eth.Contract(
-      config.YFUlpAddressABI,
+      config.lpAddressABI,
       config[contract]
     );
 
@@ -1495,6 +1467,157 @@ class Store {
       }
     }
   };
+
+  buyLPWithEth = (payload) => {
+    const account = store.getStore('account');
+    const { assetIn, assetOut, amountIn, amountOut } = payload.content;
+
+    this._buyLPWithEthCall(
+      assetOut,
+      account,
+      amountOut,
+      amountIn,
+      (err, res) => {
+        if (err) {
+          return emitter.emit(ERROR, err);
+        }
+
+        return emitter.emit(BUY_LP_RETURNED, res); //EXCHANGEETHFORTOKEN_RETURNED
+      }
+    );
+  };
+  _buyLPWithEthCall = async (asset, account, amount, value, callback) => {
+    const web3 = new Web3(store.getStore('web3context').library.provider);
+
+    let contract = asset.label + 'lpAddress';
+    const coinContract = new web3.eth.Contract(
+      config.lpAddressABI,
+      config[contract]
+    );
+
+    console.log('Amount ' + amount);
+
+    const buyAmount = web3.utils.toWei(amount.toString(), 'ether');
+    coinContract.methods
+      .buyLPTokensEth(buyAmount)
+      .send({
+        from: account.address,
+        gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
+        value: web3.utils.toWei(value, 'ether'),
+      })
+      .on('transactionHash', function (hash) {
+        // console.log(hash);
+        callback(null, hash);
+      })
+      .on('confirmation', function (confirmationNumber, receipt) {
+        /*if (confirmationNumber === 2) {
+          dispatcher.dispatch({ type: GET_BALANCES, content: {} });
+        }*/
+      })
+      .on('receipt', function (receipt) {
+        // console.log(receipt);
+      })
+      .on('error', function (error) {
+        if (!error.toString().includes('-32601')) {
+          if (error.message) {
+            return callback(error.message);
+          }
+          callback(error);
+        }
+      })
+      .catch((error) => {
+        if (!error.toString().includes('-32601')) {
+          if (error.message) {
+            return callback(error.message);
+          }
+          callback(error);
+        }
+      });
+  };
+  buyLPWithToken = (payload) => {
+    const account = store.getStore('account');
+    const { assetIn, assetOut, amountIn, amountOut } = payload.content;
+
+    this._buyLPWithTokenCall(
+      assetOut,
+      assetIn,
+      account,
+      amountOut,
+      amountIn,
+      (err, res) => {
+        if (err) {
+          return emitter.emit(ERROR, err);
+        }
+
+        return emitter.emit(BUY_LP_RETURNED, res);
+      }
+    );
+  };
+  _buyLPWithTokenCall = async (
+    asset,
+    token,
+    account,
+    amount,
+    value,
+    callback
+  ) => {
+    const web3 = new Web3(store.getStore('web3context').library.provider);
+
+    let contract = asset.label + 'lpAddress';
+    const coinContract = new web3.eth.Contract(
+      config.lpAddressABI,
+      config[contract]
+    );
+
+    const buyAmount = web3.utils.toWei(amount.toString(), 'ether');
+    coinContract.methods
+      .buyLPTokensWithToken(buyAmount, token.address)
+      .send({
+        from: account.address,
+        gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
+        value: web3.utils.toWei(value, 'ether'),
+      })
+      .on('transactionHash', function (hash) {
+        // console.log(hash);
+        callback(null, hash);
+      })
+      .on('confirmation', function (confirmationNumber, receipt) {
+        /*if (confirmationNumber === 2) {
+          dispatcher.dispatch({ type: GET_BALANCES, content: {} });
+        }*/
+      })
+      .on('receipt', function (receipt) {
+        // console.log(receipt);
+      })
+      .on('error', function (error) {
+        if (!error.toString().includes('-32601')) {
+          if (error.message) {
+            return callback(error.message);
+          }
+          callback(error);
+        }
+      })
+      .catch((error) => {
+        if (!error.toString().includes('-32601')) {
+          if (error.message) {
+            return callback(error.message);
+          }
+          callback(error);
+        }
+      });
+  };
+  buyLP = (payload) => {
+    const { assetIn, assetOut, amountIn, amountOut } = payload.content;
+
+    if (assetIn.label == 'ETH') {
+      //- [ ] BUYLPTOKENSWITHEYTHEREUM
+      this.buyLPWithEth(payload);
+    } else {
+      //BUYWITHTOKEN
+      this.buyLPWithToken(payload);
+    }
+  };
+
   /**
    * -------------------------
    * START STAKE ON BOOST
