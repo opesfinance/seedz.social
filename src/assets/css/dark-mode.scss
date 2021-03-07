@@ -13,6 +13,19 @@ Top Menu Navigation
 --------------
 **/
 
+.dark-mode .navbar-brand {
+  // display: block;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  background: url('../logo-dark.png') no-repeat;
+  background-size: contain;
+  -webkit-background-size: contain;
+  -moz-background-size: contain;
+  -o-background-size: contain;
+  background-size: contain;
+  height: 30px; /* Height of new image */
+}
+
 .dark-mode .navbar {
   background: #2f2f2f;
 }
