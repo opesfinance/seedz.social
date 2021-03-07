@@ -224,11 +224,11 @@ const STORE = {
       tokens: [
         {
           id: 'boostrewards',
-          name: 'YFU',
-          address: '0x75f89ffbe5c25161cbc7e97c988c9f391eaefaf9', // UNI
+          name: 'YFU', // YFU-LP
+          address: '0x8dc082087ee75b528dfd4e68fa28966666de1a60', // UNI
           symbol: 'YFU',
           liquidityLink:
-            'https://uniswap.info/pair/0x75F89FfbE5C25161cBC7e97c988c9F391EaeFAF9',
+            'https://uniswap.info/pair/0x8dc082087ee75b528dfd4e68fa28966666de1a60',
           abi: config.erc20ABI,
           beastBonus: 200,
           bonusReductionIn: '24 hours',
@@ -534,6 +534,7 @@ const STORE = {
         label: 'YFU',
         logo: 'YFU.png',
         address: '0xa279dab6ec190eE4Efce7Da72896EB58AD533262',
+        liquidityPoolAddress: '0x8dc082087ee75b528dfd4e68fa28966666de1a60',
         decimals: 18,
         group: 'outputs',
         denomination: 'WPE',
