@@ -619,8 +619,6 @@ class Store {
       var amounts = await uniswapRouter.methods
         .getAmountsOut(amountToSend, route) //[assetIn.address, assetOut.address])
         .call({ from: account.address });
-      console.log('Amounts');
-      console.log(amounts);
       return amounts;
       //callback(null, amounts);
     } catch (ex) {
@@ -817,7 +815,13 @@ class Store {
       return callback(ex);
     }
   };
-  _checkApprovalLiquidity = async (asset, assetOut, account, amount, callback) => {
+  _checkApprovalLiquidity = async (
+    asset,
+    assetOut,
+    account,
+    amount,
+    callback
+  ) => {
     try {
       const web3 = new Web3(store.getStore('web3context').library.provider);
 
@@ -838,10 +842,7 @@ class Store {
 
       if (parseFloat(ethAllowance) < parseFloat(amount)) {
         await erc20Contract.methods
-          .approve(
-            contractLPSell,
-            web3.utils.toWei('999999999999999', 'ether')
-          )
+          .approve(contractLPSell, web3.utils.toWei('999999999999999', 'ether'))
           .send({
             from: account.address,
             gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
@@ -1528,7 +1529,10 @@ class Store {
       .send({
         from: account.address,
         gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
-        value: web3.utils.toWei((parseFloat(value)*1.002).toString(), 'ether'),
+        value: web3.utils.toWei(
+          (parseFloat(value) * 1.002).toString(),
+          'ether'
+        ),
       })
       .on('transactionHash', function (hash) {
         // console.log(hash);
@@ -1563,26 +1567,32 @@ class Store {
   buyLPWithToken = (payload) => {
     const account = store.getStore('account');
     const { assetIn, assetOut, amountIn, amountOut } = payload.content;
-    this._checkApprovalLiquidity(assetIn, assetOut, account, amountIn, (err) => {
-      if (err) {
-        return emitter.emit(ERROR, err);
-      }
-
-      this._buyLPWithTokenCall(
-        assetOut,
-        assetIn,
-        account,
-        amountOut,
-        amountIn,
-        (err, res) => {
-          if (err) {
-            return emitter.emit(ERROR, err);
-          }
-
-          return emitter.emit(BUY_LP_RETURNED, res);
+    this._checkApprovalLiquidity(
+      assetIn,
+      assetOut,
+      account,
+      amountIn,
+      (err) => {
+        if (err) {
+          return emitter.emit(ERROR, err);
         }
-      );
-    });
+
+        this._buyLPWithTokenCall(
+          assetOut,
+          assetIn,
+          account,
+          amountOut,
+          amountIn,
+          (err, res) => {
+            if (err) {
+              return emitter.emit(ERROR, err);
+            }
+
+            return emitter.emit(BUY_LP_RETURNED, res);
+          }
+        );
+      }
+    );
   };
   _buyLPWithTokenCall = async (
     asset,
@@ -1599,11 +1609,11 @@ class Store {
       config.lpAddressABI,
       config[contract]
     );
-    console.log("ASSET IN LP TOKEN CALL")
+    console.log('ASSET IN LP TOKEN CALL');
     console.log(asset);
-    console.log("sldjlkdajsflk")
+    console.log('sldjlkdajsflk');
     console.log(token);
-    console.log("CONTRATO ", config[contract])
+    console.log('CONTRATO ', config[contract]);
 
     const buyAmount = web3.utils.toWei(amount.toString(), 'ether');
     // var amountToSend = web3.utils.toWei(amountIn, 'ether');
@@ -1614,7 +1624,7 @@ class Store {
       .buyLPTokensWithToken(buyAmount, token.address)
       .send({
         from: account.address,
-        gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei')
+        gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
       })
       .on('transactionHash', function (hash) {
         // console.log(hash);
@@ -1654,7 +1664,7 @@ class Store {
       this.buyLPWithEth(payload);
     } else {
       //BUYWITHTOKEN
-      console.log('buy lp with token')
+      console.log('buy lp with token');
       this.buyLPWithToken(payload);
     }
   };

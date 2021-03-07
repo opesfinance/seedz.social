@@ -46,9 +46,7 @@ const dropdownOptions = (options) => {
 
 const Pools = (props) => {
   const [fromOptions, setFromOptions] = useState(
-    store
-      .getStore(props.assetsStoreKey)
-      .tokens.filter((a) => a.group == 'inputs')
+    store.getStore('poolInTokens')
   );
   const [toOptions, setToOptions] = useState(
     store

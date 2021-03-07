@@ -460,7 +460,7 @@ const STORE = {
         logo: 'WPE.png',
         address: '0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',
         decimals: 18,
-        group: 'inputs',
+        group: 'base',
         denomination: 'ETH',
         price: 2.067,
       },
@@ -549,6 +549,32 @@ const STORE = {
       },
     ],
   },
+  poolInTokens: [
+    {
+      label: 'ETH',
+      logo: 'logo-eth.png',
+      address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+      decimals: 18,
+    },
+    {
+      label: 'WPE',
+      logo: 'WPE.png',
+      address: '0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',
+      decimals: 18,
+    },
+    {
+      label: 'USDC',
+      logo: 'USD_Coin_icon.webp',
+      address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+      decimals: 6,
+    },
+    {
+      label: 'USDT',
+      logo: 'tether_32.webp',
+      address: '0xdac17f958d2ee523a2206206994597c13d831ec7',
+      decimals: 6,
+    },
+  ],
   lpTokens: [
     {
       label: 'STR',
