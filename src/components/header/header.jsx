@@ -97,7 +97,8 @@ class Header extends React.Component {
         <nav className='navbar navbar-expand-lg fixed-top'>
           <Link to='/' className='navbar-brand'>
             <img
-              src={require('../../assets/logo.png')}
+              className='navbar-logo'
+              src={require('../../assets/empty.png')}
               height='30'
               alt='Bees Social'
             />
