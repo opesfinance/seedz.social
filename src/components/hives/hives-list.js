@@ -71,7 +71,7 @@ const HivesList = (props) => {
           myBeastModes={t.myBeastModes}
           myRewards={t.myRewards}
           symbol={t.symbol}
-          ratePerWeek={t.ratePerWeek}
+          // ratePerWeek={t.ratePerWeek}
           rewardsSymbol={t.rewardsSymbol}
           stakedBalance={t.stakedBalance}
           costBooster={t.costBooster}

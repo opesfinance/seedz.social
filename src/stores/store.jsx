@@ -172,7 +172,7 @@ class Store {
                     account,
                     callbackInnerInner
                   );
-                },//_getBonusAvailable
+                }, //_getBonusAvailable
                 (callbackInnerInner) => {
                   this._getBonusAvailable(
                     web3,
@@ -271,7 +271,7 @@ class Store {
                     account,
                     callbackInnerInner
                   );
-                },//_getBonusAvailable
+                }, //_getBonusAvailable
                 (callbackInnerInner) => {
                   this._getBonusAvailable(
                     web3,
