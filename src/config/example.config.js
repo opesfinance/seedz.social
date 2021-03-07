@@ -7692,7 +7692,7 @@ const config = {
     { stateMutability: 'payable', type: 'receive' },
   ],
 
-  YFUlpAddress: '0xaF69d9E9EFD61b7Cf446ba34Ffd506519747368D',
+  YFUlpAddress: '0xb4DA88fA5292d6d7c9Bb9E20255Dd6596A9b93E0',
   LIFTlpAddress: '0x8a04e2991496CbC122E3f5d00289246e4e8ab7A9',
   STRlpAddress: '0x5d35a56d67a7659e252Bb2b5FAa942191911c9c1',
   PIXELlpAddress: '0xD20B4a71d1F59E37713aba361A0a25a64a7D335D',

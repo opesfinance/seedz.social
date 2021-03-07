@@ -836,6 +836,47 @@ class Store {
       return callback(ex);
     }
   };
+  _checkApprovalLiquidity = async (asset, assetOut, account, amount, callback) => {
+    try {
+      const web3 = new Web3(store.getStore('web3context').library.provider);
+
+      console.log(asset);
+      console.log(assetOut);
+
+      let contractLPSell = config[assetOut.label + 'lpAddress'];
+      console.log(contractLPSell);
+      const erc20Contract = new web3.eth.Contract(
+        config.erc20ABI,
+        asset.address
+      );
+      const allowance = await erc20Contract.methods
+        .allowance(account.address, contractLPSell)
+        .call({ from: account.address });
+
+      const ethAllowance = web3.utils.fromWei(allowance, 'ether');
+
+      if (parseFloat(ethAllowance) < parseFloat(amount)) {
+        await erc20Contract.methods
+          .approve(
+            contractLPSell,
+            web3.utils.toWei('999999999999999', 'ether')
+          )
+          .send({
+            from: account.address,
+            gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
+          });
+        callback();
+      } else {
+        callback();
+      }
+    } catch (error) {
+      // console.log(error);
+      if (error.message) {
+        return callback(error.message);
+      }
+      callback(error);
+    }
+  };
   _checkApprovalExchange = async (asset, account, amount, callback) => {
     try {
       const web3 = new Web3(store.getStore('web3context').library.provider);
@@ -1496,14 +1537,17 @@ class Store {
     );
 
     console.log('Amount ' + amount);
+    console.log('value ' + value);
 
     const buyAmount = web3.utils.toWei(amount.toString(), 'ether');
+
+    console.log(buyAmount);
     coinContract.methods
       .buyLPTokensEth(buyAmount)
       .send({
         from: account.address,
         gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
-        value: web3.utils.toWei(value, 'ether'),
+        value: web3.utils.toWei((parseFloat(value)*1.002).toString(), 'ether'),
       })
       .on('transactionHash', function (hash) {
         // console.log(hash);
@@ -1534,24 +1578,30 @@ class Store {
         }
       });
   };
+
   buyLPWithToken = (payload) => {
     const account = store.getStore('account');
     const { assetIn, assetOut, amountIn, amountOut } = payload.content;
-
-    this._buyLPWithTokenCall(
-      assetOut,
-      assetIn,
-      account,
-      amountOut,
-      amountIn,
-      (err, res) => {
-        if (err) {
-          return emitter.emit(ERROR, err);
-        }
-
-        return emitter.emit(BUY_LP_RETURNED, res);
+    this._checkApprovalLiquidity(assetIn, assetOut, account, amountIn, (err) => {
+      if (err) {
+        return emitter.emit(ERROR, err);
       }
-    );
+
+      this._buyLPWithTokenCall(
+        assetOut,
+        assetIn,
+        account,
+        amountOut,
+        amountIn,
+        (err, res) => {
+          if (err) {
+            return emitter.emit(ERROR, err);
+          }
+
+          return emitter.emit(BUY_LP_RETURNED, res);
+        }
+      );
+    });
   };
   _buyLPWithTokenCall = async (
     asset,
@@ -1568,14 +1618,22 @@ class Store {
       config.lpAddressABI,
       config[contract]
     );
+    console.log("ASSET IN LP TOKEN CALL")
+    console.log(asset);
+    console.log("sldjlkdajsflk")
+    console.log(token);
+    console.log("CONTRATO ", config[contract])
 
     const buyAmount = web3.utils.toWei(amount.toString(), 'ether');
+    // var amountToSend = web3.utils.toWei(amountIn, 'ether');
+    // if (assetIn.decimals !== 18) {
+    //   amountToSend = (amountIn * 10 ** assetIn.decimals).toFixed(0);
+    // }
     coinContract.methods
       .buyLPTokensWithToken(buyAmount, token.address)
       .send({
         from: account.address,
-        gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
-        value: web3.utils.toWei(value, 'ether'),
+        gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei')
       })
       .on('transactionHash', function (hash) {
         // console.log(hash);
@@ -1606,6 +1664,7 @@ class Store {
         }
       });
   };
+
   buyLP = (payload) => {
     const { assetIn, assetOut, amountIn, amountOut } = payload.content;
 
@@ -1614,6 +1673,7 @@ class Store {
       this.buyLPWithEth(payload);
     } else {
       //BUYWITHTOKEN
+      console.log('buy lp with token')
       this.buyLPWithToken(payload);
     }
   };
