@@ -169,7 +169,7 @@ const StakeMain = (props) => {
                   MY BEAST MODE (leverage)
                 </Col>
                 <Col className='text-right pool-info'>
-                  {props.pool.myBeastModes}%
+                  {props.pool.myBeastModes*10}%
                 </Col>
               </Row>
               <Row>

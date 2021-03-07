@@ -475,52 +475,46 @@ class Store {
       4
     );
     currentWPE.price = 100 / wpeTemp;
-    // console.log(wpeTemp);
-    // console.log('WPE ', currentWPE);
 
     var current = assets.find((i) => i.address == assetOut.address);
     current.price = price;
     return !Number.isNaN(price) ? price : 0;
   };
 
-  getLpPrice = async (assetIn, assetOut) => {
+  getLpPrice = async (assetOut) => {
     const account = store.getStore('account');
     const web3 = new Web3(store.getStore('web3context').library.provider);
     const assets = store.getStore('lpTokens');
+    let price;
 
-    var route = [];
-    if (assetIn.label != 'ETH') {
-      route.push(assetIn.address);
+    if (assetOut.label == 'ETH' || assetOut.label == 'WPE') {
+      const temp = { label: 'STR' };
+      let test = await this._getLPprice(web3, temp, account); //set an LP token address for the moment
+      price = (test[test.length - 3] / 100 / 10 ** 6).toFixed(4);
+
+      if (assetOut.label == 'ETH') {
+        const priceETH = (test[test.length - 2] / 100 / 10 ** 18).toFixed(4);
+        const eth = assets.find((i) => i.label == 'ETH');
+        eth.price = price / priceETH;
+        price = eth.price;
+      } else {
+        const priceWPE = (test[test.length - 1] / 100 / 10 ** 18).toFixed(4);
+        const wpe = assets.find((i) => i.label == 'WPE');
+        wpe.price = price / priceWPE;
+        price = wpe.price;
+      }
+    } else {
+      let test = await this._getLPprice(web3, assetOut, account);
+      //LP price
+      price = (test[test.length - 3] / 100 / 10 ** 6).toFixed(4);
+      const priceETH = (test[test.length - 2] / 100 / 10 ** 18).toFixed(4);
+      const priceWPE = (test[test.length - 1] / 100 / 10 ** 18).toFixed(4);
+      const current = assets.find((i) => i.address == assetOut.address);
+      current.price = !Number.isNaN(price) ? price : 0;
+      current.priceETH = !Number.isNaN(priceETH) ? priceETH : 0;
+      current.priceWPE = !Number.isNaN(priceWPE) ? priceWPE : 0;
     }
-    route = route.concat([
-      '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-      '0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',
-    ]);
-    route.push(assetOut.address);
 
-    let test = await this._getLPprice(web3, assetOut, route, '100', account);
-
-    //LP price
-    var price = (test[test.length - 3] / 100 / 10 ** 6).toFixed(4);
-    var priceETH = (test[test.length - 2] / 100 / 10 ** 18).toFixed(4);
-    var priceWPE = (test[test.length - 1] / 100 / 10 ** 18).toFixed(4);
-
-    //ETH price
-    var currentETH = assets.find((i) => i.label == 'ETH');
-    currentETH.price =
-      100 / (test[test.length - 6] / 10 ** currentETH.decimals).toFixed(4);
-
-    //WPE price
-    var currentWPE = assets.find((i) => i.label == 'WPE');
-    var wpeTemp = (test[test.length - 5] / 10 ** currentWPE.decimals).toFixed(
-      4
-    );
-    currentWPE.price = 100 / wpeTemp;
-
-    var current = assets.find((i) => i.address == assetOut.address);
-    current.price = price;
-    current.priceETH = priceETH;
-    current.priceWPE = priceWPE;
     return !Number.isNaN(price) ? price : 0;
   };
 
@@ -690,13 +684,7 @@ class Store {
     }
   };
 
-  _getLPprice = async (web3, assetOut, route, amountIn, account) => {
-    //FOR WPE AND ETH PRICE
-    let uniswapRouter = new web3.eth.Contract(
-      config.uniswapRouterABI,
-      config.uniswapRouterAddress
-    );
-
+  _getLPprice = async (web3, assetOut, account) => {
     //get coin lp contract address
     let contract = assetOut.label + 'lpAddress';
 
@@ -706,18 +694,11 @@ class Store {
       config[contract]
     );
 
-    var amountToSend = web3.utils.toWei(amountIn, 'ether');
     try {
-      var amounts = await uniswapRouter.methods
-        .getAmountsOut(amountToSend, route)
-        .call({ from: account.address });
-      var coin = await coinRouter.methods
+      let amounts = await coinRouter.methods
         .getPriceFor(web3.utils.toWei('100', 'ether'))
         .call({ from: account.address });
-
-      var join = amounts.concat(coin);
-
-      return join;
+      return amounts;
     } catch (ex) {
       return ex;
     }
@@ -834,6 +815,47 @@ class Store {
       callback(null, boostInfo);
     } catch (ex) {
       return callback(ex);
+    }
+  };
+  _checkApprovalLiquidity = async (asset, assetOut, account, amount, callback) => {
+    try {
+      const web3 = new Web3(store.getStore('web3context').library.provider);
+
+      console.log(asset);
+      console.log(assetOut);
+
+      let contractLPSell = config[assetOut.label + 'lpAddress'];
+      console.log(contractLPSell);
+      const erc20Contract = new web3.eth.Contract(
+        config.erc20ABI,
+        asset.address
+      );
+      const allowance = await erc20Contract.methods
+        .allowance(account.address, contractLPSell)
+        .call({ from: account.address });
+
+      const ethAllowance = web3.utils.fromWei(allowance, 'ether');
+
+      if (parseFloat(ethAllowance) < parseFloat(amount)) {
+        await erc20Contract.methods
+          .approve(
+            contractLPSell,
+            web3.utils.toWei('999999999999999', 'ether')
+          )
+          .send({
+            from: account.address,
+            gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
+          });
+        callback();
+      } else {
+        callback();
+      }
+    } catch (error) {
+      // console.log(error);
+      if (error.message) {
+        return callback(error.message);
+      }
+      callback(error);
     }
   };
   _checkApprovalExchange = async (asset, account, amount, callback) => {
@@ -1496,14 +1518,17 @@ class Store {
     );
 
     console.log('Amount ' + amount);
+    console.log('value ' + value);
 
     const buyAmount = web3.utils.toWei(amount.toString(), 'ether');
+
+    console.log(buyAmount);
     coinContract.methods
       .buyLPTokensEth(buyAmount)
       .send({
         from: account.address,
         gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
-        value: web3.utils.toWei(value, 'ether'),
+        value: web3.utils.toWei((parseFloat(value)*1.002).toString(), 'ether'),
       })
       .on('transactionHash', function (hash) {
         // console.log(hash);
@@ -1534,24 +1559,30 @@ class Store {
         }
       });
   };
+
   buyLPWithToken = (payload) => {
     const account = store.getStore('account');
     const { assetIn, assetOut, amountIn, amountOut } = payload.content;
-
-    this._buyLPWithTokenCall(
-      assetOut,
-      assetIn,
-      account,
-      amountOut,
-      amountIn,
-      (err, res) => {
-        if (err) {
-          return emitter.emit(ERROR, err);
-        }
-
-        return emitter.emit(BUY_LP_RETURNED, res);
+    this._checkApprovalLiquidity(assetIn, assetOut, account, amountIn, (err) => {
+      if (err) {
+        return emitter.emit(ERROR, err);
       }
-    );
+
+      this._buyLPWithTokenCall(
+        assetOut,
+        assetIn,
+        account,
+        amountOut,
+        amountIn,
+        (err, res) => {
+          if (err) {
+            return emitter.emit(ERROR, err);
+          }
+
+          return emitter.emit(BUY_LP_RETURNED, res);
+        }
+      );
+    });
   };
   _buyLPWithTokenCall = async (
     asset,
@@ -1568,14 +1599,22 @@ class Store {
       config.lpAddressABI,
       config[contract]
     );
+    console.log("ASSET IN LP TOKEN CALL")
+    console.log(asset);
+    console.log("sldjlkdajsflk")
+    console.log(token);
+    console.log("CONTRATO ", config[contract])
 
     const buyAmount = web3.utils.toWei(amount.toString(), 'ether');
+    // var amountToSend = web3.utils.toWei(amountIn, 'ether');
+    // if (assetIn.decimals !== 18) {
+    //   amountToSend = (amountIn * 10 ** assetIn.decimals).toFixed(0);
+    // }
     coinContract.methods
       .buyLPTokensWithToken(buyAmount, token.address)
       .send({
         from: account.address,
-        gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
-        value: web3.utils.toWei(value, 'ether'),
+        gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei')
       })
       .on('transactionHash', function (hash) {
         // console.log(hash);
@@ -1606,6 +1645,7 @@ class Store {
         }
       });
   };
+
   buyLP = (payload) => {
     const { assetIn, assetOut, amountIn, amountOut } = payload.content;
 
@@ -1614,6 +1654,7 @@ class Store {
       this.buyLPWithEth(payload);
     } else {
       //BUYWITHTOKEN
+      console.log('buy lp with token')
       this.buyLPWithToken(payload);
     }
   };

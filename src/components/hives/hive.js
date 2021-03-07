@@ -71,7 +71,7 @@ const Hive = (props) => {
               <span className='dot light-blue'></span>
               My Beast Mode (leverage)
             </div>
-            <div className='text-right main-blue'>{props.myBeastModes}%</div>
+            <div className='text-right main-blue'>{props.myBeastModes*10}%</div>
           </div>
           <div className='d-flex justify-content-between'>
             <div>

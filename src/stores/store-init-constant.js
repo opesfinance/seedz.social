@@ -61,8 +61,8 @@ const STORE = {
           liquidityLink:
             'https://pools.balancer.exchange/#/pool/0x5B2dC8c02728e8FB6aeA03a622c3849875A48801',
           abi: config.erc20ABI,
-          beastBonus: 1000,
-          bonusReductionIn: '24 hours',
+          beastBonus: 2000,
+          bonusReductionIn: '0 hours',
           decimals: 18,
           tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
           tokenSymbol: 'Seedz',
@@ -118,8 +118,8 @@ const STORE = {
           liquidityLink:
             'https://uniswap.info/pair/0x75F89FfbE5C25161cBC7e97c988c9F391EaeFAF9',
           abi: config.erc20ABI,
-          beastBonus: 1000,
-          bonusReductionIn: '24 hours',
+          beastBonus: 2000,
+          bonusReductionIn: '0 hours',
           decimals: 18,
           tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
           tokenSymbol: 'Seedz',
@@ -175,7 +175,7 @@ const STORE = {
             'https://uniswap.info/pair/0x469485cA145D850c0e54367076558dC72b5DCe19',
           abi: config.erc20ABI,
           beastBonus: 1000,
-          bonusReductionIn: '24 hours',
+          bonusReductionIn: '7 days',
           decimals: 18,
           tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
           tokenSymbol: 'Seedz',
@@ -231,7 +231,7 @@ const STORE = {
             'https://uniswap.info/pair/0x8dc082087ee75b528dfd4e68fa28966666de1a60',
           abi: config.erc20ABI,
           beastBonus: 1000,
-          bonusReductionIn: '24 hours',
+          bonusReductionIn: '7 days',
           decimals: 18,
           tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
           tokenSymbol: 'Seedz',
@@ -287,7 +287,7 @@ const STORE = {
             'https://uniswap.info/pair/0xEcEa1bAe3Bb692510693FAc2932C32BeB1FA866E',
           abi: config.erc20ABI,
           beastBonus: 1000,
-          bonusReductionIn: '24 hours',
+          bonusReductionIn: '7 days',
           decimals: 18,
           tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
           tokenSymbol: 'Seedz',
@@ -343,7 +343,7 @@ const STORE = {
             'https://uniswap.info/pair/0x8eAA970BE66D4DE446453AEA538173382C2CACE8',
           abi: config.erc20ABI,
           beastBonus: 1000,
-          bonusReductionIn: '24 hours',
+          bonusReductionIn: '7 days',
           decimals: 18,
           tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
           tokenSymbol: 'Seedz',
@@ -495,7 +495,7 @@ const STORE = {
         label: 'STR',
         logo: 'STR.png',
         address: '0x11C1a6B3Ed6Bb362954b29d3183cfA97A0c806Aa',
-        liquidityPoolAddress: '0xE1C0E3c6B0cbA894932a5599e91cCf63E23C1693',
+        liquidityPoolAddress: '0x8eAA970BE66D4DE446453AEA538173382C2CACE8',
         decimals: 18,
         group: 'outputs',
         denomination: 'WPE',
@@ -583,16 +583,16 @@ const STORE = {
       priceWPE: 0.0,
     },
     {
-      label: 'WPE',
-      address: '0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',
+      label: 'ETH',
+      address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
       decimals: 18,
       price: 0.0,
       priceETH: 0.0,
       priceWPE: 0.0,
     },
     {
-      label: 'ETH',
-      address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+      label: 'WPE',
+      address: '0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',
       decimals: 18,
       price: 0.0,
       priceETH: 0.0,
