@@ -52,8 +52,9 @@ const HivesList = (props) => {
   const configureReturned = useCallback(() => setLoading(false));
 
   const hives = rewardsMapper(rewardPools).map((t) => {
+    console.log(t.disableStake);
     return (
-      <div className='col-md-3 col-sm-4' key={t.address}>
+      <div className='col-lg-3 col-md-4 col-sm-6' key={t.address}>
         <Hive
           acronym={t.symbol}
           name={t.name}
@@ -61,9 +62,9 @@ const HivesList = (props) => {
           inPool={t.inPool}
           beastBonus={t.beastBonus || 0}
           bonusReductionIn={t.bonusReductionIn || 0}
-          weeklyRewards={t.poolRatePerWeek}
-          myBeastModes={t.currentActiveBooster}
-          myRewards={t.rewardsAvailable}
+          weeklyRewards={t.weeklyRewards}
+          myBeastModes={t.myBeastModes}
+          myRewards={t.myRewards}
           symbol={t.symbol}
           rewardsSymbol={t.rewardsSymbol}
           stakedBalance={t.stakedBalance}
@@ -77,6 +78,7 @@ const HivesList = (props) => {
           tokenSymbol={t.tokenSymbol}
           ethPrice={t.ethPrice}
           boostBalance={t.boostBalance}
+          disableStake={t.disableStake}
           token={t.token}
         />
       </div>
