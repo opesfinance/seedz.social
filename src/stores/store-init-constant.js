@@ -495,7 +495,7 @@ const STORE = {
         label: 'STR',
         logo: 'STR.png',
         address: '0x11C1a6B3Ed6Bb362954b29d3183cfA97A0c806Aa',
-        liquidityPoolAddress: '0xE1C0E3c6B0cbA894932a5599e91cCf63E23C1693',
+        liquidityPoolAddress: '0x8eAA970BE66D4DE446453AEA538173382C2CACE8',
         decimals: 18,
         group: 'outputs',
         denomination: 'WPE',
