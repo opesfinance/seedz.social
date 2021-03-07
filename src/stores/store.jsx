@@ -172,6 +172,14 @@ class Store {
                     account,
                     callbackInnerInner
                   );
+                },//_getBonusAvailable
+                (callbackInnerInner) => {
+                  this._getBonusAvailable(
+                    web3,
+                    token,
+                    account,
+                    callbackInnerInner
+                  );
                 },
               ],
               (err, data) => {
@@ -184,7 +192,7 @@ class Store {
                 token.stakedBalance = data[1];
                 token.rewardsAvailable = data[2];
                 token.ratePerWeek = data[3];
-
+                token.beastModeBonus = data[4];
                 callbackInner(null, token);
               }
             );
@@ -263,6 +271,14 @@ class Store {
                     account,
                     callbackInnerInner
                   );
+                },//_getBonusAvailable
+                (callbackInnerInner) => {
+                  this._getBonusAvailable(
+                    web3,
+                    token,
+                    account,
+                    callbackInnerInner
+                  );
                 },
               ],
               (err, data) => {
@@ -282,7 +298,7 @@ class Store {
                   pool.liquidityValue = 0;
                 }
                 pool.ratePerWeek = data[5];
-
+                pool.beastModeBonus = data[6];
                 callbackInner(null, token);
               }
             );
@@ -983,7 +999,22 @@ class Store {
       callback(null, ex);
     }
   };
+  _getBonusAvailable = async (web3, asset, account, callback) => {
+    let contract = new web3.eth.Contract(
+      asset.rewardsABI,
+      asset.rewardsAddress
+    );
 
+    try {
+      var beastmodes = await contract.methods
+        .timeLockLevel()
+        .call({ from: account.address });
+      beastmodes = parseFloat(beastmodes[1]);
+      callback(null, beastmodes);
+    } catch (ex) {
+      callback(null, ex);
+    }
+  };
   _getERC20Balance = async (web3, asset, account, callback) => {
     let erc20Contract = new web3.eth.Contract(config.erc20ABI, asset.address);
 
