@@ -289,9 +289,9 @@ const Stake = (props) => {
                     <div className={classes.assetIcon}>
                       <img
                         alt=''
-                        src={require('../../assets/' +
+                        src={require('../../assets/logos/' +
                           pool.symbol +
-                          '-logo.png')}
+                          '.png')}
                         height='30px'
                       />
                     </div>
