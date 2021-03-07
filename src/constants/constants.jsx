@@ -12,6 +12,9 @@ export const STAKE_RETURNED = 'STAKE_RETURNED';
 export const EXCHANGE = 'EXCHANGE';
 export const EXCHANGE_RETURNED = 'EXCHANGE_RETURNED';
 
+export const BUY_LP = 'BUY_LP';
+export const BUY_LP_RETURNED = 'BUY_LP_RETURNED';
+
 export const GET_REWARDS = 'GET_REWARDS';
 export const GET_REWARDS_RETURNED = 'GET_REWARDS_RETURNED';
 

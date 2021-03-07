@@ -79,8 +79,7 @@ const Hive = (props) => {
               My Rewards
             </div>
             <div className='text-right main-blue'>
-              {props.myRewards}
-              {props.rewardsSymbol}
+              {props.myRewards} {props.rewardsSymbol}
             </div>
           </div>
 

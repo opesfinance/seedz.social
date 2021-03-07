@@ -11,7 +11,7 @@ import Store from '../../stores/store';
 // EXCHANGE_RETURNED,
 // EXIT,
 // EXIT_RETURNED,
-import { EXCHANGE } from '../../constants';
+import { BUY_LP } from '../../constants';
 
 const { emitter, dispatcher, store } = Store;
 
@@ -158,7 +158,6 @@ const Pools = (props) => {
     if (toAddress) assetOut = toOptions.find((i) => i.address == toAddress);
 
     amountOut = await store.getLpAmountOut(assetIn, assetOut, '1');
-    console.log(assetIn);
     setUnitPrice(`1 ${assetIn.label} = ${amountOut} ${assetOut.label}`);
   };
 
@@ -237,15 +236,11 @@ const Pools = (props) => {
         asset: toOptions.find((i) => i.address == toAddress),
       };
 
-      console.log('assetIn --', assetIn);
-      console.log('assetOut --', assetOut);
-      console.log('exchanging ------------');
-
       const amount = assetIn.amount;
       if (amount > 0) {
         //this.setState({ loading: true });
         dispatcher.dispatch({
-          type: EXCHANGE,
+          type: BUY_LP,
           content: {
             assetIn: assetIn.asset,
             assetOut: assetOut.asset,
