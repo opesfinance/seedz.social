@@ -169,7 +169,7 @@ const StakeMain = (props) => {
                   MY BEAST MODE (leverage)
                 </Col>
                 <Col className='text-right pool-info'>
-                  {props.pool.myBeastModes*10}%
+                  {props.pool.myBeastModes * 10}%
                 </Col>
               </Row>
               <Row>
@@ -199,9 +199,9 @@ const StakeMain = (props) => {
                 </Col>
                 <Col className='text-center'>
                   <div
-                    disabled
-                    className='btn btn-primary bg-main-blue main-btn'
-                    onClick={props.onExit}
+                    className='btn btn-primary bg-main-blue main-btn unstake'
+
+                    //onClick={props.onExit}
                   >
                     Claim & Unstake
                   </div>

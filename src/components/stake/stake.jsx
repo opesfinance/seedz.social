@@ -305,16 +305,29 @@ const Stake = (props) => {
           </Col>
 
           <Col className='text-center'>
-            <div
-              className={
-                'pool-' +
-                type +
-                '-button d-flex align-items-center justify-content-center'
-              }
-              onClick={action}
-            >
-              {type}
-            </div>
+            {type == 'stake' && (
+              <div
+                className={
+                  'pool-' +
+                  type +
+                  '-button d-flex align-items-center justify-content-center'
+                }
+                onClick={action}
+              >
+                {type}
+              </div>
+            )}
+            {type == 'unstake' && (
+              <div
+                className={
+                  'pool-' +
+                  type +
+                  '-button d-flex align-items-center justify-content-center unstake'
+                }
+              >
+                {type}
+              </div>
+            )}
           </Col>
         </Row>
       </div>
