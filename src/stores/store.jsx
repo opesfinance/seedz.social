@@ -1561,7 +1561,7 @@ class Store {
         from: account.address,
         gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
         value: web3.utils.toWei(
-          (parseFloat(value) * 1.002).toString(),
+          (parseFloat(value) * 1.005).toString(),
           'ether'
         ),
       })
