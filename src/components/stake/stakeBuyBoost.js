@@ -54,7 +54,7 @@ const secondCol = (props) => {
           <div className='d-flex justify-content-between'>
             <span>Beast Mode active</span>
             <span className='text-right pool-info'>
-              {props.pool.myBeastModes}%
+              {props.pool.myBeastModes * 10}%
             </span>
           </div>
           <hr />
@@ -82,12 +82,13 @@ const secondCol = (props) => {
           <Row>
             <Col></Col>
             <Col>
-              <div
+              <button
+                type='button'
                 className='btn btn-primary bg-main-blue'
                 onClick={props.validateBoost}
               >
                 Beast Mode
-              </div>
+              </button>
             </Col>
             <Col></Col>
           </Row>
@@ -164,7 +165,7 @@ const StakeBuyBoost = (props) => {
                         MY BEAST MODE (leverage)
                       </Col>
                       <Col className='text-right pool-info'>
-                        {props.pool.myBeastModes*10}%
+                        {props.pool.myBeastModes * 10}%
                       </Col>
                     </Row>
                     <Row>

@@ -77,7 +77,9 @@ const Farm = (props) => {
                 <span className='dot light-blue'></span>
                 My Beast Modes
               </Col>
-              <Col className='text-right main-blue'>{pool.myBeastModes}</Col>
+              <Col className='text-right main-blue'>
+                {pool.myBeastModes * 10}
+              </Col>
             </Row>
             <Row className='farm-value'>
               <Col>
