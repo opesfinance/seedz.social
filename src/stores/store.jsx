@@ -219,7 +219,7 @@ class Store {
       }
     );
   };
-  200000000000000000;
+
   /**
    *
    * @param {Token} token from which balance will be retrieved
