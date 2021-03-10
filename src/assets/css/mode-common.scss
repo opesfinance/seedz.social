@@ -99,3 +99,7 @@
   margin-left: -1vw;
   font-size: 0.8rem;
 }
+
+button:disabled {
+  background-color: #808080 !important;
+}

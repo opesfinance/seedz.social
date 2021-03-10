@@ -84,24 +84,32 @@ const StakeMain = (props) => {
             </div>
             <hr />
             <Row className='pt-4'>
+              {!props.pool.disableStake && (
+                <Col className='text-center'>
+                  <a
+                    href='https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b'
+                    className='btn btn-primary bg-main-white main-btn'
+                    target='_blank'
+                  >
+                    Buy WPE
+                  </a>
+                </Col>
+              )}
               <Col className='text-center'>
-                <a
-                  href='https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b'
-                  className='btn btn-primary bg-main-white main-btn'
-                  target='_blank'
-                >
-                  Buy WPE
-                </a>
-              </Col>
-              <Col className='text-center'>
-                <Link
-                  to={{
-                    pathname: `/pools/${props.pool.token.address}`,
-                  }}
-                  className='btn btn-primary bg-main-white main-btn'
-                >
-                  Add liquidity to pool
-                </Link>
+                {!props.pool.disableStake ? (
+                  <Link
+                    to={{
+                      pathname: `/pools/${props.pool.token.address}`,
+                    }}
+                    className='btn btn-primary bg-main-white main-btn'
+                  >
+                    Add liquidity to pool
+                  </Link>
+                ) : (
+                  <button className='btn btn-primary bg-main-white main-btn disabled'>
+                    Add liquidity to pool
+                  </button>
+                )}
               </Col>
             </Row>
             {/* <Row className='pt-4'>
@@ -226,12 +234,14 @@ const StakeMain = (props) => {
             </span>
             <Row className='pt-4'>
               <Col className='text-center'>
-                <div
+                <button
+                  type='button'
                   className='btn btn-primary bg-main-blue main-btn'
+                  disabled={props.pool.disableStake}
                   onClick={() => props.navigateInternal('buyboost')}
                 >
                   Beast Mode
-                </div>
+                </button>
               </Col>
             </Row>
           </Card.Body>

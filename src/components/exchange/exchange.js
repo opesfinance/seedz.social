@@ -70,6 +70,7 @@ const Exchange = (props) => {
   const [toToggleContents, setToToggleContents] = useState('Choose');
 
   const [doingTransaction, setDoingTransaction] = useState(false);
+  const [selectedAssetBalance, setSelectedAssetBalance] = useState(0);
 
   const pricePromises = async () => {
     const assetsOut = store
@@ -182,10 +183,12 @@ const Exchange = (props) => {
     setToAddress(value);
   };
 
-  const onSelectAssetIn = (eventKey) => {
-    const { label, address, logo } = fromOptions.find(
-      ({ address }) => eventKey === address
-    );
+  const onSelectAssetIn = async (eventKey) => {
+    const token = fromOptions.find(({ address }) => eventKey === address);
+    const { label, address, logo } = token;
+
+    setSelectedAssetBalance(await store.getAssetBalance(token));
+
     onChangeFromSelect(address);
     setFromToggleContents(
       <>
@@ -224,6 +227,9 @@ const Exchange = (props) => {
 
   const onCreateTransaction = () => {
     if (fromAmount && fromAddress && toAmount && toAddress) {
+      if (selectedAssetBalance < fromAmount)
+        return setError('Not enough balance in this asset');
+
       const assetIn = {
         amount: fromAmount,
         asset: fromOptions.find((i) => i.address == fromAddress),
@@ -311,7 +317,13 @@ const Exchange = (props) => {
           <div className='col-md-6 offset-md-3'>
             <div className='exchange-wrapper mt-5 card'>
               <div className='card-body'>
-                <h4>Exchange</h4>
+                <div className='d-flex justify-content-between align-items-end'>
+                  <h4>Exchange</h4>
+                  <span className='pull-right small'>
+                    Your balance: {selectedAssetBalance}{' '}
+                  </span>
+                </div>
+
                 <InputGroup className='mb-3'>
                   <Dropdown onSelect={onSelectAssetIn}>
                     <Dropdown.Toggle

@@ -348,7 +348,7 @@ const Pools = (props) => {
                     disabled={error && error.length}
                     onClick={onExchange}
                   >
-                    Complete transaction
+                    Add liquidity
                   </button>
                 </div>
               </div>

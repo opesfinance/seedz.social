@@ -220,6 +220,24 @@ class Store {
     );
   };
 
+  /**
+   *
+   * @param {Token} token from which balance will be retrieved
+   */
+  getAssetBalance = async (token) => {
+    const account = store.getStore('account');
+    const web3 = new Web3(store.getStore('web3context').library.provider);
+
+    let balance;
+
+    if (token.label === 'ETH') {
+      balance = await web3.eth.getBalance(account.address);
+      return balance / 1000000000000000000;
+    }
+
+    return await this._getERC20Balance(web3, token, account, null);
+  };
+
   getBalances = () => {
     const pools = store.getStore('rewardPools');
     const account = store.getStore('account');
@@ -999,6 +1017,7 @@ class Store {
       callback(null, ex);
     }
   };
+
   _getBonusAvailable = async (web3, asset, account, callback) => {
     let contract = new web3.eth.Contract(
       asset.rewardsABI,
@@ -1015,6 +1034,7 @@ class Store {
       callback(null, ex);
     }
   };
+
   _getERC20Balance = async (web3, asset, account, callback) => {
     let erc20Contract = new web3.eth.Contract(config.erc20ABI, asset.address);
 
@@ -1029,7 +1049,11 @@ class Store {
       //   balance,
       //   asset.decimals
       // );
-      callback(null, parseFloat(balance));
+      if (callback && typeof callback === 'function') {
+        callback(null, parseFloat(balance));
+      } else {
+        return parseFloat(balance);
+      }
     } catch (ex) {
       callback(ex);
     }
