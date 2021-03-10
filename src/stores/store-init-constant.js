@@ -408,7 +408,7 @@ const STORE = {
           address: '0x75F89FfbE5C25161cBC7e97c988c9F391EaeFAF9', // UNI
           symbol: 'UNI-v2',
           liquidityLink:
-            'https://uniswap.info/pair/0x75F89FfbE5C25161cBC7e97c988c9F391EaeFAF9',
+            'https://app.uniswap.org/#/add/ETH/0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',
           abi: config.erc20ABI,
           beastBonus: 1000,
           bonusReductionIn: '7 days',
