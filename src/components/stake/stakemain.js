@@ -104,9 +104,10 @@ const StakeMain = (props) => {
                 </Link>
               </Col>
             </Row>
-            <Row className='pt-4'>
+            {/* <Row className='pt-4'>
               <Col className='text-center'>
-                <div
+                <button
+                  type='button'
                   onClick={() => onAddSeeds(props.pool)}
                   className='btn btn-primary bg-main-white main-btn'
                 >
@@ -118,10 +119,11 @@ const StakeMain = (props) => {
                     height='15'
                     className='d-inline-block align-top'
                   ></img>
-                </div>
+                </button>
               </Col>
               <Col className='text-center'>
-                <div
+                <button
+                  type='button'
                   onClick={() => onAddPool(props.pool)}
                   className='btn btn-primary bg-main-white main-btn'
                 >
@@ -133,9 +135,9 @@ const StakeMain = (props) => {
                     height='15'
                     className='d-inline-block align-top'
                   ></img>
-                </div>
+                </button>
               </Col>
-            </Row>
+            </Row> */}
           </Card.Body>
         </Card>
       </Col>
