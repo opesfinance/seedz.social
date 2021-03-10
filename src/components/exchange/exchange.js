@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { IoSwapVerticalOutline } from 'react-icons/io5';
 import { IconContext } from 'react-icons';
 import { InputGroup, Dropdown, Form } from 'react-bootstrap';
+import { ERROR, EXCHANGE_RETURNED } from '../../constants/constants';
+
 import './exchange.scss';
 import Store from '../../stores/store';
 // ERROR,
@@ -67,6 +69,8 @@ const Exchange = (props) => {
   const [fromToggleContents, setFromToggleContents] = useState('Choose');
   const [toToggleContents, setToToggleContents] = useState('Choose');
 
+  const [doingTransaction, setDoingTransaction] = useState(false);
+
   const pricePromises = async () => {
     const assetsOut = store
       .getStore('exchangeAssets')
@@ -116,6 +120,22 @@ const Exchange = (props) => {
   useEffect(() => {
     calculate();
   }, [fromAmount, toAddress, fromAddress, boxes]);
+
+  useEffect(() => {
+    emitter.on(ERROR, handleResponse);
+    emitter.on(EXCHANGE_RETURNED, handleResponse);
+
+    return () => {
+      emitter.removeListener(ERROR, handleResponse);
+      emitter.removeListener(EXCHANGE_RETURNED, handleResponse);
+    };
+  }, []);
+
+  const handleResponse = (err) => {
+    console.log('err ----------', err);
+    setDoingTransaction(false);
+    setError('');
+  };
 
   const calculate = async () => {
     let assetIn, amountOut, assetOut;
@@ -202,7 +222,7 @@ const Exchange = (props) => {
     );
   };
 
-  const onExchange = () => {
+  const onCreateTransaction = () => {
     if (fromAmount && fromAddress && toAmount && toAddress) {
       const assetIn = {
         amount: fromAmount,
@@ -219,6 +239,8 @@ const Exchange = (props) => {
 
       const amount = assetIn.amount;
       if (amount > 0) {
+        setDoingTransaction(true);
+
         //this.setState({ loading: true });
         dispatcher.dispatch({
           type: EXCHANGE,
@@ -229,6 +251,8 @@ const Exchange = (props) => {
             amountOut: assetOut.amount,
           },
         });
+      } else {
+        setError('Select both tokens and a value for each');
       }
     } else {
       setError('Select both tokens and a value for each');
@@ -343,8 +367,8 @@ const Exchange = (props) => {
                   {error && error.length && <div>{error}</div>}
                   <button
                     className='btn btn-primary mt-3 main-btn'
-                    disabled={error && error.length}
-                    onClick={onExchange}
+                    disabled={(error && error.length) || doingTransaction}
+                    onClick={onCreateTransaction}
                   >
                     Complete transaction
                   </button>
