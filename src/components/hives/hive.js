@@ -1,6 +1,5 @@
 import React from 'react';
 import './hive.scss';
-import { BiPlus } from 'react-icons/bi';
 import { withRouter } from 'react-router-dom';
 import Store from '../../stores/store';
 
@@ -86,18 +85,34 @@ const Hive = (props) => {
           </div>
 
           <div className='text-center pt-4'>
-            {!props.disableStake && (
-              <div
-                onClick={() => {
-                  if (props.id !== 'balancer-pool') {
-                    navigateStake(props.token);
-                  }
-                }}
-                className='btn btn-primary bg-main-blue main-btn'
-              >
-                <BiPlus /> Stake
-              </div>
-            )}
+            <button
+              type='button'
+              onClick={() => {
+                if (props.id !== 'balancer-pool') {
+                  navigateStake(props.token);
+                }
+              }}
+              className='btn btn-primary bg-main-blue main-btn btn-block'
+            >
+              View
+            </button>
+            <button
+              type='button'
+              onClick={() => {
+                if (!props.token.disableStake)
+                  props.history.push('/pools/' + props.token.address);
+                // if (props.id !== 'balancer-pool') {
+                //   navigateStake(props.token);
+                // }
+              }}
+              className={
+                props.token.disableStake
+                  ? 'btn btn-secondary bg-main-blue main-btn btn-block disabled'
+                  : 'btn btn-primary bg-main-blue main-btn btn-block'
+              }
+            >
+              Add liquidity
+            </button>
           </div>
         </div>
       </div>
