@@ -29,10 +29,6 @@ import {
 import rewardsMapper from '../utils/rewardsMapper';
 import styles from './stakeStyles';
 
-const setState = (params) => {
-  console.log('set state params', params);
-};
-
 const { emitter, dispatcher, store } = Store;
 
 const Stake = (props) => {
@@ -48,10 +44,11 @@ const Stake = (props) => {
   const getPool = () => rewardPools.find((p) => p.address === address);
 
   const [pool, setPool] = useState(getPool());
+
   const [stakevalue, setStakeValue] = useState('main');
   const [balanceValid, setBalanceValid] = useState(false); // not used
   const [loading, setLoading] = useState(!(account && pool));
-  const [value, setValue] = useState('options'); // switchea buyboost y options para el render
+  const [stakeView, setStakeView] = useState('options'); // switchea buyboost y options para el render
   const [voteLockValid, setVoteLockValid] = useState(false); // not used
   const [voteLock, setVoteLock] = useState(null); // not used
   const [snackbarMessage, setSnackbarMessage] = useState(null);
@@ -86,7 +83,7 @@ const Stake = (props) => {
         'https://ethgasstation.info/api/ethgasAPI.json?api-key=3f07e80ab9c6bdd0ca11a37358fc8f1a291551dd701f8eccdaf6eb8e59be',
         { cancelToken: source.token }
       );
-      console.log('gastPrice', data.fastest);
+      console.log('gasPrice', data.fastest);
       setGasPrice(data.fastest);
     } catch (error) {}
   }
@@ -142,6 +139,8 @@ const Stake = (props) => {
     setSnackbarType(null);
     setSnackbarMessage(null);
     setLoading(false);
+
+    balancesReturned();
 
     setTimeout(() => {
       setSnackbarMessage(txHash);
@@ -306,27 +305,29 @@ const Stake = (props) => {
 
           <Col className='text-center'>
             {type == 'stake' && (
-              <div
+              <button
+                disabled={pool.disableStake}
                 className={
                   'pool-' +
                   type +
-                  '-button d-flex align-items-center justify-content-center'
+                  '-button d-flex align-items-center justify-content-center btn'
                 }
                 onClick={action}
               >
                 {type}
-              </div>
+              </button>
             )}
             {type == 'unstake' && (
-              <div
+              <button
+                disabled={pool.disableStake}
                 className={
                   'pool-' +
                   type +
-                  '-button d-flex align-items-center justify-content-center unstake'
+                  '-button d-flex align-items-center justify-content-center btn unstake'
                 }
               >
                 {type}
-              </div>
+              </button>
             )}
           </Col>
         </Row>
@@ -394,7 +395,7 @@ const Stake = (props) => {
             onExit={onExit}
             gasPrice={gasPrice}
             onClaim={onClaim}
-            navigateInternal={setValue}
+            navigateInternal={setStakeView}
           />
         )}
       </>
@@ -409,9 +410,13 @@ const Stake = (props) => {
       <div className='p-5 ml-5 text-center '>
         <div className='p-5 ml-5 text-center '>
           {stakeHeader()}
-          {value === 'options' && mainRender()}
-          {value === 'buyboost' && (
-            <StakeBuyBoost validateBoost={validateBoost} pool={pool} />
+          {stakeView === 'options' && mainRender()}
+          {stakeView === 'buyboost' && (
+            <StakeBuyBoost
+              validateBoost={validateBoost}
+              showHash={showHash}
+              pool={pool}
+            />
           )}
 
           {snackbarMessage && (
