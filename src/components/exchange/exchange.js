@@ -370,7 +370,7 @@ const Exchange = (props) => {
                     disabled={(error && error.length) || doingTransaction}
                     onClick={onCreateTransaction}
                   >
-                    Complete transaction
+                    Swap
                   </button>
                 </div>
               </div>
