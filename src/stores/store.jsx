@@ -1551,7 +1551,10 @@ class Store {
 
     console.log('Amount ' + amount);
     console.log('value ' + value);
-
+    let multiplier = 1.005;
+    if(asset.label == "PIXEL"){
+        multiplier = 1.01;
+    }
     const buyAmount = web3.utils.toWei(amount.toString(), 'ether');
 
     console.log(buyAmount);
@@ -1561,7 +1564,7 @@ class Store {
         from: account.address,
         gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
         value: web3.utils.toWei(
-          (parseFloat(value) * 1.005).toString(),
+          (parseFloat(value) * multiplier).toString(),
           'ether'
         ),
       })
