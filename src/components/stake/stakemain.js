@@ -171,7 +171,7 @@ const StakeMain = (props) => {
               <Row>
                 <Col className='pool-titles col-8'>
                   <span className='dot yellow'></span>
-                  CURRENTLY STAKED
+                  MY STAKED AMOUNT
                 </Col>
                 <Col className='text-right pool-info'>
                   {props.pool.stakedBalance} {props.pool.symbol}

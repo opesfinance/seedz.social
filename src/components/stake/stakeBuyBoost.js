@@ -150,7 +150,7 @@ const StakeBuyBoost = (props) => {
                     <Row>
                       <Col>
                         <span className='dot yellow'></span>
-                        CURRENTLY STAKED
+                        MY STAKED AMOUNT
                       </Col>
                       <Col className='text-right pool-info'>
                         {props.pool.stakedBalance
