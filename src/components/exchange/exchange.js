@@ -37,7 +37,7 @@ const dropdownOptions = (options) => {
             src={require(`../../assets/logos/${logo}`)}
             alt=''
           />
-          <span>{label}</span>
+          <span className='dropdown-item'>{label}</span>
         </div>
       </Dropdown.Item>
     );
