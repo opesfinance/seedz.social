@@ -562,7 +562,8 @@ const STORE = {
         price: 1.0,
       },
       {
-        label: 'STR/WPE LP',
+        label: 'STR',
+        labelLP: 'STR/WPE LP',
         logo: 'STR.png',
         address: '0x11C1a6B3Ed6Bb362954b29d3183cfA97A0c806Aa',
         liquidityPoolAddress: '0x8eAA970BE66D4DE446453AEA538173382C2CACE8',
@@ -576,7 +577,8 @@ const STORE = {
         ],
       },
       {
-        label: 'PIXEL/WPE LP',
+        label: 'PIXEL',
+        labelLP: 'PIXEL/WPE LP',
         logo: 'PIXEL.png',
         address: '0x89045d0Af6A12782Ec6f701eE6698bEaF17d0eA2',
         liquidityPoolAddress: '0x469485cA145D850c0e54367076558dC72b5DCe19',
@@ -590,7 +592,8 @@ const STORE = {
         ],
       },
       {
-        label: 'LIFT/WPE LP',
+        label: 'LIFT',
+        labelLP: 'LIFT/WPE LP',
         logo: 'LIFT.png',
         address: '0x47bd5114c12421FBC8B15711cE834AFDedea05D9',
         liquidityPoolAddress: '0xEcEa1bAe3Bb692510693FAc2932C32BeB1FA866E',
@@ -604,7 +607,8 @@ const STORE = {
         ],
       },
       {
-        label: 'YFU/WPE LP',
+        label: 'YFU',
+        labelLP: 'YFU/WPE LP',
         logo: 'YFU.png',
         address: '0xa279dab6ec190eE4Efce7Da72896EB58AD533262',
         liquidityPoolAddress: '0x8dc082087ee75b528dfd4e68fa28966666de1a60',
