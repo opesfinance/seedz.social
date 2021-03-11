@@ -63,7 +63,7 @@ const StakeMain = (props) => {
             <div className='d-flex justify-content-between'>
               <span>Beast Bonus (leverage):</span>
               <span>
-                {props.pool.beastBonus ? props.pool.beastBonus : '0'}%
+                {props.pool.beastBonus ? props.pool.beastBonus * 10 : '0'}%
               </span>
             </div>
             <hr />
