@@ -199,7 +199,7 @@ const Pools = (props) => {
     console.log('toOptions', toOptions);
     console.log('eventKey', eventKey);
 
-    const { label, address, logo } = toOptions.find(
+    const { label, address, logo, labelLP } = toOptions.find(
       ({ address, liquidityPoolAddress }) =>
         eventKey === address || eventKey === liquidityPoolAddress
     );
@@ -214,7 +214,7 @@ const Pools = (props) => {
           src={require(`../../assets/logos/${logo}`)}
           alt=''
         />
-        {label}
+        {labelLP}
       </>
     );
   };
