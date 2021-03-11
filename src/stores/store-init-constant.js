@@ -174,7 +174,7 @@ const STORE = {
           id: 'boostrewards',
           name: 'iUPixel',
           address: '0x469485cA145D850c0e54367076558dC72b5DCe19', // UNI
-          symbol: 'PIXEL',
+          symbol: 'PIXEL-LP',
           liquidityLink:
             'https://uniswap.info/pair/0x469485cA145D850c0e54367076558dC72b5DCe19',
           abi: config.erc20ABI,
@@ -232,7 +232,7 @@ const STORE = {
           id: 'boostrewards',
           name: 'YFU', // YFU-LP
           address: '0x8dc082087ee75b528dfd4e68fa28966666de1a60', // UNI
-          symbol: 'YFU',
+          symbol: 'YFU-LP',
           liquidityLink:
             'https://uniswap.info/pair/0x8dc082087ee75b528dfd4e68fa28966666de1a60',
           abi: config.erc20ABI,
@@ -290,7 +290,7 @@ const STORE = {
           id: 'boostrewards',
           name: 'Missions Fund',
           address: '0xEcEa1bAe3Bb692510693FAc2932C32BeB1FA866E', // UNI
-          symbol: 'LIFT',
+          symbol: 'LIFT-LP',
           liquidityLink:
             'https://uniswap.info/pair/0xEcEa1bAe3Bb692510693FAc2932C32BeB1FA866E',
           abi: config.erc20ABI,
@@ -348,7 +348,7 @@ const STORE = {
           id: 'boostrewards',
           name: 'Starwire',
           address: '0x8eAA970BE66D4DE446453AEA538173382C2CACE8', // UNI
-          symbol: 'STR',
+          symbol: 'STR-LP',
           liquidityLink:
             'https://uniswap.info/pair/0x8eAA970BE66D4DE446453AEA538173382C2CACE8',
           abi: config.erc20ABI,
