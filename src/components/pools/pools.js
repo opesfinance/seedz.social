@@ -5,6 +5,8 @@ import { withRouter } from 'react-router-dom';
 import { AiOutlineArrowDown } from 'react-icons/ai';
 import { IconContext } from 'react-icons';
 import { InputGroup, Dropdown, Form } from 'react-bootstrap';
+import { ERROR, EXCHANGE_RETURNED } from '../../constants/constants';
+
 import './pools.scss';
 import Store from '../../stores/store';
 // ERROR,
@@ -73,6 +75,9 @@ const Pools = (props) => {
   const [fromToggleContents, setFromToggleContents] = useState('Choose');
   const [toToggleContents, setToToggleContents] = useState('Choose');
 
+  const [doingTransaction, setDoingTransaction] = useState(false);
+  const [selectedAssetBalance, setSelectedAssetBalance] = useState(0);
+
   const pricePromises = async () => {
     const assetsOut = store.getStore('lpTokens');
 
@@ -107,6 +112,22 @@ const Pools = (props) => {
   useEffect(() => {
     calculate();
   }, [fromAmount, toAddress, fromAddress, boxes]);
+
+  useEffect(() => {
+    emitter.on(ERROR, handleResponse);
+    emitter.on(EXCHANGE_RETURNED, handleResponse);
+
+    return () => {
+      emitter.removeListener(ERROR, handleResponse);
+      emitter.removeListener(EXCHANGE_RETURNED, handleResponse);
+    };
+  }, []);
+
+  const handleResponse = (err) => {
+    console.log('err ----------', err);
+    setDoingTransaction(false);
+    setError('');
+  };
 
   const calculate = async () => {
     let assetIn, amountOut, assetOut;
@@ -152,10 +173,12 @@ const Pools = (props) => {
     setToAddress(value);
   };
 
-  const onSelectAssetIn = (eventKey) => {
-    const { label, address, logo } = fromOptions.find(
-      ({ address }) => eventKey === address
-    );
+  const onSelectAssetIn = async (eventKey) => {
+    const token = fromOptions.find(({ address }) => eventKey === address);
+    const { label, address, logo } = token;
+
+    setSelectedAssetBalance(await store.getAssetBalance(token));
+
     onChangeFromSelect(address);
     setFromToggleContents(
       <>
@@ -196,8 +219,11 @@ const Pools = (props) => {
     );
   };
 
-  const onExchange = () => {
+  const onCreateTransaction = () => {
     if (fromAmount && fromAddress && toAmount && toAddress) {
+      if (selectedAssetBalance < fromAmount)
+        return setError('Not enough balance in this asset');
+
       const assetIn = {
         amount: fromAmount,
         asset: fromOptions.find((i) => i.address == fromAddress),
@@ -209,6 +235,8 @@ const Pools = (props) => {
 
       const amount = assetIn.amount;
       if (amount > 0) {
+        setDoingTransaction(true);
+
         //this.setState({ loading: true });
         dispatcher.dispatch({
           type: BUY_LP,
@@ -219,6 +247,8 @@ const Pools = (props) => {
             amountOut: assetOut.amount,
           },
         });
+      } else {
+        setError('Select both tokens and a value for each');
       }
     } else {
       setError('Select both tokens and a value for each');
@@ -284,7 +314,12 @@ const Pools = (props) => {
           <div className='col-md-6 offset-md-3'>
             <div className='exchange-wrapper mt-5 card'>
               <div className='card-body'>
-                <h4>Buy Pool Tokens</h4>
+                <div className='d-flex justify-content-between align-items-end'>
+                  <h4>Buy Pool Tokens</h4>
+                  <span className='pull-right small'>
+                    Your balance: {selectedAssetBalance}{' '}
+                  </span>
+                </div>
                 <InputGroup className='mb-3'>
                   <Dropdown onSelect={onSelectAssetIn}>
                     <Dropdown.Toggle
@@ -346,7 +381,7 @@ const Pools = (props) => {
                   <button
                     className='btn btn-primary mt-3 main-btn'
                     disabled={error && error.length}
-                    onClick={onExchange}
+                    onClick={onCreateTransaction}
                   >
                     Add liquidity
                   </button>
