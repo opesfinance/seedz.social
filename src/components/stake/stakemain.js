@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 import Store from '../../stores/store';
 import Web3 from 'web3';
@@ -7,6 +7,7 @@ import { Col, Row, Card } from 'react-bootstrap';
 
 import { ERROR } from '../../constants';
 import currency from '../utils/currency';
+import { withRouter } from 'react-router-dom';
 
 const { emitter, store } = Store;
 
@@ -97,17 +98,20 @@ const StakeMain = (props) => {
               )}
               <Col className='text-center'>
                 {!props.pool.disableStake ? (
-                  <Link
-                    to={{
-                      pathname: `/pools/${props.pool.token.address}`,
-                    }}
+                  <button
                     className='btn btn-primary bg-main-white main-btn'
+                    onClick={() => {
+                      if (props.pool.token.name == 'WPE-LP')
+                        return window.open(props.pool.token.liquidityLink);
+
+                      props.history.push(`/pools/${props.pool.token.address}`);
+                    }}
                   >
-                    Add liquidity to pool
-                  </Link>
+                    Add liquidity
+                  </button>
                 ) : (
-                  <button className='btn btn-primary bg-main-white main-btn disabled'>
-                    Add liquidity to pool
+                  <button className='btn btn-secondary bg-main-white disabled'>
+                    Add liquidity
                   </button>
                 )}
               </Col>
@@ -251,4 +255,4 @@ const StakeMain = (props) => {
   );
 };
 
-export default StakeMain;
+export default withRouter(StakeMain);
