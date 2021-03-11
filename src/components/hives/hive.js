@@ -67,7 +67,7 @@ const Hive = (props) => {
           <div className='d-flex justify-content-between'>
             <div>
               <span className='dot yellow'></span>
-              Currently Staked
+              My staked amount
             </div>
             <div className='text-right main-blue'>
               {props.stakedBalance ? props.stakedBalance : '0'} {props.symbol}
