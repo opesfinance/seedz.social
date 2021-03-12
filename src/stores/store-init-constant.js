@@ -527,12 +527,17 @@ const STORE = {
       },
       {
         label: 'WPE',
+        labelLP: 'WPE/ETH LP',
         logo: 'WPE.png',
         address: '0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',
+        liquidityPoolAddress: '0x75F89FfbE5C25161cBC7e97c988c9F391EaeFAF9',
         decimals: 18,
         group: 'base',
         denomination: 'ETH',
         price: 2.067,
+        route: [
+          '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+        ],
       },
       {
         label: 'USDC',
