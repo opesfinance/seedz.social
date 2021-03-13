@@ -615,6 +615,33 @@ class Store {
     return amountOut;
   };
 
+  _getOutputForWPELP = async (
+    web3,
+    assetIn,
+    assetOut,
+    route,
+    amountIn,
+    account
+  ) => {
+    let wpeLPExchange = new web3.eth.Contract(
+      config.WPElpAddress,
+      config.WPElpAddressABI
+    );
+    var amountToSend = web3.utils.toWei(amountIn, 'ether');
+    if (assetIn.decimals !== 18) {
+      amountToSend = (amountIn * 10 ** assetIn.decimals).toFixed(0);
+    }
+    try {
+      var amounts = await wpeLPExchange.methods
+        .getAmountFor(amountToSend) //[assetIn.address, assetOut.address])
+        .call({ from: account.address });
+      return amounts;
+      //callback(null, amounts);
+    } catch (ex) {
+      return ex;
+    }
+  };
+
   getLpAmountOut = async (assetIn, assetOut, amountIn) => {
     const assets = store.getStore('lpTokens');
     var current = assets.find((i) => i.address == assetOut.address);
@@ -622,7 +649,11 @@ class Store {
 
     //LP price
     if (assetIn.label === 'ETH') {
-      amountOut = amountIn * (1 / current.priceETH);
+      if(current.label == 'WPE'){
+        amountOut = await this._getOutputForWPELP(amountIn);
+      }else{
+        amountOut = amountIn * (1 / current.priceETH);
+      }
     } else if (assetIn.label === 'WPE') {
       amountOut = amountIn * (1 / current.priceWPE);
     } else {
@@ -632,6 +663,7 @@ class Store {
 
     return amountOut;
   };
+
 
   _getOutputForInputVal = async (
     web3,
