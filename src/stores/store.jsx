@@ -626,7 +626,6 @@ class Store {
       const amount = await wpeLPExchange.methods
         .getAmountFor(amountToSend) //[assetIn.address, assetOut.address])
         .call({ from: account.address });
-      console.log(amount);
       return (amount / 10 ** 18).toFixed(4);
     } catch (ex) {
       return ex;

@@ -28,7 +28,7 @@ const boxColorMapper = {
 const BOXES_INTERVAL = 10000;
 
 const dropdownOptions = (options) => {
-  return options.map(({ address, label, logo }) => {
+  return options.map(({ address, label, logo, labelLP }) => {
     return (
       <Dropdown.Item key={address} eventKey={address}>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -39,7 +39,7 @@ const dropdownOptions = (options) => {
             src={require(`../../assets/logos/${logo}`)}
             alt=''
           />
-          <span className='dropdown-item'>{label}</span>
+          <span className='dropdown-item'>{labelLP || label}</span>
         </div>
       </Dropdown.Item>
     );
@@ -53,7 +53,9 @@ const Pools = (props) => {
   const [toOptions, setToOptions] = useState(
     store
       .getStore(props.assetsStoreKey)
-      .tokens.filter((a) => a.group == 'outputs')
+      .tokens.filter(
+        (a) => a.group == 'outputs' && a.availableViews.includes('pools')
+      )
   );
   const [fromAmount, setFromAmount] = useState('0');
   const [fromAddress, setFromAddress] = useState(fromOptions[0].address);
@@ -110,6 +112,7 @@ const Pools = (props) => {
   }, []);
 
   useEffect(() => {
+    validatePurchaseable();
     calculate();
   }, [fromAmount, toAddress, fromAddress, boxes]);
 
@@ -195,14 +198,42 @@ const Pools = (props) => {
     );
   };
 
-  const onSelectAssetOut = (eventKey) => {
-    console.log('toOptions', toOptions);
-    console.log('eventKey', eventKey);
+  const validatePurchaseable = () => {
+    const assetIn = fromOptions.find(({ address }) => address == fromAddress);
+    const assetOut = toOptions.find(
+      ({ liquidityPoolAddress, address }) =>
+        liquidityPoolAddress == toAddress || address == toAddress
+    );
 
+    if (
+      assetOut?.onlyPurchaseableWith &&
+      !assetOut?.onlyPurchaseableWith?.includes(assetIn.label)
+    ) {
+      console.log('not purchaseable');
+      setError(`${assetOut.labelLP} can only be purchased with Eth`);
+    } else {
+      setError('');
+    }
+  };
+
+  const onSelectAssetOut = (eventKey) => {
     const { label, address, logo, labelLP } = toOptions.find(
       ({ address, liquidityPoolAddress }) =>
         eventKey === address || eventKey === liquidityPoolAddress
     );
+
+    // console.log(label, labelLP, onlyPurchaseableWith, fromAddress);
+    // if (onlyPurchaseableWith) {
+    //   if (fromAddress) {
+    //     const { label } = fromOptions.find(
+    //       ({ address }) => address === fromAddress
+    //     );
+    //     if (!onlyPurchaseableWith.includes(label)) {
+    //       console.log('solamente puedes comprar con ', onlyPurchaseableWith);
+    //     }
+    //   }
+    // }
+
     onChangeToSelect(address);
     setToToggleContents(
       <>
@@ -380,7 +411,7 @@ const Pools = (props) => {
                   {error && error.length && <div>{error}</div>}
                   <button
                     className='btn btn-primary mt-3 main-btn'
-                    disabled={error && error.length}
+                    disabled={(error && error.length) || doingTransaction}
                     onClick={onCreateTransaction}
                   >
                     Add liquidity

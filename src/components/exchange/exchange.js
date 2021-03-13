@@ -49,7 +49,11 @@ const Exchange = (props) => {
     store.getStore('exchangeAssets').tokens.filter((a) => a.group == 'inputs')
   );
   const [toOptions, setToOptions] = useState(
-    store.getStore('exchangeAssets').tokens.filter((a) => a.group == 'outputs')
+    store
+      .getStore('exchangeAssets')
+      .tokens.filter(
+        (a) => a.group == 'outputs' && a.availableViews.includes('exchange')
+      )
   );
   const [fromAmount, setFromAmount] = useState('0');
   const [fromAddress, setFromAddress] = useState(fromOptions[0].address);
