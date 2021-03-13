@@ -615,23 +615,19 @@ class Store {
     return amountOut;
   };
 
-  _getOutputForWPELP = async (
-    web3,
-    amountIn,
-    account
-  ) => {
+  _getOutputForWPELP = async (web3, amountIn, account) => {
     let wpeLPExchange = new web3.eth.Contract(
-      config.WPElpAddress,
-      config.WPElpAddressABI
+      config.WPElpAddressABI,
+      config.WPElpAddress
     );
     var amountToSend = web3.utils.toWei(amountIn, 'ether');
 
     try {
-      var amounts = await wpeLPExchange.methods
+      const amount = await wpeLPExchange.methods
         .getAmountFor(amountToSend) //[assetIn.address, assetOut.address])
         .call({ from: account.address });
-      return amounts;
-      //callback(null, amounts);
+      console.log(amount);
+      return (amount / 10 ** 18).toFixed(4);
     } catch (ex) {
       return ex;
     }
@@ -646,9 +642,9 @@ class Store {
 
     //LP price
     if (assetIn.label === 'ETH') {
-      if(current.label == 'WPE'){
+      if (current.label == 'WPE') {
         amountOut = await this._getOutputForWPELP(web3, amountIn, account);
-      }else{
+      } else {
         amountOut = amountIn * (1 / current.priceETH);
       }
     } else if (assetIn.label === 'WPE') {
@@ -660,7 +656,6 @@ class Store {
 
     return amountOut;
   };
-
 
   _getOutputForInputVal = async (
     web3,
@@ -1579,7 +1574,7 @@ class Store {
     const account = store.getStore('account');
     const { assetIn, assetOut, amountIn, amountOut } = payload.content;
 
-    if(assetOut.label == 'WPE'){
+    if (assetOut.label == 'WPE') {
       this._buyWPELPWithEthCall(
         assetOut,
         account,
@@ -1593,8 +1588,7 @@ class Store {
           return emitter.emit(BUY_LP_RETURNED, res); //EXCHANGEETHFORTOKEN_RETURNED
         }
       );
-    }
-    else{
+    } else {
       this._buyLPWithEthCall(
         assetOut,
         account,
@@ -1609,7 +1603,6 @@ class Store {
         }
       );
     }
-
   };
   _buyWPELPWithEthCall = async (asset, account, amount, value, callback) => {
     const web3 = new Web3(store.getStore('web3context').library.provider);
@@ -1677,8 +1670,8 @@ class Store {
     console.log('Amount ' + amount);
     console.log('value ' + value);
     let multiplier = 1.005;
-    if(asset.label == "PIXEL"){
-        multiplier = 1.01;
+    if (asset.label == 'PIXEL') {
+      multiplier = 1.01;
     }
     const buyAmount = web3.utils.toWei(amount.toString(), 'ether');
 
