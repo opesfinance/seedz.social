@@ -108,8 +108,8 @@ const Hive = (props) => {
             <button
               type='button'
               onClick={() => {
-                if (props.token.name == 'WPE-LP')
-                  return window.open(props.token.liquidityLink);
+                // if (props.token.name == 'WPE-LP')
+                //   return window.open(props.token.liquidityLink);
 
                 if (!props.token.disableStake)
                   return props.history.push('/pools/' + props.token.address);
