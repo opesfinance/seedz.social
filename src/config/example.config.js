@@ -8165,7 +8165,13 @@ const config = {
     },
     {
       constant: false,
-      inputs: [],
+      inputs: [
+        {
+          internalType: 'uint256',
+          name: 'amount',
+          type: 'uint256',
+        },
+      ],
       name: 'createLPETHToken',
       outputs: [],
       payable: true,
