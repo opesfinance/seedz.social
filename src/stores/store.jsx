@@ -1618,8 +1618,9 @@ class Store {
     const buyAmount = web3.utils.toWei(amount.toString(), 'ether');
 
     console.log(buyAmount);
+    console.log(value);
     coinContract.methods
-      .createLPETHToken(buyAmount)
+      .createLPETHToken()
       .send({
         from: account.address,
         gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
