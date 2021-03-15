@@ -79,7 +79,7 @@ const Exchange = (props) => {
   const pricePromises = async () => {
     const assetsOut = store
       .getStore('exchangeAssets')
-      .tokens.filter((a) => a.group == 'outputs');
+      .tokens.filter((a) => a.box == 'true');
 
     const assetIn = store
       .getStore('exchangeAssets')
