@@ -1616,7 +1616,6 @@ class Store {
     console.log('value ' + value);
     let multiplier = 1.005;
     const buyAmount = web3.utils.toWei(amount.toString(), 'ether');
-
     console.log(buyAmount);
     console.log(value);
     coinContract.methods
@@ -1625,7 +1624,7 @@ class Store {
         from: account.address,
         gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
         value: web3.utils.toWei(
-          (parseFloat(value) * multiplier).toString(),
+          (parseFloat(value) * multiplier).toFixed(18).toString(),
           'ether'
         ),
       })
