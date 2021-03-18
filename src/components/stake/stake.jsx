@@ -156,7 +156,7 @@ const Stake = (props) => {
 
     setTimeout(() => {
       setSnackbarMessage(error.toString());
-      setSnackbarType('Error');
+      setSnackbarType('Warning');
     });
   };
 
@@ -419,9 +419,10 @@ const Stake = (props) => {
             />
           )}
 
-          {snackbarMessage && (
+          {'snackbarMessage' && (
             <Snackbar
               type={snackbarType}
+              anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
               message={snackbarMessage}
               open={true}
             />

@@ -11,7 +11,6 @@ import { colors } from '../../theme/theme';
 import { withNamespaces } from 'react-i18next';
 
 const iconStyle = {
-  fontSize: '22px',
   marginRight: '10px',
   verticalAlign: 'middle',
 };
@@ -19,7 +18,7 @@ const iconStyle = {
 function CloseIcon(props) {
   const { color } = props;
   return (
-    <SvgIcon style={{ fontSize: '22px' }}>
+    <SvgIcon>
       <path
         fill={color}
         d='M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z'
@@ -159,43 +158,19 @@ class MySnackbar extends Component {
 
     return (
       <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
+        anchorOrigin={this.props.anchorOrigin}
         open={this.state.open}
         autoHideDuration={6000}
         onClose={this.handleClose}
         message={
-          <div
-            style={{
-              padding: '12px',
-              borderLeft: '5px solid ' + color,
-              borderRadius: '4px',
-              backgroundColor: '#4a5e72',
-            }}
-          >
+          <div>
             {icon}
-            <div
-              style={{
-                display: 'inline-block',
-                verticalAlign: 'middle',
-                maxWidth: '400px',
-              }}
-            >
-              <Typography
-                variant='body1'
-                style={{ fontSize: '12px', color: color }}
-              >
+            <span>
+              <Typography style={{ color, display: 'inline-block' }}>
                 {messageType}
               </Typography>
-              <Typography
-                variant='body1'
-                style={{ fontSize: '10px', color: colors.lightBlack }}
-              >
-                {message}
-              </Typography>
-            </div>
+              <Typography>{message}</Typography>
+            </span>
           </div>
         }
         action={actions}
