@@ -28,7 +28,7 @@ const Hive = (props) => {
       // const hoursLeft = Math.floor(diff / 3600);
 
       let diff = moment.utc(nextReduction.diff(moment())).format('HH:mm:ss');
-      setTimeForReduction(`${diff}`);
+      setTimeForReduction(props.token.disableStake ? 0 : `${diff}`);
       // setTimeForReduction(`${hoursLeft}:${minutesLeft}`);
     }, 1000);
     return () => {
