@@ -101,8 +101,8 @@ const StakeMain = (props) => {
                   <button
                     className='btn btn-primary bg-main-white main-btn'
                     onClick={() => {
-                      if (props.pool.token.name == 'WPE-LP')
-                        return window.open(props.pool.token.liquidityLink);
+                      // if (props.pool.token.name == 'WPE-LP')
+                      //   return window.open(props.pool.token.liquidityLink);
 
                       props.history.push(`/pools/${props.pool.token.address}`);
                     }}
