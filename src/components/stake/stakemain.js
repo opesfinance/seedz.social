@@ -107,11 +107,11 @@ const StakeMain = (props) => {
                       props.history.push(`/pools/${props.pool.token.address}`);
                     }}
                   >
-                    Add liquidity
+                    Add liquidity and Stake
                   </button>
                 ) : (
                   <button className='btn btn-secondary bg-main-white disabled'>
-                    Add liquidity
+                    Add liquidity and Stake
                   </button>
                 )}
               </Col>

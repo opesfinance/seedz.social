@@ -414,7 +414,9 @@ const Pools = (props) => {
                     disabled={(error && error.length) || doingTransaction}
                     onClick={onCreateTransaction}
                   >
-                    {doingTransaction ? 'loading ...' : 'Add liquidity'}
+                    {doingTransaction
+                      ? 'loading ...'
+                      : 'Add Liquidity and Stake'}
                   </button>
                 </div>
               </div>
