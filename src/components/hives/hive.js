@@ -1,20 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import moment from 'moment';
+
 import './hive.scss';
 import { withRouter } from 'react-router-dom';
 import Store from '../../stores/store';
+const { store } = Store;
 
 const Hive = (props) => {
+  const [timeForReduction, setTimeForReduction] = useState('');
   const address = `${props.address.substring(0, 5)}...${props.address.substring(
     props.address.length - 4,
     props.address.length
   )}`;
 
+  useEffect(() => {
+    let interval = setInterval(() => {
+      const startBeastReduction = moment.unix(
+        store.store.startBeastReductionTimestamp
+      );
+
+      const diffDays = moment().diff(startBeastReduction, 'days');
+      const nextReduction = startBeastReduction.add(diffDays + 1, 'days');
+
+      // const diff = nextReduction.diff(moment(), 's');
+      // console.log(diff);
+      // const minutesLeft = Math.floor((diff % 3600) / 60);
+      // const hoursLeft = Math.floor(diff / 3600);
+
+      let diff = moment.utc(nextReduction.diff(moment())).format('HH:mm:ss');
+      setTimeForReduction(`${diff}`);
+      // setTimeForReduction(`${hoursLeft}:${minutesLeft}`);
+    }, 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [props.id]);
+
   function navigateStake(token) {
-    Store.store.setStore({ currentPool: token });
+    store.setStore({ currentPool: token });
     props.history.push('/stake/' + props.address);
   }
-
-  console.log(props);
 
   return (
     <div className='hive-wrapper card'>
@@ -53,7 +78,7 @@ const Hive = (props) => {
               <span className='dot yellow'></span>
               Beast Bonus -10% reduction in
             </div>
-            <div className='text-right main-blue'>{props.bonusReductionIn}</div>
+            <div className='text-right main-blue'>{timeForReduction}</div>
           </div>
           <div className='d-flex justify-content-between'>
             <div>

@@ -57,7 +57,6 @@ const HivesList = (props) => {
   const configureReturned = useCallback(() => setLoading(false));
 
   const hives = rewardsMapper(rewardPools).map((t) => {
-    console.log(t.disableStake);
     return (
       <div className='col-lg-3 col-md-4 col-sm-6' key={t.address}>
         <Hive

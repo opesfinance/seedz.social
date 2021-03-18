@@ -3,6 +3,7 @@ import { injected, walletconnect, walletlink } from './connectors';
 const themeType = localStorage.getItem('themeType');
 
 const STORE = {
+  startBeastReductionTimestamp: 1615082400,
   votingStatus: false,
   governanceContractVersion: 2,
   currentBlock: 0,
