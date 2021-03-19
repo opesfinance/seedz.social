@@ -419,7 +419,7 @@ const Stake = (props) => {
             />
           )}
 
-          {'snackbarMessage' && (
+          {snackbarMessage && (
             <Snackbar
               type={snackbarType}
               anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
