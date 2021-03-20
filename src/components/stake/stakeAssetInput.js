@@ -26,7 +26,7 @@ const stakeAssetInput = (props) => {
               }}
               className='pool-max-balance text-right'
             >
-              {'Use Max Balance'}
+              Use Max Balance
             </Typography>
           )}
           {type === 'unstake' && (
@@ -45,7 +45,7 @@ const stakeAssetInput = (props) => {
               }}
               className='pool-max-balance text-right'
             >
-              {'Use Max Balance'}
+              Use Max Balance
             </Typography>
           )}
         </Col>

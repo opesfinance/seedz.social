@@ -339,7 +339,7 @@ const Pools = (props) => {
     <div>
       <div className='pageHeader my-auto'>Buy Pool Tokens</div>
 
-      <div className='p-5 ml-5'>
+      <div className='ml-sm-5 p-sm-5 ml-5 p-1 pb-5'>
         {boxesLayout}
         <div className='row'>
           <div className='col-md-6 offset-md-3'>

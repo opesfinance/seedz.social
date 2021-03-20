@@ -358,59 +358,54 @@ const Stake = (props) => {
     setAmounts(newAmounts);
   };
 
-  const stakeHeader = (params) => {
-    return (
-      <Row>
-        <Col lg='2' md='2' xs='6' className='text-left'>
+  const stakeHeader = (
+    <div className='stake-header'>
+      <Row className='d-flex align-items-center'>
+        <Col lg='2' md='2' xs='12' className='text-left'>
           <img
             className='pool-logo'
             alt=''
             src={require(`../../assets/logos/${pool.symbol}.png`)}
           />
         </Col>
-        <Col lg='10' md='10' xs='6' className='text-left pool-header'>
-          <div className='text-left'>
-            <div className='text-purple pool-name'>{pool.name}</div>
-            <a
-              href={'https://etherscan.io/address/' + pool.address}
-              rel='noopener noreferrer'
-              target='_blank'
-              className='text-purple'
-            >
-              {pool.address}
-            </a>
-          </div>
+        <Col lg='10' md='10' xs='12' className='text-left'>
+          <div className='stake-header-text pool-name'>{pool.name}</div>
+          <a
+            href={'https://etherscan.io/address/' + pool.address}
+            rel='noopener noreferrer'
+            target='_blank'
+            className='stake-header-text'
+          >
+            {pool.address}
+          </a>
         </Col>
       </Row>
-    );
-  };
+    </div>
+  );
 
-  const mainRender = () => {
-    return (
-      <>
-        {stakevalue === 'main' && (
-          <StakeMain
-            renderAssetInput={renderAssetInput}
-            pool={pool}
-            onExit={onExit}
-            gasPrice={gasPrice}
-            onClaim={onClaim}
-            navigateInternal={setStakeView}
-          />
-        )}
-      </>
-    );
-  };
+  const hiveDetail = (
+    <StakeMain
+      renderAssetInput={renderAssetInput}
+      pool={pool}
+      onExit={onExit}
+      gasPrice={gasPrice}
+      onClaim={onClaim}
+      navigateInternal={setStakeView}
+    />
+  );
 
   return (
     <>
-      <div className='info-header'></div>
-      <div className='info-header-down'></div>
+      <div className='stake-header-upper-section'></div>
+      <div className='stake-header-lower-section'>
+        <div className='p-sm-5 pl-4 pt-5 pr-3  ml-5 mt-5 text-center'>
+          <div className='pl-sm-5 ml-sm-5 text-center'>{stakeHeader}</div>
+        </div>
+      </div>
 
-      <div className='p-5 ml-5 text-center '>
-        <div className='p-5 ml-5 text-center '>
-          {stakeHeader()}
-          {stakeView === 'options' && mainRender()}
+      <div className='p-sm-5 pl-4 pt-5 pr-3 mt-sm-0 ml-5 mt-5 text-center'>
+        <div className='p-sm-5 ml-sm-5 text-center'>
+          {stakeView === 'options' && hiveDetail}
           {stakeView === 'buyboost' && (
             <StakeBuyBoost
               validateBoost={validateBoost}

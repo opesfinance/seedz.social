@@ -5,8 +5,6 @@ import { withRouter } from 'react-router-dom';
 import Store from '../../stores/store';
 import { Col, Card, Row } from 'react-bootstrap';
 
-const bgSrc = require('../../assets/vault.png');
-
 const Farm = (props) => {
   function address(address) {
     return `${props.address.substring(0, 5)}...${props.address.substring(

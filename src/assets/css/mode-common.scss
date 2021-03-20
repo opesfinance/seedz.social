@@ -1,3 +1,7 @@
+.main-content {
+  padding-top: 10vh;
+}
+
 .base-card {
   font-size: 1em;
   line-height: 2.3em;
@@ -68,36 +72,24 @@
   border: none;
 }
 
-.pool-header {
-  margin-top: -19vh;
-  margin-left: -1vw;
-  font-size: 0.8rem;
+.stake-header-lower-section {
+  margin-top: -20vh;
+}
+
+.stake-header-upper-section {
+  height: 10vh;
 }
 
 .pool-logo {
-  margin-top: -43vh;
+  // margin-top: -23vh;
   max-width: 100%;
   max-height: 20vh;
 }
 
-.info-header-down {
-  min-height: 10vh;
-}
-
-.info-header {
-  min-height: 12vh;
-}
-
-.pool-logo {
-  margin-top: -43vh;
-  max-width: 100%;
-  max-height: 20vh;
-}
-
-.pool-header {
-  margin-top: -19vh;
-  margin-left: -1vw;
-  font-size: 0.8rem;
+.stake-header-text {
+  // margin-top: -19vh;
+  // margin-left: -1vw;
+  font-size: 0.65rem;
 }
 
 button:disabled {

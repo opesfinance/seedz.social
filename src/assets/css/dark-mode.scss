@@ -4,7 +4,6 @@ $card-bg-color: #262c47;
   background: #192039 !important;
   color: #c2c2c2 !important;
   min-height: 100vh !important;
-  padding-top: 10vh;
 }
 
 /**
@@ -127,7 +126,6 @@ Dark Mode
 .dark-mode .hive-details {
   color: white;
   font-size: 1em;
-  line-height: 2.3em;
 }
 
 .dark-mode hr {
@@ -175,15 +173,19 @@ Dark Mode
 
 /* stake */
 .dark-mode .pool-card,
-.dark-mode .info-header-down {
-  background-color: $card-bg-color;
+.dark-mode .stake-header-lower-section {
+  // background-color: $card-bg-color;
+}
+
+.dark-mode .stake-header-text {
+  color: white;
 }
 
 .dark-mode .pool-info {
   color: white;
 }
 
-.dark-mode .info-header {
+.dark-mode .stake-header-upper-section {
   background-color: #7c6ebb;
 }
 

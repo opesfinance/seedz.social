@@ -89,7 +89,6 @@ Light Mode
   background: #f3f6f9 !important;
   color: #c2c2c2 !important;
   min-height: 100vh !important;
-  padding-top: 10vh;
 }
 
 .light-mode .pageHeader {
@@ -112,12 +111,16 @@ Light Mode
   font-weight: bold;
 }
 
-.light-mode .info-header {
+.light-mode .stake-header-upper-section {
   background-color: #cccccc;
 }
 
-.lightmod .info-header-down {
-  background-color: #fafafa;
+.light-mode .stake-header-lower-section {
+  // background-color: #fafafa;
+}
+
+.stake-header-text {
+  color: #7c6ebb;
 }
 
 .text-gray:hover {
@@ -137,7 +140,6 @@ Light Mode
 /* hives */
 .light-mode .hive-details {
   font-size: 1m;
-  line-height: 2.3em;
 }
 
 /* exchange */
