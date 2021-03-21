@@ -7,7 +7,7 @@ import {
   CONNECTION_CONNECTED,
   CONNECTION_DISCONNECTED,
   CONFIGURE_RETURNED,
-} from '../../constants';
+} from '../../constants/constants';
 
 import { Button } from 'react-bootstrap';
 
