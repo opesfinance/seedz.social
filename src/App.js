@@ -5,6 +5,7 @@ import IpfsRouter from 'ipfs-react-router';
 import Leftnav from './components/leftnav/leftnav';
 import Header from './components/header/header';
 import Exchange from './components/exchange/exchange';
+import ScrollToTop from './components/navigation/scrolltotop';
 
 import './i18n';
 
@@ -116,6 +117,7 @@ class App extends Component {
     return (
       <div className={`${style} main-content`}>
         <IpfsRouter>
+          <ScrollToTop />
           <Header />
           <Leftnav
             onSwitchTheme={this.onSwitchThemeHandler}
