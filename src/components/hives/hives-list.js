@@ -97,7 +97,7 @@ const HivesList = (props) => {
         justifyContent: props.justifyContent ? props.justifyContent : 'center',
       }}
     >
-      {hives}
+      {hives.reverse()}
     </div>
   );
 };
