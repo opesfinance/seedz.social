@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import moment from 'moment';
 import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography, TextField, InputAdornment } from '@material-ui/core';
@@ -35,6 +36,7 @@ const Stake = (props) => {
   const address = props.match.params.address;
 
   const [account] = useState(store.getStore('account'));
+  const [timeForReduction, setTimeForReduction] = useState('');
   const [themeType, setThemeType] = useState(store.getStore('themeType'));
 
   const [rewardPools, setRewardPools] = useState(
@@ -64,12 +66,25 @@ const Stake = (props) => {
   const [amountError, setAmountError] = useState(false);
   const [gasPrice, setGasPrice] = useState(0);
 
-  console.log('pool ------------', pool);
-
   const operationMapper = {
     stake: 'balance',
     unstake: 'stakedBalance',
   };
+
+  useEffect(() => {
+    let interval = setInterval(() => {
+      const startBeastReduction = moment.unix(
+        store.store.startBeastReductionTimestamp
+      );
+      const diffDays = moment().diff(startBeastReduction, 'days');
+      const nextReduction = startBeastReduction.add(diffDays + 1, 'days');
+      let diff = moment.utc(nextReduction.diff(moment())).format('HH:mm:ss');
+      setTimeForReduction(pool.disableStake ? 0 : `${diff}`);
+    }, 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [props.id]);
 
   useEffect(() => {
     if (!pool) props.history.push('/');
@@ -385,6 +400,7 @@ const Stake = (props) => {
 
   const hiveDetail = (
     <StakeMain
+      timeForReduction={timeForReduction}
       renderAssetInput={renderAssetInput}
       pool={pool}
       onExit={onExit}

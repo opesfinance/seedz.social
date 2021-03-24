@@ -1,5 +1,4 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
 
 import Store from '../../stores/store';
 import Web3 from 'web3';
@@ -69,7 +68,7 @@ const StakeMain = (props) => {
             <hr />
             <div className='d-flex justify-content-between'>
               <span>Bonus Reduction in:</span>
-              <span>{props.pool.bonusReductionIn} </span>
+              <span>{props.timeForReduction} </span>
             </div>
             <hr />
             <div className='d-flex justify-content-between'>
