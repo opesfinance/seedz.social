@@ -6,6 +6,7 @@ const StakeBuyBoost = (props) => {
 
   const onChangeBeastModes = (e) => {
     const { value } = e.target;
+
     setBeastModesAmount(value);
     props.getBoosterPriceBulk(value);
   };
@@ -169,7 +170,8 @@ const StakeBuyBoost = (props) => {
                     type='button'
                     className='btn btn-primary bg-main-blue'
                     disabled={
-                      props.pool?.hiveId == 'wbtchive' && !beastModesAmount
+                      (props.pool?.hiveId == 'wbtchive' && !beastModesAmount) ||
+                      +beastModesAmount > 50
                     }
                     onClick={() => {
                       props.validateBoost(beastModesAmount);

@@ -54,7 +54,7 @@ const Stake = (props) => {
   // const [stakevalue, setStakeValue] = useState('main');
   // const [balanceValid, setBalanceValid] = useState(false); // not used
   const [loading, setLoading] = useState(!(account && pool));
-  const [stakeView, setStakeView] = useState('buyboost'); // switchea buyboost y options para el render
+  const [stakeView, setStakeView] = useState('options'); // switchea buyboost y options para el render
   // const [voteLockValid, setVoteLockValid] = useState(false); // not used
   // const [voteLock, setVoteLock] = useState(null); // not used
   const [snackbarMessage, setSnackbarMessage] = useState(null);
