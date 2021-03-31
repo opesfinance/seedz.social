@@ -1854,16 +1854,81 @@ class Store {
   boostStake = (payload) => {
     // console.log('BOOOST!!!');
     const account = store.getStore('account');
-    const { asset, amount, value } = payload.content;
+    const { asset, amount, value, beastModesAmount } = payload.content;
 
-    this._boostcallStake(asset, account, amount, value, (err, res) => {
-      if (err) {
-        return emitter.emit(ERROR, err);
-      }
+    // return
+    if (asset.hiveId == 'wbtchive') {
+      console.log('hiiii', payload.content);
+      this._boostcallStake2(
+        asset,
+        account,
+        beastModesAmount,
+        value,
+        (err, res) => {
+          if (err) {
+            return emitter.emit(ERROR, err);
+          }
 
-      return emitter.emit(STAKE_RETURNED, res);
-    });
+          return emitter.emit(STAKE_RETURNED, res);
+        }
+      );
+    } else {
+      console.log('not hiiii', payload.content);
+      this._boostcallStake(asset, account, amount, value, (err, res) => {
+        if (err) {
+          return emitter.emit(ERROR, err);
+        }
+
+        return emitter.emit(STAKE_RETURNED, res);
+      });
+    }
   };
+
+  _boostcallStake2 = async (asset, account, amount, value, callback) => {
+    const web3 = new Web3(store.getStore('web3context').library.provider);
+
+    const boostContract = new web3.eth.Contract(
+      asset.rewardsABI,
+      asset.rewardsAddress
+    );
+
+    boostContract.methods
+      .bulkBeastMode(amount)
+      .send({
+        from: account.address,
+        gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
+        value: web3.utils.toWei(`${value}`, 'ether'),
+      })
+      .on('transactionHash', function (hash) {
+        // console.log(hash);
+        callback(null, hash);
+      })
+      .on('confirmation', function (confirmationNumber, receipt) {
+        if (confirmationNumber === 2) {
+          dispatcher.dispatch({ type: GET_BALANCES, content: {} });
+        }
+      })
+      .on('receipt', function (receipt) {
+        // console.log(receipt);
+      })
+      .on('error', function (error) {
+        if (!error.toString().includes('-32601')) {
+          if (error.message) {
+            return callback(error.message);
+          }
+          callback(error);
+        }
+      })
+      .catch((error) => {
+        if (!error.toString().includes('-32601')) {
+          if (error.message) {
+            return callback(error.message);
+          }
+          callback(error);
+        }
+      });
+  };
+
   _boostcheckApproval = async (asset, account, contract, callback) => {
     try {
       const web3 = new Web3(store.getStore('web3context').library.provider);
@@ -2368,6 +2433,41 @@ class Store {
       // console.log(e);
       return store.getStore('universalGasPrice');
     }
+  };
+
+  /**
+   *
+   * @param {String} user - address
+   * @param {Number} amount - uint256
+   * @returns
+   */
+  getBoosterPriceBulk = async (asset, amount) => {
+    const web3 = new Web3(store.getStore('web3context').library.provider);
+    const account = store.getStore('account');
+
+    // console.log(asset.rewardsAddress, account.address, amount);
+    // console.log(asset);
+
+    try {
+      const boostContract = new web3.eth.Contract(
+        asset.rewardsABI,
+        asset.rewardsAddress
+      );
+
+      let results = await boostContract.methods
+        .getBoosterPriceBulk(account.address, +amount)
+        .call({ from: account.address });
+
+      // return { boosterPrice: 0.00333 };
+      return { boosterPrice: results.boosterPrice / 10 ** 18 };
+    } catch (error) {
+      console.log(error);
+    }
+
+    // return {
+    //   boosterPrice,
+    //   newBoostBalance,
+    // };
   };
 }
 
