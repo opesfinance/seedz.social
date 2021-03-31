@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Col, Row, Card } from 'react-bootstrap';
 
 const StakeBuyBoost = (props) => {
+  const [beastModesAmount, setBeastModesAmount] = useState(0);
+
+  const onChangeBeastModes = (e) => {
+    const { value } = e.target;
+    setBeastModesAmount(value);
+    props.getBoosterPriceBulk(value);
+  };
+
   return (
     <Row className='pool-boxes pool-titles'>
       <Col>
@@ -79,17 +87,20 @@ const StakeBuyBoost = (props) => {
             <div className='d-flex justify-content-between'>
               <span>Cost of Beast Mode (USD)</span>
               <span className='text-right pool-info'>
-                {props.pool.costBooster} ETH
+                $
+                {props.pool.costBoosterUSD
+                  ? props.pool.costBoosterUSD.toFixed(2)
+                  : '0.00'}
               </span>
             </div>
             <hr />
             <div className='d-flex justify-content-between'>
               <span>Cost of Beast Mode</span>
               <span className='text-right pool-info'>
-                ${' '}
-                {props.pool.costBoosterUSD
-                  ? props.pool.costBoosterUSD.toFixed(2)
-                  : '0.00'}
+                {props.costBoosterETH != null
+                  ? props.costBoosterETH
+                  : props.pool.costBooster}{' '}
+                ETH
               </span>
             </div>
             <hr />
@@ -136,17 +147,35 @@ const StakeBuyBoost = (props) => {
 
             <br />
             <Row>
-              <Col></Col>
-              <Col>
-                <button
-                  type='button'
-                  className='btn btn-primary bg-main-blue'
-                  onClick={props.validateBoost}
-                >
-                  Beast Mode
-                </button>
-              </Col>
-              <Col></Col>
+              <div className='col-sm-8 offset-sm-2'>
+                {props.pool?.hiveId == 'wbtchive' && (
+                  <div>
+                    <label htmlFor=''>Number of beasts modes</label>
+                    <input
+                      min='1'
+                      step='1'
+                      type='number'
+                      className='text-center'
+                      value={beastModesAmount}
+                      onChange={onChangeBeastModes}
+                    />
+                  </div>
+                )}
+                <div>
+                  <button
+                    type='button'
+                    className='btn btn-primary bg-main-blue'
+                    disabled={
+                      props.pool?.hiveId == 'wbtchive' && !beastModesAmount
+                    }
+                    onClick={() => {
+                      props.validateBoost(beastModesAmount);
+                    }}
+                  >
+                    Beast Mode
+                  </button>
+                </div>
+              </div>
             </Row>
           </Card.Body>
         </Card>

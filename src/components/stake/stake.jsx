@@ -47,15 +47,17 @@ const Stake = (props) => {
 
   const [pool, setPool] = useState(getPool());
 
-  const [stakevalue, setStakeValue] = useState('main');
-  const [balanceValid, setBalanceValid] = useState(false); // not used
+  console.log(pool);
+
+  // const [stakevalue, setStakeValue] = useState('main');
+  // const [balanceValid, setBalanceValid] = useState(false); // not used
   const [loading, setLoading] = useState(!(account && pool));
   const [stakeView, setStakeView] = useState('options'); // switchea buyboost y options para el render
-  const [voteLockValid, setVoteLockValid] = useState(false); // not used
-  const [voteLock, setVoteLock] = useState(null); // not used
+  // const [voteLockValid, setVoteLockValid] = useState(false); // not used
+  // const [voteLock, setVoteLock] = useState(null); // not used
   const [snackbarMessage, setSnackbarMessage] = useState(null);
   const [snackbarType, setSnackbarType] = useState(null); // not used
-  const [activeClass, setActiveClass] = useState(store.getStore('activeClass')); // not used
+  // const [activeClass, setActiveClass] = useState(store.getStore('activeClass')); // not used
   const [amountStakeError, setAmountStakeError] = useState(false);
   const [fieldId, setFieldId] = useState('');
 
@@ -65,6 +67,7 @@ const Stake = (props) => {
   const [amounts, setAmounts] = useState(initialAmounts);
   const [amountError, setAmountError] = useState(false);
   const [gasPrice, setGasPrice] = useState(0);
+  const [costBoosterETH, setCostBoosterETH] = useState(null);
 
   const operationMapper = {
     stake: 'balance',
@@ -119,6 +122,7 @@ const Stake = (props) => {
   }, []);
 
   const balancesReturned = () => {
+    console.log('balances returned');
     const currentPool = pool; //store.getStore('currentPool');
     const pools = store.getStore('rewardPools');
     let newPool = pools.filter((pool) => {
@@ -160,27 +164,46 @@ const Stake = (props) => {
     });
   };
 
-  const validateBoost = () => {
+  /**
+   * @param {Number} beastModesAmount - uses only when hive is WBTC
+   */
+  const validateBoost = (beastModesAmount) => {
+    return onBuyBoost(beastModesAmount);
+
     if (pool.costBooster > pool.boostBalance) {
       emitter.emit(ERROR, 'insufficient funds to activate Beast Mode');
     } else if (pool.timeToNextBoost - new Date().getTime() / 1000 > 0) {
       emitter.emit(ERROR, 'Too soon to activate BEAST Mode again');
     } else {
-      onBuyBoost();
+      onBuyBoost(beastModesAmount);
     }
   };
 
-  const onBuyBoost = () => {
+  const getBoosterPriceBulk = async (amount) => {
+    let data = await store.getBoosterPriceBulk(pool.token, amount);
+    console.log(data);
+    setCostBoosterETH(data.boosterPrice);
+  };
+
+  const onBuyBoost = (beastModesAmount) => {
     setAmountError(false);
-    console.log('pool ----------', pool);
     const selectedToken = pool.token;
     const amount = amounts[selectedToken.id + '_stake'];
-    const value = (selectedToken.costBooster + 0.0001).toFixed(10).toString();
+    const value =
+      costBoosterETH != null
+        ? costBoosterETH
+        : (selectedToken.costBooster + 0.0001).toFixed(10).toString();
 
     setLoading(true);
     dispatcher.dispatch({
       type: BOOST_STAKE,
-      content: { asset: pool.token, amount, value },
+      content: {
+        asset: pool.token,
+        amount,
+        value,
+        beastModesAmount,
+        // costBoosterETH,
+      },
     });
   };
 
@@ -410,6 +433,8 @@ const Stake = (props) => {
           {stakeView === 'buyboost' && (
             <StakeBuyBoost
               validateBoost={validateBoost}
+              costBoosterETH={costBoosterETH}
+              getBoosterPriceBulk={getBoosterPriceBulk}
               showHash={showHash}
               pool={pool}
             />

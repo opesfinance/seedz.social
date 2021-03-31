@@ -1,9 +1,12 @@
 'use strict';
 const rewardsMapper = (rewards) => {
   let result = rewards
-    .flatMap((rp) => rp.tokens[0])
+    .flatMap((rp) => {
+      return { hiveId: rp.id, ...rp.tokens[0] };
+    })
     .map((t) => {
       return {
+        hiveId: t.hiveId,
         id: t.id,
         acronym: t.symbol,
         name: t.name,
