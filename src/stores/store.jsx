@@ -540,6 +540,8 @@ class Store {
     } else {
       let test = await this._getLPprice(web3, assetOut, account);
       //LP price
+      // console.log(assetOut, test);
+
       price = (test[test.length - 3] / 100 / 10 ** 6).toFixed(4);
       const priceETH = (test[test.length - 2] / 100 / 10 ** 18).toFixed(4);
       const priceWPE = (test[test.length - 1] / 100 / 10 ** 18).toFixed(4);
@@ -560,7 +562,6 @@ class Store {
    * @returns {Number} amount out
    */
   getAmountOut = async (assetIn, assetOut, amountIn) => {
-    const pools = store.getStore('rewardPools');
     const account = store.getStore('account');
 
     const web3 = new Web3(store.getStore('web3context').library.provider);
@@ -632,6 +633,24 @@ class Store {
     }
   };
 
+  _getOutputForWBTCLP = async (web3, amountIn, account) => {
+    let wpeLPExchange = new web3.eth.Contract(
+      config.WPElpAddressABI,
+      config.WBTClpAddress
+    );
+    var amountToSend = web3.utils.toWei(amountIn, 'ether');
+
+    try {
+      const amount = await wpeLPExchange.methods
+        .getAmountFor(amountToSend) //[assetIn.address, assetOut.address])
+        .call({ from: account.address });
+      console.log(amount);
+      return (amount / 10 ** 18).toFixed(12);
+    } catch (ex) {
+      return ex;
+    }
+  };
+
   getLpAmountOut = async (assetIn, assetOut, amountIn) => {
     const assets = store.getStore('lpTokens');
     var current = assets.find((i) => i.address == assetOut.address);
@@ -643,7 +662,10 @@ class Store {
     if (assetIn.label === 'ETH') {
       if (current.label == 'WPE') {
         amountOut = await this._getOutputForWPELP(web3, amountIn, account);
+      } else if (current.label == 'WBTC') {
+        amountOut = await this._getOutputForWBTCLP(web3, amountIn, account);
       } else {
+        // console.log(current);
         amountOut = amountIn * (1 / current.priceETH);
       }
     } else if (assetIn.label === 'WPE') {
@@ -753,8 +775,12 @@ class Store {
       let amounts = await coinRouter.methods
         .getPriceFor(web3.utils.toWei('100', 'ether'))
         .call({ from: account.address });
+
+      // console.log(contract);
+      // console.log(amounts);
       return amounts;
     } catch (ex) {
+      // console.log(ex);
       return ex;
     }
   };
