@@ -168,8 +168,6 @@ const Stake = (props) => {
    * @param {Number} beastModesAmount - uses only when hive is WBTC
    */
   const validateBoost = (beastModesAmount) => {
-    return onBuyBoost(beastModesAmount);
-
     if (pool.costBooster > pool.boostBalance) {
       emitter.emit(ERROR, 'insufficient funds to activate Beast Mode');
     } else if (pool.timeToNextBoost - new Date().getTime() / 1000 > 0) {
@@ -181,7 +179,6 @@ const Stake = (props) => {
 
   const getBoosterPriceBulk = async (amount) => {
     let data = await store.getBoosterPriceBulk(pool.token, amount);
-    console.log(data);
     setCostBoosterETH(data.boosterPrice);
   };
 

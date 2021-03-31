@@ -153,6 +153,7 @@ const StakeBuyBoost = (props) => {
                     <label htmlFor=''>Number of beasts modes</label>
                     <input
                       min='1'
+                      max='50'
                       step='1'
                       type='number'
                       className='text-center'
