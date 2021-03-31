@@ -62,6 +62,7 @@ const Pools = (props) => {
   const [toAmount, setToAmount] = useState('0');
   let initialToAddress =
     props.match.params.selectedPool || toOptions[0].address;
+
   const [toAddress, setToAddress] = useState(initialToAddress);
   const [error, setError] = useState('');
   const [unitPrice, setUnitPrice] = useState('');
@@ -152,6 +153,8 @@ const Pools = (props) => {
       assetIn = fromOptions.find((i) => i.address == fromAddress);
     if (toAddress) assetOut = toOptions.find((i) => i.address == toAddress);
 
+    // console.log(assetIn, assetOut);
+
     amountOut = await store.getLpAmountOut(assetIn, assetOut, '1');
     setUnitPrice(`1 ${assetIn.label} = ${amountOut} ${assetOut.label}`);
   };
@@ -209,7 +212,7 @@ const Pools = (props) => {
       assetOut?.onlyPurchaseableWith &&
       !assetOut?.onlyPurchaseableWith?.includes(assetIn.label)
     ) {
-      console.log('not purchaseable');
+      // console.log('not purchaseable');
       setError(`${assetOut.labelLP} can only be purchased with Eth`);
     } else {
       setError('');

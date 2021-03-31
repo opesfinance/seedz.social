@@ -72,21 +72,6 @@ const Stake = (props) => {
   };
 
   useEffect(() => {
-    let interval = setInterval(() => {
-      const startBeastReduction = moment.unix(
-        store.store.startBeastReductionTimestamp
-      );
-      const diffDays = moment().diff(startBeastReduction, 'days');
-      const nextReduction = startBeastReduction.add(diffDays + 1, 'days');
-      let diff = moment.utc(nextReduction.diff(moment())).format('HH:mm:ss');
-      setTimeForReduction(pool.disableStake ? 0 : `${diff}`);
-    }, 1000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, [props.id]);
-
-  useEffect(() => {
     if (!pool) props.history.push('/');
   }, []);
 

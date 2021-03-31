@@ -7,6 +7,7 @@ import { Col, Row, Card } from 'react-bootstrap';
 import { ERROR } from '../../constants';
 import currency from '../utils/currency';
 import { withRouter } from 'react-router-dom';
+import CountDown from '../utils/countDown';
 
 const { emitter, store } = Store;
 
@@ -68,7 +69,7 @@ const StakeMain = (props) => {
             <hr />
             <div className='d-flex justify-content-between'>
               <span>Bonus Reduction in:</span>
-              <span>{props.timeForReduction} </span>
+              <CountDown pool={props.pool} />
             </div>
             <hr />
             <div className='d-flex justify-content-between'>
