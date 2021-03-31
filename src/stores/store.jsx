@@ -213,6 +213,7 @@ class Store {
           // //console.log(err)
           return emitter.emit(ERROR, err);
         }
+        // console.log(poolData);
         store.setStore({ rewardPools: poolData });
         emitter.emit(GET_BALANCES_PERPETUAL_RETURNED);
         emitter.emit(GET_BALANCES_RETURNED);
@@ -445,6 +446,7 @@ class Store {
           // console.log(err);
           return emitter.emit(ERROR, err);
         }
+        // console.log(poolData);
         store.setStore({ rewardPools: poolData });
         emitter.emit(GET_BOOSTEDBALANCES_RETURNED);
       }
@@ -644,7 +646,7 @@ class Store {
       const amount = await wpeLPExchange.methods
         .getAmountFor(amountToSend) //[assetIn.address, assetOut.address])
         .call({ from: account.address });
-      console.log(amount);
+      // console.log(amount);
       return (amount / 10 ** 18).toFixed(12);
     } catch (ex) {
       return ex;
@@ -794,7 +796,8 @@ class Store {
       var balance = parseFloat(myJson.ethereum.usd);
       callback(null, parseFloat(balance));
     } catch (ex) {
-      return callback(ex);
+      console.log(ex);
+      // return callback(ex);
     }
   };
 
@@ -824,7 +827,8 @@ class Store {
       balance = parseFloat(balance);
       callback(null, parseFloat(balance));
     } catch (ex) {
-      return callback(ex);
+      console.log(ex);
+      // return callback(ex);
     }
   };
   _getBoosterCost = async (web3, asset, account, callback) => {
@@ -895,7 +899,8 @@ class Store {
       var boostInfo = parseInt(time);
       callback(null, boostInfo);
     } catch (ex) {
-      return callback(ex);
+      console.log(ex);
+      // return callback(ex);
     }
   };
   _checkApprovalLiquidity = async (
@@ -1063,7 +1068,8 @@ class Store {
       rate = parseFloat(rate) / 10 ** asset.decimals;
       callback(null, rate);
     } catch (ex) {
-      callback(null, ex);
+      console.log(ex);
+      // callback(null, ex);
     }
   };
 
@@ -1080,7 +1086,7 @@ class Store {
       beastmodes = parseFloat(beastmodes[1]);
       callback(null, beastmodes);
     } catch (ex) {
-      callback(null, ex);
+      // callback(null, ex);
     }
   };
 
@@ -1176,7 +1182,8 @@ class Store {
       earned = parseFloat(earned) / 10 ** asset.decimals;
       callback(null, parseFloat(earned));
     } catch (ex) {
-      return callback(ex);
+      console.log(ex);
+      // return callback(ex);
     }
   };
 
@@ -1700,14 +1707,16 @@ class Store {
     }
     const buyAmount = web3.utils.toWei(amount.toString(), 'ether');
 
-    console.log(buyAmount);
+    // console.log(buyAmount);
+    console.log(value);
+    console.log(multiplier);
     coinContract.methods
       .buyLPTokensEth(buyAmount)
       .send({
         from: account.address,
         gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
         value: web3.utils.toWei(
-          (parseFloat(value) * multiplier).toString(),
+          (parseFloat(value) * multiplier).toFixed(18).toString(),
           'ether'
         ),
       })
@@ -1835,7 +1844,6 @@ class Store {
 
   buyLP = (payload) => {
     const { assetIn, assetOut, amountIn, amountOut } = payload.content;
-
     if (assetIn.label == 'ETH') {
       //- [ ] BUYLPTOKENSWITHEYTHEREUM
       this.buyLPWithEth(payload);

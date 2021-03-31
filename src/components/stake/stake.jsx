@@ -24,6 +24,8 @@ import {
   GET_REWARDS_RETURNED,
   EXIT,
   EXIT_RETURNED,
+  GET_BOOSTEDBALANCES_RETURNED,
+  GET_BOOSTEDBALANCES,
   GET_BALANCES_RETURNED,
   BOOST_STAKE,
 } from '../../constants';
@@ -52,7 +54,7 @@ const Stake = (props) => {
   // const [stakevalue, setStakeValue] = useState('main');
   // const [balanceValid, setBalanceValid] = useState(false); // not used
   const [loading, setLoading] = useState(!(account && pool));
-  const [stakeView, setStakeView] = useState('options'); // switchea buyboost y options para el render
+  const [stakeView, setStakeView] = useState('buyboost'); // switchea buyboost y options para el render
   // const [voteLockValid, setVoteLockValid] = useState(false); // not used
   // const [voteLock, setVoteLock] = useState(null); // not used
   const [snackbarMessage, setSnackbarMessage] = useState(null);
@@ -104,35 +106,46 @@ const Stake = (props) => {
   useEffect(() => {
     store.getStore('currentPool');
 
+    // dispatcher.dispatch({ type: GET_BALANCES, content: {} });
+    dispatcher.dispatch({ type: GET_BOOSTEDBALANCES, content: {} });
+
     emitter.on(ERROR, errorReturned);
     emitter.on(STAKE_RETURNED, showHash);
     emitter.on(WITHDRAW_RETURNED, showHash);
     emitter.on(EXIT_RETURNED, showHash);
     emitter.on(GET_REWARDS_RETURNED, showHash);
-    emitter.on(GET_BALANCES_RETURNED, balancesReturned);
+    // emitter.on(GET_BALANCES_RETURNED, balancesReturned);
+    emitter.on(GET_BOOSTEDBALANCES_RETURNED, balancesReturned);
 
     return () => {
+      emitter.removeListener(GET_BOOSTEDBALANCES_RETURNED, balancesReturned);
       emitter.removeListener(ERROR, errorReturned);
       emitter.removeListener(STAKE_RETURNED, showHash);
       emitter.removeListener(WITHDRAW_RETURNED, showHash);
       emitter.removeListener(EXIT_RETURNED, showHash);
       emitter.removeListener(GET_REWARDS_RETURNED, showHash);
-      emitter.removeListener(GET_BALANCES_RETURNED, balancesReturned);
+      // emitter.removeListener(GET_BALANCES_RETURNED, balancesReturned);
     };
   }, []);
 
   const balancesReturned = () => {
     console.log('balances returned');
-    const currentPool = pool; //store.getStore('currentPool');
-    const pools = store.getStore('rewardPools');
-    let newPool = pools.filter((pool) => {
-      return pool.id === currentPool.id;
-    });
+    // const currentPool = pool; //store.getStore('currentPool');
+    const pools = rewardsMapper(store.getStore('rewardPools'));
 
-    if (newPool.length > 0) {
-      newPool = newPool[0];
-      store.setStore({ currentPool: newPool });
-    }
+    let pool = pools.find((p) => p.address === address);
+    console.log(pools);
+    console.log(pool);
+    // let newPool = pools.filter((pool) => {
+    //   return pool.id === currentPool.id;
+    // });
+
+    setPool(pool);
+
+    // if (newPool.length > 0) {
+    //   newPool = newPool[0];
+    //   store.setStore({ currentPool: newPool });
+    // }
   };
 
   const parseAmount = (amount) => {

@@ -88,7 +88,9 @@ const StakeBuyBoost = (props) => {
               <span>Cost of Beast Mode (USD)</span>
               <span className='text-right pool-info'>
                 $
-                {props.pool.costBoosterUSD
+                {props.costBoosterETH != null
+                  ? props.costBoosterETH * props.pool.ethPrice
+                  : props.pool.costBoosterUSD
                   ? props.pool.costBoosterUSD.toFixed(2)
                   : '0.00'}
               </span>

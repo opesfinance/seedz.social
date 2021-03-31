@@ -97,6 +97,7 @@ class App extends Component {
   };
 
   connectionConnected = () => {
+    // console.log('connection connected');
     this.setState({ account: store.getStore('account') });
     dispatcher.dispatch({ type: CONFIGURE, content: {} });
   };
