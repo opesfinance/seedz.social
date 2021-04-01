@@ -1905,7 +1905,7 @@ class Store {
       .send({
         from: account.address,
         gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
-        value: web3.utils.toWei(`${value}`, 'ether'),
+        value: web3.utils.toWei(`${value * 1.001}`, 'ether'),
       })
       .on('transactionHash', function (hash) {
         // console.log(hash);
