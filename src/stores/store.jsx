@@ -1606,7 +1606,7 @@ class Store {
     const account = store.getStore('account');
     const { assetIn, assetOut, amountIn, amountOut } = payload.content;
 
-    if (assetOut.label == 'WPE') {
+    if (assetOut.label == 'WPE' || assetOut.label == 'WBTC') {
       this._buyWPELPWithEthCall(
         assetOut,
         account,

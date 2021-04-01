@@ -450,7 +450,7 @@ const STORE = {
     },
     {
       id: 'wbtchive',
-      name: 'WPE/WBTC LP Pool',
+      name: 'Crypto Club Pool',
       website: 'Uniswap',
       description: '',
       link:
@@ -463,7 +463,7 @@ const STORE = {
       tokens: [
         {
           id: 'boostrewards',
-          name: 'WPE/WBTC LP Pool',
+          name: 'Crypto Club Pool',
           address: '0x0731ee4cf7376A1bd5A78199ac9BEdc8213DeF24', // este es el LP token
           symbol: 'UNI-v2',
           liquidityLink:
