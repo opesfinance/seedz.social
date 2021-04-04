@@ -60,18 +60,26 @@ const StakeMain = (props) => {
       <Col lg='4' md='12' xs='12' className='p-1'>
         <Card className='pool-card base-card'>
           <Card.Body className='text-left'>
-            <div className='d-flex justify-content-between'>
-              <span>Beast Bonus (leverage):</span>
-              <span>
-                {props.pool.beastBonus ? props.pool.beastBonus * 10 : '0'}%
-              </span>
-            </div>
-            <hr />
-            <div className='d-flex justify-content-between'>
-              <span>Bonus Reduction in:</span>
-              <CountDown pool={props.pool} />
-            </div>
-            <hr />
+            {props.isHive && (
+              <>
+                <div className='d-flex justify-content-between'>
+                  <span>Beast Bonus (leverage):</span>
+                  <span>
+                    {props.pool.beastBonus ? props.pool.beastBonus * 10 : '0'}%
+                  </span>
+                </div>
+                <hr />
+              </>
+            )}
+            {props.isHive && (
+              <>
+                <div className='d-flex justify-content-between'>
+                  <span>Bonus Reduction in:</span>
+                  <CountDown pool={props.pool} />
+                </div>
+                <hr />
+              </>
+            )}
             <div className='d-flex justify-content-between'>
               <span>Weekly Rewards:</span>
               <span>
@@ -99,6 +107,7 @@ const StakeMain = (props) => {
               <Col className='text-center'>
                 {!props.pool.disableStake ? (
                   <button
+                    type='button'
                     className='btn btn-primary bg-main-white main-btn'
                     onClick={() => {
                       // if (props.pool.token.name == 'WPE-LP')
@@ -110,7 +119,10 @@ const StakeMain = (props) => {
                     Add liquidity and Stake
                   </button>
                 ) : (
-                  <button className='btn btn-secondary bg-main-white disabled'>
+                  <button
+                    type='button'
+                    className='btn btn-secondary bg-main-white disabled'
+                  >
                     Add liquidity and Stake
                   </button>
                 )}
@@ -140,18 +152,21 @@ const StakeMain = (props) => {
                   MY STAKED AMOUNT
                 </Col>
                 <Col className='text-right pool-info'>
-                  {props.pool.stakedBalance} {props.pool.symbol}
+                  {props.pool.stakedBalance}{' '}
+                  {props.pool.stakedSymbol || props.pool.symbol}
                 </Col>
               </Row>
-              <Row>
-                <Col className='pool-titles col-8'>
-                  <span className='dot purple'></span>
-                  MY BEAST MODE (leverage)
-                </Col>
-                <Col className='text-right pool-info'>
-                  {props.pool.myBeastModes * 10}%
-                </Col>
-              </Row>
+              {props.isHive && (
+                <Row>
+                  <Col className='pool-titles col-8'>
+                    <span className='dot purple'></span>
+                    MY BEAST MODE (leverage)
+                  </Col>
+                  <Col className='text-right pool-info'>
+                    {props.pool.myBeastModes * 10}%
+                  </Col>
+                </Row>
+              )}
               <Row>
                 <Col className='pool-titles col-8'>
                   <span className='dot light-blue'></span>
@@ -177,15 +192,17 @@ const StakeMain = (props) => {
                     Claim Rewards
                   </div>
                 </Col>
-                <Col className='text-center'>
-                  <div
-                    className='btn btn-primary bg-main-blue main-btn unstake'
+                {props.isHive && (
+                  <Col className='text-center'>
+                    <div
+                      className='btn btn-primary bg-main-blue main-btn unstake'
 
-                    //onClick={props.onExit}
-                  >
-                    Claim & Unstake
-                  </div>
-                </Col>
+                      //onClick={props.onExit}
+                    >
+                      Claim & Unstake
+                    </div>
+                  </Col>
+                )}
               </Row>
             </div>
           </Card.Body>
@@ -197,21 +214,26 @@ const StakeMain = (props) => {
           <Card.Body>
             {props.renderAssetInput(props.pool, 'stake')}
             <br />
-            {props.renderAssetInput(props.pool, 'unstake')}
+            {props.isHive && props.renderAssetInput(props.pool, 'unstake')}
             <br />
-            <span className='pool-titles'>
-              Add leverage to your staked capital
-            </span>
-            <div className='pt-4'>
-              <button
-                type='button'
-                className='btn btn-primary bg-main-blue main-btn'
-                disabled={props.pool.disableStake}
-                onClick={() => props.navigateInternal('buyboost')}
-              >
-                Beast Mode
-              </button>
-            </div>
+
+            {props.isHive && (
+              <>
+                <span className='pool-titles'>
+                  Add leverage to your staked capital
+                </span>
+                <div className='pt-4'>
+                  <button
+                    type='button'
+                    className='btn btn-primary bg-main-blue main-btn'
+                    disabled={props.pool.disableStake}
+                    onClick={() => props.navigateInternal('buyboost')}
+                  >
+                    Beast Mode
+                  </button>
+                </div>
+              </>
+            )}
           </Card.Body>
         </Card>
       </Col>

@@ -53,8 +53,7 @@ const Stake = (props) => {
     farmPools.find((p) => p.poolAddress == address);
 
   const [pool, setPool] = useState(getPool());
-
-  console.log(pool);
+  const [isHive] = useState(!!pool.hiveId);
 
   // const [stakevalue, setStakeValue] = useState('main');
   // const [balanceValid, setBalanceValid] = useState(false); // not used
@@ -432,6 +431,7 @@ const Stake = (props) => {
       gasPrice={gasPrice}
       onClaim={onClaim}
       navigateInternal={setStakeView}
+      isHive={isHive}
     />
   );
 
@@ -453,6 +453,7 @@ const Stake = (props) => {
               costBoosterETH={costBoosterETH}
               getBoosterPriceBulk={getBoosterPriceBulk}
               showHash={showHash}
+              isHive={isHive}
               pool={pool}
             />
           )}
