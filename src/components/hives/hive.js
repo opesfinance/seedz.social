@@ -22,7 +22,7 @@ const Hive = (props) => {
     <div className='hive-wrapper card'>
       <div className='card-body'>
         <div className='hive-header'>
-          <div className=''>
+          <div>
             <div className='hive-logo'>
               <img
                 alt=''

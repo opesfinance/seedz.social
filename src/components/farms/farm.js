@@ -15,83 +15,99 @@ const Farm = (props) => {
 
   function navigateStake(farmPool) {
     Store.store.setStore({ currentPool: farmPool });
-    props.history.push('/stake');
+    props.history.push(
+      '/stake/' + (pool.address || '0xc96d43006fE0058c5dd9d35D2763Aba9A0C300b1')
+    );
   }
 
-  const pool = props.pool;
+  const { pool } = props;
 
   return (
-    <>
-      <Col className='hive-wrapper'>
-        {pool.name} ({pool.token})
-        <Card>
-          <Card.Body>
-            <Row className='farm-logo'>
+    <div className='hive-wrapper card'>
+      <div className='card-body'>
+        <div className='hive-header'>
+          <div>
+            <div className='farm-logo'>
               <img
                 alt=''
                 className='farm-image'
                 src={require(`../../assets/logos/${pool.token}.png`)}
               />
-            </Row>
-            <Row className='farm-plant'>
-              <div
-                onClick={() => {
-                  if (pool.id != 'balancer-pool') {
-                    navigateStake(pool);
-                  }
-                }}
-                className='btn btn-primary bg-main-blue'
-              >
-                Plant
-              </div>
-            </Row>
+            </div>
+            <div className='main-blue'>
+              {pool.name} ({pool.token})
+            </div>
+            <a
+              href={'https://etherscan.io/address/' + props.address}
+              className='address'
+              target='_blank'
+            >
+              address
+            </a>
+          </div>
+        </div>
 
-            <Row className='farm-value'>
-              <Col>
-                <span className='dot green'></span>
-                APY
-              </Col>
-              <Col className='text-right main-blue'>{pool.apy}%</Col>
-            </Row>
-            <Row className='farm-value'>
-              <Col>
-                <span className='dot yellow'></span>
-                Time Left
-              </Col>
-              <Col className='text-right main-blue'>{pool.timeLeft}</Col>
-            </Row>
-            <Row className='farm-value'>
-              <Col>
-                <span className='dot purple'></span>
-                Weekly Rewards
-              </Col>
-              <Col className='text-right main-blue'>
-                {pool.weeklyRewards} {pool.token}
-              </Col>
-            </Row>
-            <hr />
-            <Row className='farm-value'>
-              <Col>
-                <span className='dot light-blue'></span>
-                My Beast Modes
-              </Col>
-              <Col className='text-right main-blue'>
-                {pool.myBeastModes * 10}
-              </Col>
-            </Row>
-            <Row className='farm-value'>
-              <Col>
-                <span className='dot orange'></span>
-                My Rewards
-              </Col>
-              <Col className='text-right main-blue'>
-                {pool.myRewards} {pool.token}
-              </Col>
-            </Row>
-          </Card.Body>
-        </Card>
-      </Col>
-    </>
+        <div className='d-flex justify-content-between'>
+          <div>
+            <span className='dot green'></span>
+            APY
+          </div>
+          <div className='text-right main-blue'>{pool.apy}%</div>
+        </div>
+
+        <div className='d-flex justify-content-between'>
+          <div>
+            <span className='dot yellow'></span>
+            Time Left
+          </div>
+          <div className='text-right main-blue'>{pool.timeLeft}</div>
+        </div>
+
+        <div className='d-flex justify-content-between'>
+          <div>
+            <span className='dot purple'></span>
+            Weekly Rewards
+          </div>
+          <div className='text-right main-blue'>
+            {pool.weeklyRewards} {pool.token}
+          </div>
+        </div>
+
+        <hr />
+
+        <div className='d-flex justify-content-between'>
+          <div>
+            <span className='dot light-blue'></span>
+            My Beast Modes
+          </div>
+          <div className='text-right main-blue'>{pool.myBeastModes * 10}</div>
+        </div>
+
+        <div className='d-flex justify-content-between'>
+          <div>
+            <span className='dot orange'></span>
+            My Rewards
+          </div>
+          <div className='text-right main-blue'>
+            {pool.myRewards} {pool.token}
+          </div>
+        </div>
+
+        <div className='text-center pt-4'>
+          <button
+            type='button'
+            onClick={() => {
+              if (pool.id != 'balancer-pool') {
+                navigateStake(pool);
+              }
+            }}
+            className='btn btn-primary bg-main-blue main-btn btn-block'
+          >
+            Plant
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 

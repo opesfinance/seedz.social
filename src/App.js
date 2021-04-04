@@ -11,7 +11,7 @@ import './i18n';
 
 import Account from './components/account/account';
 import Home from './components/home/home';
-import Farm from './components/farms/farms';
+import Farms from './components/farms/farms';
 import Hives from './components/hives/hives';
 import WhaleTank from './components/whalestank/whaletank';
 import Stake from './components/stake/stake';
@@ -132,7 +132,7 @@ class App extends Component {
                 <Route path='/stake/:address' component={Stake} />
                 <Route path='/whaletank' component={WhaleTank} />
                 <Route path='/hives' component={Hives} />
-                <Route path='/farms' component={Farm} />
+                <Route path='/farms' component={Farms} />
                 <Route path='/exchange' component={Exchange} />
                 <Route exact path='/pools/:selectedPool'>
                   <Pools
