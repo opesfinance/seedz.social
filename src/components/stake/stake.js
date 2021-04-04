@@ -50,7 +50,7 @@ const Stake = (props) => {
 
   const getPool = () =>
     rewardPools.find((p) => p.address === address) ||
-    farmPools.find((p) => p.poolAddress == address);
+    farmPools.find((p) => p.token.address == address);
 
   const [pool, setPool] = useState(getPool());
   const [isHive] = useState(!!pool.hiveId);
@@ -139,7 +139,7 @@ const Stake = (props) => {
 
     let pool =
       pools.find((p) => p.address === address) ||
-      farmPools.find((p) => p.poolAddress == address);
+      farmPools.find((p) => p.token.address == address);
     console.log(pools);
     console.log(pool);
     // let newPool = pools.filter((pool) => {
@@ -235,7 +235,7 @@ const Stake = (props) => {
     console.log('staking ------------');
     setAmountError(false);
     setAmountStakeError(false);
-    const selectedToken = isHive ? pool.token : pool;
+    const selectedToken = pool.token;
     setFieldId('');
     const amount = amounts[selectedToken.id + '_stake'];
 
@@ -245,7 +245,7 @@ const Stake = (props) => {
     if (amount > 0) {
       dispatcher.dispatch({
         type: STAKE,
-        content: { asset: isHive ? pool.token : pool, amount },
+        content: { asset: pool.token, amount },
       });
     } else {
       setFieldId(selectedToken.id + '_stake');
