@@ -23,8 +23,6 @@ import {
   GET_REWARDS_RETURNED,
   EXIT,
   EXIT_RETURNED,
-  GET_BOOSTEDBALANCES_RETURNED,
-  GET_BOOSTEDBALANCES,
   GET_BALANCES_RETURNED,
   BOOST_STAKE,
 } from '../../constants';
@@ -37,33 +35,25 @@ const Stake = (props) => {
   const address = props.match.params.address;
 
   const [account] = useState(store.getStore('account'));
-  const [timeForReduction, setTimeForReduction] = useState('');
-  // const [themeType, setThemeType] = useState(store.getStore('themeType'));
+  const [themeType, setThemeType] = useState(store.getStore('themeType'));
 
   const [rewardPools, setRewardPools] = useState(
     rewardsMapper(store.getStore('rewardPools'))
   );
 
-  const [farmPools, setFarmPools] = useState(store.getStore('farmPools'));
-
-  console.log(farmPools);
-
-  const getPool = () =>
-    rewardPools.find((p) => p.address === address) ||
-    farmPools.find((p) => p.poolAddress == address);
+  const getPool = () => rewardPools.find((p) => p.address === address);
 
   const [pool, setPool] = useState(getPool());
-  const [isHive] = useState(!!pool.hiveId);
 
-  // const [stakevalue, setStakeValue] = useState('main');
-  // const [balanceValid, setBalanceValid] = useState(false); // not used
+  const [stakevalue, setStakeValue] = useState('main');
+  const [balanceValid, setBalanceValid] = useState(false); // not used
   const [loading, setLoading] = useState(!(account && pool));
   const [stakeView, setStakeView] = useState('options'); // switchea buyboost y options para el render
-  // const [voteLockValid, setVoteLockValid] = useState(false); // not used
-  // const [voteLock, setVoteLock] = useState(null); // not used
+  const [voteLockValid, setVoteLockValid] = useState(false); // not used
+  const [voteLock, setVoteLock] = useState(null); // not used
   const [snackbarMessage, setSnackbarMessage] = useState(null);
   const [snackbarType, setSnackbarType] = useState(null); // not used
-  // const [activeClass, setActiveClass] = useState(store.getStore('activeClass')); // not used
+  const [activeClass, setActiveClass] = useState(store.getStore('activeClass')); // not used
   const [amountStakeError, setAmountStakeError] = useState(false);
   const [fieldId, setFieldId] = useState('');
 
@@ -73,7 +63,8 @@ const Stake = (props) => {
   const [amounts, setAmounts] = useState(initialAmounts);
   const [amountError, setAmountError] = useState(false);
   const [gasPrice, setGasPrice] = useState(0);
-  const [costBoosterETH, setCostBoosterETH] = useState(null);
+
+  console.log('pool ------------', pool);
 
   const operationMapper = {
     stake: 'balance',
@@ -110,48 +101,34 @@ const Stake = (props) => {
   useEffect(() => {
     store.getStore('currentPool');
 
-    // dispatcher.dispatch({ type: GET_BALANCES, content: {} });
-    dispatcher.dispatch({ type: GET_BOOSTEDBALANCES, content: {} });
-
     emitter.on(ERROR, errorReturned);
     emitter.on(STAKE_RETURNED, showHash);
     emitter.on(WITHDRAW_RETURNED, showHash);
     emitter.on(EXIT_RETURNED, showHash);
     emitter.on(GET_REWARDS_RETURNED, showHash);
-    // emitter.on(GET_BALANCES_RETURNED, balancesReturned);
-    emitter.on(GET_BOOSTEDBALANCES_RETURNED, balancesReturned);
+    emitter.on(GET_BALANCES_RETURNED, balancesReturned);
 
     return () => {
-      emitter.removeListener(GET_BOOSTEDBALANCES_RETURNED, balancesReturned);
       emitter.removeListener(ERROR, errorReturned);
       emitter.removeListener(STAKE_RETURNED, showHash);
       emitter.removeListener(WITHDRAW_RETURNED, showHash);
       emitter.removeListener(EXIT_RETURNED, showHash);
       emitter.removeListener(GET_REWARDS_RETURNED, showHash);
-      // emitter.removeListener(GET_BALANCES_RETURNED, balancesReturned);
+      emitter.removeListener(GET_BALANCES_RETURNED, balancesReturned);
     };
   }, []);
 
   const balancesReturned = () => {
-    console.log('balances returned');
-    // const currentPool = pool; //store.getStore('currentPool');
-    const pools = rewardsMapper(store.getStore('rewardPools'));
+    const currentPool = pool; //store.getStore('currentPool');
+    const pools = store.getStore('rewardPools');
+    let newPool = pools.filter((pool) => {
+      return pool.id === currentPool.id;
+    });
 
-    let pool =
-      pools.find((p) => p.address === address) ||
-      farmPools.find((p) => p.poolAddress == address);
-    console.log(pools);
-    console.log(pool);
-    // let newPool = pools.filter((pool) => {
-    //   return pool.id === currentPool.id;
-    // });
-
-    setPool(pool);
-
-    // if (newPool.length > 0) {
-    //   newPool = newPool[0];
-    //   store.setStore({ currentPool: newPool });
-    // }
+    if (newPool.length > 0) {
+      newPool = newPool[0];
+      store.setStore({ currentPool: newPool });
+    }
   };
 
   const parseAmount = (amount) => {
@@ -179,53 +156,36 @@ const Stake = (props) => {
 
     setTimeout(() => {
       setSnackbarMessage(error.toString());
-      setSnackbarType('Warning');
+      setSnackbarType('Error');
     });
   };
 
-  /**
-   * @param {Number} beastModesAmount - uses only when hive is WBTC
-   */
-  const validateBoost = (beastModesAmount) => {
+  const validateBoost = () => {
     if (pool.costBooster > pool.boostBalance) {
       emitter.emit(ERROR, 'insufficient funds to activate Beast Mode');
     } else if (pool.timeToNextBoost - new Date().getTime() / 1000 > 0) {
       emitter.emit(ERROR, 'Too soon to activate BEAST Mode again');
     } else {
-      onBuyBoost(beastModesAmount);
+      onBuyBoost();
     }
   };
 
-  const getBoosterPriceBulk = async (amount) => {
-    let data = await store.getBoosterPriceBulk(pool.token, amount);
-    setCostBoosterETH(data.boosterPrice);
-  };
-
-  const onBuyBoost = (beastModesAmount) => {
+  const onBuyBoost = () => {
     setAmountError(false);
+    console.log('pool ----------', pool);
     const selectedToken = pool.token;
     const amount = amounts[selectedToken.id + '_stake'];
-    const value =
-      costBoosterETH != null
-        ? costBoosterETH
-        : (selectedToken.costBooster + 0.0001).toFixed(10).toString();
+    const value = (selectedToken.costBooster + 0.0001).toFixed(10).toString();
 
     setLoading(true);
     dispatcher.dispatch({
       type: BOOST_STAKE,
-      content: {
-        asset: pool.token,
-        amount,
-        value,
-        beastModesAmount,
-        // costBoosterETH,
-      },
+      content: { asset: pool.token, amount, value },
     });
   };
 
   const onClaim = () => {
     setLoading(true);
-    console.log(pool.token);
     dispatcher.dispatch({
       type: GET_REWARDS,
       content: { asset: pool.token },
@@ -233,10 +193,10 @@ const Stake = (props) => {
   };
 
   const onStake = () => {
-    console.log('staking ------------!');
+    console.log('staking ------------');
     setAmountError(false);
     setAmountStakeError(false);
-    const selectedToken = isHive ? pool.token : pool;
+    const selectedToken = pool.token;
     setFieldId('');
     const amount = amounts[selectedToken.id + '_stake'];
 
@@ -246,7 +206,7 @@ const Stake = (props) => {
     if (amount > 0) {
       dispatcher.dispatch({
         type: STAKE,
-        content: { asset: isHive ? pool.token : pool, amount },
+        content: { asset: pool.token, amount },
       });
     } else {
       setFieldId(selectedToken.id + '_stake');
@@ -281,6 +241,7 @@ const Stake = (props) => {
   };
 
   const renderAssetInput = (pool, type) => {
+    console.log(pool);
     const { classes } = props;
     const amount = amounts[`${pool.id}_${type}`];
     const action = type === 'unstake' ? onUnstake : onStake;
@@ -320,9 +281,7 @@ const Stake = (props) => {
               InputProps={{
                 endAdornment: (
                   <InputAdornment>
-                    <Typography variant='h6'>
-                      {pool.stakedSymbol || pool.symbol}
-                    </Typography>
+                    <Typography variant='h6'>{pool.symbol}</Typography>
                   </InputAdornment>
                 ),
                 startAdornment: (
@@ -334,7 +293,7 @@ const Stake = (props) => {
                       <img
                         alt=''
                         src={require('../../assets/logos/' +
-                          (pool.stakedSymbol || pool.symbol) +
+                          pool.symbol +
                           '.png')}
                         height='30px'
                       />
@@ -400,63 +359,63 @@ const Stake = (props) => {
     setAmounts(newAmounts);
   };
 
-  const stakeHeader = (
-    <div className='stake-header'>
-      <Row className='d-flex align-items-center'>
-        <Col lg='2' md='2' xs='12' className='text-left'>
+  const stakeHeader = (params) => {
+    return (
+      <Row>
+        <Col lg='2' md='2' xs='6' className='text-left'>
           <img
             className='pool-logo'
             alt=''
             src={require(`../../assets/logos/${pool.symbol}.png`)}
           />
         </Col>
-        <Col lg='10' md='10' xs='12' className='text-left'>
-          <div className='stake-header-text pool-name'>{pool.name}</div>
-          <a
-            href={'https://etherscan.io/address/' + pool.address}
-            rel='noopener noreferrer'
-            target='_blank'
-            className='stake-header-text'
-          >
-            {pool.address}
-          </a>
+        <Col lg='10' md='10' xs='6' className='text-left pool-header'>
+          <div className='text-left'>
+            <div className='text-purple pool-name'>{pool.name}</div>
+            <a
+              href={'https://etherscan.io/address/' + pool.address}
+              rel='noopener noreferrer'
+              target='_blank'
+              className='text-purple'
+            >
+              {pool.address}
+            </a>
+          </div>
         </Col>
       </Row>
-    </div>
-  );
+    );
+  };
 
-  const hiveDetail = (
-    <StakeMain
-      timeForReduction={timeForReduction}
-      renderAssetInput={renderAssetInput}
-      pool={pool}
-      onExit={onExit}
-      gasPrice={gasPrice}
-      onClaim={onClaim}
-      navigateInternal={setStakeView}
-      isHive={isHive}
-    />
-  );
+  const mainRender = () => {
+    return (
+      <>
+        {stakevalue === 'main' && (
+          <StakeMain
+            renderAssetInput={renderAssetInput}
+            pool={pool}
+            onExit={onExit}
+            gasPrice={gasPrice}
+            onClaim={onClaim}
+            navigateInternal={setStakeView}
+          />
+        )}
+      </>
+    );
+  };
 
   return (
     <>
-      <div className='stake-header-upper-section'></div>
-      <div className='stake-header-lower-section'>
-        <div className='p-sm-5 pl-4 pt-5 pr-3  ml-5 mt-5 text-center'>
-          <div className='pl-sm-5 ml-sm-5 text-center'>{stakeHeader}</div>
-        </div>
-      </div>
+      <div className='info-header'></div>
+      <div className='info-header-down'></div>
 
-      <div className='p-sm-5 pl-4 pt-5 pr-3 mt-sm-0 ml-5 mt-5 text-center'>
-        <div className='p-sm-5 ml-sm-5 text-center'>
-          {stakeView === 'options' && hiveDetail}
+      <div className='p-5 ml-5 text-center '>
+        <div className='p-5 ml-5 text-center '>
+          {stakeHeader()}
+          {stakeView === 'options' && mainRender()}
           {stakeView === 'buyboost' && (
             <StakeBuyBoost
               validateBoost={validateBoost}
-              costBoosterETH={costBoosterETH}
-              getBoosterPriceBulk={getBoosterPriceBulk}
               showHash={showHash}
-              isHive={isHive}
               pool={pool}
             />
           )}
@@ -464,7 +423,6 @@ const Stake = (props) => {
           {snackbarMessage && (
             <Snackbar
               type={snackbarType}
-              anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
               message={snackbarMessage}
               open={true}
             />

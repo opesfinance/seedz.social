@@ -32,11 +32,11 @@ const Farm = (props) => {
               <img
                 alt=''
                 className='farm-image'
-                src={require(`../../assets/logos/${pool.token}.png`)}
+                src={require(`../../assets/logos/${pool.symbol}.png`)}
               />
             </div>
             <div className='main-blue'>
-              {pool.name} ({pool.token})
+              {pool.name} ({pool.symbol})
             </div>
             <a
               href={'https://etherscan.io/address/' + pool.poolAddress}
@@ -70,7 +70,7 @@ const Farm = (props) => {
             Weekly Rewards
           </div>
           <div className='text-right main-blue'>
-            {pool.weeklyRewards} {pool.token}
+            {pool.weeklyRewards} {pool.symbol}
           </div>
         </div>
 
@@ -90,7 +90,7 @@ const Farm = (props) => {
             My Rewards
           </div>
           <div className='text-right main-blue'>
-            {pool.myRewards} {pool.token}
+            {pool.myRewards} {pool.symbol}
           </div>
         </div>
 
