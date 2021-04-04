@@ -148,12 +148,8 @@ class App extends Component {
                     disableSwap={true}
                   />
                 </Route>
-                <Route path='/swarm'>
-                  <Swarm />
-                </Route>
-                <Route path='/'>
-                  <Home />
-                </Route>
+                <Route path='/swarm' component={Swarm} />
+                <Route path='/' component={Home} />
               </Switch>
             </>
           )}
