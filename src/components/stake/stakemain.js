@@ -105,26 +105,32 @@ const StakeMain = (props) => {
                 </Col>
               )}
               <Col className='text-center'>
-                {!props.pool.disableStake ? (
-                  <button
-                    type='button'
-                    className='btn btn-primary bg-main-white main-btn'
-                    onClick={() => {
-                      // if (props.pool.token.name == 'WPE-LP')
-                      //   return window.open(props.pool.token.liquidityLink);
+                {props.isHive && (
+                  <span>
+                    {!props.pool.disableStake ? (
+                      <button
+                        type='button'
+                        className='btn btn-primary bg-main-white main-btn'
+                        onClick={() => {
+                          // if (props.pool.token.name == 'WPE-LP')
+                          //   return window.open(props.pool.token.liquidityLink);
 
-                      props.history.push(`/pools/${props.pool.token.address}`);
-                    }}
-                  >
-                    Add liquidity and Stake
-                  </button>
-                ) : (
-                  <button
-                    type='button'
-                    className='btn btn-secondary bg-main-white disabled'
-                  >
-                    Add liquidity and Stake
-                  </button>
+                          props.history.push(
+                            `/pools/${props.pool.token.address}`
+                          );
+                        }}
+                      >
+                        Add liquidity and Stake
+                      </button>
+                    ) : (
+                      <button
+                        type='button'
+                        className='btn btn-secondary bg-main-white disabled'
+                      >
+                        Add liquidity and Stake
+                      </button>
+                    )}
+                  </span>
                 )}
               </Col>
             </Row>

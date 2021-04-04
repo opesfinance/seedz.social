@@ -319,7 +319,9 @@ const Stake = (props) => {
               InputProps={{
                 endAdornment: (
                   <InputAdornment>
-                    <Typography variant='h6'>{pool.symbol}</Typography>
+                    <Typography variant='h6'>
+                      {pool.stakedSymbol || pool.symbol}
+                    </Typography>
                   </InputAdornment>
                 ),
                 startAdornment: (
@@ -331,7 +333,7 @@ const Stake = (props) => {
                       <img
                         alt=''
                         src={require('../../assets/logos/' +
-                          pool.symbol +
+                          (pool.stakedSymbol || pool.symbol) +
                           '.png')}
                         height='30px'
                       />
