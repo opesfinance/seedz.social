@@ -245,7 +245,7 @@ const Stake = (props) => {
     if (amount > 0) {
       dispatcher.dispatch({
         type: STAKE,
-        content: { asset: pool.token, amount },
+        content: { asset: isHive ? pool.token : pool, amount },
       });
     } else {
       setFieldId(selectedToken.id + '_stake');

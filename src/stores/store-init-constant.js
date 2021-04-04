@@ -525,6 +525,9 @@ const STORE = {
       weeklyRewards: 0,
       myBeastModes: 0,
       myRewards: 0,
+      decimals: 18,
+      rewardsAddress: config.farmsRewardAddress,
+      rewardsAbi: config.farmsRewardsAbi,
     },
     {
       id: 'farmyfu',
@@ -543,6 +546,9 @@ const STORE = {
       weeklyRewards: 0,
       myBeastModes: 0,
       myRewards: 0,
+      decimals: 18,
+      rewardsAddress: config.farmsRewardAddress,
+      rewardsAbi: config.farmsRewardsAbi,
     },
     // {
     //   id: 'farmlift',
@@ -579,6 +585,9 @@ const STORE = {
       weeklyRewards: 0,
       myBeastModes: 0,
       myRewards: 0,
+      decimals: 18,
+      rewardsAddress: config.farmsRewardAddress,
+      rewardsAbi: config.farmsRewardsAbi,
     },
   ],
   exchangeAssets: {
