@@ -334,7 +334,7 @@ const config = {
   farmstr: '0x88121B6D8aED2afafE37D844D325a1579209e362',
 
   farmsRewardAddress: '0xa279dab6ec190eE4Efce7Da72896EB58AD533262',
-  farmsRewardsAbi: [],
+  // farmsRewardsAbi: [],
 
   YFUlpAddress: '0xb4DA88fA5292d6d7c9Bb9E20255Dd6596A9b93E0',
   LIFTlpAddress: '0x8a04e2991496CbC122E3f5d00289246e4e8ab7A9',
