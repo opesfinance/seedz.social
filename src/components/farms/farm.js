@@ -16,7 +16,8 @@ const Farm = (props) => {
   function navigateStake(farmPool) {
     Store.store.setStore({ currentPool: farmPool });
     props.history.push(
-      '/stake/' + (pool.address || '0xc96d43006fE0058c5dd9d35D2763Aba9A0C300b1')
+      '/stake/' +
+        (pool.poolAddress || '0xc96d43006fE0058c5dd9d35D2763Aba9A0C300b1')
     );
   }
 
@@ -38,7 +39,7 @@ const Farm = (props) => {
               {pool.name} ({pool.token})
             </div>
             <a
-              href={'https://etherscan.io/address/' + props.address}
+              href={'https://etherscan.io/address/' + pool.poolAddress}
               className='address'
               target='_blank'
             >

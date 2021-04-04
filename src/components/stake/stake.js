@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import moment from 'moment';
 import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography, TextField, InputAdornment } from '@material-ui/core';
@@ -39,13 +38,19 @@ const Stake = (props) => {
 
   const [account] = useState(store.getStore('account'));
   const [timeForReduction, setTimeForReduction] = useState('');
-  const [themeType, setThemeType] = useState(store.getStore('themeType'));
+  // const [themeType, setThemeType] = useState(store.getStore('themeType'));
 
   const [rewardPools, setRewardPools] = useState(
     rewardsMapper(store.getStore('rewardPools'))
   );
 
-  const getPool = () => rewardPools.find((p) => p.address === address);
+  const [farmPools, setFarmPools] = useState(store.getStore('farmPools'));
+
+  console.log(farmPools);
+
+  const getPool = () =>
+    rewardPools.find((p) => p.address === address) ||
+    farmPools.find((p) => p.poolAddress == address);
 
   const [pool, setPool] = useState(getPool());
 
@@ -133,7 +138,9 @@ const Stake = (props) => {
     // const currentPool = pool; //store.getStore('currentPool');
     const pools = rewardsMapper(store.getStore('rewardPools'));
 
-    let pool = pools.find((p) => p.address === address);
+    let pool =
+      pools.find((p) => p.address === address) ||
+      farmPools.find((p) => p.poolAddress == address);
     console.log(pools);
     console.log(pool);
     // let newPool = pools.filter((pool) => {

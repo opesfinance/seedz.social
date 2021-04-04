@@ -511,6 +511,7 @@ const STORE = {
     {
       id: 'farmpixel',
       poolAddress: config.farmpixel,
+      symbol: 'PIXEL',
       name: 'iUPixel',
       token: 'PIXEL',
       website: '',
@@ -527,6 +528,7 @@ const STORE = {
     {
       id: 'farmyfu',
       poolAddress: config.farmyfu,
+      symbol: 'YFU',
       name: 'YFU',
       token: 'YFU',
       website: '',
@@ -543,6 +545,7 @@ const STORE = {
     {
       id: 'farmlift',
       poolAddress: config.farmlift,
+      symbol: 'LIFT',
       name: 'Missions Fund',
       token: 'LIFT',
       website: '',
@@ -559,6 +562,7 @@ const STORE = {
     {
       id: 'farmstr',
       poolAddress: config.farmstr,
+      symbol: 'STR',
       name: 'Starwire',
       token: 'STR',
       website: '',
