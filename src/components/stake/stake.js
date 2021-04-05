@@ -136,7 +136,7 @@ const Stake = (props) => {
     console.log('balances returned');
     // const currentPool = pool; //store.getStore('currentPool');
     const pools = rewardsMapper(store.getStore('rewardPools'));
-
+    const farmPools = store.getStore('farmPools');
     let pool =
       pools.find((p) => p.address === address) ||
       farmPools.find((p) => p.token.rewardsAddress == address);
