@@ -6,12 +6,15 @@ import Store from '../../stores/store';
 import { Col, Card, Row } from 'react-bootstrap';
 
 const Farm = (props) => {
-  function address(address) {
-    return `${props.address.substring(0, 5)}...${props.address.substring(
-      props.address.length - 4,
-      props.address.length
-    )}`;
-  }
+  const { pool } = props;
+  console.log(pool);
+  const address = `${pool.token.rewardsAddress.substring(
+    0,
+    5
+  )}...${pool.token.rewardsAddress.substring(
+    pool.token.rewardsAddress.length - 4,
+    pool.token.rewardsAddress.length
+  )}`;
 
   function navigateStake(farmPool) {
     Store.store.setStore({ currentPool: farmPool });
@@ -20,8 +23,6 @@ const Farm = (props) => {
         (pool.poolAddress || '0xc96d43006fE0058c5dd9d35D2763Aba9A0C300b1')
     );
   }
-
-  const { pool } = props;
 
   return (
     <div className='hive-wrapper card'>
@@ -43,7 +44,7 @@ const Farm = (props) => {
               className='address'
               target='_blank'
             >
-              address
+              {address}
             </a>
           </div>
         </div>

@@ -1094,7 +1094,7 @@ class Store {
   _checkApproval = async (asset, account, amount, contract, callback) => {
     try {
       const web3 = new Web3(store.getStore('web3context').library.provider);
-      console.log("ASSEERKLJLDKASJDS");
+      console.log('ASSEERKLJLDKASJDS');
       console.log(asset);
       const erc20Contract = new web3.eth.Contract(
         config.erc20ABI,
@@ -1974,7 +1974,7 @@ class Store {
     const { asset, amount, value, beastModesAmount } = payload.content;
 
     // return
-    if (asset.hiveId == 'wbtchive') {
+    if (asset.hiveId == 'wbtchive' || !asset.isHive) {
       console.log('hiiii', payload.content);
       this._boostcallStake2(
         asset,
@@ -2151,7 +2151,7 @@ class Store {
 
   _callStake = async (asset, account, amount, callback) => {
     const web3 = new Web3(store.getStore('web3context').library.provider);
-    console.log("ASSSETR CALL STAKE");
+    console.log('ASSSETR CALL STAKE');
     console.log(asset);
     console.log(asset.rewardsABI);
     const yCurveFiContract = new web3.eth.Contract(

@@ -205,16 +205,19 @@ const Stake = (props) => {
     setAmountError(false);
     const selectedToken = pool.token;
     const amount = amounts[selectedToken.id + '_stake'];
+
     const value =
       costBoosterETH != null
         ? costBoosterETH
         : (selectedToken.costBooster + 0.0001).toFixed(10).toString();
 
+    // return console.log(pool.token, amounts, amount, value, beastModesAmount);
+
     setLoading(true);
     dispatcher.dispatch({
       type: BOOST_STAKE,
       content: {
-        asset: pool.token,
+        asset: { ...pool.token, isHive },
         amount,
         value,
         beastModesAmount,
