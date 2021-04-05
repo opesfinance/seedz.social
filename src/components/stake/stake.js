@@ -46,13 +46,12 @@ const Stake = (props) => {
 
   const [farmPools, setFarmPools] = useState(store.getStore('farmPools'));
 
-  console.log(farmPools);
-
   const getPool = () =>
     rewardPools.find((p) => p.address === address) ||
-    farmPools.find((p) => p.token.rewardsAddress == address);
+    farmPools.find((p) => p.address === address);
 
   const [pool, setPool] = useState(getPool());
+
   const [isHive] = useState(!!pool.hiveId);
 
   // const [stakevalue, setStakeValue] = useState('main');
@@ -139,8 +138,8 @@ const Stake = (props) => {
     const farmPools = store.getStore('farmPools');
     let pool =
       pools.find((p) => p.address === address) ||
-      farmPools.find((p) => p.token.rewardsAddress == address);
-    console.log(pools);
+      farmPools.find((p) => p.token.address == address);
+    console.log(farmPools);
     console.log(pool);
     // let newPool = pools.filter((pool) => {
     //   return pool.id === currentPool.id;
@@ -205,19 +204,16 @@ const Stake = (props) => {
     setAmountError(false);
     const selectedToken = pool.token;
     const amount = amounts[selectedToken.id + '_stake'];
-
     const value =
       costBoosterETH != null
         ? costBoosterETH
         : (selectedToken.costBooster + 0.0001).toFixed(10).toString();
 
-    // return console.log(pool.token, amounts, amount, value, beastModesAmount);
-
     setLoading(true);
     dispatcher.dispatch({
       type: BOOST_STAKE,
       content: {
-        asset: { ...pool.token, isHive },
+        asset: pool.token,
         amount,
         value,
         beastModesAmount,
