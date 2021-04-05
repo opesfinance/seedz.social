@@ -22,6 +22,7 @@ import {
   GET_REWARDS,
   GET_REWARDS_RETURNED,
   EXIT,
+  GET_BALANCES,
   EXIT_RETURNED,
   GET_BOOSTEDBALANCES_RETURNED,
   GET_BOOSTEDBALANCES,
@@ -110,7 +111,7 @@ const Stake = (props) => {
   useEffect(() => {
     store.getStore('currentPool');
 
-    // dispatcher.dispatch({ type: GET_BALANCES, content: {} });
+    dispatcher.dispatch({ type: GET_BALANCES, content: {} });
     dispatcher.dispatch({ type: GET_BOOSTEDBALANCES, content: {} });
 
     emitter.on(ERROR, errorReturned);
