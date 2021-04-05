@@ -223,23 +223,19 @@ const StakeMain = (props) => {
             {props.isHive && props.renderAssetInput(props.pool, 'unstake')}
             <br />
 
-            {props.isHive && (
-              <>
-                <span className='pool-titles'>
-                  Add leverage to your staked capital
-                </span>
-                <div className='pt-4'>
-                  <button
-                    type='button'
-                    className='btn btn-primary bg-main-blue main-btn'
-                    disabled={props.pool.disableStake}
-                    onClick={() => props.navigateInternal('buyboost')}
-                  >
-                    Beast Mode
-                  </button>
-                </div>
-              </>
-            )}
+            <span className='pool-titles'>
+              Add leverage to your staked capital
+            </span>
+            <div className='pt-4'>
+              <button
+                type='button'
+                className='btn btn-primary bg-main-blue main-btn'
+                disabled={props.pool.disableStake}
+                onClick={() => props.navigateInternal('buyboost')}
+              >
+                Beast Mode
+              </button>
+            </div>
           </Card.Body>
         </Card>
       </Col>
