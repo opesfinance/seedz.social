@@ -59,6 +59,7 @@ class Store {
             break;
           case GET_BOOSTEDBALANCES:
             this.getBoostBalances(payload);
+            this.getBoostBalancesFarms(payload);
             break;
           case GET_BALANCES:
             this.getBalances(payload);
@@ -343,7 +344,114 @@ class Store {
       }
     );
   };
+  getBoostBalancesFarms = () => {
+    const pools = store.getStore('farmPools');
+    const account = store.getStore('account');
 
+    const web3 = new Web3(store.getStore('web3context').library.provider);
+
+    async.map(
+      pools,
+      (pool, callback) => {
+        if (pool.boost === true) {
+          async.map(
+            pool.tokens,
+            (token, callbackInner) => {
+              async.parallel(
+                [
+                  (callbackInnerInner) => {
+                    this._getBoosters(web3, token, account, callbackInnerInner);
+                  },
+                  (callbackInnerInner) => {
+                    this._getBoosterCost(
+                      web3,
+                      token,
+                      account,
+                      callbackInnerInner
+                    );
+                  },
+                  (callbackInnerInner) => {
+                    this._getBoostTokenBalance(
+                      web3,
+                      token,
+                      account,
+                      callbackInnerInner
+                    );
+                  },
+                  (callbackInnerInner) => {
+                    this._getboostedBalances(
+                      web3,
+                      token,
+                      account,
+                      callbackInnerInner
+                    );
+                  },
+                  (callbackInnerInner) => {
+                    this._getBoosterPrice(callbackInnerInner);
+                  },
+                  (callbackInnerInner) => {
+                    this._getNextBoostTime(
+                      web3,
+                      token,
+                      account,
+                      callbackInnerInner
+                    );
+                  },
+                  (callbackInnerInner) => {
+                    this._getETHPrice(callbackInnerInner);
+                  },
+                  //(callbackInnerInner) => { this._getBoostBalanceAvailable(web3, token, account, callbackInnerInner) }
+                ],
+                (err, data) => {
+                  if (err) {
+                    // console.log(err);
+                    return callbackInner(err);
+                  }
+
+                  token.boosters = data[2];
+                  token.costBooster = data[1][0];
+
+                  // console.log(data);
+
+                  // console.log('DATA' + data);
+                  //token.boostBalance = data[0]
+
+                  token.boostBalance = data[2];
+                  //token.costBooster = 11
+                  token.costBoosterUSD = data[4] * data[1][0];
+                  token.currentActiveBooster = data[0];
+                  token.currentBoosterStakeValue = data[3];
+                  token.stakeValueNextBooster = data[1][1];
+                  token.timeToNextBoost = data[5];
+                  token.ethPrice = data[6];
+
+                  callbackInner(null, token);
+                }
+              );
+            },
+            (err, tokensData) => {
+              if (err) {
+                // console.log(err);
+                return callback(err);
+              }
+
+              pool.tokens = tokensData;
+              callback(null, pool);
+            }
+          );
+        }
+      },
+      (err, poolData) => {
+        if (err) {
+          // console.log(err);
+          return emitter.emit(ERROR, err);
+        }
+        // console.log(poolData);
+        store.setStore({ rewardPools: poolData });
+        emitter.emit(GET_BOOSTEDBALANCES_RETURNED);
+      }
+    );
+  };
   getBoostBalances = () => {
     const pools = store.getStore('rewardPools');
     const account = store.getStore('account');
