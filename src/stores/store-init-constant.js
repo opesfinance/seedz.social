@@ -573,7 +573,7 @@ const STORE = {
       symbol: 'YFU',
       stakedSymbol: 'Seedz',
       address: '0x3269244011893f957a3b82c55437083430BDac02',
-      name: 'iUPixel',
+      name: 'YFU',
       website: '',
       description: '',
       liquidityValue: 0,
@@ -593,8 +593,8 @@ const STORE = {
         symbol: 'SEEDZ',
         abi: config.erc20ABI,
         decimals: 18,
-        tokenAddress: '0x89045d0af6a12782ec6f701ee6698beaf17d0ea2', //PIXEL
-        tokenSymbol: 'PIXEL',
+        tokenAddress: '0xa279dab6ec190eE4Efce7Da72896EB58AD533262', //YFU
+        tokenSymbol: 'YFU',
         rewardsAddress: config.farmyfu, //config.farmsRewardAddress,
         rewardsABI: config.farmsRewardsAbi,
         rewardsSymbol: 'YFU',
@@ -652,8 +652,8 @@ const STORE = {
         symbol: 'SEEDZ',
         abi: config.erc20ABI,
         decimals: 18,
-        tokenAddress: '0x89045d0af6a12782ec6f701ee6698beaf17d0ea2', //PIXEL
-        tokenSymbol: 'PIXEL',
+        tokenAddress: '0x11c1a6b3ed6bb362954b29d3183cfa97a0c806aa', //STR
+        tokenSymbol: 'STR',
         rewardsAddress: config.farmstr, //config.farmsRewardAddress,
         rewardsABI: config.farmsRewardsAbi,
         rewardsSymbol: 'STR',
