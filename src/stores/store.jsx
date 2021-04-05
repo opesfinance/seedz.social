@@ -62,9 +62,11 @@ class Store {
             this.getBoostBalancesFarms(payload);
             break;
           case GET_BALANCES:
+            this.getBalancesFarms(payload);
             this.getBalances(payload);
             break;
           case GET_BALANCES_PERPETUAL:
+            this.getBalancesPerpetualFarms(payload);
             this.getBalancesPerpetual(payload);
             break;
           case BOOST_STAKE:
@@ -124,7 +126,102 @@ class Store {
       emitter.emit(CONFIGURE_RETURNED);
     }, 100);
   };
+  getBalancesPerpetualFarms = async () => {
+    const pools = store.getStore('farmPools');
+    const account = store.getStore('account');
 
+    const web3 = new Web3(store.getStore('web3context').library.provider);
+
+    const currentBlock = await web3.eth.getBlockNumber();
+    store.setStore({ currentBlock });
+
+    async.map(
+      pools,
+      (pool, callback) => {
+        async.map(
+          pool.tokens,
+          (token, callbackInner) => {
+            async.parallel(
+              [
+                (callbackInnerInner) => {
+                  this._getERC20Balance(
+                    web3,
+                    token,
+                    account,
+                    callbackInnerInner
+                  );
+                },
+                (callbackInnerInner) => {
+                  this._getstakedBalance(
+                    web3,
+                    token,
+                    account,
+                    callbackInnerInner
+                  );
+                },
+                (callbackInnerInner) => {
+                  this._getRewardsAvailable(
+                    web3,
+                    token,
+                    account,
+                    callbackInnerInner
+                  );
+                },
+                (callbackInnerInner) => {
+                  this._getRatePerWeek(
+                    web3,
+                    token,
+                    account,
+                    callbackInnerInner
+                  );
+                }, //_getBonusAvailable
+                (callbackInnerInner) => {
+                  this._getBonusAvailable(
+                    web3,
+                    token,
+                    account,
+                    callbackInnerInner
+                  );
+                },
+              ],
+              (err, data) => {
+                if (err) {
+                  // //console.log(err)
+                  return callbackInner(err);
+                }
+
+                token.balance = data[0];
+                token.stakedBalance = data[1];
+                token.rewardsAvailable = data[2];
+                token.ratePerWeek = data[3];
+                token.beastModeBonus = data[4];
+                callbackInner(null, token);
+              }
+            );
+          },
+          (err, tokensData) => {
+            if (err) {
+              // //console.log(err)
+              return callback(err);
+            }
+
+            pool.tokens = tokensData;
+            callback(null, pool);
+          }
+        );
+      },
+      (err, poolData) => {
+        if (err) {
+          // //console.log(err)
+          return emitter.emit(ERROR, err);
+        }
+        // console.log(poolData);
+        store.setStore({ farmPools: poolData });
+        emitter.emit(GET_BALANCES_PERPETUAL_RETURNED);
+        emitter.emit(GET_BALANCES_RETURNED);
+      }
+    );
+  };
   getBalancesPerpetual = async () => {
     const pools = store.getStore('rewardPools');
     const account = store.getStore('account');
@@ -239,7 +336,110 @@ class Store {
 
     return await this._getERC20Balance(web3, token, account, null);
   };
+  getBalancesFarms = () => {
+    const pools = store.getStore('farmPools');
+    const account = store.getStore('account');
 
+    const web3 = new Web3(store.getStore('web3context').library.provider);
+
+    async.map(
+      pools,
+      (pool, callback) => {
+        async.map(
+          pool.tokens,
+          (token, callbackInner) => {
+            async.parallel(
+              [
+                (callbackInnerInner) => {
+                  this._getERC20Balance(
+                    web3,
+                    token,
+                    account,
+                    callbackInnerInner
+                  );
+                },
+                (callbackInnerInner) => {
+                  this._getstakedBalance(
+                    web3,
+                    token,
+                    account,
+                    callbackInnerInner
+                  );
+                },
+                (callbackInnerInner) => {
+                  this._getRewardsAvailable(
+                    web3,
+                    token,
+                    account,
+                    callbackInnerInner
+                  );
+                },
+                (callbackInnerInner) => {
+                  this._getUniswapLiquidity(callbackInnerInner);
+                },
+                (callbackInnerInner) => {
+                  this._getBalancerLiquidity(callbackInnerInner);
+                },
+                (callbackInnerInner) => {
+                  this._getRatePerWeek(
+                    web3,
+                    token,
+                    account,
+                    callbackInnerInner
+                  );
+                }, //_getBonusAvailable
+                (callbackInnerInner) => {
+                  this._getBonusAvailable(
+                    web3,
+                    token,
+                    account,
+                    callbackInnerInner
+                  );
+                },
+              ],
+              (err, data) => {
+                if (err) {
+                  // // console.log(err);
+                  return callbackInner(err);
+                }
+
+                token.balance = data[0];
+                token.stakedBalance = data[1];
+                token.rewardsAvailable = data[2];
+                if (pool.id === 'uniswap') {
+                  pool.liquidityValue = data[3];
+                } else if (pool.id === 'balancer') {
+                  pool.liquidityValue = data[4];
+                } else {
+                  pool.liquidityValue = 0;
+                }
+                pool.ratePerWeek = data[5];
+                pool.beastModeBonus = data[6];
+                callbackInner(null, token);
+              }
+            );
+          },
+          (err, tokensData) => {
+            if (err) {
+              // // console.log(err);
+              return callback(err);
+            }
+
+            pool.tokens = tokensData;
+            callback(null, pool);
+          }
+        );
+      },
+      (err, poolData) => {
+        if (err) {
+          // // console.log(err);
+          return emitter.emit(ERROR, err);
+        }
+        store.setStore({ farmPools: poolData });
+        emitter.emit(GET_BALANCES_RETURNED);
+      }
+    );
+  };
   getBalances = () => {
     const pools = store.getStore('rewardPools');
     const account = store.getStore('account');
