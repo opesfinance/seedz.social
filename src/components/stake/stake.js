@@ -25,7 +25,6 @@ import {
   EXIT_RETURNED,
   GET_BOOSTEDBALANCES_RETURNED,
   GET_BOOSTEDBALANCES,
-  GET_BALANCES_RETURNED,
   BOOST_STAKE,
 } from '../../constants';
 import rewardsMapper from '../utils/rewardsMapper';
@@ -44,16 +43,18 @@ const Stake = (props) => {
     rewardsMapper(store.getStore('rewardPools'))
   );
 
-  const [farmPools, setFarmPools] = useState(store.getStore('farmPools'));
-
-  console.log(farmPools);
+  const [farmPools, setFarmPools] = useState(
+    rewardsMapper(store.getStore('farmPools'))
+  );
 
   const getPool = () =>
     rewardPools.find((p) => p.address === address) ||
     farmPools.find((p) => p.token.rewardsAddress == address);
 
   const [pool, setPool] = useState(getPool());
-  const [isHive] = useState(!!pool.hiveId);
+
+  console.log(pool);
+  const [isHive] = useState(!pool.id.includes('farm'));
 
   // const [stakevalue, setStakeValue] = useState('main');
   // const [balanceValid, setBalanceValid] = useState(false); // not used
@@ -92,7 +93,7 @@ const Stake = (props) => {
         'https://ethgasstation.info/api/ethgasAPI.json?api-key=3f07e80ab9c6bdd0ca11a37358fc8f1a291551dd701f8eccdaf6eb8e59be',
         { cancelToken: source.token }
       );
-      console.log('gasPrice', data.fastest);
+
       setGasPrice(data.fastest);
     } catch (error) {}
   }
@@ -136,22 +137,14 @@ const Stake = (props) => {
     console.log('balances returned');
     // const currentPool = pool; //store.getStore('currentPool');
     const pools = rewardsMapper(store.getStore('rewardPools'));
-    const farmPools = store.getStore('farmPools');
+    const farmPools = rewardsMapper(store.getStore('farmPools'));
     let pool =
       pools.find((p) => p.address === address) ||
       farmPools.find((p) => p.token.rewardsAddress == address);
     console.log(pools);
     console.log(pool);
-    // let newPool = pools.filter((pool) => {
-    //   return pool.id === currentPool.id;
-    // });
 
     setPool(pool);
-
-    // if (newPool.length > 0) {
-    //   newPool = newPool[0];
-    //   store.setStore({ currentPool: newPool });
-    // }
   };
 
   const parseAmount = (amount) => {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import rewardsMapper from '../utils/rewardsMapper';
 
 import './farms-list.scss';
 
@@ -41,11 +42,36 @@ const FarmsList = (props) => {
 
   const configureReturned = useCallback(() => setLoading(false));
 
-  const farms = farmPools.map((p) => {
-    console.log(p);
+  const farms = rewardsMapper(farmPools).map((t) => {
     return (
-      <div key={p.id} className='col-lg-3 col-md-4 col-sm-6'>
-        <Farm pool={p} />
+      <div key={t.address} className='col-lg-3 col-md-4 col-sm-6'>
+        <Farm
+          acronym={t.symbol}
+          name={t.name}
+          address={t.address}
+          inPool={t.inPool}
+          beastBonus={t.beastBonus || 0}
+          bonusReductionIn={t.bonusReductionIn || 0}
+          weeklyRewards={t.weeklyRewards}
+          myBeastModes={t.myBeastModes}
+          myRewards={t.myRewards}
+          symbol={t.symbol}
+          // ratePerWeek={t.ratePerWeek}
+          rewardsSymbol={t.rewardsSymbol}
+          stakedBalance={t.stakedBalance}
+          costBooster={t.costBooster}
+          costBoosterUSD={t.costBoosterUSD}
+          timeToNextBoost={t.timeToNextBoost}
+          currentBoosterStakeValue={t.currentBoosterStakeValue}
+          stakeValueNextBooster={t.stakeValueNextBooster}
+          liquidityLink={t.liquidityLink}
+          tokenAddress={t.tokenAddress}
+          tokenSymbol={t.tokenSymbol}
+          ethPrice={t.ethPrice}
+          boostBalance={t.boostBalance}
+          disableStake={t.disableStake}
+          token={t.token}
+        />
       </div>
     );
   });
