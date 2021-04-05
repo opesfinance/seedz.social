@@ -53,7 +53,6 @@ const Stake = (props) => {
 
   const [pool, setPool] = useState(getPool());
 
-  console.log(pool);
   const [isHive] = useState(!pool.id.includes('farm'));
 
   // const [stakevalue, setStakeValue] = useState('main');
@@ -141,8 +140,6 @@ const Stake = (props) => {
     let pool =
       pools.find((p) => p.address === address) ||
       farmPools.find((p) => p.token.rewardsAddress == address);
-    console.log(pools);
-    console.log(pool);
 
     setPool(pool);
   };
@@ -279,6 +276,7 @@ const Stake = (props) => {
 
   const renderAssetInput = (pool, type) => {
     const { classes } = props;
+    console.log(pool);
     const amount = amounts[`${pool.id}_${type}`];
     const action = type === 'unstake' ? onUnstake : onStake;
     let amountError = amounts[`${pool.id}_${type}_error`];
@@ -331,7 +329,7 @@ const Stake = (props) => {
                       <img
                         alt=''
                         src={require('../../assets/logos/' +
-                          (pool.stakedSymbol || pool.symbol) +
+                          (pool.token.stakedSymbolLogo || pool.symbol) +
                           '.png')}
                         height='30px'
                       />
@@ -404,7 +402,9 @@ const Stake = (props) => {
           <img
             className='pool-logo'
             alt=''
-            src={require(`../../assets/logos/${pool.symbol}.png`)}
+            src={require(`../../assets/logos/${
+              pool.imageLogo || pool.symbol
+            }.png`)}
           />
         </Col>
         <Col lg='10' md='10' xs='12' className='text-left'>

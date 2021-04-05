@@ -533,6 +533,8 @@ const STORE = {
           id: 'farmpixel',
           address: '0x3269244011893f957a3b82c55437083430BDac02', // este es el LP token
           symbol: 'Seedz',
+          stakedSymbolLogo: 'SEEDZ',
+          imageLogo: 'PIXEL',
           name: 'iUPixel',
           abi: config.erc20ABI,
           decimals: 18,
@@ -596,6 +598,8 @@ const STORE = {
           address: '0x3269244011893f957a3b82c55437083430BDac02', // este es el LP token
           name: 'YFU',
           symbol: 'Seedz',
+          stakedSymbolLogo: 'SEEDZ',
+          imageLogo: 'YFU',
           abi: config.erc20ABI,
           decimals: 18,
           tokenAddress: '0xa279dab6ec190eE4Efce7Da72896EB58AD533262', //YFU
@@ -658,6 +662,8 @@ const STORE = {
           address: '0x3269244011893f957a3b82c55437083430BDac02', // este es el LP token
           name: 'Starwire',
           symbol: 'Seedz',
+          stakedSymbolLogo: 'SEEDZ',
+          imageLogo: 'STR',
           abi: config.erc20ABI,
           decimals: 18,
           tokenAddress: '0x11c1a6b3ed6bb362954b29d3183cfa97a0c806aa', //STR

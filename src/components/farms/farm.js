@@ -6,7 +6,7 @@ import Store from '../../stores/store';
 import CountDown from '../utils/countDown';
 
 const Farm = (props) => {
-  console.log(props);
+  // console.log(props);
   const address = `${props.address.substring(0, 5)}...${props.address.substring(
     props.address.length - 4,
     props.address.length
@@ -26,7 +26,7 @@ const Farm = (props) => {
               <img
                 alt=''
                 className='farm-image'
-                src={require(`../../assets/logos/${props.symbol}.png`)}
+                src={require(`../../assets/logos/${props.token.imageLogo}.png`)}
               />
             </div>
             <div className='main-blue'>

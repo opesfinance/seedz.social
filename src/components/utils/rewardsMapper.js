@@ -18,6 +18,7 @@ const rewardsMapper = (rewards) => {
         myBeastModes: t.currentActiveBooster,
         myRewards: t.rewardsAvailable,
         symbol: t.symbol,
+        imageLogo: t.imageLogo,
         rewardsSymbol: t.rewardsSymbol,
         stakedBalance: t.stakedBalance,
         costBooster: t.costBooster,
