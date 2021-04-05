@@ -146,10 +146,7 @@ const StakeMain = (props) => {
                   <span className='dot green'></span>YOUR BALANCE
                 </Col>
                 <Col className='text-right pool-info'>
-                  {props.pool.boostBalance
-                    ? props.pool.boostBalance.toFixed(props.pool.displayDecimal)
-                    : '0'}{' '}
-                  ETH{' '}
+                  {props.pool.token.balance} {props.pool.symbol}
                 </Col>
               </Row>
               <Row>

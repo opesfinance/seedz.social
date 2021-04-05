@@ -21,6 +21,7 @@ const rewardsMapper = (rewards) => {
         imageLogo: t.imageLogo,
         rewardsSymbol: t.rewardsSymbol,
         stakedBalance: t.stakedBalance,
+        balance: t.balance,
         costBooster: t.costBooster,
         costBoosterUSD: t.costBoosterUSD,
         timeToNextBoost: t.timeToNextBoost,
