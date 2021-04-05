@@ -43,14 +43,14 @@ const Farm = (props) => {
         </div>
 
         <div className='hive-details'>
-          <div className='d-flex justify-content-between'>
+          {/* <div className='d-flex justify-content-between'>
             <div>
               <span className='dot green'></span>
               Beast Bonus (leverage)
             </div>
             <div className='text-right main-blue'>{props.beastBonus * 10}%</div>
-          </div>
-          <div className='d-flex justify-content-between'>
+          </div> */}
+          {/* <div className='d-flex justify-content-between'>
             <div>
               <span className='dot yellow'></span>
               Beast Bonus -10% reduction in
@@ -58,7 +58,7 @@ const Farm = (props) => {
             <div className='text-right main-blue'>
               <CountDown pool={props.token} />
             </div>
-          </div>
+          </div> */}
           <div className='d-flex justify-content-between'>
             <div>
               <span className='dot purple'></span>
