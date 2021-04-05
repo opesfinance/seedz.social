@@ -533,6 +533,7 @@ const STORE = {
           id: 'farmpixel',
           address: '0x3269244011893f957a3b82c55437083430BDac02', // este es el LP token
           symbol: 'PIXEL',
+          name: 'iUPixel',
           abi: config.erc20ABI,
           decimals: 18,
           tokenAddress: '0x89045d0af6a12782ec6f701ee6698beaf17d0ea2', //PIXEL
@@ -593,6 +594,7 @@ const STORE = {
         {
           id: 'farmyfu',
           address: '0x3269244011893f957a3b82c55437083430BDac02', // este es el LP token
+          name: 'YFU',
           symbol: 'YFU',
           abi: config.erc20ABI,
           decimals: 18,
@@ -636,7 +638,7 @@ const STORE = {
       symbol: 'STR',
       stakedSymbol: 'Seedz',
       address: '0x3269244011893f957a3b82c55437083430BDac02',
-      name: 'iUPixel',
+      name: 'Starwire',
       website: '',
       description: '',
       liquidityValue: 0,
@@ -654,6 +656,7 @@ const STORE = {
         {
           id: 'farmstr',
           address: '0x3269244011893f957a3b82c55437083430BDac02', // este es el LP token
+          name: 'Starwire',
           symbol: 'STR',
           abi: config.erc20ABI,
           decimals: 18,
