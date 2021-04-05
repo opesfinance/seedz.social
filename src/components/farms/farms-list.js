@@ -42,18 +42,9 @@ const FarmsList = (props) => {
 
   const configureReturned = useCallback(() => setLoading(false));
 
-  /*const farms = farmPools.map((p) => {
-    console.log(p);
-    return (
-      <div key={p.id} className='col-lg-3 col-md-4 col-sm-6'>
-        <Farm pool={p} />
-      </div>
-    );
-  });*/
-
   const farms = rewardsMapper(farmPools).map((t) => {
     return (
-      <div className='col-lg-3 col-md-4 col-sm-6' key={t.address}>
+      <div key={t.address} className='col-lg-3 col-md-4 col-sm-6'>
         <Farm
           acronym={t.symbol}
           name={t.name}

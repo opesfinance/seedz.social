@@ -443,11 +443,12 @@ class Store {
       },
       (err, poolData) => {
         if (err) {
-          // console.log(err);
+          console.log(err);
           return emitter.emit(ERROR, err);
         }
         // console.log(poolData);
-        store.setStore({ rewardPools: poolData });
+        // console.log(poolData);
+        store.setStore({ farmPools: poolData });
         emitter.emit(GET_BOOSTEDBALANCES_RETURNED);
       }
     );
