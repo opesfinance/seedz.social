@@ -93,7 +93,7 @@ const StakeMain = (props) => {
             </div>
             <hr />
             <Row className='pt-4'>
-              {!props.pool.disableStake && (
+              {props.isHive && !props.pool.disableStake && (
                 <Col className='text-center'>
                   <a
                     href='https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b'
