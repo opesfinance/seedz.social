@@ -190,6 +190,7 @@ const Stake = (props) => {
   const getBoosterPriceBulk = async (amount) => {
     let data = await store.getBoosterPriceBulk(pool.token, amount);
     setCostBoosterETH(data.boosterPrice);
+    setPool({ ...pool, stakeValueNextBooster: data.newBoostBalance });
   };
 
   const onBuyBoost = (beastModesAmount) => {

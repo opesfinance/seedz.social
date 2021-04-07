@@ -2765,7 +2765,11 @@ class Store {
         .call({ from: account.address });
 
       // return { boosterPrice: 0.00333 };
-      return { boosterPrice: results.boosterPrice / 10 ** 18 };
+      console.log(results);
+      return {
+        boosterPrice: results.boosterPrice / 10 ** 18,
+        newBoostBalance: results.newBoostBalance / 10 ** 18,
+      };
     } catch (error) {
       console.log(error);
     }
