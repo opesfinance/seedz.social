@@ -53,7 +53,7 @@ const Hive = (props) => {
           <div className='d-flex justify-content-between'>
             <div>
               <span className='dot yellow'></span>
-              Beast Bonus -10% reduction in
+              Beast Bonus -100% reduction in
             </div>
             <div className='text-right main-blue'>
               <CountDown pool={props.token} />
