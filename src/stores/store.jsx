@@ -1944,7 +1944,7 @@ class Store {
     console.log('Amount ' + amount);
     console.log('value ' + value);
     let multiplier = 1.005;
-    const buyAmount = web3.utils.toWei(amount.toString(), 'ether');
+    const buyAmount = web3.utils.toWei(amount.toFixed(18).toString(), 'ether');
     console.log(buyAmount);
     console.log(value);
     coinContract.methods
@@ -2001,9 +2001,9 @@ class Store {
     if (asset.label == 'PIXEL') {
       multiplier = 1.01;
     }
-    const buyAmount = web3.utils.toWei(amount.toString(), 'ether');
+    const buyAmount = web3.utils.toWei(amount.toFixed(18).toString(), 'ether');
 
-    // console.log(buyAmount);
+    console.log(buyAmount);
     console.log(value);
     console.log(multiplier);
     coinContract.methods
