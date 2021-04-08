@@ -2,7 +2,7 @@
 const rewardsMapper = (rewards) => {
   let result = rewards
     .flatMap((rp) => {
-      return { hiveId: rp.id, ...rp.tokens[0] };
+      return { hiveId: rp.id, ...rp.tokens[0], ratePerWeek: rp.ratePerWeek };
     })
     .map((t) => {
       return {
