@@ -44,7 +44,7 @@ class App extends Component {
     this.setState({ headerValue: newValue });
   };
 
-  componentWillMount() {
+  componentDidMount() {
     emitter.on(CONNECTION_CONNECTED, this.connectionConnected);
     emitter.on(CONNECTION_DISCONNECTED, this.connectionDisconnected);
     emitter.on(CONFIGURE_RETURNED, this.configureReturned);

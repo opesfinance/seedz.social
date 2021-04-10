@@ -23,7 +23,7 @@ class Account extends Component {
       themeType: themeType,
     };
   }
-  componentWillMount() {
+  componentDidMount() {
     emitter.on(ERROR, this.errorReturned);
   }
 
