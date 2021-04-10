@@ -1,11 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { withNamespaces } from 'react-i18next';
-
-import Store from '../../stores/store';
 import HivesList from '../hives/hives-list';
-
-const { store } = Store;
 
 const Home = () => {
   // const [account, setAccount] = useState(store.getStore('account'));

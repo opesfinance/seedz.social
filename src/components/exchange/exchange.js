@@ -76,15 +76,15 @@ const Exchange = (props) => {
   const [doingTransaction, setDoingTransaction] = useState(false);
   const [selectedAssetBalance, setSelectedAssetBalance] = useState(0);
 
+  const assetIn = store
+    .getStore('exchangeAssets')
+    .tokens.find((i) => i.label == 'USDC'); //USDC
+
+  const assetsOut = store
+    .getStore('exchangeAssets')
+    .tokens.filter((a) => a.box == 'true');
+
   const pricePromises = async () => {
-    const assetsOut = store
-      .getStore('exchangeAssets')
-      .tokens.filter((a) => a.box == 'true');
-
-    const assetIn = store
-      .getStore('exchangeAssets')
-      .tokens.find((i) => i.label == 'USDC'); //USDC
-
     let promises = assetsOut.map((assetOut) =>
       store.getPrice(assetIn, assetOut)
     );
