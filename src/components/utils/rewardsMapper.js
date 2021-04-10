@@ -1,4 +1,3 @@
-'use strict';
 const rewardsMapper = (rewards) => {
   let result = rewards
     .flatMap((rp) => {

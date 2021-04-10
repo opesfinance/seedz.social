@@ -390,7 +390,7 @@ class Store {
                   return callbackInner(err);
                 }
 
-                console.log(data);
+                // console.log(data);
                 token.balance = data[0];
                 token.stakedBalance = data[1];
                 token.rewardsAvailable = data[2];
@@ -405,7 +405,7 @@ class Store {
               console.log(err);
               return callback(err);
             }
-            console.log(tokensData);
+            // console.log(tokensData);
 
             pool.tokens = tokensData;
             callback(null, pool);
@@ -417,7 +417,7 @@ class Store {
           // // console.log(err);
           return emitter.emit(ERROR, err);
         }
-        console.log(poolData);
+        // console.log(poolData);
         store.setStore({ farmPools: poolData });
         emitter.emit(GET_BALANCES_RETURNED);
       }
@@ -748,67 +748,70 @@ class Store {
   };
 
   getPrice = async (assetIn, assetOut) => {
-    if (assetIn.label == assetOut.label) return 0;
-    // console.log(
-    //   'in',
-    //   assetIn.label,
-    //   assetIn.address,
-    //   'out',
-    //   assetOut.label,
-    //   assetOut.address
-    // );
+    try {
+      if (assetIn.label == assetOut.label) return 0;
+      // console.log(assetIn, assetOut);
+      // console.log(
+      //   'in',
+      //   assetIn.label,
+      //   assetIn.address,
+      //   'out',
+      //   assetOut.label,
+      //   assetOut.address
+      // );
 
-    const pools = store.getStore('rewardPools');
-    const account = store.getStore('account');
+      const account = store.getStore('account');
 
-    const web3 = new Web3(store.getStore('web3context').library.provider);
-    const assets = store.getStore('exchangeAssets').tokens;
+      const web3 = new Web3(store.getStore('web3context').library.provider);
+      const assets = store.getStore('exchangeAssets').tokens;
 
-    //const { assetIn, assetOut} = payload.content;
-    var route = [];
-    if (assetIn.label != 'ETH') {
-      route.push(assetIn.address);
+      //const { assetIn, assetOut} = payload.content;
+      let route = [];
+      if (assetIn.label != 'ETH') {
+        route.push(assetIn.address);
+      }
+      route = route.concat([
+        '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+        '0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',
+      ]);
+      route.push(assetOut.address);
+
+      let test = await this._getOutputForInputVal(
+        web3,
+        assetIn,
+        assetOut,
+        route,
+        '100',
+        account
+      ); // => {
+
+      // console.log(test);
+
+      let amountOut = (test[test.length - 1] / 10 ** assetOut.decimals).toFixed(
+        4
+      );
+      var price = 100 / amountOut;
+
+      //ETH price
+
+      var currentETH = assets.find((i) => i.label == 'ETH');
+      currentETH.price =
+        100 / (test[test.length - 3] / 10 ** currentETH.decimals).toFixed(4);
+
+      //WPE price
+
+      var currentWPE = assets.find((i) => i.label == 'WPE');
+      var wpeTemp = (test[test.length - 2] / 10 ** currentWPE.decimals).toFixed(
+        4
+      );
+      currentWPE.price = 100 / wpeTemp;
+
+      var current = assets.find((i) => i.address == assetOut.address);
+      current.price = price;
+      return !Number.isNaN(price) ? price : 0;
+    } catch (error) {
+      console.log(error);
     }
-    route = route.concat([
-      '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-      '0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',
-    ]);
-    route.push(assetOut.address);
-
-    let test = await this._getOutputForInputVal(
-      web3,
-      assetIn,
-      assetOut,
-      route,
-      '100',
-      account
-    ); // => {
-
-    // console.log(test);
-
-    let amountOut = (test[test.length - 1] / 10 ** assetOut.decimals).toFixed(
-      4
-    );
-    var price = 100 / amountOut;
-    // console.log(price);
-
-    //ETH price
-
-    var currentETH = assets.find((i) => i.label == 'ETH');
-    currentETH.price =
-      100 / (test[test.length - 3] / 10 ** currentETH.decimals).toFixed(4);
-
-    //WPE price
-
-    var currentWPE = assets.find((i) => i.label == 'WPE');
-    var wpeTemp = (test[test.length - 2] / 10 ** currentWPE.decimals).toFixed(
-      4
-    );
-    currentWPE.price = 100 / wpeTemp;
-
-    var current = assets.find((i) => i.address == assetOut.address);
-    current.price = price;
-    return !Number.isNaN(price) ? price : 0;
   };
 
   getLpPrice = async (assetOut) => {
@@ -858,58 +861,64 @@ class Store {
    * @returns {Number} amount out
    */
   getAmountOut = async (assetIn, assetOut, amountIn) => {
-    const account = store.getStore('account');
+    try {
+      // console.log(assetIn, assetOut, amountIn);
+      const account = store.getStore('account');
 
-    const web3 = new Web3(store.getStore('web3context').library.provider);
-    const assets = store.getStore('exchangeAssets').tokens;
-    var current = assets.find((i) => i.address == assetOut.address);
-    //const { assetIn, assetOut} = payload.content;
+      const web3 = new Web3(store.getStore('web3context').library.provider);
+      const assets = store.getStore('exchangeAssets').tokens;
+      var current = assets.find((i) => i.address == assetOut.address);
+      //const { assetIn, assetOut} = payload.content;
 
-    var inputToken = assetIn;
-    var outputToken = assetOut;
-    var midRoute = current.route;
+      var inputToken = assetIn;
+      var outputToken = assetOut;
+      var midRoute = current.route;
 
-    if (assetIn.group == 'outputs') {
-      inputToken = assetOut;
-      outputToken = assetIn;
-      var temp = assets.find((i) => i.address == outputToken.address);
-      midRoute = temp.route;
+      if (assetIn.group == 'outputs') {
+        inputToken = assetOut;
+        outputToken = assetIn;
+        var temp = assets.find((i) => i.address == outputToken.address);
+        midRoute = temp.route;
+      }
+
+      var route = [];
+
+      if (inputToken.label != 'ETH') {
+        route.push(inputToken.address);
+      }
+      //Default route
+      route = route.concat(midRoute);
+      route.push(outputToken.address);
+
+      if (assetIn.group == 'outputs') {
+        route = route.reverse();
+      }
+
+      let dataBack = await this._getOutputForInputVal(
+        web3,
+        assetIn,
+        assetOut,
+        route,
+        amountIn,
+        account
+      ); // => {
+
+      // console.log(dataBack);
+
+      let amountOut = (
+        dataBack[dataBack.length - 1] /
+        10 ** assetOut.decimals
+      ).toFixed(9);
+      // console.log('Asset IN ', assetIn.label);
+      // console.log('Asset Out ', assetOut.label);
+      // console.log('AMOUNT IN ', amountIn);
+      // console.log('AMOUNT OUT ', amountOut);
+
+      return amountOut;
+    } catch (error) {
+      console.log(error);
+      throw error;
     }
-
-    var route = [];
-
-    if (inputToken.label != 'ETH') {
-      route.push(inputToken.address);
-    }
-    //Default route
-    route = route.concat(midRoute);
-    route.push(outputToken.address);
-
-    if (assetIn.group == 'outputs') {
-      route = route.reverse();
-    }
-
-    let dataBack = await this._getOutputForInputVal(
-      web3,
-      assetIn,
-      assetOut,
-      route,
-      amountIn,
-      account
-    ); // => {
-
-    // console.log(dataBack);
-
-    let amountOut = (
-      dataBack[dataBack.length - 1] /
-      10 ** assetOut.decimals
-    ).toFixed(9);
-    // console.log('Asset IN ', assetIn.label);
-    // console.log('Asset Out ', assetOut.label);
-    // console.log('AMOUNT IN ', amountIn);
-    // console.log('AMOUNT OUT ', amountOut);
-
-    return amountOut;
   };
 
   _getOutputForWPELP = async (web3, amountIn, account) => {
@@ -1419,7 +1428,7 @@ class Store {
         .balanceOf(account.address)
         .call({ from: account.address });
       balance = parseFloat(balance) / 10 ** asset.decimals;
-      console.log(balance);
+      // console.log(balance);
       callback(null, parseFloat(balance));
     } catch (ex) {
       callback(ex);
