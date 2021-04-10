@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import moment from 'moment';
 import CountDown from '../utils/countDown';
 
 import './hive.scss';
@@ -8,15 +7,50 @@ import Store from '../../stores/store';
 const { store } = Store;
 
 const Hive = (props) => {
+  // console.log(props);
   const address = `${props.address.substring(0, 5)}...${props.address.substring(
     props.address.length - 4,
     props.address.length
   )}`;
 
+  const [stakedAmountUsd, setStakedAmountUsd] = useState(props.stakedBalance);
+
   function navigateStake(token) {
     store.setStore({ currentPool: token });
     props.history.push('/stake/' + props.address);
   }
+
+  const assetOut = store
+    .getStore('exchangeAssets')
+    .tokens.find((i) => i.label == 'USDC');
+
+  const getStakedAmountUsd = async () => {
+    try {
+      const assetIn = store
+        .getStore('exchangeAssets')
+        .tokens.find(
+          ({ liquidityPoolAddress, label }) =>
+            liquidityPoolAddress == props.token.address
+        );
+
+      if (assetIn && props.stakedBalance) {
+        let usdValue = await store.getAmountOut(
+          assetIn,
+          assetOut,
+          `${props.stakedBalance}`
+        );
+        console.log(usdValue);
+        setStakedAmountUsd(usdValue);
+      }
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    getStakedAmountUsd();
+  }, [props.stakedBalance]);
 
   return (
     <div className='hive-wrapper card'>
@@ -76,6 +110,15 @@ const Hive = (props) => {
             </div>
             <div className='text-right main-blue'>
               {props.stakedBalance ? props.stakedBalance : '0'} {props.symbol}
+            </div>
+          </div>
+          <div className='d-flex justify-content-between'>
+            <div>
+              <span className='dot yellow'></span>
+              My staked amount (USD)
+            </div>
+            <div className='text-right main-blue'>
+              {stakedAmountUsd || '0'} USD
             </div>
           </div>
           <div className='d-flex justify-content-between'>
