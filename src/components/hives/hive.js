@@ -115,7 +115,7 @@ const Hive = (props) => {
           <div className='d-flex justify-content-between'>
             <div>
               <span className='dot yellow'></span>
-              My staked amount (USD)
+              My staked value (USD)
             </div>
             <div className='text-right main-blue'>
               {stakedAmountUsd || '0'} USD
