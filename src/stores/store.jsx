@@ -324,17 +324,21 @@ class Store {
    * @param {Token} token from which balance will be retrieved
    */
   getAssetBalance = async (token) => {
-    const account = store.getStore('account');
-    const web3 = new Web3(store.getStore('web3context').library.provider);
+    try {
+      const account = store.getStore('account');
+      const web3 = new Web3(store.getStore('web3context').library.provider);
 
-    let balance;
+      let balance;
 
-    if (token.label === 'ETH') {
-      balance = await web3.eth.getBalance(account.address);
-      return balance / 1000000000000000000;
+      if (token.label === 'ETH') {
+        balance = await web3.eth.getBalance(account.address);
+        return balance / 10 ** 18;
+      }
+
+      return await this._getERC20Balance(web3, token, account, null);
+    } catch (error) {
+      return 0;
     }
-
-    return await this._getERC20Balance(web3, token, account, null);
   };
 
   getBalancesFarms = () => {
@@ -1414,7 +1418,11 @@ class Store {
         return parseFloat(balance);
       }
     } catch (ex) {
-      callback(ex);
+      if (callback && typeof callback === 'function') {
+        callback(ex);
+      } else {
+        throw ex;
+      }
     }
   };
 
