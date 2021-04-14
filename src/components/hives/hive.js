@@ -33,14 +33,10 @@ const Hive = (props) => {
             liquidityPoolAddress == props.token.address
         );
 
-      if (assetIn && props.stakedBalance) {
-        let usdValue = await store.getAmountOut(
-          assetIn,
-          assetOut,
-          `${props.stakedBalance}`
-        );
-        console.log(usdValue);
-        setStakedAmountUsd(usdValue);
+      if (assetIn) {
+        // let usdValue = await store.getAmountOut(assetIn, assetOut, `1`);
+        // console.log(usdValue, props.name);
+        // setStakedAmountUsd(usdValue);
       }
     } catch (error) {
       console.log(error);
