@@ -849,9 +849,14 @@ class Store {
       const priceETH = (test[test.length - 2] / 100 / 10 ** 18).toFixed(4);
       const priceWPE = (test[test.length - 1] / 100 / 10 ** 18).toFixed(4);
       const current = assets.find((i) => i.address == assetOut.address);
+
       current.price = !Number.isNaN(price) ? price : 0;
       current.priceETH = !Number.isNaN(priceETH) ? priceETH : 0;
       current.priceWPE = !Number.isNaN(priceWPE) ? priceWPE : 0;
+
+      // console.log('price', price, assetOut.label);
+      // console.log('priceETH', priceETH, assetOut.label);
+      // console.log('priceWPE', priceWPE, assetOut.label);
     }
 
     return !Number.isNaN(price) ? price : 0;
@@ -961,8 +966,10 @@ class Store {
   };
 
   getLpAmountOut = async (assetIn, assetOut, amountIn) => {
+    // console.log(assetOut);
     const assets = store.getStore('lpTokens');
     var current = assets.find((i) => i.address == assetOut.address);
+    // console.log(current);
     const account = store.getStore('account');
     const web3 = new Web3(store.getStore('web3context').library.provider);
     let amountOut;
