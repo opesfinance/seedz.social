@@ -173,7 +173,7 @@ const STORE = {
       tokens: [
         {
           id: 'boostrewards',
-          name: 'iUPixel',
+          name: 'iUPixel/WPE POOL',
           address: '0x469485cA145D850c0e54367076558dC72b5DCe19', // UNI
           symbol: 'PIXEL-LP',
           liquidityLink:
@@ -231,7 +231,7 @@ const STORE = {
       tokens: [
         {
           id: 'boostrewards',
-          name: 'YFU', // YFU-LP
+          name: 'YFU/WPE POOL', // YFU-LP
           address: '0x8dc082087ee75b528dfd4e68fa28966666de1a60', // UNI
           symbol: 'YFU-LP',
           liquidityLink:
@@ -289,7 +289,7 @@ const STORE = {
       tokens: [
         {
           id: 'boostrewards',
-          name: 'Missions Fund',
+          name: 'Missions Fund/WPE POOL',
           address: '0xEcEa1bAe3Bb692510693FAc2932C32BeB1FA866E', // UNI
           symbol: 'LIFT-LP',
           liquidityLink:
@@ -347,7 +347,7 @@ const STORE = {
       tokens: [
         {
           id: 'boostrewards',
-          name: 'Starwire',
+          name: 'Starwire/WPE POOL',
           address: '0x8eAA970BE66D4DE446453AEA538173382C2CACE8', // UNI
           symbol: 'STR-LP',
           liquidityLink:
