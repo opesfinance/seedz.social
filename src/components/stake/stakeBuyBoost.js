@@ -172,13 +172,18 @@ const StakeBuyBoost = (props) => {
                     disabled={
                       ((props.pool?.hiveId == 'wbtchive' || !props.isHive) &&
                         !beastModesAmount) ||
-                      +beastModesAmount > 50
+                      +beastModesAmount > 50 ||
+                      props.loaders?.beastModing
                     }
                     onClick={() => {
-                      props.validateBoost(beastModesAmount);
+                      props.handleLoader(props.validateBoost, 'beastModing', [
+                        beastModesAmount,
+                      ]);
                     }}
                   >
-                    Beast Mode
+                    {props.loaders.beastModing
+                      ? 'Complete in metamask'
+                      : 'Beast Mode'}
                   </button>
                 </div>
               </div>

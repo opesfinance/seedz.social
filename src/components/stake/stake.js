@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography, TextField, InputAdornment } from '@material-ui/core';
 import axios from 'axios';
+import Web3 from 'web3';
 
 import Loader from '../loader/loader';
 import Snackbar from '../snackbar/snackbar';
@@ -34,6 +35,36 @@ import styles from './stakeStyles';
 const { emitter, dispatcher, store } = Store;
 
 const Stake = (props) => {
+  const [loaders, setLoaders] = useState({
+    buyingWpe: false,
+    addingSeedzToMetamask: false,
+    claimingRewards: false,
+    claimAndUnstaking: false,
+    staking: false,
+    unstaking: false,
+    beastModing: false, // sorry the word
+  });
+
+  const handleLoader = (method, loaderKey, params) => {
+    let p = params || [];
+    console.log(p);
+    let l = { ...loaders };
+    l[loaderKey] = true;
+    setLoaders(l);
+    method.apply(null, [...p, loaderKey]);
+  };
+
+  // if !loader, resets all loaders
+  const freeLoader = (loaderKey) => {
+    let l = { ...loaders };
+    if (!loaderKey) {
+      for (const key of Object.keys(loaders)) l[key] = false;
+      return setLoaders(l);
+    }
+    l[loaderKey] = false;
+    setLoaders(l);
+  };
+
   const address = props.match.params.address;
 
   const [account] = useState(store.getStore('account'));
@@ -58,7 +89,7 @@ const Stake = (props) => {
 
   // const [stakevalue, setStakeValue] = useState('main');
   // const [balanceValid, setBalanceValid] = useState(false); // not used
-  const [loading, setLoading] = useState(!(account && pool));
+  // const [loading, setLoading] = useState(!(account && pool));
   const [stakeView, setStakeView] = useState('options'); // switchea buyboost y options para el render
   // const [voteLockValid, setVoteLockValid] = useState(false); // not used
   // const [voteLock, setVoteLock] = useState(null); // not used
@@ -149,10 +180,57 @@ const Stake = (props) => {
     return (Math.floor(amount * 1000000000) / 1000000000).toFixed(9);
   };
 
+  const onAddSeeds = async (pool, loaderKey) => {
+    // console.log(pool);
+    // return console.log(loaderKey);
+    let provider = new Web3(store.getStore('web3context').library.provider);
+    provider = provider.currentProvider;
+    provider.sendAsync(
+      {
+        method: 'metamask_watchAsset',
+        params: {
+          type: 'ERC20',
+          options: {
+            address: pool.tokenAddress,
+            symbol: pool.tokenSymbol,
+            decimals: 18,
+            image: '',
+          },
+        },
+        id: Math.round(Math.random() * 100000),
+      },
+      (err, added) => {
+        freeLoader(loaderKey);
+        console.log('provider returned', err, added);
+        if (err || 'error' in added) {
+          return emitter.emit(ERROR, 'There was a problem adding the token.');
+        }
+      }
+    );
+  };
+
+  const onAddPool = async (pool) => {
+    let provider = new Web3(store.getStore('web3context').library.provider);
+    provider = provider.currentProvider;
+    provider.sendAsync({
+      method: 'metamask_watchAsset',
+      params: {
+        type: 'ERC20',
+        options: {
+          address: pool.address,
+          symbol: pool.symbol,
+          decimals: 18,
+          image: '',
+        },
+      },
+    });
+  };
+
   const showHash = (txHash) => {
     setSnackbarType(null);
     setSnackbarMessage(null);
-    setLoading(false);
+    // setLoading(false);
+    freeLoader(null);
 
     balancesReturned();
 
@@ -166,7 +244,8 @@ const Stake = (props) => {
     console.log('error returned', error);
     setSnackbarMessage(null);
     setSnackbarType(null);
-    setLoading(false);
+    // setLoading(false);
+    freeLoader(null);
 
     setTimeout(() => {
       setSnackbarMessage(error.toString());
@@ -204,8 +283,7 @@ const Stake = (props) => {
         : (selectedToken.costBooster + 0.0001).toFixed(10).toString();
 
     // return console.log(pool.token, amounts, amount, value, beastModesAmount);
-
-    setLoading(true);
+    // setLoading(true);
     dispatcher.dispatch({
       type: BOOST_STAKE,
       content: {
@@ -219,7 +297,7 @@ const Stake = (props) => {
   };
 
   const onClaim = () => {
-    setLoading(true);
+    // setLoading(true);
     console.log(pool.token);
     dispatcher.dispatch({
       type: GET_REWARDS,
@@ -259,7 +337,7 @@ const Stake = (props) => {
     const amount = amounts[pool.id + '_unstake'];
     console.log(amounts);
     if (amount > 0) {
-      setLoading(true);
+      // setLoading(true);
       dispatcher.dispatch({
         type: WITHDRAW,
         content: { asset: pool.token, amount },
@@ -272,13 +350,13 @@ const Stake = (props) => {
   };
 
   const onExit = () => {
-    setLoading(true);
+    // setLoading(true);
     dispatcher.dispatch({ type: EXIT, content: { asset: pool.token } });
   };
 
   const renderAssetInput = (pool, type) => {
     const { classes } = props;
-    console.log(pool);
+
     const amount = amounts[`${pool.id}_${type}`];
     const action = type === 'unstake' ? onUnstake : onStake;
     let amountError = amounts[`${pool.id}_${type}_error`];
@@ -303,7 +381,7 @@ const Stake = (props) => {
         <Row>
           <Col lg='8' md='12' sm='12' xs='12'>
             <TextField
-              disabled={loading}
+              // disabled={loading}
               className={
                 amountStakeError && fieldId === `${pool.id}_${type}`
                   ? 'border-btn-error mb-1'
@@ -345,15 +423,17 @@ const Stake = (props) => {
           <Col className='text-center'>
             {type == 'stake' && (
               <button
-                disabled={pool.disableStake}
+                disabled={pool.disableStake || loaders?.staking}
                 className={
                   'pool-' +
                   type +
                   '-button d-flex align-items-center justify-content-center btn'
                 }
-                onClick={action}
+                onClick={() => {
+                  handleLoader(action, 'staking');
+                }}
               >
-                {type}
+                {loaders?.staking ? 'Complete in metamask' : type}
               </button>
             )}
             {type == 'unstake' && (
@@ -434,6 +514,9 @@ const Stake = (props) => {
       onClaim={onClaim}
       navigateInternal={setStakeView}
       isHive={isHive}
+      handleLoader={handleLoader}
+      loaders={loaders}
+      onAddSeeds={onAddSeeds}
     />
   );
 
@@ -451,6 +534,8 @@ const Stake = (props) => {
           {stakeView === 'options' && hiveDetail}
           {stakeView === 'buyboost' && (
             <StakeBuyBoost
+              loaders={loaders}
+              handleLoader={handleLoader}
               validateBoost={validateBoost}
               costBoosterETH={costBoosterETH}
               getBoosterPriceBulk={getBoosterPriceBulk}
@@ -468,7 +553,7 @@ const Stake = (props) => {
               open={true}
             />
           )}
-          {loading && <Loader />}
+          {<Loader />}
         </div>
       </div>
     </>
