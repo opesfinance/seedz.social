@@ -5,16 +5,15 @@ import { withRouter } from 'react-router-dom';
 import { AiOutlineArrowDown } from 'react-icons/ai';
 import { IconContext } from 'react-icons';
 import { InputGroup, Dropdown, Form } from 'react-bootstrap';
-import { ERROR, EXCHANGE_RETURNED } from '../../constants/constants';
+import {
+  ERROR,
+  EXCHANGE_RETURNED,
+  BUY_LP_RETURNED,
+  BUY_LP,
+} from '../../constants/constants';
 
 import './pools.scss';
 import Store from '../../stores/store';
-// ERROR,
-// EXCHANGE_RETURNED,
-// EXIT,
-// EXIT_RETURNED,
-import { BUY_LP } from '../../constants';
-
 const { emitter, dispatcher, store } = Store;
 
 const boxColorMapper = {
@@ -119,9 +118,11 @@ const Pools = (props) => {
 
   useEffect(() => {
     emitter.on(ERROR, handleResponse);
+    emitter.on(BUY_LP_RETURNED, handleResponse);
     emitter.on(EXCHANGE_RETURNED, handleResponse);
 
     return () => {
+      emitter.on(BUY_LP_RETURNED, handleResponse);
       emitter.removeListener(ERROR, handleResponse);
       emitter.removeListener(EXCHANGE_RETURNED, handleResponse);
     };
