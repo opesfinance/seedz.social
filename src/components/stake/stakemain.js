@@ -140,7 +140,9 @@ const StakeMain = (props) => {
                   MY STAKED AMOUNT
                 </Col>
                 <Col className='text-right pool-info'>
-                  {props.pool.stakedBalance}{' '}
+                  {props.pool?.stakedBalance
+                    ? props.pool.stakedBalance.toFixed(18)
+                    : 0}{' '}
                   {props.pool.stakedSymbol || props.pool.symbol}
                 </Col>
               </Row>
