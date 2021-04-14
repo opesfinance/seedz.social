@@ -1949,6 +1949,7 @@ class Store {
       );
     }
   };
+
   _buyWPELPWithEthCall = async (asset, account, amount, value, callback) => {
     const web3 = new Web3(store.getStore('web3context').library.provider);
 
@@ -1958,10 +1959,13 @@ class Store {
       config[contract]
     );
 
-    console.log('Amount ' + amount);
-    console.log('value ' + value);
+    console.log('Amount ', amount);
+    console.log('value ', value);
     let multiplier = 1.005;
-    const buyAmount = web3.utils.toWei(amount.toFixed(18).toString(), 'ether');
+    const buyAmount = web3.utils.toWei(
+      (+amount).toFixed(18).toString(),
+      'ether'
+    );
     console.log(buyAmount);
     console.log(value);
     coinContract.methods
@@ -2012,13 +2016,16 @@ class Store {
       config[contract]
     );
 
-    console.log('Amount ' + amount);
-    console.log('value ' + value);
+    console.log('Amount ', amount);
+    console.log('value ', value);
     let multiplier = 1.005;
     if (asset.label == 'PIXEL') {
       multiplier = 1.01;
     }
-    const buyAmount = web3.utils.toWei(amount.toFixed(18).toString(), 'ether');
+    const buyAmount = web3.utils.toWei(
+      (+amount).toFixed(18).toString(),
+      'ether'
+    );
 
     console.log(buyAmount);
     console.log(value);
@@ -2093,6 +2100,7 @@ class Store {
       }
     );
   };
+
   _buyLPWithTokenCall = async (
     asset,
     token,
