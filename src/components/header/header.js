@@ -34,7 +34,7 @@ class Header extends React.Component {
     emitter.on(ERROR, this.errorReturned);
     emitter.on(CONNECTION_CONNECTED, this.connectionConnected);
     emitter.on(CONNECTION_DISCONNECTED, this.connectionDisconnected);
-    emitter.on(CONFIGURE_RETURNED, this.configureReturned);
+    // emitter.on(CONFIGURE_RETURNED, this.configureReturned);
   }
 
   componentWillUnmount() {
@@ -44,7 +44,7 @@ class Header extends React.Component {
       CONNECTION_DISCONNECTED,
       this.connectionDisconnected
     );
-    emitter.removeListener(CONFIGURE_RETURNED, this.configureReturned);
+    // emitter.removeListener(CONFIGURE_RETURNED, this.configureReturned);
   }
 
   connectionConnected = () => {

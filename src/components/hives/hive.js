@@ -7,7 +7,7 @@ import Store from '../../stores/store';
 const { store } = Store;
 
 const Hive = (props) => {
-  // console.log(props);
+  // console.log(props.token?.ethPrice);
   const address = `${props.address.substring(0, 5)}...${props.address.substring(
     props.address.length - 4,
     props.address.length
@@ -20,33 +20,36 @@ const Hive = (props) => {
     props.history.push('/stake/' + props.address);
   }
 
-  const assetOut = store
-    .getStore('exchangeAssets')
-    .tokens.find((i) => i.label == 'USDC');
+  const assetIn = store.getStore('poolInTokens').find((i) => i.label == 'ETH');
 
   const getStakedAmountUsd = async () => {
     try {
-      const assetIn = store
+      const assetOut = store
         .getStore('exchangeAssets')
         .tokens.find(
-          ({ liquidityPoolAddress, label }) =>
-            liquidityPoolAddress == props.token.address
+          ({ liquidityPoolAddress }) =>
+            props.token.address == liquidityPoolAddress
         );
 
-      if (assetIn) {
-        // let usdValue = await store.getAmountOut(assetIn, assetOut, `1`);
-        // console.log(usdValue, props.name);
-        // setStakedAmountUsd(usdValue);
+      if (assetOut && props.stakedBalance) {
+        let ethUnitPrice = await store.getLpAmountOut(assetIn, assetOut, `1`);
+        let coinEthRelation = ethUnitPrice / props.stakedBalance;
+        let ethStakedPrice = 1 / coinEthRelation;
+        let stakedAmountUsd = ethStakedPrice * props.token?.ethPrice;
+        // let ethUnitPrice = await store.getAmountOut(assetIn, assetOut, `1`);
+        // console.log(stakedAmountUsd, ethUnitPrice, props.name);
+        // console.log(assetOut);
+        setStakedAmountUsd((+stakedAmountUsd).toFixed(18));
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       throw error;
     }
   };
 
   useEffect(() => {
     getStakedAmountUsd();
-  }, [props.stakedBalance]);
+  }, [props]);
 
   return (
     <div className='hive-wrapper card'>
@@ -109,7 +112,7 @@ const Hive = (props) => {
               {props.symbol}
             </div>
           </div>
-          {/* <div className='d-flex justify-content-between'>
+          <div className='d-flex justify-content-between'>
             <div>
               <span className='dot yellow'></span>
               My staked value (USD)
@@ -117,7 +120,7 @@ const Hive = (props) => {
             <div className='text-right main-blue'>
               {stakedAmountUsd || '0'} USD
             </div>
-          </div> */}
+          </div>
           <div className='d-flex justify-content-between'>
             <div>
               <span className='dot light-blue'></span>

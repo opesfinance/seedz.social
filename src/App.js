@@ -23,7 +23,7 @@ import {
   CONNECTION_DISCONNECTED,
   CONFIGURE,
   CONFIGURE_RETURNED,
-  GET_BALANCES_PERPETUAL,
+  // GET_BALANCES_PERPETUAL,
   GET_BALANCES_PERPETUAL_RETURNED,
 } from './constants';
 
@@ -47,8 +47,8 @@ class App extends Component {
   componentDidMount() {
     emitter.on(CONNECTION_CONNECTED, this.connectionConnected);
     emitter.on(CONNECTION_DISCONNECTED, this.connectionDisconnected);
-    emitter.on(CONFIGURE_RETURNED, this.configureReturned);
-    emitter.on(GET_BALANCES_PERPETUAL_RETURNED, this.getBalancesReturned);
+    // emitter.on(CONFIGURE_RETURNED, this.configureReturned);
+    // emitter.on(GET_BALANCES_PERPETUAL_RETURNED, this.getBalancesReturned);
 
     let style = localStorage.getItem('theme');
     if (style) this.setState({ style });
@@ -79,21 +79,21 @@ class App extends Component {
       CONNECTION_DISCONNECTED,
       this.connectionDisconnected
     );
-    emitter.removeListener(CONFIGURE_RETURNED, this.configureReturned);
-    emitter.removeListener(
-      GET_BALANCES_PERPETUAL_RETURNED,
-      this.getBalancesReturned
-    );
+    // emitter.removeListener(CONFIGURE_RETURNED, this.configureReturned);
+    // emitter.removeListener(
+    //   GET_BALANCES_PERPETUAL_RETURNED,
+    //   this.getBalancesReturned
+    // );
   }
 
   getBalancesReturned = () => {
-    window.setTimeout(() => {
-      dispatcher.dispatch({ type: GET_BALANCES_PERPETUAL, content: {} });
-    }, 300000);
+    // window.setTimeout(() => {
+    //   dispatcher.dispatch({ type: GET_BALANCES_PERPETUAL, content: {} });
+    // }, 300000);
   };
 
   configureReturned = () => {
-    dispatcher.dispatch({ type: GET_BALANCES_PERPETUAL, content: {} });
+    // dispatcher.dispatch({ type: GET_BALANCES_PERPETUAL, content: {} });
   };
 
   connectionConnected = () => {

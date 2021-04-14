@@ -34,13 +34,13 @@ const HivesList = (props) => {
   useEffect(() => {
     dispatcher.dispatch({ type: GET_BALANCES, content: {} });
     dispatcher.dispatch({ type: GET_BOOSTEDBALANCES, content: {} });
-    emitter.on(CONFIGURE_RETURNED, configureReturned);
+    // emitter.on(CONFIGURE_RETURNED, configureReturned);
     emitter.on(GET_BALANCES_RETURNED, balancesReturned);
     emitter.on(GET_BOOSTEDBALANCES_RETURNED, balancesReturned);
     emitter.on(STAKE_RETURNED, showHash);
 
     return () => {
-      emitter.removeListener(CONFIGURE_RETURNED, configureReturned);
+      // emitter.removeListener(CONFIGURE_RETURNED, configureReturned);
       emitter.removeListener(GET_BALANCES_RETURNED, balancesReturned);
       emitter.removeListener(GET_BOOSTEDBALANCES_RETURNED, balancesReturned);
       emitter.removeListener(STAKE_RETURNED, showHash);
@@ -49,12 +49,19 @@ const HivesList = (props) => {
 
   const showHash = (txHash) => {};
 
-  const balancesReturned = useCallback(() => {
+  const balancesReturned = useCallback(async () => {
     const rewardPools = store.getStore('rewardPools');
+
+    // i think this should be in an upper level. though only being used here
+    const assetsOut = store.getStore('lpTokens');
+
+    let promises = assetsOut.map((assetOut) => store.getLpPrice(assetOut));
+    await Promise.all(promises);
+
     setRewardPools(rewardPools);
   }, []);
 
-  const configureReturned = useCallback(() => setLoading(false));
+  // const configureReturned = useCallback(() => setLoading(false));
 
   const hives = rewardsMapper(rewardPools).map((t) => {
     return (
