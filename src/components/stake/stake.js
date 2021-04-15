@@ -116,7 +116,7 @@ const Stake = (props) => {
     if (!pool) props.history.push('/');
   }, []);
 
-  async function fetchData(source) {
+  async function getGasPrice(source) {
     try {
       let {
         data,
@@ -133,7 +133,7 @@ const Stake = (props) => {
     const cancelToken = axios.CancelToken;
     const source = cancelToken.source();
 
-    fetchData(source);
+    getGasPrice(source);
     return () => {
       source.cancel('');
     };
