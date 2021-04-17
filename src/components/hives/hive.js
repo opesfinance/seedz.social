@@ -39,7 +39,7 @@ const Hive = (props) => {
         // let ethUnitPrice = await store.getAmountOut(assetIn, assetOut, `1`);
         // console.log(stakedAmountUsd, ethUnitPrice, props.name);
         // console.log(assetOut);
-        setStakedAmountUsd((+stakedAmountUsd).toFixed(18));
+        setStakedAmountUsd((+stakedAmountUsd).toFixed(3));
       }
     } catch (error) {
       // console.log(error);
