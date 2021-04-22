@@ -104,7 +104,6 @@ const Stake = (props) => {
   initialAmounts[`${pool.id}_unstake`] = '0.0000000';
   const [amounts, setAmounts] = useState(initialAmounts);
   const [amountError, setAmountError] = useState(false);
-  const [gasPrice, setGasPrice] = useState(0);
   const [costBoosterETH, setCostBoosterETH] = useState(null);
 
   const operationMapper = {
@@ -114,29 +113,6 @@ const Stake = (props) => {
 
   useEffect(() => {
     if (!pool) props.history.push('/');
-  }, []);
-
-  async function getGasPrice(source) {
-    try {
-      let {
-        data,
-      } = await axios.get(
-        'https://ethgasstation.info/api/ethgasAPI.json?api-key=3f07e80ab9c6bdd0ca11a37358fc8f1a291551dd701f8eccdaf6eb8e59be',
-        { cancelToken: source.token }
-      );
-
-      setGasPrice(data.fastest);
-    } catch (error) {}
-  }
-
-  useEffect(() => {
-    const cancelToken = axios.CancelToken;
-    const source = cancelToken.source();
-
-    getGasPrice(source);
-    return () => {
-      source.cancel('');
-    };
   }, []);
 
   useEffect(() => {
@@ -510,7 +486,6 @@ const Stake = (props) => {
       renderAssetInput={renderAssetInput}
       pool={pool}
       onExit={onExit}
-      gasPrice={gasPrice}
       onClaim={onClaim}
       navigateInternal={setStakeView}
       isHive={isHive}

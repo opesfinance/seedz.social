@@ -13,12 +13,13 @@ import {
 import { Button } from 'react-bootstrap';
 
 import Store from '../../stores/store';
+import GasPrice from '../utils/gasPrice';
+
 const { emitter, store } = Store;
 
 const Header = (props) => {
   const [account, setAccount] = useState(store.getStore('account'));
   const [modalOpen, setModalOpen] = useState(false);
-  const [gasPrice, setGasPrice] = useState(10);
 
   useEffect(() => {
     emitter.on(ERROR, errorReturned);
@@ -60,33 +61,6 @@ const Header = (props) => {
       )
     : null;
 
-  async function getGasPrice(source) {
-    try {
-      let {
-        data,
-      } = await axios.get(
-        'https://ethgasstation.info/api/ethgasAPI.json?api-key=3f07e80ab9c6bdd0ca11a37358fc8f1a291551dd701f8eccdaf6eb8e59be',
-        { cancelToken: source.token }
-      );
-
-      console.log(data);
-
-      setGasPrice(data.fastest);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  useEffect(() => {
-    const cancelToken = axios.CancelToken;
-    const source = cancelToken.source();
-
-    getGasPrice(source);
-    return () => {
-      source.cancel('');
-    };
-  }, []);
-
   return (
     <>
       <nav className='navbar navbar-expand-lg fixed-top'>
@@ -111,17 +85,9 @@ const Header = (props) => {
                 &nbsp;
                 <span className='text-purple'>{address}</span>
               </Link>
-              {gasPrice && (
-                <div className='text-right'>
-                  <img
-                    alt=''
-                    className='mr-2'
-                    src={require('../../assets/fuel.png')}
-                    height='20'
-                  />
-                  {gasPrice / 10} gwei
-                </div>
-              )}
+              <div className='text-right'>
+                <GasPrice />
+              </div>
             </>
           )}
           {!address && (

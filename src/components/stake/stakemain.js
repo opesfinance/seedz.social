@@ -5,6 +5,7 @@ import { Col, Row, Card } from 'react-bootstrap';
 // import currency from '../utils/currency';
 import { withRouter } from 'react-router-dom';
 import CountDown from '../utils/countDown';
+import GasPrice from '../utils/gasPrice';
 
 // const { emitter, store } = Store;
 
@@ -43,7 +44,8 @@ const StakeMain = (props) => {
             <hr />
             <div className='d-flex justify-content-between'>
               <span>Current Gas Price:</span>
-              <span>{props.gasPrice / 10} gwei</span>
+              {/* <span>{props.gasPricegasPrice / 10} gwei</span> */}
+              <GasPrice />
             </div>
             <hr />
             <Row className='pt-4'>
