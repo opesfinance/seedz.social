@@ -10,6 +10,7 @@ import './assets/css/light-mode.scss';
 import './assets/css/dark-mode.scss';
 import './assets/css/dashboard.scss';
 import './assets/css/mode-common.scss';
+import './assets/css/videos.scss';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
