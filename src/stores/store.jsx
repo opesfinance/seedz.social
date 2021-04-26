@@ -126,6 +126,7 @@ class Store {
       emitter.emit(CONFIGURE_RETURNED);
     }, 100);
   };
+
   getBalancesPerpetualFarms = async () => {
     const pools = store.getStore('farmPools');
     const account = store.getStore('account');
@@ -222,6 +223,7 @@ class Store {
       }
     );
   };
+
   getBalancesPerpetual = async () => {
     const pools = store.getStore('rewardPools');
     const account = store.getStore('account');
@@ -642,6 +644,7 @@ class Store {
       }
     );
   };
+
   getBoostBalances = () => {
     const pools = store.getStore('rewardPools');
     const account = store.getStore('account');
@@ -930,6 +933,35 @@ class Store {
     }
   };
 
+  getLpAmountOut = async (assetIn, assetOut, amountIn) => {
+    // console.log(assetOut);
+    const assets = store.getStore('lpTokens');
+    var current = assets.find((i) => i.address == assetOut.address);
+    // console.log(current);
+    const account = store.getStore('account');
+    const web3 = new Web3(store.getStore('web3context').library.provider);
+    let amountOut;
+
+    //LP price
+    if (assetIn.label === 'ETH') {
+      if (current.label == 'WPE') {
+        amountOut = await this._getOutputForWPELP(web3, amountIn, account);
+      } else if (current.label == 'WBTC') {
+        amountOut = await this._getOutputForWBTCLP(web3, amountIn, account);
+      } else {
+        // console.log(current);
+        amountOut = amountIn * (1 / current.priceETH);
+      }
+    } else if (assetIn.label === 'WPE') {
+      amountOut = amountIn * (1 / current.priceWPE);
+    } else {
+      //stable coin
+      amountOut = amountIn * (1 / current.price);
+    }
+
+    return amountOut;
+  };
+
   _getOutputForWPELP = async (web3, amountIn, account) => {
     let wpeLPExchange = new web3.eth.Contract(
       config.WPElpAddressABI,
@@ -963,35 +995,6 @@ class Store {
     } catch (ex) {
       return ex;
     }
-  };
-
-  getLpAmountOut = async (assetIn, assetOut, amountIn) => {
-    // console.log(assetOut);
-    const assets = store.getStore('lpTokens');
-    var current = assets.find((i) => i.address == assetOut.address);
-    // console.log(current);
-    const account = store.getStore('account');
-    const web3 = new Web3(store.getStore('web3context').library.provider);
-    let amountOut;
-
-    //LP price
-    if (assetIn.label === 'ETH') {
-      if (current.label == 'WPE') {
-        amountOut = await this._getOutputForWPELP(web3, amountIn, account);
-      } else if (current.label == 'WBTC') {
-        amountOut = await this._getOutputForWBTCLP(web3, amountIn, account);
-      } else {
-        // console.log(current);
-        amountOut = amountIn * (1 / current.priceETH);
-      }
-    } else if (assetIn.label === 'WPE') {
-      amountOut = amountIn * (1 / current.priceWPE);
-    } else {
-      //stable coin
-      amountOut = amountIn * (1 / current.price);
-    }
-
-    return amountOut;
   };
 
   _getOutputForInputVal = async (
@@ -2810,6 +2813,18 @@ class Store {
     //   boosterPrice,
     //   newBoostBalance,
     // };
+  };
+
+  getETHPrice = async (callback) => {
+    try {
+      const response = await fetch(
+        'https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=USD'
+      );
+      const res = await response.json();
+      return parseFloat(res.ethereum.usd);
+    } catch (error) {
+      throw error;
+    }
   };
 }
 
