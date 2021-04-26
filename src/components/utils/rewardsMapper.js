@@ -1,7 +1,12 @@
 const rewardsMapper = (rewards) => {
   let result = rewards
     .flatMap((rp) => {
-      return { hiveId: rp.id, ...rp.tokens[0], ratePerWeek: rp.ratePerWeek };
+      return {
+        hiveId: rp.id,
+        ...rp.tokens[0],
+        ratePerWeek: rp.ratePerWeek,
+        socialLinks: rp.socialLinks,
+      };
     })
     .map((t) => {
       return {
@@ -32,6 +37,7 @@ const rewardsMapper = (rewards) => {
         ethPrice: t.ethPrice,
         boostBalance: t.boostBalance,
         disableStake: t.disableStake,
+        socialLinks: t.socialLinks,
         token: t,
       };
     });

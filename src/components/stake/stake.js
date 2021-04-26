@@ -455,6 +455,26 @@ const Stake = (props) => {
     setAmounts(newAmounts);
   };
 
+  const socialLinks =
+    pool.socialLinks &&
+    Object.keys(pool.socialLinks).map((key) => {
+      return (
+        <a
+          key={key}
+          href={pool.socialLinks[key]}
+          className='mr-2'
+          target='_blank'
+        >
+          <img
+            src={require(`../../assets/social/social-${key}.png`)}
+            alt=''
+            className='stake-social-link-image'
+            width='30'
+          />
+        </a>
+      );
+    });
+
   const stakeHeader = (
     <div className='stake-header'>
       <Row className='d-flex align-items-center'>
@@ -477,6 +497,7 @@ const Stake = (props) => {
           >
             {pool.address}
           </a>
+          <div className='stake-social-links'>{socialLinks}</div>
         </Col>
       </Row>
     </div>
@@ -501,13 +522,13 @@ const Stake = (props) => {
     <>
       <div className='stake-header-upper-section'></div>
       <div className='stake-header-lower-section'>
-        <div className='p-sm-5 pl-4 pt-5 pr-3  ml-5 mt-5 text-center'>
-          <div className='pl-sm-5 ml-sm-5 text-center'>{stakeHeader}</div>
+        <div className='p-sm-5 pl-4 pt-5 pr-3 ml-5 mt-5 text-center'>
+          <div className='pl-sm-3 ml-sm-3 text-center'>{stakeHeader}</div>
         </div>
       </div>
 
       <div className='p-sm-5 pl-4 pt-5 pr-3 mt-sm-0 ml-5 mt-5 text-center'>
-        <div className='p-sm-5 ml-sm-5 text-center'>
+        <div className='p-sm-3 ml-sm-3 text-center'>
           {stakeView === 'options' && hiveDetail}
           {stakeView === 'buyboost' && (
             <StakeBuyBoost

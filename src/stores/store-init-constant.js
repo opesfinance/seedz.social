@@ -215,6 +215,13 @@ const STORE = {
           poolRateSymbol: 'Seedz/Week',
         },
       ],
+      socialLinks: {
+        website: 'https://iupixel.com',
+        twitter: 'https://twitter.com/iu_pixel',
+        telegram: 'https://t.me/iupixel',
+        discord: 'https://discord.com/invite/pTEaVBE',
+        medium: 'https://iupixel.medium.com/',
+      },
     },
     {
       id: 'yfuhive',
@@ -273,6 +280,13 @@ const STORE = {
           poolRateSymbol: 'Seedz/Week',
         },
       ],
+      socialLinks: {
+        website: 'https://yfu.finance',
+        twitter: 'https://twitter.com/YFuFinance',
+        telegram: 'https://t.me/joinchat/RfldRBfhzHSSLchXsCwLhA',
+        discord: 'https://discord.com/invite/RGt5Ukw',
+        medium: 'https://yfu-finance.medium.com',
+      },
     },
     {
       id: 'lifthive',
@@ -331,6 +345,10 @@ const STORE = {
           poolRateSymbol: 'Seedz/Week',
         },
       ],
+      socialLinks: {
+        website: 'https://missions.fund',
+        twitter: 'https://twitter.com/Crypto_Swarm',
+      },
     },
     {
       id: 'strhive',
@@ -389,6 +407,14 @@ const STORE = {
           poolRateSymbol: 'Seedz/Week',
         },
       ],
+      socialLinks: {
+        website: 'https://starwire.io',
+        telegram: 'https://t.me/starwireio',
+        twitter: 'https://twitter.com/starwireio',
+        discord: 'https://discord.com/invite/FGDawFeUNk',
+        youtube:
+          'https://www.youtube.com/channel/UC9IWPP_ePC5QnJHql0F_sOA?view_as=subscriber',
+      },
     },
     {
       id: 'wpehive',

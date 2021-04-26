@@ -74,6 +74,9 @@
 
 .stake-header-lower-section {
   margin-top: -20vh;
+  @media only screen and (max-width: 575px) {
+    margin-bottom: 5rem;
+  }
 }
 
 .stake-header-upper-section {
