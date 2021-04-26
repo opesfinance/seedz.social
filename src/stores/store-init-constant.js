@@ -903,6 +903,7 @@ const STORE = {
     {
       label: 'STR',
       address: '0x11C1a6B3Ed6Bb362954b29d3183cfA97A0c806Aa',
+      box: true, // shows its box price in pool view
       decimals: 18,
       price: 0.0,
       priceETH: 0.0,
@@ -911,6 +912,7 @@ const STORE = {
     {
       label: 'PIXEL',
       address: '0x89045d0Af6A12782Ec6f701eE6698bEaF17d0eA2',
+      box: true, // shows its box price in pool view
       decimals: 18,
       price: 0.0,
       priceETH: 0.0,
@@ -919,6 +921,7 @@ const STORE = {
     {
       label: 'LIFT',
       address: '0x47bd5114c12421FBC8B15711cE834AFDedea05D9',
+      box: true, // shows its box price in pool view
       decimals: 18,
       price: 0.0,
       priceETH: 0.0,
@@ -927,6 +930,7 @@ const STORE = {
     {
       label: 'YFU',
       address: '0xa279dab6ec190eE4Efce7Da72896EB58AD533262',
+      box: true, // shows its box price in pool view
       decimals: 18,
       price: 0.0,
       priceETH: 0.0,
@@ -935,6 +939,7 @@ const STORE = {
     {
       label: 'ETH',
       address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+      box: false, // shows its box price in pool view
       decimals: 18,
       price: 0.0,
       priceETH: 0.0,
@@ -943,6 +948,7 @@ const STORE = {
     {
       label: 'WPE',
       address: '0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',
+      box: true, // shows its box price in pool view
       decimals: 18,
       price: 0.0,
       priceETH: 0.0,
@@ -951,6 +957,7 @@ const STORE = {
     {
       label: 'WBTC',
       address: '0x0731ee4cf7376A1bd5A78199ac9BEdc8213DeF24',
+      box: true, // shows its box price in pool view
       decimals: 18,
       onlyPurchaseableWith: ['ETH'],
       denomination: 'ETH',
