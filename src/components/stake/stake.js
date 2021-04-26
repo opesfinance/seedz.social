@@ -224,8 +224,10 @@ const Stake = (props) => {
     freeLoader(null);
 
     setTimeout(() => {
-      setSnackbarMessage(error.toString());
-      setSnackbarType('Warning');
+      if (error?.code != -32000) {
+        setSnackbarMessage(error.toString());
+        setSnackbarType('Warning');
+      }
     });
   };
 
