@@ -4,6 +4,8 @@ import { IoSwapVerticalOutline } from 'react-icons/io5';
 import { IconContext } from 'react-icons';
 import { InputGroup, Dropdown, Form } from 'react-bootstrap';
 import { ERROR, EXCHANGE_RETURNED } from '../../constants/constants';
+import TradingViewWidget, { Themes } from 'react-tradingview-widget';
+import ImportScript from '../utils/importScript';
 
 import './exchange.scss';
 import Store from '../../stores/store';
@@ -307,19 +309,23 @@ const Exchange = (props) => {
     </div>
   );
 
-  // const unitPrice = () => {
-  //   return <h1>{toAmount}</h1>;
-  // };
-
   return (
     <div>
       <div className='pageHeader my-auto'>Exchange</div>
 
       <div className='ml-sm-5 p-sm-5 ml-5 p-1 pb-5'>
         {boxesLayout}
-        <div className='row'>
-          <div className='col-md-6 offset-md-3'>
-            <div className='exchange-wrapper mt-5 card'>
+        <div className='row mt-5'>
+          <div className='col-md-4'>
+            {/* <TradingViewWidget
+              symbol='UNISWAP:LIFTWPE/UNISWAP:WETHWPE*BINANCE:ETHUSDT'
+              theme={Themes.LIGHT}
+              locale='fr'
+              autosize
+            /> */}
+          </div>
+          <div className='col-md-4'>
+            <div className='exchange-wrapper card'>
               <div className='card-body'>
                 <div className='d-flex justify-content-between align-items-end'>
                   <h4>Exchange</h4>
@@ -391,6 +397,10 @@ const Exchange = (props) => {
                 </div>
               </div>
             </div>
+          </div>
+
+          <div className='col-md-4'>
+            <ImportScript />
           </div>
         </div>
       </div>
