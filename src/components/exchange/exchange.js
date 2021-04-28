@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { IoSwapVerticalOutline } from 'react-icons/io5';
 import { IconContext } from 'react-icons';
 import { InputGroup, Dropdown, Form } from 'react-bootstrap';
+import TradingViewWidget, { Themes } from 'react-tradingview-widget';
+
 import { ERROR, EXCHANGE_RETURNED } from '../../constants/constants';
 import ImportScript from '../utils/importScript';
-
 
 import './exchange.scss';
 import Store from '../../stores/store';
@@ -76,6 +77,12 @@ const Exchange = (props) => {
 
   const [doingTransaction, setDoingTransaction] = useState(false);
   const [selectedAssetBalance, setSelectedAssetBalance] = useState(0);
+
+  const [tvk, setTvk] = useState(); // trading view key (for charts)
+  const style = localStorage.getItem('theme');
+  const [tvkTheme, setTvkTheme] = useState(
+    style && style == 'dark-mode' ? 'Dark' : 'Light'
+  ); // trading view key (for charts)
 
   const assetIn = store
     .getStore('exchangeAssets')
@@ -188,12 +195,18 @@ const Exchange = (props) => {
     setToAddress(value);
   };
 
+  const onChangeAssetForChart = (tradingViewKey) => {
+    console.log(tradingViewKey);
+    if (tradingViewKey) setTvk(tradingViewKey);
+  };
+
   const onSelectAssetIn = async (eventKey) => {
     const token = fromOptions.find(({ address }) => eventKey === address);
     const { label, address, logo } = token;
 
     setSelectedAssetBalance(await store.getAssetBalance(token));
 
+    onChangeAssetForChart(token.tradingViewKey);
     onChangeFromSelect(address);
     setFromToggleContents(
       <>
@@ -211,9 +224,9 @@ const Exchange = (props) => {
   };
 
   const onSelectAssetOut = (eventKey) => {
-    const { label, address, logo } = toOptions.find(
-      ({ address }) => eventKey === address
-    );
+    const token = toOptions.find(({ address }) => eventKey === address);
+    const { label, address, logo } = token;
+    onChangeAssetForChart(token.tradingViewKey);
     onChangeToSelect(address);
     setToToggleContents(
       <>
@@ -319,7 +332,6 @@ const Exchange = (props) => {
       <div className='ml-sm-5 p-sm-5 ml-5 p-1 pb-5'>
         {boxesLayout}
         <div className='row mt-5'>
-
           <div className='col-md-6'>
             <div className='exchange-wrapper card'>
               <div className='card-body'>
@@ -394,9 +406,16 @@ const Exchange = (props) => {
               </div>
             </div>
           </div>
-        
-          <div className="col-md-6">
-            <ImportScript/>
+
+          <div className='col-md-6 mt-5 mt-md-0 tvk-exchange-container'>
+            {tvk && (
+              <TradingViewWidget
+                symbol={tvk}
+                theme={tvkTheme}
+                locale='fr'
+                autosize
+              />
+            )}
           </div>
         </div>
       </div>

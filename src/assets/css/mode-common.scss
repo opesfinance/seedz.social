@@ -119,3 +119,9 @@ button:disabled {
   max-width: 315;
   position: absolute;
 }
+
+@media only screen and (max-width: 767px) {
+  .tvk-exchange-container {
+    min-height: 400px;
+  }
+}

@@ -774,6 +774,7 @@ const STORE = {
         availableViews: ['exchange', 'pools'],
         denomination: 'WPE',
         price: 0.0,
+        tradingViewKey: 'UNISWAP:STRWPE/UNISWAP:WETHWPE*BINANCE:ETHUSDT',
         route: [
           '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
           '0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',
@@ -791,6 +792,7 @@ const STORE = {
         availableViews: ['exchange', 'pools'],
         denomination: 'WPE',
         price: 0.0,
+        tradingViewKey: 'UNISWAP:PIXELWPE/UNISWAP:WETHWPE*BINANCE:ETHUSDT',
         route: [
           '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
           '0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',
@@ -808,6 +810,7 @@ const STORE = {
         availableViews: ['exchange', 'pools'],
         denomination: 'WPE',
         price: 0.0,
+        tradingViewKey: 'UNISWAP:LIFTWPE/UNISWAP:WETHWPE*BINANCE:ETHUSDT',
         route: [
           '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
           '0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',
@@ -825,6 +828,7 @@ const STORE = {
         availableViews: ['exchange', 'pools'],
         denomination: 'WPE',
         price: 0.0,
+        tradingViewKey: 'UNISWAP:YFUWPE/UNISWAP:WETHWPE*BINANCE:ETHUSDT',
         route: [
           '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
           '0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',
