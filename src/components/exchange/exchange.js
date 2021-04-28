@@ -5,7 +5,6 @@ import { InputGroup, Dropdown, Form } from 'react-bootstrap';
 import TradingViewWidget, { Themes } from 'react-tradingview-widget';
 
 import { ERROR, EXCHANGE_RETURNED } from '../../constants/constants';
-import ImportScript from '../utils/importScript';
 
 import './exchange.scss';
 import Store from '../../stores/store';
@@ -412,7 +411,7 @@ const Exchange = (props) => {
               <TradingViewWidget
                 symbol={tvk}
                 theme={tvkTheme}
-                locale='fr'
+                locale='en'
                 autosize
               />
             )}
