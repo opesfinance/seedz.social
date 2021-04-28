@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { withNamespaces } from 'react-i18next';
 import HivesList from '../hives/hives-list';
+import ImportScript from '../utils/importScript';
 
 const Home = () => {
   // const [account, setAccount] = useState(store.getStore('account'));
@@ -149,6 +150,9 @@ const Home = () => {
               style={{ width: '100%' }}
             />
           </div>
+        </div>
+        <div className='tvk-dashbard-container mt-5'>
+          <ImportScript />
         </div>
       </div>
     </>
