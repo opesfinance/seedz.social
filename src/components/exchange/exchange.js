@@ -1,9 +1,10 @@
-// mio
 import React, { useState, useEffect } from 'react';
 import { IoSwapVerticalOutline } from 'react-icons/io5';
 import { IconContext } from 'react-icons';
 import { InputGroup, Dropdown, Form } from 'react-bootstrap';
 import { ERROR, EXCHANGE_RETURNED } from '../../constants/constants';
+import ImportScript from '../utils/importScript';
+
 
 import './exchange.scss';
 import Store from '../../stores/store';
@@ -317,9 +318,10 @@ const Exchange = (props) => {
 
       <div className='ml-sm-5 p-sm-5 ml-5 p-1 pb-5'>
         {boxesLayout}
-        <div className='row'>
-          <div className='col-md-6 offset-md-3'>
-            <div className='exchange-wrapper mt-5 card'>
+        <div className='row mt-5'>
+
+          <div className='col-md-6'>
+            <div className='exchange-wrapper card'>
               <div className='card-body'>
                 <div className='d-flex justify-content-between align-items-end'>
                   <h4>Exchange</h4>
@@ -391,6 +393,10 @@ const Exchange = (props) => {
                 </div>
               </div>
             </div>
+          </div>
+        
+          <div className="col-md-6">
+            <ImportScript/>
           </div>
         </div>
       </div>

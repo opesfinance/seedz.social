@@ -1,11 +1,29 @@
 import React, { useEffect } from 'react';
-import Helmet from 'react-helmet';
 
 const ImportScript = () => {
   useEffect(() => {
     const script = document.createElement('script');
-    script.src = 'https://s3.tradingview.com/tv.js';
-    script.async = true;
+    script.setAttribute('src', 'https://s3.tradingview.com/tv.js');
+    // script.src = 'https://s3.tradingview.com/tv.js';
+    // script.async = true;
+    script.addEventListener('load', () => {
+      new window.TradingView.widget({
+        width: 980,
+        height: 610,
+        symbol: 'UNISWAP:YFUWPE',
+        interval: 'D',
+        timezone: 'Etc/UTC',
+        theme: 'light',
+        style: '1',
+        locale: 'en',
+        toolbar_bg: '#f1f3f6',
+        enable_publishing: false,
+        allow_symbol_change: true,
+        container_id: 'tradingview_b8cc9',
+        autosize: true,
+      });
+    });
+
     document.body.appendChild(script);
     return () => {
       document.body.removeChild(script);
@@ -16,50 +34,19 @@ const ImportScript = () => {
   //   src='https://s3.tradingview.com/tv.js'
   // ></script>
   return (
-    <Helmet>
-      <script type='text/javascript'>
-        {`new TradingView.MediumWidget({
-      "symbols": [
-        [
-          "WPE/USD",
-          "1/UNISWAP:WETHWPE*BINANCE:ETHUSDT|3M"
-        ],
-        [
-          "ETH/USD",
-          "BINANCE:ETHUSDT|3M"
-        ],
-        [
-          "YFU/USD",
-          "UNISWAP:YFUWPE/UNISWAP:WETHWPE*BINANCE:ETHUSDT|3M"
-        ],
-        [
-          "STR/USD",
-          "UNISWAP:STRWPE/UNISWAP:WETHWPE*BINANCE:ETHUSDT|3M"
-        ],
-        [
-          "PIXEL/USD",
-          "UNISWAP:PIXELWPE/UNISWAP:WETHWPE*BINANCE:ETHUSDT|3M"
-        ],
-        [
-          "LIFT/USD",
-          "UNISWAP:LIFTWPE/UNISWAP:WETHWPE*BINANCE:ETHUSDT|3M"
-        ],
-      ],
-      "chartOnly": false,
-      "width": "100%",
-      "height": "100%",
-      "locale": "en",
-      "colorTheme": "dark",
-      "gridLineColor": "#2A2E39",
-      "trendLineColor": "#1976D2",
-      "fontColor": "#787B86",
-      "underLineColor": "rgba(55, 166, 239, 0.15)",
-      "isTransparent": false,
-      "autosize": true,
-      "container_id": "tradingview_5039e"
-    });`}
-      </script>
-    </Helmet>
+    <div className='tradingview-widget-container'>
+      <div id='tradingview_b8cc9'></div>
+      <div className='tradingview-widget-copyright'>
+        <a
+          href='https://www.tradingview.com/symbols/YFUWPE/?exchange=UNISWAP'
+          rel='noopener'
+          target='_blank'
+        >
+          <span className='blue-text'>YFUWPE Chart</span>
+        </a>{' '}
+        by TradingView
+      </div>
+    </div>
   );
 };
 export default ImportScript;
