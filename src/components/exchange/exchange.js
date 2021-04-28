@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { IoSwapVerticalOutline } from 'react-icons/io5';
 import { IconContext } from 'react-icons';
 import { InputGroup, Dropdown, Form } from 'react-bootstrap';
-import TradingViewWidget, { Themes } from 'react-tradingview-widget';
+import TradingViewWidget from 'react-tradingview-widget';
 
 import { ERROR, EXCHANGE_RETURNED } from '../../constants/constants';
 

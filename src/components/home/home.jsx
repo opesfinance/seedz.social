@@ -12,6 +12,9 @@ const Home = () => {
     <>
       <div className='pageHeader my-auto'>Dashboard</div>
       <div className='ml-sm-5 px-sm-5 ml-5 px-1 pb-5'>
+        <div className='tvk-dashbard-container mt-5'>
+          <ImportScript />
+        </div>
         <div className='section-title text-left mt-4 mb-2 p-0'>Hives</div>
         <HivesList justifyContent='flex-start' />
         {/* <div className=' row'>
@@ -150,9 +153,6 @@ const Home = () => {
               style={{ width: '100%' }}
             />
           </div>
-        </div>
-        <div className='tvk-dashbard-container mt-5'>
-          <ImportScript />
         </div>
       </div>
     </>

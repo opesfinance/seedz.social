@@ -1,13 +1,18 @@
 import React, { useEffect } from 'react';
 
 const ImportScript = () => {
+  const style = localStorage.getItem('theme');
+  const tvkTheme = style && style == 'dark-mode' ? 'dark' : 'light';
   useEffect(() => {
     const script = document.createElement('script');
-    script.setAttribute('src', 'https://s3.tradingview.com/tv.js');
-    // script.src = 'https://s3.tradingview.com/tv.js';
-    // script.async = true;
-    script.addEventListener('load', () => {
-      new window.TradingView.widget({
+    // script.setAttribute('src', 'https://s3.tradingview.com/tv.js');
+    script.src = 'https://s3.tradingview.com/tv.js';
+
+    script.async = true;
+    script.type = 'text/javascript';
+
+    script.onload = () => {
+      new window.TradingView.MediumWidget({
         symbols: [
           ['WPE/USD', '1/UNISWAP:WETHWPE*BINANCE:ETHUSDT|3M'],
           ['ETH', 'BINANCE:ETHUSDT|12M'],
@@ -20,7 +25,7 @@ const ImportScript = () => {
         width: '100%',
         height: '100%',
         locale: 'en',
-        colorTheme: 'dark',
+        colorTheme: tvkTheme == 'light' ? 'light' : 'dark',
         gridLineColor: '#2A2E39',
         trendLineColor: '#1976D2',
         fontColor: '#787B86',
@@ -29,11 +34,13 @@ const ImportScript = () => {
         autosize: true,
         container_id: 'tradingview_5039e',
       });
-    });
+    };
 
-    document.body.appendChild(script);
+    // document.body.appendChild(script);
+    document.getElementsByTagName('head')[0].appendChild(script);
     return () => {
-      document.body.removeChild(script);
+      // document.body.removeChild(script);
+      document.getElementsByTagName('head')[0].appendChild(script);
     };
   }, []);
   // <script
