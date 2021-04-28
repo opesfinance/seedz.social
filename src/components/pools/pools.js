@@ -70,8 +70,9 @@ const Pools = (props) => {
     { label: 'PIXEL LP', value: '$ 0.00', color: 'orange' },
     { label: 'LIFT LP', value: '$ 0.00', color: 'purple' },
     { label: 'YFU LP', value: '$ 0.00', color: 'green' },
-    { label: 'ETH', value: '$ 0.00', color: 'orange' },
-    { label: 'WPE', value: '$ 0.00', color: 'purple' },
+    // { label: 'ETH', value: '$ 0.00', color: 'orange' },
+    { label: 'WPE/ETH', value: '$ 0.00', color: 'purple' },
+    { label: 'WPE/WBTC', value: '$ 0.00', color: 'orange' },
   ]);
 
   const [fromToggleContents, setFromToggleContents] = useState('Choose');
@@ -80,16 +81,25 @@ const Pools = (props) => {
   const [doingTransaction, setDoingTransaction] = useState(false);
   const [selectedAssetBalance, setSelectedAssetBalance] = useState(0);
 
+  const assetIn = store.getStore('poolInTokens').find((i) => i.label == 'ETH');
+
   const pricePromises = async () => {
     const assetsOut = store.getStore('lpTokens');
+    let ethPrice = await store.getETHPrice();
+    const assetBoxes = store.getStore('lpTokens').filter(({ box }) => box);
 
-    let promises = assetsOut.map((assetOut) => store.getLpPrice(assetOut));
+    await Promise.all(assetsOut.map((assetOut) => store.getLpPrice(assetOut)));
+
+    let promises = assetBoxes.map((assetOut) =>
+      store.getLpAmountOut(assetIn, assetOut, `1`)
+    );
     let results = await Promise.all(promises);
+    console.log(results);
 
     let newBoxes = boxes.map((b, i) => {
       return {
         ...b,
-        value: `\$ ${parseFloat(results[i]).toFixed(4)}`,
+        value: `\$ ${(ethPrice / parseFloat(results[i])).toFixed(4)}`,
         intVal: results[i],
       };
     });
