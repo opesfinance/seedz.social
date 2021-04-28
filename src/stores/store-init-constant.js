@@ -1,5 +1,6 @@
 import config from '../config';
 import { injected, walletconnect, walletlink } from './connectors';
+
 const themeType = localStorage.getItem('themeType');
 
 const STORE = {
@@ -182,12 +183,11 @@ const STORE = {
           beastBonus: 1000,
           bonusReductionIn: '7 days',
           decimals: 18,
-          tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
+          tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', // seedz
           tokenSymbol: 'Seedz',
           rewardsAddress: config.pixelHiveAddress,
           rewardsABI: config.seedzABI,
           rewardsSymbol: 'Seedz',
-          decimals: 18,
           balance: 0,
           stakedBalance: 0,
           rewardsAvailable: 0,
@@ -503,7 +503,6 @@ const STORE = {
           rewardsAddress: config.wbtcHiveAddress, // 0xe9762E1b97bAdB0fdC95c7A6D229a93Ab87Fe3fD
           rewardsABI: config.wbtcBoostAbi, //
           rewardsSymbol: 'Seedz',
-          decimals: 18,
           balance: 0,
           stakedBalance: 0,
           rewardsAvailable: 0,
@@ -628,12 +627,11 @@ const STORE = {
           imageLogo: 'YFU',
           abi: config.erc20ABI,
           decimals: 18,
-          tokenAddress: '0xa279dab6ec190eE4Efce7Da72896EB58AD533262', //YFU
+          tokenAddress: '0xa279dab6ec190eE4Efce7Da72896EB58AD533262', // YFU
           tokenSymbol: 'YFU',
-          rewardsAddress: config.farmyfu, //config.farmsRewardAddress,
+          rewardsAddress: config.farmyfu, // config.farmsRewardAddress,
           rewardsABI: config.farmsRewardsAbi,
           rewardsSymbol: 'YFU',
-          decimals: 18,
           balance: 0,
           stakedBalance: 0,
           rewardsAvailable: 0,
@@ -697,7 +695,6 @@ const STORE = {
           rewardsAddress: config.farmstr, //config.farmsRewardAddress,
           rewardsABI: config.farmsRewardsAbi,
           rewardsSymbol: 'STR',
-          decimals: 18,
           balance: 0,
           stakedBalance: 0,
           rewardsAvailable: 0,
@@ -774,6 +771,7 @@ const STORE = {
         availableViews: ['exchange', 'pools'],
         denomination: 'WPE',
         price: 0.0,
+        tradeViewKey: 'UNISWAP:STRWPE/UNISWAP:WETHWPE*BINANCE:ETHUSDT',
         route: [
           '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
           '0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',
@@ -791,6 +789,7 @@ const STORE = {
         availableViews: ['exchange', 'pools'],
         denomination: 'WPE',
         price: 0.0,
+        tradeViewKey: 'UNISWAP:PIXELWPE/UNISWAP:WETHWPE*BINANCE:ETHUSDT',
         route: [
           '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
           '0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',
@@ -808,6 +807,7 @@ const STORE = {
         availableViews: ['exchange', 'pools'],
         denomination: 'WPE',
         price: 0.0,
+        tradeViewKey: 'UNISWAP:LIFTWPE/UNISWAP:WETHWPE*BINANCE:ETHUSDT',
         route: [
           '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
           '0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',
@@ -825,6 +825,7 @@ const STORE = {
         availableViews: ['exchange', 'pools'],
         denomination: 'WPE',
         price: 0.0,
+        tradeViewKey: 'UNISWAP:YFUWPE/UNISWAP:WETHWPE*BINANCE:ETHUSDT',
         route: [
           '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
           '0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',

@@ -193,6 +193,9 @@ const Exchange = (props) => {
     const token = fromOptions.find(({ address }) => eventKey === address);
     const { label, address, logo } = token;
 
+    console.log(label);
+    console.log(token);
+
     setSelectedAssetBalance(await store.getAssetBalance(token));
 
     onChangeFromSelect(address);
@@ -316,15 +319,15 @@ const Exchange = (props) => {
       <div className='ml-sm-5 p-sm-5 ml-5 p-1 pb-5'>
         {boxesLayout}
         <div className='row mt-5'>
-          <div className='col-md-4'>
+          {/* <div className='col-md-4'> */}
             {/* <TradingViewWidget
               symbol='UNISWAP:LIFTWPE/UNISWAP:WETHWPE*BINANCE:ETHUSDT'
               theme={Themes.LIGHT}
               locale='fr'
               autosize
             /> */}
-          </div>
-          <div className='col-md-4'>
+          {/* </div> */}
+          <div className='col-md-6 mb-5'>
             <div className='exchange-wrapper card'>
               <div className='card-body'>
                 <div className='d-flex justify-content-between align-items-end'>
@@ -399,8 +402,14 @@ const Exchange = (props) => {
             </div>
           </div>
 
-          <div className='col-md-4'>
-            <ImportScript />
+          <div className='col-md-6'>
+            {/* <ImportScript /> */}
+            <TradingViewWidget
+              symbol='UNISWAP:LIFTWPE/UNISWAP:WETHWPE*BINANCE:ETHUSDT'
+              theme={Themes.LIGHT}
+              locale='fr'
+              autosize
+            />
           </div>
         </div>
       </div>
