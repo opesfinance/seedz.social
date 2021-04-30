@@ -846,7 +846,7 @@ const STORE = {
         availableViews: ['exchange'],
         denomination: 'WPE',
         price: 0.0,
-        tradingViewKey: 'UNISWAP:YFUWPE/UNISWAP:WETHWPE*BINANCE:ETHUSDT',
+        tradingViewKey: '1/WETHWPE*ETHUSDT',
         route: [
           '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
           '0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',

@@ -67,6 +67,7 @@ const Exchange = (props) => {
     { label: 'PIXEL', value: '$ 0.00', color: 'orange' },
     { label: 'LIFT', value: '$ 0.00', color: 'purple' },
     { label: 'YFU', value: '$ 0.00', color: 'green' },
+    { label: 'M2', value: '$ 0.00', color: 'green' },
     { label: 'ETH', value: '$ 0.00', color: 'orange' },
     { label: 'WPE', value: '$ 0.00', color: 'purple' },
   ]);
@@ -311,7 +312,7 @@ const Exchange = (props) => {
     <div className=' row'>
       {boxes.map((b) => {
         return (
-          <div className='col-lg-2 col-md-4 col-sm-4' key={b.label}>
+          <div className='col-lg-3 col-md-4 col-sm-4' key={b.label}>
             <div
               className={'row m-1 p-2 rounded box-' + boxColorMapper[b.color]}
             >
