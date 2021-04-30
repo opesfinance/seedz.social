@@ -7750,7 +7750,7 @@ export default {
     },
   ],
 
-  exchangeAddress: '0xC06c196D0b5a94cAf7887279096A5f495DD3DA57',
+  exchangeAddress: '0xC2121D0A934429A4A2927E4164aC858D150667BA',
   exchangeABI: [
     {
       inputs: [
