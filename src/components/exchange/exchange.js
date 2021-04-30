@@ -152,6 +152,8 @@ const Exchange = (props) => {
   const handleExchangeReturned = (res) => {
     console.log('res ----------', res);
     setDoingTransaction(false);
+    setToAmount(0);
+    setFromAmount(0);
     setError('');
   };
 
