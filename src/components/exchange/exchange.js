@@ -135,16 +135,22 @@ const Exchange = (props) => {
 
   useEffect(() => {
     emitter.on(ERROR, handleResponse);
-    emitter.on(EXCHANGE_RETURNED, handleResponse);
+    emitter.on(EXCHANGE_RETURNED, handleExchangeReturned);
 
     return () => {
       emitter.removeListener(ERROR, handleResponse);
-      emitter.removeListener(EXCHANGE_RETURNED, handleResponse);
+      emitter.removeListener(EXCHANGE_RETURNED, handleExchangeReturned);
     };
   }, []);
 
   const handleResponse = (err) => {
     console.log('err ----------', err);
+    setDoingTransaction(false);
+    setError('');
+  };
+
+  const handleExchangeReturned = (res) => {
+    console.log('res ----------', res);
     setDoingTransaction(false);
     setError('');
   };
