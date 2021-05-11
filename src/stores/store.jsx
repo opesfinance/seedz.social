@@ -332,6 +332,9 @@ class Store {
 
       let balance;
 
+      // TODO: change test only
+      return Math.ceil(Math.random()*100)
+
       if (token.label === 'ETH') {
         balance = await web3.eth.getBalance(account.address);
         return balance / 10 ** 18;

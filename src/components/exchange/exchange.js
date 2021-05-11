@@ -375,7 +375,7 @@ const Exchange = (props) => {
                 </InputGroup>
                 {/* {<div className='mb-3'>{fromAddress}</div>} */}
                 <IconContext.Provider value={{ size: '2em' }}>
-                  <IoSwapVerticalOutline onClick={swapClickHandler}  size={50}  class="btn btn-outline-primary"/>
+                  <IoSwapVerticalOutline onClick={swapClickHandler}  size={50}  className="btn btn-outline-primary"/>
                 </IconContext.Provider>
 
                 {toAmount && +toAmount > 0 && (
