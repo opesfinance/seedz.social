@@ -147,6 +147,15 @@ const StakeMain = (props) => {
                   {props.pool.stakedSymbol || props.pool.symbol}
                 </Col>
               </Row>
+              <Row>
+                <Col className='pool-titles col-8'>
+                  <span className='dot yellow'></span>
+                  MY STAKED VALUE (usd)
+                </Col>
+                <Col className='text-right pool-info'>
+                  {props.stakedAmountUsd || '0'} USD
+                </Col>
+              </Row>
               {props.isHive && (
                 <Row>
                   <Col className='pool-titles col-8'>
