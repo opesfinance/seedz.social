@@ -98,7 +98,7 @@ const Hive = (props) => {
               Weekly Rewards
             </div>
             <div className='text-right main-blue'>
-              {props.weeklyRewards} {props.rewardsSymbol}
+              {props.weeklyRewards?.toFixed(4) || 0} {props.rewardsSymbol}
             </div>
           </div>
           <hr />
@@ -108,8 +108,7 @@ const Hive = (props) => {
               My staked amount
             </div>
             <div className='text-right main-blue'>
-              {props.stakedBalance ? props.stakedBalance.toFixed(18) : '0'}{' '}
-              {props.symbol}
+              {props.stakedBalance?.toFixed(6) || 0} {props.symbol}
             </div>
           </div>
           <div className='d-flex justify-content-between'>
