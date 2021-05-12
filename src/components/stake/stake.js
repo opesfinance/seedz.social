@@ -517,9 +517,16 @@ const Stake = (props) => {
     });
 
   const stakeHeader = (
-    <div className='stake-header'>
-      <Row className='d-flex align-items-center'>
-        <Col lg='2' md='2' xs='12' className='text-left'>
+    <div className='stake-header stake-header-upper-section'
+      style = {{
+        display: 'flex',
+        justifyContent: 'center',
+        paddingTop:'1rem',
+        height: 'auto',
+        paddingBottom: '1rem'
+      }}>
+      <Row className='justify-content-md-center' style={{paddingLeft:'4rem'}}>
+        <Col sm className='text-left'>
           <img
             className='pool-logo'
             alt=''
@@ -562,15 +569,14 @@ const Stake = (props) => {
 
   return (
     <>
-      <div className='stake-header-upper-section'></div>
-      <div className='stake-header-lower-section'>
-        <div className='p-sm-5 pl-4 pt-5 pr-3 ml-5 mt-5 text-center'>
-          <div className='pl-sm-3 ml-sm-3 text-center'>{stakeHeader}</div>
-        </div>
-      </div>
-
-      <div className='p-sm-5 pl-4 pt-5 pr-3 mt-sm-0 ml-5 mt-5 text-center'>
-        <div className='p-sm-3 ml-sm-3 text-center'>
+      {stakeHeader}        
+      <div className="m-5"
+        style={{
+          paddingLeft: '2rem',
+        }}>
+        <div style={{
+          marginTop: '9rem'
+        }}>
           {stakeView === 'options' && hiveDetail}
           {stakeView === 'buyboost' && (
             <StakeBuyBoost
@@ -584,8 +590,7 @@ const Stake = (props) => {
               pool={pool}
             />
           )}
-
-          {snackbarMessage && (
+        {snackbarMessage && (
             <Snackbar
               type={snackbarType}
               anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
@@ -595,6 +600,7 @@ const Stake = (props) => {
           )}
           {<Loader />}
         </div>
+
       </div>
     </>
   );
