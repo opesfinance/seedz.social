@@ -291,7 +291,7 @@ const Exchange = (props) => {
     }
   };
 
-  const swapClickHandler = () => {
+  const swapClickHandler = async () => {
     const tempFromVal = fromAmount;
     const tempFromOption = fromAddress;
     const tempFromOptions = JSON.parse(JSON.stringify(fromOptions));
@@ -306,6 +306,11 @@ const Exchange = (props) => {
     setToAddress(tempFromOption);
     setToOptions(tempFromOptions);
     setToToggleContents(tempFromToggle);
+
+    const token = fromOptions.find(({ address }) => tempFromOption === address);
+    setSelectedAssetBalance(await store.getAssetBalance(token));
+
+
   };
 
   const boxesLayout = (
