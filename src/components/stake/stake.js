@@ -32,6 +32,17 @@ import {
 import rewardsMapper from '../utils/rewardsMapper';
 import styles from './stakeStyles';
 
+import { 
+  FaDiscord, 
+  FaInstagramSquare, 
+  FaMedium,
+  FaTelegram,
+  FaTwitterSquare,
+  FaYoutube
+} from 'react-icons/fa'
+
+import { AiFillChrome } from "react-icons/ai";
+
 const { emitter, dispatcher, store } = Store;
 
 const Stake = (props) => {
@@ -496,9 +507,42 @@ const Stake = (props) => {
     setAmounts(newAmounts);
   };
 
+
+  const whiteStyle = { 
+    color: "white", 
+    padding:'0.1rem',
+    fontSize: "2.3em" 
+  };
+  const darkIcons = {
+    discord:(<FaDiscord style={whiteStyle}/>),
+    instagram: (<FaInstagramSquare style={whiteStyle}/>),
+    medium: (<FaMedium style={whiteStyle}/>),
+    telegram: (<FaTelegram style={whiteStyle}/>),
+    twitter: (<FaTwitterSquare style={whiteStyle}/>),
+    website: (<AiFillChrome style={whiteStyle}/>),
+    youtube: (<FaYoutube style={whiteStyle}/>),
+  }
+
+  const blueStyle = { 
+    color: "blue", 
+    padding:'0.1rem',
+    fontSize: "2.3em" 
+  };
+  const lightIcons = {
+    discord:(<FaDiscord style={blueStyle}/>),
+    instagram: (<FaInstagramSquare style={blueStyle}/>),
+    medium: (<FaMedium style={blueStyle}/>),
+    telegram: (<FaTelegram style={blueStyle}/>),
+    twitter: (<FaTwitterSquare style={blueStyle}/>),
+    website: (<AiFillChrome style={blueStyle}/>),
+    youtube: (<FaYoutube style={blueStyle}/>),
+  }
+
+  
   const socialLinks =
     pool.socialLinks &&
     Object.keys(pool.socialLinks).map((key) => {
+      const icons = localStorage["theme"]== 'dark-mode' ? darkIcons: lightIcons;
       return (
         <a
           key={key}
@@ -506,12 +550,7 @@ const Stake = (props) => {
           className='mr-2'
           target='_blank'
         >
-          <img
-            src={require(`../../assets/social/social-${key}.png`)}
-            alt=''
-            className='stake-social-link-image'
-            width='30'
-          />
+          {icons[key]}
         </a>
       );
     });
