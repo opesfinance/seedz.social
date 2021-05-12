@@ -38,7 +38,8 @@ const StakeMain = (props) => {
             <div className='d-flex justify-content-between'>
               <span>Weekly Rewards:</span>
               <span>
-                {props.pool.weeklyRewards} {props.pool.rewardsSymbol}
+                {props.pool?.weeklyRewards?.toFixed(4)}{' '}
+                {props.pool.rewardsSymbol}
               </span>
             </div>
             <hr />
@@ -142,10 +143,17 @@ const StakeMain = (props) => {
                   MY STAKED AMOUNT
                 </Col>
                 <Col className='text-right pool-info'>
-                  {props.pool?.stakedBalance
-                    ? props.pool.stakedBalance.toFixed(18)
-                    : 0}{' '}
+                  {props.pool.stakedBalance?.toFixed(6) || 0}{' '}
                   {props.pool.stakedSymbol || props.pool.symbol}
+                </Col>
+              </Row>
+              <Row>
+                <Col className='pool-titles col-8'>
+                  <span className='dot yellow'></span>
+                  MY STAKED VALUE (usd)
+                </Col>
+                <Col className='text-right pool-info'>
+                  {props.stakedAmountUsd || '0'} USD
                 </Col>
               </Row>
               {props.isHive && (

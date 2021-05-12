@@ -105,10 +105,36 @@ const Stake = (props) => {
   const [amounts, setAmounts] = useState(initialAmounts);
   const [amountError, setAmountError] = useState(false);
   const [costBoosterETH, setCostBoosterETH] = useState(null);
+  const [stakedAmountUsd, setStakedAmountUsd] = useState(0);
 
   const operationMapper = {
     stake: 'balance',
     unstake: 'stakedBalance',
+  };
+
+  const assetIn = store.getStore('poolInTokens').find((i) => i.label == 'ETH');
+
+  const getStakedAmountUsd = async (address, stakedBalance, ethPrice) => {
+    try {
+      const assetOut = store
+        .getStore('exchangeAssets')
+        .tokens.find(
+          ({ liquidityPoolAddress }) => address == liquidityPoolAddress
+        );
+
+      if (assetOut && stakedBalance) {
+        let ethUnitPrice = await store.getLpAmountOut(assetIn, assetOut, `1`);
+        let coinEthRelation = ethUnitPrice / stakedBalance;
+        let ethStakedPrice = 1 / coinEthRelation;
+        let stakedAmountUsd = ethStakedPrice * ethPrice;
+        console.log(stakedAmountUsd);
+        return stakedAmountUsd;
+        // setStakedAmountUsd((+stakedAmountUsd).toFixed(3));
+      }
+    } catch (error) {
+      // console.log(error);
+      throw error;
+    }
   };
 
   useEffect(() => {
@@ -140,16 +166,31 @@ const Stake = (props) => {
     };
   }, []);
 
-  const balancesReturned = () => {
+  const balancesReturned = async () => {
     console.log('balances returned');
     // const currentPool = pool; //store.getStore('currentPool');
+
+    // i think this should be in an upper level. though only being used here
+    const assetsOut = store.getStore('lpTokens');
+
+    let promises = assetsOut.map((assetOut) => store.getLpPrice(assetOut));
+    await Promise.all(promises);
+
     const pools = rewardsMapper(store.getStore('rewardPools'));
+
     const farmPools = rewardsMapper(store.getStore('farmPools'));
     let pool =
       pools.find((p) => p.address === address) ||
       farmPools.find((p) => p.token.rewardsAddress == address);
 
     setPool(pool);
+
+    const stakedAmountUsd = await getStakedAmountUsd(
+      pool.token.address,
+      pool.token.stakedBalance,
+      pool.token.ethPrice
+    );
+    setStakedAmountUsd((+stakedAmountUsd).toFixed(3));
   };
 
   const parseAmount = (amount) => {
@@ -514,6 +555,7 @@ const Stake = (props) => {
       isHive={isHive}
       handleLoader={handleLoader}
       loaders={loaders}
+      stakedAmountUsd={stakedAmountUsd}
       onAddSeeds={onAddSeeds}
     />
   );
