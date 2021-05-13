@@ -307,7 +307,7 @@ const Exchange = (props) => {
     setToOptions(tempFromOptions);
     setToToggleContents(tempFromToggle);
 
-    const token = fromOptions.find(({ address }) => tempFromOption === address);
+    const token = toOptions.find(({ address }) => toAddress === address);
     setSelectedAssetBalance(await store.getAssetBalance(token));
 
 
