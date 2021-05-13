@@ -12,7 +12,7 @@ const WhaleTank = (props) => {
       <div className='mt-5 whaletank-wrapper'>
         <img
           alt=''
-          src={require('../../assets/swarm-coming-soon.webp')}
+          src={require('../../assets/swarm-coming-soon.png')}
           className='img-fluid'
         />
       </div>
