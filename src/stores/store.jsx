@@ -1009,7 +1009,7 @@ class Store {
       config.uniswapRouterABI,
       config.uniswapRouterAddress
     );
-    var amountToSend = web3.utils.toWei(amountIn, 'ether');
+    var amountToSend = web3.utils.toWei(amountIn.toString(), 'ether');
     if (assetIn.decimals !== 18) {
       amountToSend = (amountIn * 10 ** assetIn.decimals).toFixed(0);
     }

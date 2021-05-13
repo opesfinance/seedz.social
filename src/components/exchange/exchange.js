@@ -355,7 +355,7 @@ const Exchange = (props) => {
               <div className='card-body'>
                 <div className='d-flex justify-content-between align-items-end'>
                   <h4>Exchange</h4>
-                  <span className='pull-right btn btn-outline-light mb-1' 
+                  <span className='pull-right btn btn-outline-secondary mb-1' 
                     style={{fontSize: '1rem'}}
                     onClick={maxFromAmount} >
                     Your balance: {selectedAssetBalance}{' '}
