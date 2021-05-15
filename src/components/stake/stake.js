@@ -32,16 +32,16 @@ import {
 import rewardsMapper from '../utils/rewardsMapper';
 import styles from './stakeStyles';
 
-import { 
-  FaDiscord, 
-  FaInstagramSquare, 
+import {
+  FaDiscord,
+  FaInstagramSquare,
   FaMedium,
   FaTelegram,
   FaTwitterSquare,
-  FaYoutube
-} from 'react-icons/fa'
+  FaYoutube,
+} from 'react-icons/fa';
 
-import { AiFillChrome } from "react-icons/ai";
+import { AiFillChrome } from 'react-icons/ai';
 
 const { emitter, dispatcher, store } = Store;
 
@@ -507,42 +507,41 @@ const Stake = (props) => {
     setAmounts(newAmounts);
   };
 
-
-  const whiteStyle = { 
-    color: "white", 
-    padding:'0.1rem',
-    fontSize: "2.3em" 
+  const whiteStyle = {
+    color: 'white',
+    padding: '0.1rem',
+    fontSize: '2.3em',
   };
   const darkIcons = {
-    discord:(<FaDiscord style={whiteStyle}/>),
-    instagram: (<FaInstagramSquare style={whiteStyle}/>),
-    medium: (<FaMedium style={whiteStyle}/>),
-    telegram: (<FaTelegram style={whiteStyle}/>),
-    twitter: (<FaTwitterSquare style={whiteStyle}/>),
-    website: (<AiFillChrome style={whiteStyle}/>),
-    youtube: (<FaYoutube style={whiteStyle}/>),
-  }
+    discord: <FaDiscord style={whiteStyle} />,
+    instagram: <FaInstagramSquare style={whiteStyle} />,
+    medium: <FaMedium style={whiteStyle} />,
+    telegram: <FaTelegram style={whiteStyle} />,
+    twitter: <FaTwitterSquare style={whiteStyle} />,
+    website: <AiFillChrome style={whiteStyle} />,
+    youtube: <FaYoutube style={whiteStyle} />,
+  };
 
-  const blueStyle = { 
-    color: "blue", 
-    padding:'0.1rem',
-    fontSize: "2.3em" 
+  const blueStyle = {
+    color: 'blue',
+    padding: '0.1rem',
+    fontSize: '2.3em',
   };
   const lightIcons = {
-    discord:(<FaDiscord style={blueStyle}/>),
-    instagram: (<FaInstagramSquare style={blueStyle}/>),
-    medium: (<FaMedium style={blueStyle}/>),
-    telegram: (<FaTelegram style={blueStyle}/>),
-    twitter: (<FaTwitterSquare style={blueStyle}/>),
-    website: (<AiFillChrome style={blueStyle}/>),
-    youtube: (<FaYoutube style={blueStyle}/>),
-  }
+    discord: <FaDiscord style={blueStyle} />,
+    instagram: <FaInstagramSquare style={blueStyle} />,
+    medium: <FaMedium style={blueStyle} />,
+    telegram: <FaTelegram style={blueStyle} />,
+    twitter: <FaTwitterSquare style={blueStyle} />,
+    website: <AiFillChrome style={blueStyle} />,
+    youtube: <FaYoutube style={blueStyle} />,
+  };
 
-  
   const socialLinks =
     pool.socialLinks &&
     Object.keys(pool.socialLinks).map((key) => {
-      const icons = localStorage["theme"]== 'dark-mode' ? darkIcons: lightIcons;
+      const icons =
+        localStorage['theme'] == 'dark-mode' ? darkIcons : lightIcons;
       return (
         <a
           key={key}
@@ -556,15 +555,20 @@ const Stake = (props) => {
     });
 
   const stakeHeader = (
-    <div className='stake-header stake-header-upper-section'
-      style = {{
+    <div
+      className='stake-header stake-header-upper-section'
+      style={{
         display: 'flex',
         justifyContent: 'center',
-        paddingTop:'1rem',
+        paddingTop: '1rem',
         height: 'auto',
-        paddingBottom: '1rem'
-      }}>
-      <Row className='justify-content-md-center' style={{paddingLeft:'4rem'}}>
+        paddingBottom: '1rem',
+      }}
+    >
+      <Row
+        className='justify-content-md-center'
+        style={{ paddingLeft: '4rem' }}
+      >
         <Col sm className='text-left'>
           <img
             className='pool-logo'
@@ -608,14 +612,18 @@ const Stake = (props) => {
 
   return (
     <>
-      {stakeHeader}        
-      <div className="m-5"
+      {stakeHeader}
+      <div
+        className='m-5'
         style={{
           paddingLeft: '2rem',
-        }}>
-        <div style={{
-          marginTop: '9rem'
-        }}>
+        }}
+      >
+        <div
+          style={{
+            marginTop: '9rem',
+          }}
+        >
           {stakeView === 'options' && hiveDetail}
           {stakeView === 'buyboost' && (
             <StakeBuyBoost
@@ -629,7 +637,7 @@ const Stake = (props) => {
               pool={pool}
             />
           )}
-        {snackbarMessage && (
+          {snackbarMessage && (
             <Snackbar
               type={snackbarType}
               anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
@@ -639,7 +647,6 @@ const Stake = (props) => {
           )}
           {<Loader />}
         </div>
-
       </div>
     </>
   );
