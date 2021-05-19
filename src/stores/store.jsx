@@ -2815,6 +2815,21 @@ class Store {
     // };
   };
 
+  getTotalSupply = async (asset) => {
+    const web3 = new Web3(store.getStore('web3context').library.provider);
+    const account = store.getStore('account');
+
+    try {
+      const boostContract = new web3.eth.Contract(asset.abi, asset.address);  
+      let results = await boostContract.methods
+        .totalSupply()
+        .call({ from: account.address });
+      return results/ 10 ** 18;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   getETHPrice = async (callback) => {
     try {
       const response = await fetch(

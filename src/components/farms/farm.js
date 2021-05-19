@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './farm.scss';
 
 import { withRouter } from 'react-router-dom';
 import Store from '../../stores/store';
 import CountDown from '../utils/countDown';
 
+const { emitter, dispatcher, store } = Store;
+
 const Farm = (props) => {
   // console.log(props);
+  const [ totalLockVolume, setTotalLockVolume ] = useState(0)
+
   const address = `${props.address.substring(0, 5)}...${props.address.substring(
     props.address.length - 4,
     props.address.length
@@ -16,6 +20,27 @@ const Farm = (props) => {
     Store.store.setStore({ currentPool: token });
     props.history.push('/stake/' + props.address);
   }
+
+
+  const initTotalLockVolume = async() => {
+    const eth = store
+      .getStore('exchangeAssets')
+      .tokens
+      .find(e => e.label === 'ETH')
+    const token = store
+      .getStore('exchangeAssets')
+      .tokens
+      .find((a) => a.label === props.tokenSymbol)
+    const amountOut = await store.getAmountOut(token, eth, '1');
+    const ethPrice = await store.getETHPrice()
+    const totalSupply = await store.getTotalSupply(props.token);
+    const totalLockVolume = amountOut * ethPrice * totalSupply
+    setTotalLockVolume(totalLockVolume)
+  }
+  useEffect(()=>{ 
+    initTotalLockVolume()
+  }, [])
+  
 
   return (
     <div className='hive-wrapper card'>
@@ -68,6 +93,16 @@ const Farm = (props) => {
               {props.weeklyRewards} {props.rewardsSymbol}
             </div>
           </div>
+          { totalLockVolume ?
+          (<div className='d-flex justify-content-between' >
+            <div>
+              <span className='dot orange'></span>
+              Total lock volume
+            </div>
+            <div className='text-right main-blue'>
+              {totalLockVolume.toLocaleString()} USD
+            </div>
+          </div>): ''}
           <hr />
           <div className='d-flex justify-content-between'>
             <div>
