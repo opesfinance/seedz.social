@@ -348,35 +348,6 @@ const Exchange = (props) => {
     );
   };
 
-  const addTokens = async (token) => {
-    // setAddingTokenToMetamask(true)
-    console.log(token);
-    let provider = new Web3(store.getStore('web3context').library.provider);
-    provider = provider.currentProvider;
-    provider.sendAsync(
-      {
-        method: 'metamask_watchAsset',
-        params: {
-          type: 'ERC20',
-          options: {
-            address: token.address,
-            symbol: token.label,
-            decimals: token.decimals,
-            image: '',
-          },
-        },
-        id: Math.round(Math.random() * 100000),
-      },
-      (err, added) => {
-        setAddingTokenToMetamask(false)
-        console.log('provider returned', err, added);
-        if (err || 'error' in added) {
-          return emitter.emit(ERROR, 'There was a problem adding the token.');
-        }
-      }
-    );
-  };
-
   const boxesLayout = (
     <div className=' row'>
       {boxes.map((b) => {
