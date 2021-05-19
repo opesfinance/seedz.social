@@ -312,14 +312,41 @@ const Exchange = (props) => {
 
     const token = toOptions.find(({ address }) => toAddress === address);
     setSelectedAssetBalance(await store.getAssetBalance(token));
-
-
   };
 
-  const maxFromAmount = async ()=>{
+  const maxFromAmount = async () => {
     const token = fromOptions.find(({ address }) => fromAddress === address);
-    setFromAmount(await store.getAssetBalance(token))
-  }
+    setFromAmount(await store.getAssetBalance(token));
+  };
+
+  const addTokens = async (token) => {
+    // setAddingTokenToMetamask(true)
+    console.log(token);
+    let provider = new Web3(store.getStore('web3context').library.provider);
+    provider = provider.currentProvider;
+    provider.sendAsync(
+      {
+        method: 'metamask_watchAsset',
+        params: {
+          type: 'ERC20',
+          options: {
+            address: token.address,
+            symbol: token.label,
+            decimals: token.decimals,
+            image: '',
+          },
+        },
+        id: Math.round(Math.random() * 100000),
+      },
+      (err, added) => {
+        setAddingTokenToMetamask(false);
+        console.log('provider returned', err, added);
+        if (err || 'error' in added) {
+          return emitter.emit(ERROR, 'There was a problem adding the token.');
+        }
+      }
+    );
+  };
 
   const addTokens = async (token) => {
     // setAddingTokenToMetamask(true)
@@ -411,9 +438,15 @@ const Exchange = (props) => {
               <div className='card-body'>
                 <div className='d-flex justify-content-between align-items-end'>
                   <h4>Exchange</h4>
-                  <span className='pull-right btn btn-outline-secondary mb-1' 
-                    style={{fontSize: '1rem'}}
-                    onClick={maxFromAmount} >
+                  <span
+                    className='pull-right mb-1'
+                    style={{
+                      fontSize: '1rem',
+                      cursor: 'pointer',
+                      color: '#7f63f4',
+                    }}
+                    onClick={maxFromAmount}
+                  >
                     Your balance: {selectedAssetBalance}{' '}
                   </span>
                 </div>
@@ -443,7 +476,11 @@ const Exchange = (props) => {
                 </InputGroup>
                 {/* {<div className='mb-3'>{fromAddress}</div>} */}
                 <IconContext.Provider value={{ size: '2em' }}>
-                  <IoSwapVerticalOutline onClick={swapClickHandler}  size={50}  className="btn btn-outline-primary"/>
+                  <IoSwapVerticalOutline
+                    onClick={swapClickHandler}
+                    size={50}
+                    className='btn btn-outline-primary'
+                  />
                 </IconContext.Provider>
 
                 {toAmount && +toAmount > 0 && (
