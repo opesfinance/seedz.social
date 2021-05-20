@@ -2830,6 +2830,27 @@ class Store {
     }
   };
 
+  getLockTime = async (address) => {
+    const web3 = new Web3(store.getStore('web3context').library.provider);
+    const account = store.getStore('account');
+    console.log(config)
+    try {
+      const contract = new web3.eth.Contract(
+        config.seedzABI,
+        config.seedzAddress
+      );  
+      let lockTime = await contract.methods
+        .lockTime(address)
+        .call({ from: account.address });
+      console.log(lockTime);
+      return lockTime
+      // lockTime siempre son iguales a 0
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   getETHPrice = async (callback) => {
     try {
       const response = await fetch(

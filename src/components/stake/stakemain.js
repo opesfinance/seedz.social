@@ -1,15 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Col, Row, Card } from 'react-bootstrap';
 
 // import currency from '../utils/currency';
 import { withRouter } from 'react-router-dom';
+import Store from '../../stores/store';
 import CountDown from '../utils/countDown';
 import GasPrice from '../utils/gasPrice';
 
-// const { emitter, store } = Store;
+const { emitter, store } = Store;
 
 const StakeMain = (props) => {
+
+  const [lockTime, setLockTime] = useState(0)
+
+  useEffect(()=>{
+    const initLockTime = async ()=>{
+      const {address} = props.pool
+      // console.log(props.pool);
+      const timestamp = await store.getLockTime(address)
+      setLockTime(timestamp)
+    }
+    initLockTime()
+  }, [])
+
   return (
     <Row className='pool-boxes'>
       <Col lg='4' md='12' xs='12' className='p-1'>
@@ -35,6 +49,14 @@ const StakeMain = (props) => {
                 <hr />
               </>
             )}
+         
+                <div className='d-flex justify-content-between'>
+                  <span>Time left to stake:</span>
+                  <CountDown pool={props.pool} timestamp={lockTime}/>
+                </div>
+                <hr />
+       
+
             <div className='d-flex justify-content-between'>
               <span>Weekly Rewards:</span>
               <span>

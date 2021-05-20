@@ -9,9 +9,8 @@ export default function CountDown(props) {
 
   useEffect(() => {
     let interval = setInterval(() => {
-      const startBeastReduction = moment.unix(
-        store.store.startBeastReductionTimestamp
-      );
+      const timestamp = props.timestamp | store.store.startBeastReductionTimestamp
+      const startBeastReduction = moment.unix(timestamp);
       const diffDays = moment().diff(startBeastReduction, 'days');
       const nextReduction = startBeastReduction.add(diffDays + 1, 'days');
       let diff = moment.utc(nextReduction.diff(moment())).format('HH:mm:ss');
