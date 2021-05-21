@@ -18,6 +18,7 @@ const StakeMain = (props) => {
       const { address } = props.pool;
       // console.log(props.pool);
       const timestamp = await store.getLockTime(address);
+      console.log(timestamp);
       setLockTime(timestamp);
     };
     initLockTime();
@@ -49,11 +50,11 @@ const StakeMain = (props) => {
               </>
             )}
 
-            <div className='d-flex justify-content-between'>
+            {/* <div className='d-flex justify-content-between'>
               <span>Time left to stake:</span>
               <CountDown pool={props.pool} timestamp={lockTime} />
             </div>
-            <hr />
+            <hr /> */}
 
             <div className='d-flex justify-content-between'>
               <span>Weekly Rewards:</span>
