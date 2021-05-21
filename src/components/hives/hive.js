@@ -14,30 +14,28 @@ const Hive = (props) => {
   )}`;
 
   const [stakedAmountUsd, setStakedAmountUsd] = useState(props.stakedBalance);
-  const [ totalLockVolume, setTotalLockVolume ] = useState(0)
+  const [totalLockVolume, setTotalLockVolume] = useState(0);
 
-  const initTotalLockVolume = async() => {
-    if(!!props.token.disableStake)
-      return
+  const initTotalLockVolume = async () => {
+    if (!!props.token.disableStake) return;
     const eth = store
       .getStore('exchangeAssets')
-      .tokens
-      .find(e => e.label === 'ETH')
-    const token =  store
+      .tokens.find((e) => e.label === 'ETH');
+    const token = store
       .getStore('exchangeAssets')
       .tokens.find(
         ({ liquidityPoolAddress }) =>
           props.token.address == liquidityPoolAddress
       );
     const amountOut = await store.getAmountOut(token, eth, '1');
-    const ethPrice = await store.getETHPrice()
+    const ethPrice = await store.getETHPrice();
     const totalSupply = await store.getTotalSupply(props.token);
-    const totalLockVolume = amountOut * ethPrice * totalSupply
-    setTotalLockVolume(totalLockVolume)
-  }
-  useEffect(()=>{ 
-    initTotalLockVolume()
-  }, [])
+    const totalLockVolume = amountOut * ethPrice * totalSupply;
+    setTotalLockVolume(totalLockVolume);
+  };
+  useEffect(() => {
+    initTotalLockVolume();
+  }, []);
 
   function navigateStake(token) {
     store.setStore({ currentPool: token });
@@ -63,8 +61,9 @@ const Hive = (props) => {
         // let ethUnitPrice = await store.getAmountOut(assetIn, assetOut, `1`);
         // console.log(stakedAmountUsd, ethUnitPrice, props.name);
         // console.log(assetOut);
-        setStakedAmountUsd((+stakedAmountUsd).toFixed(3));
+        return setStakedAmountUsd((+stakedAmountUsd).toFixed(3));
       }
+      setStakedAmountUsd(0);
     } catch (error) {
       // console.log(error);
       throw error;
@@ -125,16 +124,31 @@ const Hive = (props) => {
               {props.weeklyRewards?.toFixed(4) || 0} {props.rewardsSymbol}
             </div>
           </div>
-          { totalLockVolume ?
-          (<div className='d-flex justify-content-between' >
+          <div className='d-flex justify-content-between'>
             <div>
-              <span className='dot orange'></span>
-              Total lock volume
+              <span className='dot purple'></span>
+              Lockup Time
             </div>
             <div className='text-right main-blue'>
-              {totalLockVolume.toLocaleString()} USD
+              {props.address == '0x9411aE40e4EefE2BDCF6F4e2beC81BEb7682bC63'
+                ? '2'
+                : '12'}{' '}
+              months
             </div>
-          </div>): ''}
+          </div>
+          {totalLockVolume ? (
+            <div className='d-flex justify-content-between'>
+              <div>
+                <span className='dot orange'></span>
+                Total lock volume
+              </div>
+              <div className='text-right main-blue'>
+                {totalLockVolume.toLocaleString()} USD
+              </div>
+            </div>
+          ) : (
+            ''
+          )}
           <hr />
           <div className='d-flex justify-content-between'>
             <div>

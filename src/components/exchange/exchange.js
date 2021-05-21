@@ -351,7 +351,9 @@ const Exchange = (props) => {
   const boxesLayout = (
     <div className=' row'>
       {boxes.map((b) => {
-        let token = store.getStore('exchangeAssets')?.tokens?.find(token=>token.label===b.label)
+        let token = store
+          .getStore('exchangeAssets')
+          ?.tokens?.find((token) => token.label === b.label);
         return (
           <div className='col-lg-4 col-md-6 col-sm-4' key={b.label}>
             <div

@@ -11,18 +11,18 @@ import GasPrice from '../utils/gasPrice';
 const { emitter, store } = Store;
 
 const StakeMain = (props) => {
+  const [lockTime, setLockTime] = useState(0);
 
-  const [lockTime, setLockTime] = useState(0)
-
-  useEffect(()=>{
-    const initLockTime = async ()=>{
-      const {address} = props.pool
+  useEffect(() => {
+    const initLockTime = async () => {
+      const { address } = props.pool;
       // console.log(props.pool);
-      const timestamp = await store.getLockTime(address)
-      setLockTime(timestamp)
-    }
-    initLockTime()
-  }, [])
+      const timestamp = await store.getLockTime(address);
+      console.log(timestamp);
+      setLockTime(timestamp);
+    };
+    initLockTime();
+  }, []);
 
   return (
     <Row className='pool-boxes'>
@@ -49,13 +49,12 @@ const StakeMain = (props) => {
                 <hr />
               </>
             )}
-         
-                <div className='d-flex justify-content-between'>
-                  <span>Time left to stake:</span>
-                  <CountDown pool={props.pool} timestamp={lockTime}/>
-                </div>
-                <hr />
-       
+
+            {/* <div className='d-flex justify-content-between'>
+              <span>Time left to stake:</span>
+              <CountDown pool={props.pool} timestamp={lockTime} />
+            </div>
+            <hr /> */}
 
             <div className='d-flex justify-content-between'>
               <span>Weekly Rewards:</span>
@@ -198,7 +197,7 @@ const StakeMain = (props) => {
                   {props.pool.rewardsSymbol === '$'
                     ? props.pool.rewardsSymbol
                     : ''}{' '}
-                  {props.pool.myRewards}{' '}
+                  {props.pool?.myRewards ? props.pool.myRewards.toFixed(6) : 0}{' '}
                   {props.pool.rewardsSymbol !== '$'
                     ? props.pool.rewardsSymbol
                     : ''}
