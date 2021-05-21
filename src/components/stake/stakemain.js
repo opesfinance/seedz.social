@@ -198,7 +198,7 @@ const StakeMain = (props) => {
                   {props.pool.rewardsSymbol === '$'
                     ? props.pool.rewardsSymbol
                     : ''}{' '}
-                  {props.pool.myRewards}{' '}
+                  {props.pool?.myRewards ? props.pool.myRewards.toFixed(6) : 0}{' '}
                   {props.pool.rewardsSymbol !== '$'
                     ? props.pool.rewardsSymbol
                     : ''}
