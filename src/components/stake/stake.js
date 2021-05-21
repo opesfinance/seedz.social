@@ -41,7 +41,8 @@ import {
   FaYoutube,
 } from 'react-icons/fa';
 
-import { AiFillChrome } from 'react-icons/ai';
+// import { AiFillChrome } from 'react-icons/ai';
+import { IoGlobeSharp } from 'react-icons/io5';
 
 const { emitter, dispatcher, store } = Store;
 
@@ -512,13 +513,14 @@ const Stake = (props) => {
     padding: '0.1rem',
     fontSize: '2.3em',
   };
+
   const darkIcons = {
     discord: <FaDiscord style={whiteStyle} />,
     instagram: <FaInstagramSquare style={whiteStyle} />,
     medium: <FaMedium style={whiteStyle} />,
     telegram: <FaTelegram style={whiteStyle} />,
     twitter: <FaTwitterSquare style={whiteStyle} />,
-    website: <AiFillChrome style={whiteStyle} />,
+    website: <IoGlobeSharp style={whiteStyle} />,
     youtube: <FaYoutube style={whiteStyle} />,
   };
 
@@ -527,13 +529,14 @@ const Stake = (props) => {
     padding: '0.1rem',
     fontSize: '2.3em',
   };
+
   const lightIcons = {
     discord: <FaDiscord style={blueStyle} />,
     instagram: <FaInstagramSquare style={blueStyle} />,
     medium: <FaMedium style={blueStyle} />,
     telegram: <FaTelegram style={blueStyle} />,
     twitter: <FaTwitterSquare style={blueStyle} />,
-    website: <AiFillChrome style={blueStyle} />,
+    website: <IoGlobeSharp style={blueStyle} />,
     youtube: <FaYoutube style={blueStyle} />,
   };
 
@@ -588,7 +591,7 @@ const Stake = (props) => {
           >
             {pool.address}
           </a>
-          <div>{socialLinks}</div>
+          <div className='mt-2'>{socialLinks}</div>
         </Col>
       </Row>
     </div>
