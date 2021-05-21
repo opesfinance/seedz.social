@@ -523,7 +523,7 @@ const Stake = (props) => {
   };
 
   const blueStyle = {
-    color: 'blue',
+    color: '#7c6ebb',
     padding: '0.1rem',
     fontSize: '2.3em',
   };
@@ -588,7 +588,7 @@ const Stake = (props) => {
           >
             {pool.address}
           </a>
-          <div className='stake-social-links'>{socialLinks}</div>
+          <div>{socialLinks}</div>
         </Col>
       </Row>
     </div>
