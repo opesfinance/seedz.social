@@ -124,6 +124,18 @@ const Hive = (props) => {
               {props.weeklyRewards?.toFixed(4) || 0} {props.rewardsSymbol}
             </div>
           </div>
+          <div className='d-flex justify-content-between'>
+            <div>
+              <span className='dot purple'></span>
+              Lockup Time
+            </div>
+            <div className='text-right main-blue'>
+              {props.address == '0x9411aE40e4EefE2BDCF6F4e2beC81BEb7682bC63'
+                ? '2'
+                : '12'}{' '}
+              months
+            </div>
+          </div>
           {totalLockVolume ? (
             <div className='d-flex justify-content-between'>
               <div>
