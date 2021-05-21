@@ -2833,7 +2833,6 @@ class Store {
   getLockTime = async (address) => {
     const web3 = new Web3(store.getStore('web3context').library.provider);
     const account = store.getStore('account');
-    console.log(config)
     try {
       const contract = new web3.eth.Contract(
         config.seedzABI,
