@@ -142,6 +142,8 @@ const Stake = (props) => {
         console.log(stakedAmountUsd);
         return stakedAmountUsd;
         // setStakedAmountUsd((+stakedAmountUsd).toFixed(3));
+      } else {
+        return 0;
       }
     } catch (error) {
       // console.log(error);
