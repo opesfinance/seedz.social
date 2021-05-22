@@ -917,6 +917,8 @@ class Store {
 
       // console.log(dataBack);
 
+      if (!dataBack || !dataBack.length) return 0;
+
       let amountOut = (
         dataBack[dataBack.length - 1] /
         10 ** assetOut.decimals
@@ -2820,11 +2822,11 @@ class Store {
     const account = store.getStore('account');
 
     try {
-      const boostContract = new web3.eth.Contract(asset.abi, asset.address);  
+      const boostContract = new web3.eth.Contract(asset.abi, asset.address);
       let results = await boostContract.methods
         .totalSupply()
         .call({ from: account.address });
-      return results/ 10 ** 18;
+      return results / 10 ** 18;
     } catch (error) {
       console.log(error);
     }
@@ -2837,14 +2839,13 @@ class Store {
       const contract = new web3.eth.Contract(
         config.seedzABI,
         config.seedzAddress
-      );  
+      );
       let lockTime = await contract.methods
         .lockTime(address)
         .call({ from: account.address });
       console.log(lockTime);
-      return lockTime
+      return lockTime;
       // lockTime siempre son iguales a 0
-      
     } catch (error) {
       console.log(error);
     }
