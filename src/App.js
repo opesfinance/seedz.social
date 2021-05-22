@@ -17,7 +17,7 @@ import WhaleTank from './components/whalestank/whaletank';
 import Stake from './components/stake/stake';
 import Swarm from './components/swarm/swarm';
 import Pools from './components/pools/pools';
-import NetworkAlert from './components/networkAlert/networkAlert'
+import NetworkAlert from './components/networkAlert/networkAlert';
 
 import {
   CONNECTION_CONNECTED,
@@ -129,7 +129,7 @@ class App extends Component {
             <Account />
           ) : (
             <>
-              <NetworkAlert/>
+              <NetworkAlert />
               <Switch>
                 <Route path='/stake/:address' component={Stake} />
                 <Route path='/whaletank' component={WhaleTank} />
