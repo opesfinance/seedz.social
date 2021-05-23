@@ -768,7 +768,7 @@ class Store {
       // );
 
       const account = store.getStore('account');
-
+      if (!store.getStore('web3context')) return 0;
       const web3 = new Web3(store.getStore('web3context').library.provider);
       const assets = store.getStore('exchangeAssets').tokens;
 
@@ -823,6 +823,9 @@ class Store {
 
   getLpPrice = async (assetOut) => {
     const account = store.getStore('account');
+
+    if (!store.getStore('web3context')) return 0;
+
     const web3 = new Web3(store.getStore('web3context').library.provider);
     const assets = store.getStore('lpTokens');
     let price;
@@ -876,7 +879,7 @@ class Store {
     try {
       // console.log(assetIn, assetOut, amountIn);
       const account = store.getStore('account');
-
+      if (!store.getStore('web3context')) return 0;
       const web3 = new Web3(store.getStore('web3context').library.provider);
       const assets = store.getStore('exchangeAssets').tokens;
       var current = assets.find((i) => i.address == assetOut.address);
@@ -941,6 +944,7 @@ class Store {
     var current = assets.find((i) => i.address == assetOut.address);
     // console.log(current);
     const account = store.getStore('account');
+    if (!store.getStore('web3context')) return 0;
     const web3 = new Web3(store.getStore('web3context').library.provider);
     let amountOut;
 

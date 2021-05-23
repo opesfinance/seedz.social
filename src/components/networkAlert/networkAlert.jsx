@@ -16,12 +16,16 @@ const NetworkAlert = (props) => {
   const [isMainnet, setIsMainnet] = useState(true); // es cierto por vacuidad
   const [open, setOpen] = React.useState(true);
 
-  const web3 = new Web3(store.getStore('web3context').library.provider);
-
   const checkMainnet = async (version) => {
-    const net = web3?.eth?.net;
-    if (!net) setIsMainnet(true);
-    else setIsMainnet((await net.getNetworkType()) === 'main');
+    if (
+      store.getStore('web3context') &&
+      store.getStore('web3context')?.library?.provider
+    ) {
+      const web3 = new Web3(store.getStore('web3context').library.provider);
+      const net = web3?.eth?.net;
+      if (!net) setIsMainnet(true);
+      else setIsMainnet((await net.getNetworkType()) === 'main');
+    }
   };
 
   useEffect(() => {

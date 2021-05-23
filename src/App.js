@@ -104,6 +104,7 @@ class App extends Component {
   };
 
   connectionDisconnected = () => {
+    // console.log(store.getStore('account'));
     this.setState({ account: store.getStore('account') });
   };
 
@@ -115,6 +116,7 @@ class App extends Component {
 
   render() {
     const { account, style } = this.state;
+    // console.log(store.getStore('account'));
 
     return (
       <div className={`${style} main-content`}>
@@ -125,7 +127,7 @@ class App extends Component {
             onSwitchTheme={this.onSwitchThemeHandler}
             activeStyle={this.state.style}
           />
-          {!account ? (
+          {!account || !account.address ? (
             <Account />
           ) : (
             <>
