@@ -1826,6 +1826,7 @@ class Store {
         }
       });
   };
+
   sellWithTokenToEth = (payload) => {
     const account = store.getStore('account');
     const { assetIn, assetOut, amountIn, amountOut } = payload.content;
@@ -1851,6 +1852,7 @@ class Store {
       );
     });
   };
+
   _sellWithTokenToEthCall = async (
     assetIn,
     assetOut,
@@ -1912,6 +1914,7 @@ class Store {
         }
       });
   };
+
   exchange = (payload) => {
     const { assetIn, assetOut, amountIn, amountOut } = payload.content;
     if (assetIn.group == 'inputs') {

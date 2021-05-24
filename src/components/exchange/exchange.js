@@ -260,11 +260,11 @@ const Exchange = (props) => {
         return setError('Not enough balance in this asset');
 
       const assetIn = {
-        amount: fromAmount,
+        amount: `${fromAmount}`,
         asset: fromOptions.find((i) => i.address == fromAddress),
       };
       const assetOut = {
-        amount: toAmount,
+        amount: `${toAmount}`,
         asset: toOptions.find((i) => i.address == toAddress),
       };
 
@@ -320,7 +320,7 @@ const Exchange = (props) => {
   };
 
   const addTokens = async (token) => {
-    setAddingTokenToMetamask(true)
+    setAddingTokenToMetamask(true);
     console.log(token);
     let provider = new Web3(store.getStore('web3context').library.provider);
     provider = provider.currentProvider;
@@ -360,7 +360,9 @@ const Exchange = (props) => {
               className={'row m-1 p-2 rounded box-' + boxColorMapper[b.color]}
             >
               <div className='col m-0 my-auto text-left small font-weight-bold text-white'>
-                <h5 className='p-0 m-0 text-bottom' style={{fontSize:20}}>{b.value}</h5>
+                <h5 className='p-0 m-0 text-bottom' style={{ fontSize: 20 }}>
+                  {b.value}
+                </h5>
                 <p className='p-0 m-0 text-bottom small font-weight-bold'>
                   {b.label}
                 </p>
