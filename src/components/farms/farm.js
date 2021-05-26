@@ -25,14 +25,24 @@ const Farm = (props) => {
     const eth = store
       .getStore('exchangeAssets')
       .tokens.find((e) => e.label === 'ETH');
+    const ethPrice = await store.getETHPrice()
     const token = store
-      .getStore('exchangeAssets')
-      .tokens.find((a) => a.label === props.tokenSymbol);
-    const amountOut = await store.getAmountOut(token, eth, '1');
-    const ethPrice = await store.getETHPrice();
-    const totalSupply = await store.getTotalSupply(props.token);
-    const totalLockVolume = amountOut * ethPrice * totalSupply;
-    setTotalLockVolume(totalLockVolume);
+      .getStore('lpTokens')
+      .find(x=>x.label === props.rewardsSymbol)
+
+    await store.getLpPrice(token)
+    const lpPrice = await store.getLpAmountOut(eth, token, `1`)
+    const price = ethPrice / lpPrice
+    if (!price) return
+
+    const supplyToken = store
+      .getStore('rewardPools')
+      .map(x => x.tokens)
+      .flat()
+      .find(({tokenAddress})=> tokenAddress === props.token.address)
+    const totalSupply = await store.getTotalSupply(supplyToken);
+    setTotalLockVolume(totalSupply * price);
+
   };
   useEffect(() => {
     initTotalLockVolume();
