@@ -2829,7 +2829,13 @@ class Store {
     const account = store.getStore('account');
 
     try {
-      const boostContract = new web3.eth.Contract(asset.abi, asset.address);
+      const boostContract = new web3.eth.Contract(
+        asset.abi,
+        asset.rewardsAddress
+      );
+
+      console.log(asset.name, asset.rewardsAddress);
+
       let results = await boostContract.methods
         .totalSupply()
         .call({ from: account.address });

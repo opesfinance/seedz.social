@@ -25,24 +25,23 @@ const Farm = (props) => {
     const eth = store
       .getStore('exchangeAssets')
       .tokens.find((e) => e.label === 'ETH');
-    const ethPrice = await store.getETHPrice()
+    const ethPrice = await store.getETHPrice();
     const token = store
       .getStore('lpTokens')
-      .find(x=>x.label === props.rewardsSymbol)
+      .find((x) => x.label === props.rewardsSymbol);
 
-    await store.getLpPrice(token)
-    const lpPrice = await store.getLpAmountOut(eth, token, `1`)
-    const price = ethPrice / lpPrice
-    if (!price) return
+    await store.getLpPrice(token);
+    const lpPrice = await store.getLpAmountOut(eth, token, `1`);
+    const price = ethPrice / lpPrice;
+    if (!price) return;
 
     const supplyToken = store
       .getStore('rewardPools')
-      .map(x => x.tokens)
+      .map((x) => x.tokens)
       .flat()
-      .find(({tokenAddress})=> tokenAddress === props.token.address)
+      .find(({ tokenAddress }) => tokenAddress === props.token.address);
     const totalSupply = await store.getTotalSupply(supplyToken);
     setTotalLockVolume(totalSupply * price);
-
   };
   useEffect(() => {
     initTotalLockVolume();
@@ -99,7 +98,7 @@ const Farm = (props) => {
               {props.weeklyRewards?.toFixed(2) || 0} {props.rewardsSymbol}
             </div>
           </div>
-          {totalLockVolume ? (
+          {/* {totalLockVolume ? (
             <div className='d-flex justify-content-between'>
               <div>
                 <span className='dot orange'></span>
@@ -111,7 +110,7 @@ const Farm = (props) => {
             </div>
           ) : (
             ''
-          )}
+          )} */}
           <hr />
           <div className='d-flex justify-content-between'>
             <div>
