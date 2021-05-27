@@ -17,13 +17,13 @@ const Hive = (props) => {
   const [totalLockVolume, setTotalLockVolume] = useState(0);
 
   const hiveid2LpLabel = {
-    'strhive': 'STR',
-    'pixelhive': 'PIXEL',
-    'lifthive': 'LIFT',
-    'yfuhive': 'YFU',
-    'wpehive': 'WPE',
-    'wbtchive': 'WBTC',
-  }
+    strhive: 'STR',
+    pixelhive: 'PIXEL',
+    lifthive: 'LIFT',
+    yfuhive: 'YFU',
+    wpehive: 'WPE',
+    wbtchive: 'WBTC',
+  };
 
   const initTotalLockVolume = async () => {
     if (!!props.token.disableStake) return;
@@ -31,24 +31,23 @@ const Hive = (props) => {
     const eth = store
       .getStore('exchangeAssets')
       .tokens.find((e) => e.label === 'ETH');
-    const ethPrice = await store.getETHPrice()
+    const ethPrice = await store.getETHPrice();
 
     const token = store
       .getStore('lpTokens')
-      .find((e) => e.label === hiveid2LpLabel[props.token.hiveId])
+      .find((e) => e.label === hiveid2LpLabel[props.token.hiveId]);
 
-    await store.getLpPrice(token)
-    const lpPrice = await store.getLpAmountOut(eth, token, `1`)
-    const price = ethPrice / lpPrice
-    if (!price) return
+    await store.getLpPrice(token);
+    const lpPrice = await store.getLpAmountOut(eth, token, `1`);
+    const price = ethPrice / lpPrice;
+    if (!price) return;
 
     const supplyToken = store
       .getStore('rewardPools')
-      .map(x => x.tokens)
+      .map((x) => x.tokens)
       .flat()
-      .find(({ address }) =>
-        props.token.address === address
-      );
+      .find(({ address }) => props.token.address === address);
+
     const totalSupply = await store.getTotalSupply(supplyToken);
     setTotalLockVolume(totalSupply * price);
   };
