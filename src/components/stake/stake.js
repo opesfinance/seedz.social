@@ -53,7 +53,7 @@ const Stake = (props) => {
     claimingRewards: false,
     claimAndUnstaking: false,
     staking: false,
-    unstaking: false,
+    unStaking: false,
     beastModing: false, // sorry the word
   });
 
@@ -471,14 +471,17 @@ const Stake = (props) => {
             )}
             {type == 'unstake' && (
               <button
-                disabled={pool.disableStake}
+                disabled={pool.name != 'Crypto Club Pool' || loaders?.unStaking} // meanwhile disable by name. there should be a prop to choose which pools to disableUnstake
+                onClick={() => {
+                  handleLoader(action, 'unStaking');
+                }}
                 className={
                   'pool-' +
                   type +
-                  '-button d-flex align-items-center justify-content-center btn unstake'
+                  '-button d-flex align-items-center justify-content-center btn'
                 }
               >
-                {type}
+                {loaders?.unStaking ? 'Complete in metamask' : type}
               </button>
             )}
           </Col>

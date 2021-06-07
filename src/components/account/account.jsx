@@ -16,7 +16,7 @@ class Account extends Component {
     this.state = {
       activeClass: activeClass,
       loading: false,
-      account: account,
+      account,
       assets: store.getStore('assets'),
       modalOpen: false,
       themeType: themeType,
