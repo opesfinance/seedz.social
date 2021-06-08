@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography, TextField, InputAdornment } from '@material-ui/core';
-import axios from 'axios';
+// import axios from 'axios';
 import Web3 from 'web3';
 
 import Loader from '../loader/loader';
@@ -83,7 +83,7 @@ const Stake = (props) => {
 
   const address = props.match.params.address;
 
-  const [account] = useState(store.getStore('account'));
+  // const [account] = useState(store.getStore('account'));
   const [timeForReduction, setTimeForReduction] = useState('');
   // const [themeType, setThemeType] = useState(store.getStore('themeType'));
 

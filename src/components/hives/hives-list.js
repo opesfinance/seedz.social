@@ -4,7 +4,7 @@ import rewardsMapper from '../utils/rewardsMapper';
 import './hives-list.scss';
 
 import {
-  CONFIGURE_RETURNED,
+  // CONFIGURE_RETURNED,
   GET_BALANCES,
   GET_BALANCES_RETURNED,
   GET_BOOSTEDBALANCES_RETURNED,
@@ -26,10 +26,10 @@ const HivesList = (props) => {
   //console.log('themeType -----------', themeType); // why is this #true?
 
   const [rewardPools, setRewardPools] = useState(store.getStore('rewardPools'));
-  const [account, setAccount] = useState(store.getStore('account'));
+  const [account, _] = useState(store.getStore('account'));
   // console.log('rewardPools -----------', JSON.stringify(rewardPools)); // why is this #true?
 
-  const [loading, setLoading] = useState(!(account && rewardPools));
+  // const [loading, setLoading] = useState(!(account && rewardPools));
 
   useEffect(() => {
     dispatcher.dispatch({ type: GET_BALANCES, content: {} });

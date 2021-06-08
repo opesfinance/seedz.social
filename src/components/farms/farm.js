@@ -3,9 +3,9 @@ import './farm.scss';
 
 import { withRouter } from 'react-router-dom';
 import Store from '../../stores/store';
-import CountDown from '../utils/countDown';
+// import CountDown from '../utils/countDown';
 
-const { emitter, dispatcher, store } = Store;
+const { store } = Store;
 
 const Farm = (props) => {
   // console.log(props);

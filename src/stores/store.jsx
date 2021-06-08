@@ -2205,7 +2205,7 @@ class Store {
   };
 
   buyLP = (payload) => {
-    const { assetIn, assetOut, amountIn, amountOut } = payload.content;
+    const { assetIn } = payload.content;
     if (assetIn.label == 'ETH') {
       //- [ ] BUYLPTOKENSWITHEYTHEREUM
       this.buyLPWithEth(payload);
