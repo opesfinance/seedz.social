@@ -57,6 +57,10 @@ const Stake = (props) => {
     beastModing: false, // sorry the word
   });
 
+  const [allowance, setAllowance] = useState({
+    stake: false,
+  });
+
   const handleLoader = (method, loaderKey, params) => {
     let p = params || [];
     console.log(p);
@@ -151,11 +155,20 @@ const Stake = (props) => {
     }
   };
 
-  useEffect(() => {
-    if (!pool) props.history.push('/');
-  }, []);
+  const getStakeAllowance = async () => {
+    let stakeAllowance = await store.checkAllowance(
+      pool.token,
+      pool.token.rewardsAddress
+    );
+    setAllowance({ ...allowance, stake: +stakeAllowance });
+    console.log(+stakeAllowance);
+  };
 
   useEffect(() => {
+    if (!pool) props.history.push('/');
+
+    getStakeAllowance();
+
     store.getStore('currentPool');
 
     dispatcher.dispatch({ type: GET_BALANCES, content: {} });
@@ -466,7 +479,11 @@ const Stake = (props) => {
                   handleLoader(action, 'staking');
                 }}
               >
-                {loaders?.staking ? 'Complete in metamask' : type}
+                {loaders?.staking
+                  ? 'Complete in metamask'
+                  : allowance['stake']
+                  ? type
+                  : 'Approve'}
               </button>
             )}
             {type == 'unstake' && (
