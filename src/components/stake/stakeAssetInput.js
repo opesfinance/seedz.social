@@ -69,7 +69,7 @@ const stakeAssetInput = (props) => {
             value={amount}
             error={amountError}
             onChange={onChange}
-            placeholder='0.0000000'
+            placeholder='0.000000000'
             InputProps={{
               endAdornment: (
                 <InputAdornment>
