@@ -116,8 +116,8 @@ const Stake = (props) => {
   const [fieldId, setFieldId] = useState('');
 
   const initialAmounts = {};
-  initialAmounts[`${pool.id}_stake`] = '0.0000000';
-  initialAmounts[`${pool.id}_unstake`] = '0.0000000';
+  initialAmounts[`${pool.id}_stake`] = '0.000000000';
+  initialAmounts[`${pool.id}_unstake`] = '0.000000000';
   const [amounts, setAmounts] = useState(initialAmounts);
   const [amountError, setAmountError] = useState(false);
   const [costBoosterETH, setCostBoosterETH] = useState(null);
@@ -437,7 +437,7 @@ const Stake = (props) => {
               value={amount}
               error={amountError}
               onChange={onChange}
-              placeholder='0.0000000'
+              placeholder='0.000000000'
               InputProps={{
                 endAdornment: (
                   <InputAdornment>
@@ -524,6 +524,8 @@ const Stake = (props) => {
     ).toFixed(9);
     const newAmounts = { ...amounts };
     console.log('newAmounts ---', newAmounts);
+    console.log('balance ---', balance);
+    console.log('pool ---', pool);
     newAmounts[`${id}_${type}`] = rounded;
 
     console.log('newAmounts --------', newAmounts);
