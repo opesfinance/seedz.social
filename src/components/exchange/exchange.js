@@ -316,7 +316,13 @@ const Exchange = (props) => {
 
   const maxFromAmount = async () => {
     const token = fromOptions.find(({ address }) => fromAddress === address);
-    setFromAmount(await store.getAssetBalance(token));
+    let balance = '' + (await store.getAssetBalance(token));
+    if (balance.includes('.')) {
+      balance = `${balance.split('.')[0]}.${balance
+        .split('.')[1]
+        .substring(0, 5)}`;
+    }
+    setFromAmount(balance);
   };
 
   const addTokens = async (token) => {
