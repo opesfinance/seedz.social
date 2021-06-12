@@ -219,21 +219,23 @@ const Hive = (props) => {
             </button>
             <button
               type='button'
-              onClick={() => {
-                // if (props.token.name == 'WPE-LP')
-                //   return window.open(props.token.liquidityLink);
+              disabled
+              className='btn btn-secondary bg-main-blue main-btn btn-block disabled'
+              // onClick={() => {
+              //   // if (props.token.name == 'WPE-LP')
+              //   //   return window.open(props.token.liquidityLink);
 
-                if (!props.token.disableStake)
-                  return props.history.push('/pools/' + props.token.address);
-                // if (props.id !== 'balancer-pool') {
-                //   navigateStake(props.token);
-                // }
-              }}
-              className={
-                props.token.disableStake
-                  ? 'btn btn-secondary bg-main-blue main-btn btn-block disabled'
-                  : 'btn btn-primary bg-main-blue main-btn btn-block'
-              }
+              //   if (!props.token.disableStake)
+              //     return props.history.push('/pools/' + props.token.address);
+              //   // if (props.id !== 'balancer-pool') {
+              //   //   navigateStake(props.token);
+              //   // }
+              // }}
+              // className={
+              //   props.token.disableStake
+              //     ? 'btn btn-secondary bg-main-blue main-btn btn-block disabled'
+              //     : 'btn btn-primary bg-main-blue main-btn btn-block'
+              // }
             >
               Add liquidity
             </button>
