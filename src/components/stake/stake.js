@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography, TextField, InputAdornment } from '@material-ui/core';
-import axios from 'axios';
+// import axios from 'axios';
 import Web3 from 'web3';
 
 import Loader from '../loader/loader';
@@ -57,6 +57,10 @@ const Stake = (props) => {
     beastModing: false, // sorry the word
   });
 
+  const [allowance, setAllowance] = useState({
+    stake: false,
+  });
+
   const handleLoader = (method, loaderKey, params) => {
     let p = params || [];
     console.log(p);
@@ -79,7 +83,7 @@ const Stake = (props) => {
 
   const address = props.match.params.address;
 
-  const [account] = useState(store.getStore('account'));
+  // const [account] = useState(store.getStore('account'));
   const [timeForReduction, setTimeForReduction] = useState('');
   // const [themeType, setThemeType] = useState(store.getStore('themeType'));
 
@@ -112,8 +116,8 @@ const Stake = (props) => {
   const [fieldId, setFieldId] = useState('');
 
   const initialAmounts = {};
-  initialAmounts[`${pool.id}_stake`] = '0.0000000';
-  initialAmounts[`${pool.id}_unstake`] = '0.0000000';
+  initialAmounts[`${pool.id}_stake`] = '0.000000000';
+  initialAmounts[`${pool.id}_unstake`] = '0.000000000';
   const [amounts, setAmounts] = useState(initialAmounts);
   const [amountError, setAmountError] = useState(false);
   const [costBoosterETH, setCostBoosterETH] = useState(null);
@@ -151,11 +155,20 @@ const Stake = (props) => {
     }
   };
 
-  useEffect(() => {
-    if (!pool) props.history.push('/');
-  }, []);
+  const getStakeAllowance = async () => {
+    let stakeAllowance = await store.checkAllowance(
+      pool.token,
+      pool.token.rewardsAddress
+    );
+    setAllowance({ ...allowance, stake: +stakeAllowance });
+    console.log(+stakeAllowance);
+  };
 
   useEffect(() => {
+    if (!pool) props.history.push('/');
+
+    getStakeAllowance();
+
     store.getStore('currentPool');
 
     dispatcher.dispatch({ type: GET_BALANCES, content: {} });
@@ -424,7 +437,7 @@ const Stake = (props) => {
               value={amount}
               error={amountError}
               onChange={onChange}
-              placeholder='0.0000000'
+              placeholder='0.000000000'
               InputProps={{
                 endAdornment: (
                   <InputAdornment>
@@ -467,7 +480,11 @@ const Stake = (props) => {
                   handleLoader(action, 'staking');
                 }}
               >
-                {loaders?.staking ? 'Complete in metamask' : type}
+                {loaders?.staking
+                  ? 'Complete in metamask'
+                  : allowance['stake']
+                  ? type
+                  : 'Approve'}
               </button>
             )}
             {type == 'unstake' && (
@@ -508,6 +525,8 @@ const Stake = (props) => {
     ).toFixed(9);
     const newAmounts = { ...amounts };
     console.log('newAmounts ---', newAmounts);
+    console.log('balance ---', balance);
+    console.log('pool ---', pool);
     newAmounts[`${id}_${type}`] = rounded;
 
     console.log('newAmounts --------', newAmounts);

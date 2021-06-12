@@ -78,7 +78,9 @@ const LeftNav = (props) => {
               width='20'
             /> */}
             <span className='menu' style={{ paddingLeft: '10px' }}>
-              {props.activeStyle == 'light-mode' ? ' dark mode' : ' light mode'}
+              {props.activeStyle === 'light-mode'
+                ? ' dark mode'
+                : ' light mode'}
             </span>
           </li>
         </ul>

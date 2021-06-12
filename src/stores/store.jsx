@@ -1306,10 +1306,30 @@ class Store {
       callback(error);
     }
   };
+
+  checkAllowance = async (asset, contract) => {
+    try {
+      const account = store.getStore('account');
+      const web3 = new Web3(store.getStore('web3context').library.provider);
+      console.log(asset);
+      const erc20Contract = new web3.eth.Contract(
+        config.erc20ABI,
+        asset.address
+      );
+      const allowance = await erc20Contract.methods
+        .allowance(account.address, contract)
+        .call({ from: account.address });
+
+      return allowance;
+    } catch (error) {
+      console.log(error);
+      return 0;
+    }
+  };
+
   _checkApproval = async (asset, account, amount, contract, callback) => {
     try {
       const web3 = new Web3(store.getStore('web3context').library.provider);
-      console.log('ASSEERKLJLDKASJDS');
       console.log(asset);
       const erc20Contract = new web3.eth.Contract(
         config.erc20ABI,
@@ -1320,6 +1340,8 @@ class Store {
         .call({ from: account.address });
 
       const ethAllowance = web3.utils.fromWei(allowance, 'ether');
+      console.log(allowance);
+      console.log(ethAllowance);
 
       if (parseFloat(ethAllowance) < parseFloat(amount)) {
         await erc20Contract.methods
@@ -2183,7 +2205,7 @@ class Store {
   };
 
   buyLP = (payload) => {
-    const { assetIn, assetOut, amountIn, amountOut } = payload.content;
+    const { assetIn } = payload.content;
     if (assetIn.label == 'ETH') {
       //- [ ] BUYLPTOKENSWITHEYTHEREUM
       this.buyLPWithEth(payload);
@@ -2365,19 +2387,27 @@ class Store {
     const account = store.getStore('account');
     const { asset, amount } = payload.content;
 
-    this._checkApproval(asset, account, amount, asset.rewardsAddress, (err) => {
-      if (err) {
-        return emitter.emit(ERROR, err);
-      }
+    this._checkApproval(
+      asset,
+      account,
+      amount,
+      asset.rewardsAddress,
 
-      this._callStake(asset, account, amount, (err, res) => {
+      (err) => {
         if (err) {
           return emitter.emit(ERROR, err);
         }
 
-        return emitter.emit(STAKE_RETURNED, res);
-      });
-    });
+        this._callStake(asset, account, amount, (err, res) => {
+          if (err) {
+            return emitter.emit(ERROR, err);
+          }
+
+          console.log(res);
+          return emitter.emit(STAKE_RETURNED, res);
+        });
+      }
+    );
   };
 
   _callStake = async (asset, account, amount, callback) => {

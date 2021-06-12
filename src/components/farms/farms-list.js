@@ -4,7 +4,7 @@ import rewardsMapper from '../utils/rewardsMapper';
 import './farms-list.scss';
 
 import {
-  CONFIGURE_RETURNED,
+  // CONFIGURE_RETURNED,
   GET_BALANCES,
   GET_BALANCES_RETURNED,
   GET_BOOSTEDBALANCES_RETURNED,
@@ -18,8 +18,8 @@ const { emitter, dispatcher, store } = Store;
 
 const FarmsList = (props) => {
   const [farmPools, setFarmPools] = useState(store.getStore('farmPools'));
-  const [account, setAccount] = useState(store.getStore('account'));
-  const [loading, setLoading] = useState(!(account && farmPools));
+  const [account, _] = useState(store.getStore('account'));
+  // const [loading, setLoading] = useState(!(account && farmPools));
 
   useEffect(() => {
     dispatcher.dispatch({ type: GET_BALANCES, content: {} });
@@ -40,7 +40,7 @@ const FarmsList = (props) => {
     setFarmPools(farmPools);
   }, []);
 
-  const configureReturned = useCallback(() => setLoading(false));
+  // const configureReturned = useCallback(() => setLoading(false));
 
   const farms = rewardsMapper(farmPools).map((t) => {
     return (
