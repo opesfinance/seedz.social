@@ -457,7 +457,7 @@ const Stake = (props) => {
             {type == 'stake' && (
               <button
                 // disabled={pool.disableStake || loaders?.staking}
-                disabled
+                disabled={isHive}
                 className={
                   'pool-' +
                   type +
