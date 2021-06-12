@@ -254,7 +254,7 @@ const Exchange = (props) => {
     );
   };
 
-  const onCreateTransaction = () => {
+  const onExchange = () => {
     if (fromAmount && fromAddress && toAmount && toAddress) {
       if (selectedAssetBalance < fromAmount)
         return setError('Not enough balance in this asset');
@@ -486,7 +486,7 @@ const Exchange = (props) => {
                   <button
                     className='btn btn-primary mt-3 main-btn'
                     disabled={(error && error.length) || doingTransaction}
-                    onClick={onCreateTransaction}
+                    onClick={onExchange}
                   >
                     {doingTransaction ? 'loading ...' : 'Swap'}
                   </button>
