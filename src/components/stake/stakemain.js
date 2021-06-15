@@ -120,6 +120,7 @@ const StakeMain = (props) => {
                       <button
                         type='button'
                         className='btn btn-primary bg-main-white main-btn'
+                        disabled
                         onClick={() => {
                           // if (props.pool.token.name == 'WPE-LP')
                           //   return window.open(props.pool.token.liquidityLink);
@@ -133,6 +134,7 @@ const StakeMain = (props) => {
                       </button>
                     ) : (
                       <button
+                        disabled
                         type='button'
                         className='btn btn-secondary bg-main-white disabled'
                       >
