@@ -146,11 +146,15 @@ const Exchange = (props) => {
       emitter.removeListener(EXCHANGE_RETURNED, handleExchangeReturned);
     };
   }, []);
-
   const handleResponse = (err) => {
-    console.log('err ----------', err);
-    setDoingTransaction(false);
-    setError('');
+    if (/(gas required exceeds allowance)|(execution reverted)/.test(err)) {
+      setError('Gas required exceeds allowance');
+      alert(JSON.stringify(err));
+    } else {
+      console.log('err ----------', err);
+      setDoingTransaction(false);
+      setError('');
+    }
   };
 
   const handleExchangeReturned = (res) => {
