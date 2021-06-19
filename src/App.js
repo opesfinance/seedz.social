@@ -5,6 +5,7 @@ import IpfsRouter from 'ipfs-react-router';
 import Leftnav from './components/leftnav/leftnav';
 import Header from './components/header/header';
 import Exchange from './components/exchange/exchange';
+import Launchpad from './components/launchpad/launchpad';
 import ScrollToTop from './components/navigation/scrolltotop';
 
 import './i18n';
@@ -136,6 +137,7 @@ class App extends Component {
                 <Route path='/stake/:address' component={Stake} />
                 <Route path='/whaletank' component={WhaleTank} />
                 <Route path='/hives' component={Hives} />
+                <Route path='/launchpad' component={Launchpad} />
                 <Route path='/farms' component={Farms} />
                 <Route path='/exchange' component={Exchange} />
                 <Route exact path='/pools/:selectedPool'>

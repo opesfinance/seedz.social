@@ -55,7 +55,7 @@ const STORE = {
         {
           id: 'boostrewards',
           name: 'Seedz Balancer Pool',
-          address: '0x5B2dC8c02728e8FB6aeA03a622c3849875A48801', // BPT
+          address: '0x5B2dC8c02728e8FB6aeA03a622c3849875A48801',
           symbol: 'BPT',
           disableStake: true,
           liquidityLink:
@@ -64,7 +64,7 @@ const STORE = {
           beastBonus: 2000,
           bonusReductionIn: '0 hours',
           decimals: 18,
-          tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
+          tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02',
           tokenSymbol: 'Seedz',
           rewardsAddress: config.seedzAddress,
           rewardsABI: config.seedzABI,
@@ -85,17 +85,11 @@ const STORE = {
           stakeValueNextBooster: 0,
           timeToNextBoost: 0,
           ethPrice: 0,
-          rewardsEndDate: {
-            year: 2020,
-            month: 11,
-            day: 3,
-            hour: 0,
-            minute: 0,
-          },
-          poolRatePerWeek: 250,
           poolRateSymbol: 'Seedz/Week',
         },
       ],
+      isSuperHive: false,
+      isNormalHive: true,
     },
     {
       id: 'seedzuni',
@@ -112,7 +106,7 @@ const STORE = {
         {
           id: 'boostrewards',
           name: 'Seedz UNI-LP Pool',
-          address: '0x75f89ffbe5c25161cbc7e97c988c9f391eaefaf9', // UNI
+          address: '0x75f89ffbe5c25161cbc7e97c988c9f391eaefaf9',
           symbol: 'UNI-v2',
           disableStake: true,
           liquidityLink:
@@ -121,7 +115,7 @@ const STORE = {
           beastBonus: 2000,
           bonusReductionIn: '0 hours',
           decimals: 18,
-          tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
+          tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02',
           tokenSymbol: 'Seedz',
           rewardsAddress: config.seedzAddressTwo,
           rewardsABI: config.seedzABI,
@@ -142,17 +136,11 @@ const STORE = {
           stakeValueNextBooster: 0,
           timeToNextBoost: 0,
           ethPrice: 0,
-          rewardsEndDate: {
-            year: 2020,
-            month: 11,
-            day: 3,
-            hour: 0,
-            minute: 0,
-          },
-          poolRatePerWeek: 250,
           poolRateSymbol: 'Seedz/Week',
         },
       ],
+      isSuperHive: false,
+      isNormalHive: true,
     },
     {
       id: 'pixelhive',
@@ -169,7 +157,7 @@ const STORE = {
         {
           id: 'boostrewards',
           name: 'iUPixel/WPE POOL',
-          address: '0x469485cA145D850c0e54367076558dC72b5DCe19', // UNI
+          address: '0x469485cA145D850c0e54367076558dC72b5DCe19',
           symbol: 'PIXEL-LP',
           liquidityLink:
             'https://uniswap.info/pair/0x469485cA145D850c0e54367076558dC72b5DCe19',
@@ -177,7 +165,7 @@ const STORE = {
           beastBonus: 1000,
           bonusReductionIn: '7 days',
           decimals: 18,
-          tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
+          tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02',
           tokenSymbol: 'Seedz',
           rewardsAddress: config.pixelHiveAddress,
           rewardsABI: config.seedzABI,
@@ -198,14 +186,6 @@ const STORE = {
           stakeValueNextBooster: 0,
           timeToNextBoost: 0,
           ethPrice: 0,
-          rewardsEndDate: {
-            year: 2020,
-            month: 11,
-            day: 3,
-            hour: 0,
-            minute: 0,
-          },
-          poolRatePerWeek: 250,
           poolRateSymbol: 'Seedz/Week',
         },
       ],
@@ -216,6 +196,8 @@ const STORE = {
         discord: 'https://discord.com/invite/pTEaVBE',
         medium: 'https://iupixel.medium.com/',
       },
+      isSuperHive: false,
+      isNormalHive: true,
     },
     {
       id: 'yfuhive',
@@ -231,8 +213,8 @@ const STORE = {
       tokens: [
         {
           id: 'boostrewards',
-          name: 'YFU/WPE POOL', // YFU-LP
-          address: '0x8dc082087ee75b528dfd4e68fa28966666de1a60', // UNI
+          name: 'YFU/WPE POOL',
+          address: '0x8dc082087ee75b528dfd4e68fa28966666de1a60',
           symbol: 'YFU-LP',
           liquidityLink:
             'https://uniswap.info/pair/0x8dc082087ee75b528dfd4e68fa28966666de1a60',
@@ -240,7 +222,7 @@ const STORE = {
           beastBonus: 1000,
           bonusReductionIn: '7 days',
           decimals: 18,
-          tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
+          tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02',
           tokenSymbol: 'Seedz',
           rewardsAddress: config.yfuHiveAddress,
           rewardsABI: config.seedzABI,
@@ -261,14 +243,6 @@ const STORE = {
           stakeValueNextBooster: 0,
           timeToNextBoost: 0,
           ethPrice: 0,
-          rewardsEndDate: {
-            year: 2020,
-            month: 11,
-            day: 3,
-            hour: 0,
-            minute: 0,
-          },
-          poolRatePerWeek: 250,
           poolRateSymbol: 'Seedz/Week',
         },
       ],
@@ -279,6 +253,8 @@ const STORE = {
         discord: 'https://discord.com/invite/RGt5Ukw',
         medium: 'https://yfu-finance.medium.com',
       },
+      isSuperHive: false,
+      isNormalHive: true,
     },
     {
       id: 'lifthive',
@@ -295,7 +271,7 @@ const STORE = {
         {
           id: 'boostrewards',
           name: 'Missions Fund/WPE POOL',
-          address: '0xEcEa1bAe3Bb692510693FAc2932C32BeB1FA866E', // UNI
+          address: '0xEcEa1bAe3Bb692510693FAc2932C32BeB1FA866E',
           symbol: 'LIFT-LP',
           liquidityLink:
             'https://uniswap.info/pair/0xEcEa1bAe3Bb692510693FAc2932C32BeB1FA866E',
@@ -303,7 +279,7 @@ const STORE = {
           beastBonus: 1000,
           bonusReductionIn: '7 days',
           decimals: 18,
-          tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
+          tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02',
           tokenSymbol: 'Seedz',
           rewardsAddress: config.liftHiveAddress,
           rewardsABI: config.seedzABI,
@@ -324,14 +300,6 @@ const STORE = {
           stakeValueNextBooster: 0,
           timeToNextBoost: 0,
           ethPrice: 0,
-          rewardsEndDate: {
-            year: 2020,
-            month: 11,
-            day: 3,
-            hour: 0,
-            minute: 0,
-          },
-          poolRatePerWeek: 250,
           poolRateSymbol: 'Seedz/Week',
         },
       ],
@@ -339,6 +307,8 @@ const STORE = {
         website: 'https://missions.fund',
         twitter: 'https://twitter.com/Crypto_Swarm',
       },
+      isSuperHive: false,
+      isNormalHive: true,
     },
     {
       id: 'strhive',
@@ -355,7 +325,7 @@ const STORE = {
         {
           id: 'boostrewards',
           name: 'Starwire/WPE POOL',
-          address: '0x8eAA970BE66D4DE446453AEA538173382C2CACE8', // UNI
+          address: '0x8eAA970BE66D4DE446453AEA538173382C2CACE8',
           symbol: 'STR-LP',
           liquidityLink:
             'https://uniswap.info/pair/0x8eAA970BE66D4DE446453AEA538173382C2CACE8',
@@ -363,7 +333,7 @@ const STORE = {
           beastBonus: 1000,
           bonusReductionIn: '7 days',
           decimals: 18,
-          tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
+          tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02',
           tokenSymbol: 'Seedz',
           rewardsAddress: config.strHiveAddress,
           rewardsABI: config.seedzABI,
@@ -384,14 +354,6 @@ const STORE = {
           stakeValueNextBooster: 0,
           timeToNextBoost: 0,
           ethPrice: 0,
-          rewardsEndDate: {
-            year: 2020,
-            month: 11,
-            day: 3,
-            hour: 0,
-            minute: 0,
-          },
-          poolRatePerWeek: 250,
           poolRateSymbol: 'Seedz/Week',
         },
       ],
@@ -403,6 +365,8 @@ const STORE = {
         youtube:
           'https://www.youtube.com/channel/UC9IWPP_ePC5QnJHql0F_sOA?view_as=subscriber',
       },
+      isSuperHive: true,
+      isNormalHive: true,
     },
     {
       id: 'wpehive',
@@ -419,7 +383,7 @@ const STORE = {
         {
           id: 'boostrewards',
           name: 'WPE-LP',
-          address: '0x75F89FfbE5C25161cBC7e97c988c9F391EaeFAF9', // UNI
+          address: '0x75F89FfbE5C25161cBC7e97c988c9F391EaeFAF9',
           symbol: 'UNI-v2',
           liquidityLink:
             'https://app.uniswap.org/#/add/ETH/0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',
@@ -427,7 +391,7 @@ const STORE = {
           beastBonus: 1000,
           bonusReductionIn: '7 days',
           decimals: 18,
-          tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
+          tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02',
           tokenSymbol: 'Seedz',
           rewardsAddress: config.wpeHiveAddress,
           rewardsABI: config.seedzABI,
@@ -448,17 +412,11 @@ const STORE = {
           stakeValueNextBooster: 0,
           timeToNextBoost: 0,
           ethPrice: 0,
-          rewardsEndDate: {
-            year: 2020,
-            month: 11,
-            day: 3,
-            hour: 0,
-            minute: 0,
-          },
-          poolRatePerWeek: 250,
           poolRateSymbol: 'Seedz/Week',
         },
       ],
+      isSuperHive: false,
+      isNormalHive: true,
     },
     {
       id: 'wbtchive',
@@ -475,7 +433,7 @@ const STORE = {
         {
           id: 'boostrewards',
           name: 'Crypto Club Pool',
-          address: '0x0731ee4cf7376A1bd5A78199ac9BEdc8213DeF24', // este es el LP token
+          address: '0x0731ee4cf7376A1bd5A78199ac9BEdc8213DeF24',
           symbol: 'UNI-v2',
           liquidityLink:
             'https://app.uniswap.org/#/add/ETH/0x0731ee4cf7376A1bd5A78199ac9BEdc8213DeF24',
@@ -483,10 +441,10 @@ const STORE = {
           beastBonus: 1000,
           bonusReductionIn: '7 days',
           decimals: 18,
-          tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02', //seedz
+          tokenAddress: '0x3269244011893f957a3b82c55437083430BDac02',
           tokenSymbol: 'Seedz',
-          rewardsAddress: config.wbtcHiveAddress, // 0xe9762E1b97bAdB0fdC95c7A6D229a93Ab87Fe3fD
-          rewardsABI: config.wbtcBoostAbi, //
+          rewardsAddress: config.wbtcHiveAddress,
+          rewardsABI: config.wbtcBoostAbi,
           rewardsSymbol: 'Seedz',
           balance: 0,
           stakedBalance: 0,
@@ -504,17 +462,11 @@ const STORE = {
           stakeValueNextBooster: 0,
           timeToNextBoost: 0,
           ethPrice: 0,
-          rewardsEndDate: {
-            year: 2020,
-            month: 11,
-            day: 3,
-            hour: 0,
-            minute: 0,
-          },
-          poolRatePerWeek: 250,
           poolRateSymbol: 'Seedz/Week',
         },
       ],
+      isSuperHive: false,
+      isNormalHive: true,
     },
   ],
   farmPools: [
@@ -570,14 +522,6 @@ const STORE = {
           stakeValueNextBooster: 0,
           timeToNextBoost: 0,
           ethPrice: 0,
-          rewardsEndDate: {
-            year: 2020,
-            month: 11,
-            day: 3,
-            hour: 0,
-            minute: 0,
-          },
-          poolRatePerWeek: 250,
           poolRateSymbol: 'Seedz/Week',
         },
       ],
@@ -634,14 +578,6 @@ const STORE = {
           stakeValueNextBooster: 0,
           timeToNextBoost: 0,
           ethPrice: 0,
-          rewardsEndDate: {
-            year: 2020,
-            month: 11,
-            day: 3,
-            hour: 0,
-            minute: 0,
-          },
-          poolRatePerWeek: 250,
           poolRateSymbol: 'Seedz/Week',
         },
       ],
@@ -698,14 +634,6 @@ const STORE = {
           stakeValueNextBooster: 0,
           timeToNextBoost: 0,
           ethPrice: 0,
-          rewardsEndDate: {
-            year: 2020,
-            month: 11,
-            day: 3,
-            hour: 0,
-            minute: 0,
-          },
-          poolRatePerWeek: 250,
           poolRateSymbol: 'Seedz/Week',
         },
       ],

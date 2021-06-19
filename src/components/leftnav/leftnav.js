@@ -35,6 +35,12 @@ const LeftNav = (props) => {
               <span className='menu'>Pools</span>
             </li>
           </NavLink> */}
+          <NavLink to='/launchpad'>
+            <li className='item-menu'>
+              <img alt='' src={require('../../assets/rocket.png')} width='20' />
+              <span className='menu'>LaunchPad</span>
+            </li>
+          </NavLink>
           <NavLink to='/hives'>
             <li className='item-menu'>
               <img alt='' src={require('../../assets/house.png')} width='20' />
