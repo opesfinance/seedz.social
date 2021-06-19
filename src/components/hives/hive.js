@@ -7,13 +7,15 @@ import Store from '../../stores/store';
 const { store } = Store;
 
 const Hive = (props) => {
-  // console.log(props.token?.ethPrice);
+  console.log(props);
   const address = `${props.address.substring(0, 5)}...${props.address.substring(
     props.address.length - 4,
     props.address.length
   )}`;
 
-  const [stakedAmountUsd, setStakedAmountUsd] = useState(props.stakedBalance);
+  const [stakedAmountUsd, setStakedAmountUsd] = useState(
+    props.token.stakedBalance
+  );
   const [totalLockVolume, setTotalLockVolume] = useState(0);
 
   const hiveid2LpLabel = {
@@ -36,6 +38,8 @@ const Hive = (props) => {
     const token = store
       .getStore('lpTokens')
       .find((e) => e.label === hiveid2LpLabel[props.token.hiveId]);
+
+    // console.log(token);
 
     await store.getLpPrice(token);
     const lpPrice = await store.getLpAmountOut(eth, token, `1`);
@@ -71,9 +75,9 @@ const Hive = (props) => {
             props.token.address == liquidityPoolAddress
         );
 
-      if (assetOut && props.stakedBalance) {
+      if (assetOut && props.token.stakedBalance) {
         let ethUnitPrice = await store.getLpAmountOut(assetIn, assetOut, `1`);
-        let coinEthRelation = ethUnitPrice / props.stakedBalance;
+        let coinEthRelation = ethUnitPrice / props.token.stakedBalance;
         let ethStakedPrice = 1 / coinEthRelation;
         let stakedAmountUsd = ethStakedPrice * props.token?.ethPrice;
         // let ethUnitPrice = await store.getAmountOut(assetIn, assetOut, `1`);
@@ -101,10 +105,10 @@ const Hive = (props) => {
               <img
                 alt=''
                 className='hive-image'
-                src={require(`../../assets/logos/${props.symbol}.png`)}
+                src={require(`../../assets/logos/${props.data.symbol}.png`)}
               />
             </div>
-            <div className='main-blue'>{props.name}</div>
+            <div className='main-blue'>{props.data.name}</div>
             <a
               href={'https://etherscan.io/address/' + props.address}
               className='address'
@@ -174,7 +178,7 @@ const Hive = (props) => {
               My staked amount
             </div>
             <div className='text-right main-blue'>
-              {props.stakedBalance?.toFixed(6) || 0} {props.symbol}
+              {props.token.stakedBalance?.toFixed(6) || 0} {props.data.symbol}
             </div>
           </div>
           <div className='d-flex justify-content-between'>
@@ -192,7 +196,7 @@ const Hive = (props) => {
               My Beast Mode (leverage)
             </div>
             <div className='text-right main-blue'>
-              {props.myBeastModes * 10}%
+              {props.data.myBeastModes * 10}%
             </div>
           </div>
           <div className='d-flex justify-content-between'>
@@ -201,7 +205,7 @@ const Hive = (props) => {
               My Rewards
             </div>
             <div className='text-right main-blue'>
-              {props.myRewards.toFixed(4)} {props.rewardsSymbol}
+              {props.data.myRewards.toFixed(4)} {props.rewardsSymbol}
             </div>
           </div>
 

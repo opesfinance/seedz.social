@@ -167,6 +167,8 @@ const Stake = (props) => {
   useEffect(() => {
     if (!pool) props.history.push('/');
 
+    // console.log(pool);
+
     getStakeAllowance();
 
     store.getStore('currentPool');

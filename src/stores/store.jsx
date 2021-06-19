@@ -1311,7 +1311,7 @@ class Store {
     try {
       const account = store.getStore('account');
       const web3 = new Web3(store.getStore('web3context').library.provider);
-      console.log(asset);
+      // console.log(asset);
       const erc20Contract = new web3.eth.Contract(
         config.erc20ABI,
         asset.address

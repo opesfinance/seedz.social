@@ -25,7 +25,9 @@ const HivesList = (props) => {
 
   //console.log('themeType -----------', themeType); // why is this #true?
 
-  const [rewardPools, setRewardPools] = useState(store.getStore('rewardPools'));
+  const [rewardPools, setRewardPools] = useState(
+    store.getStore('rewardPools').filter(({ isNormalHive }) => isNormalHive)
+  );
   const [account, _] = useState(store.getStore('account'));
   // console.log('rewardPools -----------', JSON.stringify(rewardPools)); // why is this #true?
 
@@ -50,7 +52,9 @@ const HivesList = (props) => {
   const showHash = (txHash) => {};
 
   const balancesReturned = useCallback(async () => {
-    const rewardPools = store.getStore('rewardPools');
+    const rewardPools = store
+      .getStore('rewardPools')
+      .filter(({ isNormalHive }) => isNormalHive);
 
     // i think this should be in an upper level. though only being used here
     const assetsOut = store.getStore('lpTokens');
@@ -67,19 +71,20 @@ const HivesList = (props) => {
     return (
       <div className='col-lg-3 col-md-4 col-sm-6' key={t.address}>
         <Hive
+          data={t}
           acronym={t.symbol}
-          name={t.name}
+          // name={t.name}
           address={t.address}
-          inPool={t.inPool}
+          // inPool={t.inPool}
           beastBonus={t.beastBonus || 0}
-          bonusReductionIn={t.bonusReductionIn || 0}
+          // bonusReductionIn={t.bonusReductionIn || 0}
           weeklyRewards={t.weeklyRewards}
           myBeastModes={t.myBeastModes}
           myRewards={t.myRewards}
           symbol={t.symbol}
           // ratePerWeek={t.ratePerWeek}
           rewardsSymbol={t.rewardsSymbol}
-          stakedBalance={t.stakedBalance}
+          // stakedBalance={t.stakedBalance}
           costBooster={t.costBooster}
           costBoosterUSD={t.costBoosterUSD}
           timeToNextBoost={t.timeToNextBoost}

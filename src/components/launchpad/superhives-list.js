@@ -9,7 +9,8 @@ import {
   GET_BALANCES_RETURNED,
   GET_BOOSTEDBALANCES_RETURNED,
   GET_BOOSTEDBALANCES,
-  // STAKE_RETURNED,
+  GET_REWARDS_RETURNED,
+  STAKE_RETURNED,
 } from '../../constants/constants';
 
 import Store from '../../stores/store';
@@ -25,11 +26,9 @@ const SuperHivesList = (props) => {
 
   //console.log('themeType -----------', themeType); // why is this #true?
 
-  const getRewardPools = store
-    .getStore('rewardPools')
-    .filter(({ isSuperHive }) => isSuperHive);
-
-  const [rewardPools, setRewardPools] = useState(getRewardPools);
+  const [rewardPools, setRewardPools] = useState(
+    store.getStore('rewardPools').filter(({ isSuperHive }) => isSuperHive)
+  );
   // const [account, _] = useState(store.getStore('account'));
   // console.log('rewardPools -----------', JSON.stringify(rewardPools)); // why is this #true?
 
@@ -40,21 +39,25 @@ const SuperHivesList = (props) => {
     dispatcher.dispatch({ type: GET_BOOSTEDBALANCES, content: {} });
     // emitter.on(CONFIGURE_RETURNED, configureReturned);
     emitter.on(GET_BALANCES_RETURNED, balancesReturned);
+    emitter.on(GET_REWARDS_RETURNED, balancesReturned);
     emitter.on(GET_BOOSTEDBALANCES_RETURNED, balancesReturned);
-    // emitter.on(STAKE_RETURNED, showHash);
+    emitter.on(STAKE_RETURNED, balancesReturned);
 
     return () => {
       // emitter.removeListener(CONFIGURE_RETURNED, configureReturned);
+      emitter.removeListener(GET_REWARDS_RETURNED, balancesReturned);
       emitter.removeListener(GET_BALANCES_RETURNED, balancesReturned);
       emitter.removeListener(GET_BOOSTEDBALANCES_RETURNED, balancesReturned);
-      // emitter.removeListener(STAKE_RETURNED, showHash);
+      emitter.removeListener(STAKE_RETURNED, balancesReturned);
     };
   }, []);
 
   // const showHash = (txHash) => {};
 
   const balancesReturned = useCallback(async () => {
-    const rewardPools = getRewardPools;
+    const rewardPools = store
+      .getStore('rewardPools')
+      .filter(({ isSuperHive }) => isSuperHive);
 
     // i think this should be in an upper level. though only being used here
     const assetsOut = store.getStore('lpTokens');
@@ -86,7 +89,7 @@ const SuperHivesList = (props) => {
           symbol={t.symbol}
           // ratePerWeek={t.ratePerWeek}
           rewardsSymbol={t.rewardsSymbol}
-          stakedBalance={t.stakedBalance}
+          // stakedBalance={t.stakedBalance}
           costBooster={t.costBooster}
           costBoosterUSD={t.costBoosterUSD}
           timeToNextBoost={t.timeToNextBoost}
