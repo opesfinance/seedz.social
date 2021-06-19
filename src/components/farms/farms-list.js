@@ -46,6 +46,7 @@ const FarmsList = (props) => {
     return (
       <div key={t.address} className='col-lg-3 col-md-4 col-sm-6'>
         <Farm
+          data={t}
           acronym={t.symbol}
           name={t.name}
           address={t.address}
