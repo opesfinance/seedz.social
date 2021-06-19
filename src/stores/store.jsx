@@ -2864,7 +2864,7 @@ class Store {
         asset.rewardsAddress
       );
 
-      console.log(asset.name, asset.rewardsAddress);
+      // console.log(asset.name, asset.rewardsAddress);
 
       let results = await boostContract.methods
         .totalSupply()
