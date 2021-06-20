@@ -149,7 +149,6 @@ const Exchange = (props) => {
   const handleResponse = (err) => {
     if (/(gas required exceeds allowance)|(execution reverted)/.test(err)) {
       setError('Gas required exceeds allowance');
-      alert(JSON.stringify(err));
     } else {
       console.log('err ----------', err);
       setDoingTransaction(false);
