@@ -1615,6 +1615,26 @@ class Store {
   };
 
   /**
+   * Asks for permission for spending a token.
+   * @param {Token} asset Object with address attribute which corresponds to the token you are asking for permission
+   * @return {Promise} A promise which is resolved when metamask finishs asking for aproval, regardless if is approve or not.
+   */
+  askApproval = async (asset) => {
+    const account = store.getStore('account');
+    const contract = config.exchangeAddress;
+    return new Promise((res, rej) => {
+      try {
+        this._callApproval(asset, account, 0, contract, null,
+          (err) => err ? rej(err) : res()
+        );
+      } catch (e) {
+        console.log("error");
+        rej(e);
+      }
+    });
+  };
+
+  /**
    * -------------------------
    * EXCHANGE LOGIC
    * ----------------------------

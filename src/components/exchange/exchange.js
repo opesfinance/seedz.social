@@ -4,6 +4,7 @@ import { IconContext } from 'react-icons';
 import { InputGroup, Dropdown, Form } from 'react-bootstrap';
 import TradingViewWidget from 'react-tradingview-widget';
 import Web3 from 'web3';
+import config from '../../config'
 
 import { ERROR, EXCHANGE_RETURNED } from '../../constants/constants';
 
@@ -87,6 +88,8 @@ const Exchange = (props) => {
 
   const [addingTokenToMetamask, setAddingTokenToMetamask] = useState(false);
 
+  const [approved, setApproved] = useState(false);
+
   const assetIn = store
     .getStore('exchangeAssets')
     .tokens.find((i) => i.label == 'USDC'); //USDC
@@ -146,9 +149,14 @@ const Exchange = (props) => {
       emitter.removeListener(EXCHANGE_RETURNED, handleExchangeReturned);
     };
   }, []);
+
+  useEffect(() => {
+    checkAllowance()
+  }, [fromAddress])
   const handleResponse = (err) => {
     if (/(gas required exceeds allowance)|(execution reverted)/.test(err)) {
       setError('Gas required exceeds allowance');
+      setDoingTransaction(false);
     } else {
       console.log('err ----------', err);
       setDoingTransaction(false);
@@ -213,6 +221,12 @@ const Exchange = (props) => {
     console.log(tradingViewKey);
     if (tradingViewKey) setTvk(tradingViewKey);
   };
+
+  const checkAllowance = async () => {
+    const allowance =
+      (await store.checkAllowance({ address: fromAddress }, config.exchangeAddress));
+    setApproved(allowance > 0)
+  }
 
   const onSelectAssetIn = async (eventKey) => {
     const token = fromOptions.find(({ address }) => eventKey === address);
@@ -295,6 +309,16 @@ const Exchange = (props) => {
     } else {
       setError('Select both tokens and a value for each');
     }
+  };
+
+  const approve = async () => {
+    store
+      .askApproval({ address: fromAddress })
+      .then(checkAllowance)
+      .catch((e) => {
+        console.log("not approved");
+        console.log(e);
+      });
   };
 
   const swapClickHandler = async () => {
@@ -492,9 +516,18 @@ const Exchange = (props) => {
                 </InputGroup>
                 <div className='text-center'>
                   {error && error.length && <div>{error}</div>}
+                  {
+                    <button
+                      className='btn btn-primary mt-3 main-btn mr-4'
+                      disabled={approved}
+                      onClick={approve}
+                    >
+                      Approve
+                    </button>
+                  }
                   <button
                     className='btn btn-primary mt-3 main-btn'
-                    disabled={(error && error.length) || doingTransaction}
+                    disabled={(error && error.length) || doingTransaction || !approved}
                     onClick={onExchange}
                   >
                     {doingTransaction ? 'loading ...' : 'Swap'}
