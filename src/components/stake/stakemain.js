@@ -7,10 +7,12 @@ import { withRouter } from 'react-router-dom';
 import Store from '../../stores/store';
 import CountDown from '../utils/countDown';
 import GasPrice from '../utils/gasPrice';
+import NftSelector from '../nft/nft-selector';
 
 const { emitter, store } = Store;
 
 const StakeMain = (props) => {
+  console.log(props);
   const [lockTime, setLockTime] = useState(0);
 
   useEffect(() => {
@@ -26,7 +28,19 @@ const StakeMain = (props) => {
 
   return (
     <Row className='pool-boxes'>
-      <Col lg='4' md='12' xs='12' className='p-1'>
+      {props.pool.data.isSuperHive && (
+        <div className='col-md-12'>
+          <div className='my-1'>
+            <NftSelector
+              data={props.data}
+              ddOptions={store
+                .getStore('exchangeAssets')
+                .tokens.filter((a) => a.group == 'inputs')}
+            />
+          </div>
+        </div>
+      )}
+      <Col lg='4' md='6' sm='12' className='mb-3'>
         <Card className='pool-card base-card'>
           <Card.Body className='text-left'>
             {props.isHive && (
@@ -148,7 +162,7 @@ const StakeMain = (props) => {
           </Card.Body>
         </Card>
       </Col>
-      <Col lg='4' md='12' xs='12' className='p-1'>
+      <Col lg='4' md='6' sm='12' className='mb-3'>
         <Card className='pool-card base-card'>
           <Card.Body className='text-left'>
             <div className='hive-details'>
@@ -239,7 +253,7 @@ const StakeMain = (props) => {
         </Card>
       </Col>
 
-      <Col lg='4' md='12' xs='12' className='p-1'>
+      <Col lg='4' md='6' sm='12' className='mb-3'>
         <Card className='pool-card base-card'>
           <Card.Body>
             {props.renderAssetInput(props.pool, 'stake')}

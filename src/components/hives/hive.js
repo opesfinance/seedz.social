@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import CountDown from '../utils/countDown';
+import NftSelector from '../nft/nft-selector';
 
 import './hive.scss';
 import { withRouter } from 'react-router-dom';
@@ -57,7 +58,7 @@ const Hive = (props) => {
   };
   useEffect(() => {
     initTotalLockVolume();
-  }, []);
+  }, [props.id]);
 
   function navigateStake(token) {
     store.setStore({ currentPool: token });
@@ -94,11 +95,23 @@ const Hive = (props) => {
 
   useEffect(() => {
     getStakedAmountUsd();
-  }, [props]);
+  }, [stakedAmountUsd]);
 
   return (
     <div className='hive-wrapper card'>
-      <div className='card-body'>
+      <div className='text-right'>
+        {props.data?.isSuperHive && (
+          <div className='m-1'>
+            <NftSelector
+              data={props.data}
+              ddOptions={store
+                .getStore('exchangeAssets')
+                .tokens.filter((a) => a.group == 'inputs')}
+            />
+          </div>
+        )}
+      </div>
+      <div className={`card-body ${props.data?.isSuperHive && 'pt-0'}`}>
         <div className='hive-header'>
           <div>
             <div className='hive-logo'>

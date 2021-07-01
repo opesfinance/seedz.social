@@ -47,7 +47,7 @@ const HivesList = (props) => {
       emitter.removeListener(GET_BOOSTEDBALANCES_RETURNED, balancesReturned);
       emitter.removeListener(STAKE_RETURNED, showHash);
     };
-  }, []);
+  }, [props.id]);
 
   const showHash = (txHash) => {};
 
@@ -63,7 +63,7 @@ const HivesList = (props) => {
     await Promise.all(promises);
 
     setRewardPools(rewardPools);
-  }, []);
+  }, [rewardPools]);
 
   // const configureReturned = useCallback(() => setLoading(false));
 

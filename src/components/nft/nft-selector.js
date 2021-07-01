@@ -21,7 +21,8 @@ const NftSelector = (props) => {
   // or something to get superhive nft's.
   // or maybe in a use effect
   const [fromOptions, setFromOptions] = useState(
-    store.getStore('exchangeAssets').tokens.filter((a) => a.group == 'inputs')
+    props.ddOptions
+    // store.getStore('exchangeAssets').tokens.filter((a) => a.group == 'inputs')
   );
   const [fromAddress, setFromAddress] = useState(fromOptions[0].address);
 
@@ -51,7 +52,7 @@ const NftSelector = (props) => {
     );
   };
 
-  const dropdownOptions = (options) => {
+  const ddOptionsLayout = (options) => {
     return options.map(({ address, label, logo }) => {
       return (
         <Dropdown.Item key={address} eventKey={address}>
@@ -71,13 +72,13 @@ const NftSelector = (props) => {
   };
 
   return (
-    <div className='m-1'>
+    <div className=''>
       <Dropdown onSelect={onSelectAssetIn}>
         <Dropdown.Toggle variant='outline-primary' className='text-left'>
           {fromToggleContents}
         </Dropdown.Toggle>
 
-        <Dropdown.Menu>{dropdownOptions(fromOptions)}</Dropdown.Menu>
+        <Dropdown.Menu>{ddOptionsLayout(fromOptions)}</Dropdown.Menu>
       </Dropdown>
     </div>
   );

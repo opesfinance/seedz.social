@@ -143,7 +143,7 @@ const Stake = (props) => {
         let coinEthRelation = ethUnitPrice / stakedBalance;
         let ethStakedPrice = 1 / coinEthRelation;
         let stakedAmountUsd = ethStakedPrice * ethPrice;
-        console.log(stakedAmountUsd);
+        // console.log(stakedAmountUsd);
         return stakedAmountUsd;
         // setStakedAmountUsd((+stakedAmountUsd).toFixed(3));
       } else {
@@ -161,7 +161,7 @@ const Stake = (props) => {
       pool.token.rewardsAddress
     );
     setAllowance({ ...allowance, stake: +stakeAllowance });
-    console.log(+stakeAllowance);
+    // console.log(+stakeAllowance);
   };
 
   useEffect(() => {
@@ -193,10 +193,10 @@ const Stake = (props) => {
       emitter.removeListener(GET_REWARDS_RETURNED, showHash);
       // emitter.removeListener(GET_BALANCES_RETURNED, balancesReturned);
     };
-  }, []);
+  }, [props.id]);
 
   const balancesReturned = async () => {
-    console.log('balances returned');
+    // console.log('balances returned');
     // const currentPool = pool; //store.getStore('currentPool');
 
     // i think this should be in an upper level. though only being used here
@@ -411,7 +411,7 @@ const Stake = (props) => {
     return (
       <div className={classes.valContainer} key={`${pool.id}_${type}`}>
         <Row>
-          <Col lg='8' md='8' sm='10' xs='12'>
+          <Col lg='12' md='12' sm='12' xs='12'>
             <Typography
               onClick={() => {
                 setAmount(
@@ -427,7 +427,7 @@ const Stake = (props) => {
           </Col>
         </Row>
         <Row>
-          <Col lg='8' md='12' sm='12' xs='12'>
+          <Col lg='12' md='12' sm='12' xs='12'>
             <TextField
               // disabled={loading}
               className={
@@ -651,7 +651,7 @@ const Stake = (props) => {
       >
         <div
           style={{
-            marginTop: '9rem',
+            marginTop: '7rem',
           }}
         >
           {stakeView === 'options' && hiveDetail}
