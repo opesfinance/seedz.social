@@ -2907,6 +2907,57 @@ class Store {
       throw error;
     }
   };
+
+  // super hive functions -----------------------------------
+
+  /**
+   * @returns return the ids available in your wallet
+   */
+  walletNftQty = async () => {
+    const web3 = new Web3(store.getStore('web3context').library.provider);
+    const account = store.getStore('account');
+    let ierc721Contract = new web3.eth.Contract(
+      config.ierC721ENUMERABLE,
+      '0xc16d9049e251b872f269c09c3e9eb56c6d035f5f'
+    );
+
+    try {
+      var balance = await ierc721Contract.methods
+        .balanceOf(account.address)
+        .call({ from: account.address });
+
+      console.log(balance);
+      return balance;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
+  /**
+   * @param {index} index
+   * if no index is provided, it will crash.
+   */
+  tokenOfOwnerByIndex = async (index) => {
+    const web3 = new Web3(store.getStore('web3context').library.provider);
+    const account = store.getStore('account');
+    let ierc721Contract = new web3.eth.Contract(
+      config.ierC721ENUMERABLE,
+      '0xc16d9049e251b872f269c09c3e9eb56c6d035f5f'
+    );
+
+    try {
+      var tokenofowner = await ierc721Contract.methods
+        .tokenOfOwnerByIndex(account.address, index)
+        .call({ from: account.address });
+
+      console.log('tokenofowner', tokenofowner);
+      return tokenofowner;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
 }
 
 var store = new Store();
