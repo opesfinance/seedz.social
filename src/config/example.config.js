@@ -344,6 +344,8 @@ const config = {
   WBTClpAddress: '0xe9762E1b97bAdB0fdC95c7A6D229a93Ab87Fe3fD',
   WPEBPTAddress: '0xE24281bc68C2a56e19B67b3787Fd5e95937bd970',
 
+  IERC721Address: '0xc16d9049e251b872f269c09c3e9eb56c6d035f5f',
+
   ...abis,
 };
 
