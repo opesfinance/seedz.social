@@ -61,6 +61,9 @@ const Stake = (props) => {
     stake: false,
   });
 
+  const [nftQty, setNftQty] = useState(false);
+  const [nftIds, setNftIds] = useState(['']);
+
   const handleLoader = (method, loaderKey, params) => {
     let p = params || [];
     console.log(p);
@@ -116,8 +119,8 @@ const Stake = (props) => {
   const [fieldId, setFieldId] = useState('');
 
   const initialAmounts = {};
-  initialAmounts[`${pool.id}_stake`] = '0.000000000';
-  initialAmounts[`${pool.id}_unstake`] = '0.000000000';
+  initialAmounts[`${pool.token.id}_stake`] = '0.000000000';
+  initialAmounts[`${pool.token.id}_unstake`] = '0.000000000';
   const [amounts, setAmounts] = useState(initialAmounts);
   const [amountError, setAmountError] = useState(false);
   const [costBoosterETH, setCostBoosterETH] = useState(null);
@@ -164,12 +167,35 @@ const Stake = (props) => {
     // console.log(+stakeAllowance);
   };
 
+  const getNFTs = async () => {
+    try {
+      if (!pool.data.isSuperHive) return;
+      let walletNftQty = await store.walletNftQty();
+      console.log('walletids', !walletNftQty);
+      if (!walletNftQty) return setNftQty(0);
+
+      let promises = new Array(walletNftQty).map((el, i) =>
+        store.tokenOfOwnerByIndex(i)
+      );
+      let nftIdsResult = await Promise.all(promises);
+
+      console.log('nftIdsResult', nftIdsResult);
+
+      setNftQty(walletNftQty);
+      setNftIds([...nftIds, ...nftIdsResult]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (!pool) props.history.push('/');
 
     // console.log(pool);
 
     getStakeAllowance();
+
+    getNFTs();
 
     store.getStore('currentPool');
 
@@ -510,12 +536,12 @@ const Stake = (props) => {
   };
 
   const onChange = (event) => {
-    console.log('onchange ------------', event.target.value);
-    console.log('current amounts ------------', amounts);
-    console.log('event.target.id', event.target.id);
+    // console.log('onchange ------------', event.target.value);
+    // console.log('current amounts ------------', amounts);
+    // console.log('event.target.id', event.target.id);
     let newAmount = {};
     newAmount[event.target.id] = event.target.value;
-    console.log('newamount ------------', newAmount);
+    // console.log('newamount ------------', newAmount);
     setAmountStakeError(false);
     setAmounts({ ...amounts, ...newAmount });
   };
@@ -636,6 +662,7 @@ const Stake = (props) => {
       loaders={loaders}
       stakedAmountUsd={stakedAmountUsd}
       onAddSeeds={onAddSeeds}
+      nftIds={nftIds}
     />
   );
 

@@ -7,13 +7,21 @@ import { withRouter } from 'react-router-dom';
 import Store from '../../stores/store';
 import CountDown from '../utils/countDown';
 import GasPrice from '../utils/gasPrice';
-import NftSelector from '../nft/nft-selector';
+// import NftSelector from '../nft/nft-selector';
+import Select from 'react-select';
 
 const { emitter, store } = Store;
 
 const StakeMain = (props) => {
   console.log(props);
   const [lockTime, setLockTime] = useState(0);
+
+  const nftOptions = props.nftIds.map((id) => {
+    return {
+      value: id ? id : '',
+      label: id ? `nft #${id}` : 'new NFT',
+    };
+  });
 
   useEffect(() => {
     const initLockTime = async () => {
@@ -26,17 +34,31 @@ const StakeMain = (props) => {
     initLockTime();
   }, []);
 
+  const onChangeNft = (el) => {
+    console.log(el);
+  };
+
   return (
     <Row className='pool-boxes'>
       {props.pool.data.isSuperHive && (
         <div className='col-md-12'>
           <div className='my-1'>
-            <NftSelector
+            <div className='row'>
+              <div className='col-md-2'>
+                <Select
+                  options={nftOptions}
+                  onChange={onChangeNft}
+                  defaultValue={nftOptions[1]}
+                />
+
+                {/* <NftSelector
               data={props.data}
               ddOptions={store
                 .getStore('exchangeAssets')
                 .tokens.filter((a) => a.group == 'inputs')}
-            />
+            /> */}
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -134,7 +156,6 @@ const StakeMain = (props) => {
                       <button
                         type='button'
                         className='btn btn-primary bg-main-white main-btn'
-                        disabled
                         onClick={() => {
                           // if (props.pool.token.name == 'WPE-LP')
                           //   return window.open(props.pool.token.liquidityLink);
