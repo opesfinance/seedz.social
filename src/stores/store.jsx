@@ -967,7 +967,22 @@ class Store {
 
     return amountOut;
   };
+  _getOutputForWPEBPT = async (web3, amountIn, account) => {
+    let wpeLPExchange = new web3.eth.Contract(
+      config.WPEbptAddressABI,
+      config.WPEETHlpAddress
+    );
+    var amountToSend = web3.utils.toWei(amountIn, 'ether');
 
+    try {
+      const amount = await wpeLPExchange.methods
+        .getAmountFor(amountToSend) //[assetIn.address, assetOut.address])
+        .call({ from: account.address });
+      return (amount / 10 ** 18).toFixed(4);
+    } catch (ex) {
+      return ex;
+    }
+  };
   _getOutputForWPELP = async (web3, amountIn, account) => {
     let wpeLPExchange = new web3.eth.Contract(
       config.WPElpAddressABI,
@@ -1702,7 +1717,7 @@ class Store {
       );
     });
   };
-  
+
   _buyWithTokenCall = async (
     assetIn,
     assetOut,
@@ -1976,7 +1991,23 @@ class Store {
           return emitter.emit(BUY_LP_RETURNED, res); //EXCHANGEETHFORTOKEN_RETURNED
         }
       );
-    } else {
+    }
+    else if(assetOut.label == 'WPEBPT'){
+      this._buyWPELPWithEthCall(
+        assetOut,
+        account,
+        amountOut,
+        amountIn,
+        (err, res) => {
+          if (err) {
+            return emitter.emit(ERROR, err);
+          }
+
+          return emitter.emit(BUY_LP_RETURNED, res); //EXCHANGEETHFORTOKEN_RETURNED
+        }
+      );
+    }
+    else {
       this._buyLPWithEthCall(
         assetOut,
         account,
@@ -1992,7 +2023,63 @@ class Store {
       );
     }
   };
+  _buyLPWithTokensEthCall = async (asset, account, amount, value, callback) => {
+    const web3 = new Web3(store.getStore('web3context').library.provider);
 
+    let contract = asset.label + 'lpAddress';
+    const coinContract = new web3.eth.Contract(
+      config.WPEbptAddressABI,
+      config[contract]
+    );
+
+    console.log('Amount ', amount);
+    console.log('value ', value);
+    let multiplier = 1.005;
+    const buyAmount = web3.utils.toWei(
+      (+amount).toFixed(18).toString(),
+      'ether'
+    );
+    console.log(buyAmount);
+    console.log(value);
+    coinContract.methods
+      .createLPETHToken()
+      .send({
+        from: account.address,
+        gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
+        value: web3.utils.toWei(
+          (parseFloat(value) * multiplier).toFixed(18).toString(),
+          'ether'
+        ),
+      })
+      .on('transactionHash', function (hash) {
+        // console.log(hash);
+        callback(null, hash);
+      })
+      .on('confirmation', function (confirmationNumber, receipt) {
+        /*if (confirmationNumber === 2) {
+          dispatcher.dispatch({ type: GET_BALANCES, content: {} });
+        }*/
+      })
+      .on('receipt', function (receipt) {
+        // console.log(receipt);
+      })
+      .on('error', function (error) {
+        if (!error.toString().includes('-32601')) {
+          if (error.message) {
+            return callback(error.message);
+          }
+          callback(error);
+        }
+      })
+      .catch((error) => {
+        if (!error.toString().includes('-32601')) {
+          if (error.message) {
+            return callback(error.message);
+          }
+          callback(error);
+        }
+      });
+  };
   _buyWPELPWithEthCall = async (asset, account, amount, value, callback) => {
     const web3 = new Web3(store.getStore('web3context').library.provider);
 

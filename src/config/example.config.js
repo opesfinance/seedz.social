@@ -336,13 +336,13 @@ const config = {
 
   farmsRewardAddress: '0xa279dab6ec190eE4Efce7Da72896EB58AD533262',
   // farmsRewardsAbi: [],
-
+  //Converter addresses
   YFUlpAddress: '0xb4DA88fA5292d6d7c9Bb9E20255Dd6596A9b93E0',
   LIFTlpAddress: '0x8a04e2991496CbC122E3f5d00289246e4e8ab7A9',
   STRlpAddress: '0x5d35a56d67a7659e252Bb2b5FAa942191911c9c1',
   PIXELlpAddress: '0xD20B4a71d1F59E37713aba361A0a25a64a7D335D',
   WBTClpAddress: '0xe9762E1b97bAdB0fdC95c7A6D229a93Ab87Fe3fD',
-  WPEBPTAddress: '0xE24281bc68C2a56e19B67b3787Fd5e95937bd970',
+  WPEETHlpAddress: '0xE24281bc68C2a56e19B67b3787Fd5e95937bd970',
 
   IERC721Address: '0xc16d9049e251b872f269c09c3e9eb56c6d035f5f',
 
