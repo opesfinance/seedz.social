@@ -326,6 +326,7 @@ const config = {
   strHiveAddress: '0xE1C0E3c6B0cbA894932a5599e91cCf63E23C1693',
   wpeHiveAddress: '0xf7233E9816C4c08a9B83Ffc944701854d3CEf6b4',
   wbtcHiveAddress: '0x9411aE40e4EefE2BDCF6F4e2beC81BEb7682bC63',
+  wpeSuperHiveAddress: '0xabfF72F7676df9eFcbDa1bD01C3e0dba9861e6fC',
 
   // CHANGE THIS!!!
   farmpixel: '0x1089c0132423CeBE0A5b03125B3D7f9f31c538EB',
@@ -341,6 +342,7 @@ const config = {
   STRlpAddress: '0x5d35a56d67a7659e252Bb2b5FAa942191911c9c1',
   PIXELlpAddress: '0xD20B4a71d1F59E37713aba361A0a25a64a7D335D',
   WBTClpAddress: '0xe9762E1b97bAdB0fdC95c7A6D229a93Ab87Fe3fD',
+  WPEBPTAddress: '0xE24281bc68C2a56e19B67b3787Fd5e95937bd970',
 
   ...abis,
 };
