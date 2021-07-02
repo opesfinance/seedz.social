@@ -31,7 +31,8 @@ import {
   BUY_LP_RETURNED,
 } from '../constants';
 import Web3 from 'web3';
-import STORE from './store-init-constant';
+import STORE_INIT_CONSTANTS from './store-init-constant';
+// import * as balanceHivesFns from './balance.hives.functions';
 
 const rp = require('request-promise');
 
@@ -44,12 +45,12 @@ const emitter = new Emitter();
 class Store {
   constructor() {
     let themeType = localStorage.getItem('themeType');
-    // console.log('FIRST STORE ', themeType);
+    // console.log('FIRST STORE_INIT_CONSTANTS ', themeType);
     if (themeType === undefined || themeType === null) {
       themeType = true;
       localStorage.setItem('themeType', true);
     }
-    this.store = STORE;
+    this.store = STORE_INIT_CONSTANTS;
 
     dispatcher.register(
       function (payload) {

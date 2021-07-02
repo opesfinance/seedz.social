@@ -2,7 +2,7 @@ import config from '../config';
 import { injected, walletconnect, walletlink } from './connectors';
 const themeType = localStorage.getItem('themeType');
 
-const STORE = {
+const STORE_INIT_CONSTANTS = {
   startBeastReductionTimestamp: 1615082400,
   votingStatus: false,
   governanceContractVersion: 2,
@@ -855,6 +855,21 @@ const STORE = {
         price: 2.067,
         route: ['0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'],
       },
+      {
+        label: 'superhive',
+        labelLP: 'WPE/ETH BPT ',
+        logo: 'WBTC.png',
+        address: '0x0731ee4cf7376A1bd5A78199ac9BEdc8213DeF24',
+        liquidityPoolAddress: '0xE24281bc68C2a56e19B67b3787Fd5e95937bd970',
+        decimals: 18,
+        group: 'outputs',
+        box: 'false',
+        availableViews: ['pools'],
+        onlyPurchaseableWith: ['ETH'],
+        denomination: 'ETH',
+        price: 2.067,
+        route: ['0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'],
+      },
     ],
   },
   poolInTokens: [
@@ -939,6 +954,15 @@ const STORE = {
       priceWPE: 0.0,
     },
     {
+      label: 'super hive',
+      address: '0x98a498D8e7ce64A873d5029a34F37FdAa3F6F799',
+      box: false, // shows its box price in pool view
+      decimals: 18,
+      price: 0.0,
+      priceETH: 0.0,
+      priceWPE: 0.0,
+    },
+    {
       label: 'WBTC',
       address: '0x0731ee4cf7376A1bd5A78199ac9BEdc8213DeF24',
       box: true, // shows its box price in pool view
@@ -949,4 +973,4 @@ const STORE = {
     },
   ],
 };
-export default STORE;
+export default STORE_INIT_CONSTANTS;
