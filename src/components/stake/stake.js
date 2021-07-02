@@ -174,11 +174,11 @@ const Stake = (props) => {
       console.log('walletids', !walletNftQty);
       if (!walletNftQty) return setNftQty(0);
 
-      let promises = new Array(walletNftQty).map((el, i) =>
+      let nftIdsPromises = new Array(walletNftQty).map((el, i) =>
         store.tokenOfOwnerByIndex(i)
       );
-      let nftIdsResult = await Promise.all(promises);
-
+      let nftIdsResult = await Promise.all(nftIdsPromises);
+      // ['4', '10']
       console.log('nftIdsResult', nftIdsResult);
 
       setNftQty(walletNftQty);
