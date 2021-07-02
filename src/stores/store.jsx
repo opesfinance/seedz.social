@@ -940,21 +940,24 @@ class Store {
   };
 
   getLpAmountOut = async (assetIn, assetOut, amountIn) => {
-    // console.log(assetOut);
+    console.log(assetOut);
     const assets = store.getStore('lpTokens');
+
     var current = assets.find((i) => i.address == assetOut.address);
-    // console.log(current);
+    console.log(current);
     const account = store.getStore('account');
     if (!store.getStore('web3context')) return 0;
     const web3 = new Web3(store.getStore('web3context').library.provider);
     let amountOut;
-
+    console.log(current);
     //LP price
     if (assetIn.label === 'ETH') {
       if (current.label == 'WPE') {
         amountOut = await this._getOutputForWPELP(web3, amountIn, account);
       } else if (current.label == 'WBTC') {
         amountOut = await this._getOutputForWBTCLP(web3, amountIn, account);
+      } else if (current.label == 'WPEBPT') {
+        amountOut = await this._getOutputForWPEBPT(web3, amountIn, account);
       } else {
         // console.log(current);
         amountOut = amountIn * (1 / current.priceETH);
@@ -971,7 +974,7 @@ class Store {
   _getOutputForWPEBPT = async (web3, amountIn, account) => {
     let wpeLPExchange = new web3.eth.Contract(
       config.WPEbptAddressABI,
-      config.WPEETHlpAddress
+      config.WPEBPTbptAddress
     );
     var amountToSend = web3.utils.toWei(amountIn, 'ether');
 
@@ -979,6 +982,7 @@ class Store {
       const amount = await wpeLPExchange.methods
         .getAmountFor(amountToSend) //[assetIn.address, assetOut.address])
         .call({ from: account.address });
+      console.log(amount);
       return (amount / 10 ** 18).toFixed(4);
     } catch (ex) {
       return ex;
@@ -1977,7 +1981,7 @@ class Store {
   buyLPWithEth = (payload) => {
     const account = store.getStore('account');
     const { assetIn, assetOut, amountIn, amountOut } = payload.content;
-
+    console.log(assetOut);
     if (assetOut.label == 'WPE' || assetOut.label == 'WBTC') {
       this._buyWPELPWithEthCall(
         assetOut,
@@ -1994,7 +1998,7 @@ class Store {
       );
     }
     else if(assetOut.label == 'WPEBPT'){
-      this._buyWPELPWithEthCall(
+      this._buyWPEBPTWithEthCall(
         assetOut,
         account,
         amountOut,
@@ -2027,7 +2031,64 @@ class Store {
   _buyLPWithTokensEthCall = async (asset, account, amount, value, callback) => {
     const web3 = new Web3(store.getStore('web3context').library.provider);
 
-    let contract = asset.label + 'lpAddress';
+    let contract = asset.label + 'bptAddress';
+    const coinContract = new web3.eth.Contract(
+      config.WPEbptAddressABI,
+      config[contract]
+    );
+
+    console.log('Amount ', amount);
+    console.log('value ', value);
+    let multiplier = 1.005;
+    const buyAmount = web3.utils.toWei(
+      (+amount).toFixed(18).toString(),
+      'ether'
+    );
+    console.log(buyAmount);
+    console.log(value);
+    coinContract.methods
+      .createLPETHToken()
+      .send({
+        from: account.address,
+        gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
+        value: web3.utils.toWei(
+          (parseFloat(value) * multiplier).toFixed(18).toString(),
+          'ether'
+        ),
+      })
+      .on('transactionHash', function (hash) {
+        // console.log(hash);
+        callback(null, hash);
+      })
+      .on('confirmation', function (confirmationNumber, receipt) {
+        /*if (confirmationNumber === 2) {
+          dispatcher.dispatch({ type: GET_BALANCES, content: {} });
+        }*/
+      })
+      .on('receipt', function (receipt) {
+        // console.log(receipt);
+      })
+      .on('error', function (error) {
+        if (!error.toString().includes('-32601')) {
+          if (error.message) {
+            return callback(error.message);
+          }
+          callback(error);
+        }
+      })
+      .catch((error) => {
+        if (!error.toString().includes('-32601')) {
+          if (error.message) {
+            return callback(error.message);
+          }
+          callback(error);
+        }
+      });
+  };
+  _buyWPEBPTWithEthCall = async (asset, account, amount, value, callback) => {
+    const web3 = new Web3(store.getStore('web3context').library.provider);
+
+    let contract = asset.label + 'bptAddress';
     const coinContract = new web3.eth.Contract(
       config.WPEbptAddressABI,
       config[contract]

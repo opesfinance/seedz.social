@@ -856,10 +856,10 @@ const STORE_INIT_CONSTANTS = {
         route: ['0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'],
       },
       {
-        label: 'superhive',
+        label: 'WPEBPT',
         labelLP: 'WPE/ETH BPT ',
         logo: 'WBTC.png',
-        address: '0x0731ee4cf7376A1bd5A78199ac9BEdc8213DeF24',
+        address: '0x98a498D8e7ce64A873d5029a34F37FdAa3F6F799',
         liquidityPoolAddress: '0xE24281bc68C2a56e19B67b3787Fd5e95937bd970',
         decimals: 18,
         group: 'outputs',
@@ -954,9 +954,9 @@ const STORE_INIT_CONSTANTS = {
       priceWPE: 0.0,
     },
     {
-      label: 'super hive',
+      label: 'WPEBPT',
       address: '0x98a498D8e7ce64A873d5029a34F37FdAa3F6F799',
-      box: false, // shows its box price in pool view
+      box: true, // shows its box price in pool view
       decimals: 18,
       price: 0.0,
       priceETH: 0.0,
