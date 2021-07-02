@@ -196,7 +196,7 @@ const STORE = {
         discord: 'https://discord.com/invite/pTEaVBE',
         medium: 'https://iupixel.medium.com/',
       },
-      isSuperHive: true,
+      isSuperHive: false,
       isNormalHive: true,
     },
     {

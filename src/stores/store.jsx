@@ -1632,6 +1632,7 @@ class Store {
       return emitter.emit(EXCHANGE_RETURNED, res); //EXCHANGEETHFORTOKEN_RETURNED
     });
   };
+
   _buyWithEthCall = async (asset, account, amount, value, callback) => {
     const web3 = new Web3(store.getStore('web3context').library.provider);
 
@@ -1701,6 +1702,7 @@ class Store {
       );
     });
   };
+  
   _buyWithTokenCall = async (
     assetIn,
     assetOut,
