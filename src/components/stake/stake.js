@@ -471,8 +471,7 @@ const Stake = (props) => {
           <Col className='text-center'>
             {type == 'stake' && (
               <button
-                // disabled={pool.disableStake || loaders?.staking}
-                disabled={isHive}
+                disabled={pool.disableStake || loaders?.staking}
                 className={
                   'pool-' +
                   type +
