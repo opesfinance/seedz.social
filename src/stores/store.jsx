@@ -241,17 +241,16 @@ class Store {
 
     let nftIds = [];
 
-
     for (let i = 0; i < pools.length; i++) {
       const pool = pools[i];
-      if(pool.isSuperHive){
+      if (pool.isSuperHive) {
         nftIds = await this.getNFTIds(pool.tokens[0].stakeNFT);
         if (nftIds?.length) {
-          if(pool.tokens[0].selectedNftId == -2){
-              pool.tokens[0].selectedNftId = nftIds[0];
+          if (pool.tokens[0].selectedNftId == -2) {
+            pool.tokens[0].selectedNftId = nftIds[0];
           }
           pool.tokens[0].nftIds = nftIds;
-        }else{
+        } else {
           pool.tokens[0].selectedNftId = -1;
         }
       }
@@ -471,19 +470,26 @@ class Store {
 
     for (let i = 0; i < pools.length; i++) {
       const pool = pools[i];
-      if(pool.isSuperHive){
+      if (pool.isSuperHive) {
+        console.log(
+          'pool.tokens[0].selectedNftId ------',
+          pool.tokens[0].selectedNftId
+        );
         nftIds = await this.getNFTIds(pool.tokens[0].stakeNFT);
         if (nftIds?.length) {
-          if(pool.tokens[0].selectedNftId == -2){
-              pool.tokens[0].selectedNftId = nftIds[0];
+          if (pool.tokens[0].selectedNftId == -2) {
+            pool.tokens[0].selectedNftId = nftIds[0];
           }
           pool.tokens[0].nftIds = nftIds;
-        }else{
+        } else {
           pool.tokens[0].selectedNftId = -1;
         }
+        console.log(
+          'pool.tokens[0].selectedNftId ------',
+          pool.tokens[0].selectedNftId
+        );
       }
     }
-
 
     async.map(
       pools,
@@ -796,14 +802,14 @@ class Store {
 
     for (let i = 0; i < pools.length; i++) {
       const pool = pools[i];
-      if(pool.isSuperHive){
+      if (pool.isSuperHive) {
         nftIds = await this.getNFTIds(pool.tokens[0].stakeNFT);
         if (nftIds?.length) {
-          if(pool.tokens[0].selectedNftId == -2){
-              pool.tokens[0].selectedNftId = nftIds[0];
+          if (pool.tokens[0].selectedNftId == -2) {
+            pool.tokens[0].selectedNftId = nftIds[0];
           }
           pool.tokens[0].nftIds = nftIds;
-        }else{
+        } else {
           pool.tokens[0].selectedNftId = -1;
         }
       }
@@ -1226,7 +1232,7 @@ class Store {
 
     return amountOut;
   };
-  _getOutputForWPEBPTwToken= async (web3, amountIn, account) => {
+  _getOutputForWPEBPTwToken = async (web3, amountIn, account) => {
     let wpeLPExchange = new web3.eth.Contract(
       config.WPEbptAddressABI,
       config.WPEBPTbptAddress
@@ -1260,6 +1266,7 @@ class Store {
       return ex;
     }
   };
+
   _getOutputForWPEBPT = async (web3, amountIn, account) => {
     let wpeLPExchange = new web3.eth.Contract(
       config.WPEbptAddressABI,
@@ -1271,12 +1278,13 @@ class Store {
       const amount = await wpeLPExchange.methods
         .getAmountFor(amountToSend) //[assetIn.address, assetOut.address])
         .call({ from: account.address });
-      console.log(amount);
+      // console.log(amount);
       return (amount / 10 ** 18).toFixed(4);
     } catch (ex) {
       return ex;
     }
   };
+
   _getOutputForWPELP = async (web3, amountIn, account) => {
     let wpeLPExchange = new web3.eth.Contract(
       config.WPElpAddressABI,
@@ -1808,9 +1816,7 @@ class Store {
 
     try {
       var balance = await erc20Contract.methods
-        .balanceOf(
-          account.address
-        )
+        .balanceOf(account.address)
         .call({ from: account.address });
       balance = parseFloat(balance) / 10 ** asset.decimals;
       // console.log(
@@ -1843,22 +1849,24 @@ class Store {
       asset.rewardsAddress
     );
 
-    // if (asset?.selectedNftId >= 0) {
-    //   console.log(asset.rewardsABI);
-    //   console.log(asset.rewardsAddress);
-    // }
+    if (asset?.selectedNftId >= 0) {
+      console.log(asset.rewardsABI);
+      console.log(asset.rewardsAddress);
+    }
 
     try {
-      // if (asset?.selectedNftId >= 0) {
-      // console.log('entra a balance -----', asset.selectedNftId);
+      // if (asset?.isSuper) {
+      console.log('entra a balance -----', asset.selectedNftId);
+      let id =
+        asset?.selectedNftId >= 0 ? asset.selectedNftId : account.address;
+      console.log('entra a balance -----', id);
+
       let balance = await erc20Contract.methods
         // .balanceOf(4)
-        .balanceOf(
-          asset?.selectedNftId >= 0 ? asset.selectedNftId : account.address
-        )
+        .balanceOf(id)
         .call({ from: account.address });
       balance = parseFloat(balance) / 10 ** asset.decimals;
-      // console.log('balance -----', balance);
+      console.log('balance -----', balance);
       callback(null, parseFloat(balance));
       // }
     } catch (ex) {
@@ -1914,12 +1922,11 @@ class Store {
       asset.rewardsABI,
       asset.rewardsAddress
     );
-
+    let id = asset?.selectedNftId >= 0 ? asset.selectedNftId : account.address;
+    console.log('id ====', id);
     try {
       var earned = await erc20Contract.methods
-        .earned(
-          asset?.selectedNftId >= 0 ? asset.selectedNftId : account.address
-        )
+        .earned(id)
         .call({ from: account.address });
       earned = parseFloat(earned) / 10 ** asset.decimals;
       callback(null, parseFloat(earned));
@@ -2355,10 +2362,10 @@ class Store {
 
     console.log(assetOut);
     var realIn;
-    if(assetIn.label == 'WPE+ETH'){
-        realIn = assets.find((i) => i.label == 'WPE');
+    if (assetIn.label == 'WPE+ETH') {
+      realIn = assets.find((i) => i.label == 'WPE');
     }
-    if(assetOut.label == 'WPEBPT'){
+    if (assetOut.label == 'WPEBPT') {
       this._checkApprovalLiquidityBPT(
         realIn,
         assetOut,
@@ -2384,9 +2391,7 @@ class Store {
           );
         }
       );
-
-    }
-    else {
+    } else {
       // this._buyLPWithEthCall(
       //   assetOut,
       //   account,
@@ -2419,12 +2424,16 @@ class Store {
       'ether'
     );
 
-    var ethValue = await this._getOutputForWPEBPTwTokenEthVal(web3, value, account);
+    var ethValue = await this._getOutputForWPEBPTwTokenEthVal(
+      web3,
+      value,
+      account
+    );
     var amountToSend = web3.utils.toWei(value, 'ether');
     // if (assetIn.decimals !== 18) {
     //   amountToSend = (value * 10 ** asset.decimals).toFixed(0);
     // }
-    console.log("ETH VALUE ", ethValue);
+    console.log('ETH VALUE ', ethValue);
     console.log(buyAmount);
     console.log(value);
     coinContract.methods
@@ -2847,11 +2856,9 @@ class Store {
     if (assetIn.label == 'ETH') {
       //- [ ] BUYLPTOKENSWITHEYTHEREUM
       this.buyLPWithEth(payload);
-    }
-    else if(assetIn.label =='WPE+ETH'){
+    } else if (assetIn.label == 'WPE+ETH') {
       this.buyLPWithCombo(payload);
-    }
-    else {
+    } else {
       //BUYWITHTOKEN
       console.log('buy lp with token');
       this.buyLPWithToken(payload);
@@ -2869,7 +2876,7 @@ class Store {
     const { asset, amount, value, beastModesAmount } = payload.content;
 
     // return
-    if (asset.isSuper){
+    if (asset.isSuper) {
       this._boostcallStake2NFT(
         asset,
         account,
@@ -2882,8 +2889,8 @@ class Store {
 
           return emitter.emit(STAKE_RETURNED, res);
         }
-        );
-    }else{
+      );
+    } else {
       if (asset.hiveId == 'wbtchive' || !asset.isHive) {
         console.log('hiiii', payload.content);
         this._boostcallStake2(
@@ -2910,7 +2917,6 @@ class Store {
         });
       }
     }
-
   };
   _boostcallStake2NFT = async (asset, account, amount, value, callback) => {
     const web3 = new Web3(store.getStore('web3context').library.provider);
@@ -3131,7 +3137,9 @@ class Store {
   stake = (payload) => {
     const account = store.getStore('account');
     const { asset, amount } = payload.content;
-    console.log("stake ", asset);
+    console.log('stake ============', asset.selectedNftId);
+    console.log('stake ============', asset.isSuper);
+
     this._checkApproval(
       asset,
       account,
@@ -3143,7 +3151,8 @@ class Store {
           return emitter.emit(ERROR, err);
         }
 
-        if(asset.isSuper && asset.selectedNftId >= 0){
+        if (asset.isSuper && asset.selectedNftId >= 0) {
+          console.log('stake super ===========', asset.isSuper);
 
           this._callStakeSuper(asset, account, amount, (err, res) => {
             if (err) {
@@ -3152,7 +3161,7 @@ class Store {
             console.log(res);
             return emitter.emit(STAKE_RETURNED, res);
           });
-        }else{
+        } else {
           this._callStake(asset, account, amount, (err, res) => {
             if (err) {
               return emitter.emit(ERROR, err);
@@ -3164,9 +3173,10 @@ class Store {
       }
     );
   };
+
   _callStakeSuper = async (asset, account, amount, callback) => {
     const web3 = new Web3(store.getStore('web3context').library.provider);
-    console.log('ASSSETR CALL STAKE');
+    console.log('SUPER ASSSETR CALL STAKE');
     console.log(asset);
     console.log(asset.rewardsABI);
     const yCurveFiContract = new web3.eth.Contract(
@@ -3214,8 +3224,6 @@ class Store {
           callback(error);
         }
       });
-
-
   };
   _callStake = async (asset, account, amount, callback) => {
     const web3 = new Web3(store.getStore('web3context').library.provider);
@@ -3642,7 +3650,10 @@ class Store {
       );
 
       let results = await boostContract.methods
-        .getBoosterPriceBulk(asset?.selectedNftId >= 0 ? asset.selectedNftId : account.address, +amount)
+        .getBoosterPriceBulk(
+          asset?.selectedNftId >= 0 ? asset.selectedNftId : account.address,
+          +amount
+        )
         .call({ from: account.address });
 
       // return { boosterPrice: 0.00333 };
@@ -3772,8 +3783,8 @@ class Store {
 
     if (!+walletNftQty) return null;
     console.log(walletNftQty);
-    for(var i = 0; i < walletNftQty; i++){
-      nftIdsResult.push(await this.tokenOfOwnerByIndex(i,nftAddress));
+    for (var i = 0; i < walletNftQty; i++) {
+      nftIdsResult.push(await this.tokenOfOwnerByIndex(i, nftAddress));
     }
     // let nftIdsPromises = new Array(walletNftQty).map((el, i) =>
     //   this.tokenOfOwnerByIndex(i)
