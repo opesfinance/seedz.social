@@ -24,6 +24,7 @@ import {
   GET_REWARDS_RETURNED,
   EXIT,
   GET_BALANCES,
+  GET_BALANCES_RETURNED,
   EXIT_RETURNED,
   GET_BOOSTEDBALANCES_RETURNED,
   GET_BOOSTEDBALANCES,
@@ -180,11 +181,13 @@ const Stake = (props) => {
       var nftIdsResult = [];
       // let nftIdsResult = await Promise.all(nftIdsPromises);
       // // ['4', '10']
-      console.log("NFTDKLFSJL")
+      console.log('NFTDKLFSJL');
       console.log('nftIdsResult', nftIdsResult);
       console.log(pool.token.nftAddress);
-      for(var i = 0; i < walletNftQty; i++){
-        nftIdsResult.push(await store.tokenOfOwnerByIndex(i,pool.token.stakeNFT));
+      for (var i = 0; i < walletNftQty; i++) {
+        nftIdsResult.push(
+          await store.tokenOfOwnerByIndex(i, pool.token.stakeNFT)
+        );
       }
 
       setNftQty(walletNftQty);
@@ -213,19 +216,20 @@ const Stake = (props) => {
     emitter.on(WITHDRAW_RETURNED, showHash);
     emitter.on(EXIT_RETURNED, showHash);
     emitter.on(GET_REWARDS_RETURNED, showHash);
-    // emitter.on(GET_BALANCES_RETURNED, balancesReturned);
+    emitter.on(GET_BALANCES_RETURNED, balancesReturned);
     emitter.on(GET_BOOSTEDBALANCES_RETURNED, balancesReturned);
 
     return () => {
+      console.log('unmounting -----------');
       emitter.removeListener(GET_BOOSTEDBALANCES_RETURNED, balancesReturned);
       emitter.removeListener(ERROR, errorReturned);
       emitter.removeListener(STAKE_RETURNED, showHash);
       emitter.removeListener(WITHDRAW_RETURNED, showHash);
       emitter.removeListener(EXIT_RETURNED, showHash);
       emitter.removeListener(GET_REWARDS_RETURNED, showHash);
-      // emitter.removeListener(GET_BALANCES_RETURNED, balancesReturned);
+      emitter.removeListener(GET_BALANCES_RETURNED, balancesReturned);
     };
-  }, [props.id]);
+  }, []);
 
   const balancesReturned = async () => {
     // console.log('balances returned');
@@ -385,8 +389,22 @@ const Stake = (props) => {
     });
   };
 
+  const onChangeNft = (el) => {
+    // const pools = store.getStore('rewardPools').map((r) => r);
+    // let currentPool = pools.find(({ id }) => currentPool.id == id);
+    // if (currentPool) currentPool.tokens[0].selectedNftId = +el.value;
+    // console.log(pool);
+    console.log(el);
+    let p = { ...pool };
+    p.token.selectedNftId = el.value;
+    setPool(p);
+
+    // store.setStore({ rewardPools: pools });
+    // dispatcher.dispatch({ type: GET_BALANCES, content: {} });
+  };
+
   const onStake = () => {
-    console.log('staking ------------!');
+    console.log('staking ------------!', pool.token.selectedNftId);
     setAmountError(false);
     setAmountStakeError(false);
     const selectedToken = pool.token;
@@ -670,6 +688,7 @@ const Stake = (props) => {
       stakedAmountUsd={stakedAmountUsd}
       onAddSeeds={onAddSeeds}
       nftIds={nftIds}
+      onChangeNft={onChangeNft}
     />
   );
 

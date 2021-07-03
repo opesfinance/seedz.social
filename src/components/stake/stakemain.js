@@ -10,18 +10,20 @@ import GasPrice from '../utils/gasPrice';
 // import NftSelector from '../nft/nft-selector';
 import Select from 'react-select';
 
-const { emitter, store } = Store;
+const { store } = Store;
 
 const StakeMain = (props) => {
-  console.log(props);
+  // console.log(props);
   const [lockTime, setLockTime] = useState(0);
-
   const nftOptions = props.nftIds.map((id) => {
     return {
-      value: id ? id : '',
+      value: id ? id : -1,
       label: id ? `nft #${id}` : 'new NFT',
     };
   });
+  // const [opts] = useState(nftOptions);
+
+  // console.log('nftOptions --', nftOptions);
 
   useEffect(() => {
     const initLockTime = async () => {
@@ -34,11 +36,6 @@ const StakeMain = (props) => {
     initLockTime();
   }, []);
 
-  const onChangeNft = (el) => {
-    console.log(el);
-
-  };
-
   return (
     <Row className='pool-boxes'>
       {props.pool.data.isSuperHive && (
@@ -48,8 +45,8 @@ const StakeMain = (props) => {
               <div className='col-md-2'>
                 <Select
                   options={nftOptions}
-                  onChange={onChangeNft}
-                  defaultValue={nftOptions[1]}
+                  onChange={props.onChangeNft}
+                  defaultValue={nftOptions[nftOptions.length - 1]}
                 />
 
                 {/* <NftSelector
