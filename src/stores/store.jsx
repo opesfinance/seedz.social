@@ -233,8 +233,8 @@ class Store {
     // let nftIds = await this.getNFTIds();
     // console.log('nftIds', nftIds);
 
-    // const web3 = new Web3(store.getStore('web3context').library.provider);
-    const web3 = new Web3(window.ethereum);
+    const web3 = new Web3(store.getStore('web3context').library.provider);
+    // const web3 = new Web3(window.ethereum);
 
     const currentBlock = await web3.eth.getBlockNumber();
     store.setStore({ currentBlock });
@@ -465,8 +465,8 @@ class Store {
 
     let nftIds = [];
 
-    // const web3 = new Web3(store.getStore('web3context').library.provider);
-    const web3 = new Web3(window.ethereum);
+    const web3 = new Web3(store.getStore('web3context').library.provider);
+    // const web3 = new Web3(window.ethereum);
 
     for (let i = 0; i < pools.length; i++) {
       const pool = pools[i];
@@ -792,8 +792,8 @@ class Store {
     // let nftIds = await this.getNFTIds();
     // console.log('nftIds', nftIds);
 
-    // const web3 = new Web3(store.getStore('web3context').library.provider);
-    const web3 = new Web3(window.ethereum);
+    const web3 = new Web3(store.getStore('web3context').library.provider);
+    // const web3 = new Web3(window.ethereum);
 
     const currentBlock = await web3.eth.getBlockNumber();
     store.setStore({ currentBlock });
