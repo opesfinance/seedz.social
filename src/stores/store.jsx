@@ -1089,7 +1089,7 @@ class Store {
     const web3 = new Web3(store.getStore('web3context').library.provider);
     const assets = store.getStore('lpTokens');
     let price;
-
+    console.log(assetOut);
     if (assetOut.label == 'ETH' || assetOut.label == 'WPE') {
       const temp = { label: 'STR' };
       let test = await this._getLPprice(web3, temp, account); //set an LP token address for the moment
@@ -1217,6 +1217,12 @@ class Store {
         amountOut = await this._getOutputForWBTCLP(web3, amountIn, account);
       } else if (current.label == 'WPEBPT') {
         amountOut = await this._getOutputForWPEBPT(web3, amountIn, account);
+      }else if (current.label == 'YFUBPT') {
+        amountOut = await this._getOutputForYFUBPT(web3, amountIn, account);
+      }else if (current.label == 'PIXELBPT') {
+        amountOut = await this._getOutputForPIXELBPT(web3, amountIn, account);
+      }else if (current.label == 'STRBPT') {
+        amountOut = await this._getOutputForSTRBPT(web3, amountIn, account);
       } else {
         // console.log(current);
         amountOut = amountIn * (1 / current.priceETH);
@@ -1225,6 +1231,12 @@ class Store {
       amountOut = amountIn * (1 / current.priceWPE);
     } else if (assetIn.label === 'WPE+ETH') {
       amountOut = await this._getOutputForWPEBPTwToken(web3, amountIn, account);
+    }else if (assetIn.label === 'YFU+ETH') {
+      amountOut = await this._getOutputForYFUBPTwToken(web3, amountIn, account);
+    }else if (assetIn.label === 'PIXEL+ETH') {
+      amountOut = await this._getOutputForPIXELBPTwToken(web3, amountIn, account);
+    }else if (assetIn.label === 'STR+ETH') {
+      amountOut = await this._getOutputForSTRBPTwToken(web3, amountIn, account);
     } else {
       //stable coin
       amountOut = amountIn * (1 / current.price);
@@ -1249,6 +1261,58 @@ class Store {
       return ex;
     }
   };
+  _getOutputForYFUBPTwToken = async (web3, amountIn, account) => {
+    let wpeLPExchange = new web3.eth.Contract(
+      config.WPEbptAddressABI,
+      config.YFUBPTbptAddress
+    );
+    var amountToSend = web3.utils.toWei(amountIn, 'ether');
+
+    try {
+      const amount = await wpeLPExchange.methods
+        .getAmountForToken(amountToSend)
+        .call({ from: account.address });
+      console.log(amount);
+      return (amount[0] / 10 ** 18).toFixed(4);
+    } catch (ex) {
+      return ex;
+    }
+  };
+  _getOutputForPIXELBPTwToken = async (web3, amountIn, account) => {
+    let wpeLPExchange = new web3.eth.Contract(
+      config.WPEbptAddressABI,
+      config.PIXELBPTbptAddress
+    );
+    var amountToSend = web3.utils.toWei(amountIn, 'ether');
+
+    try {
+      const amount = await wpeLPExchange.methods
+        .getAmountForToken(amountToSend)
+        .call({ from: account.address });
+      console.log(amount);
+      return (amount[0] / 10 ** 18).toFixed(4);
+    } catch (ex) {
+      return ex;
+    }
+  };
+  _getOutputForSTRBPTwToken = async (web3, amountIn, account) => {
+    let wpeLPExchange = new web3.eth.Contract(
+      config.WPEbptAddressABI,
+      config.STRBPTbptAddress
+    );
+    var amountToSend = web3.utils.toWei(amountIn, 'ether');
+
+    try {
+      const amount = await wpeLPExchange.methods
+        .getAmountForToken(amountToSend)
+        .call({ from: account.address });
+      console.log(amount);
+      return (amount[0] / 10 ** 18).toFixed(4);
+    } catch (ex) {
+      return ex;
+    }
+  };
+
   _getOutputForWPEBPTwTokenEthVal = async (web3, amountIn, account) => {
     let wpeLPExchange = new web3.eth.Contract(
       config.WPEbptAddressABI,
@@ -1266,7 +1330,108 @@ class Store {
       return ex;
     }
   };
+  _getOutputForYFUBPTwTokenEthVal = async (web3, amountIn, account) => {
+    let wpeLPExchange = new web3.eth.Contract(
+      config.WPEbptAddressABI,
+      config.YFUBPTbptAddress
+    );
+    var amountToSend = web3.utils.toWei(amountIn, 'ether');
 
+    try {
+      const amount = await wpeLPExchange.methods
+        .getAmountForToken(amountToSend)
+        .call({ from: account.address });
+      console.log(amount);
+      return (amount[1] / 10 ** 18).toFixed(4);
+    } catch (ex) {
+      return ex;
+    }
+  };
+  _getOutputForSTRBPTwTokenEthVal = async (web3, amountIn, account) => {
+    let wpeLPExchange = new web3.eth.Contract(
+      config.WPEbptAddressABI,
+      config.STRBPTbptAddress
+    );
+    var amountToSend = web3.utils.toWei(amountIn, 'ether');
+
+    try {
+      const amount = await wpeLPExchange.methods
+        .getAmountForToken(amountToSend)
+        .call({ from: account.address });
+      console.log(amount);
+      return (amount[1] / 10 ** 18).toFixed(4);
+    } catch (ex) {
+      return ex;
+    }
+  };
+  _getOutputForPIXELBPTwTokenEthVal = async (web3, amountIn, account) => {
+    let wpeLPExchange = new web3.eth.Contract(
+      config.WPEbptAddressABI,
+      config.PIXELBPTbptAddress
+    );
+    var amountToSend = web3.utils.toWei(amountIn, 'ether');
+
+    try {
+      const amount = await wpeLPExchange.methods
+        .getAmountForToken(amountToSend)
+        .call({ from: account.address });
+      console.log(amount);
+      return (amount[1] / 10 ** 18).toFixed(4);
+    } catch (ex) {
+      return ex;
+    }
+  };
+  _getOutputForYFUBPT = async (web3, amountIn, account) => {
+    let wpeLPExchange = new web3.eth.Contract(
+      config.WPEbptAddressABI,
+      config.YFUBPTbptAddress
+    );
+    var amountToSend = web3.utils.toWei(amountIn, 'ether');
+
+    try {
+      const amount = await wpeLPExchange.methods
+        .getAmountFor(amountToSend) //[assetIn.address, assetOut.address])
+        .call({ from: account.address });
+      // console.log(amount);
+      return (amount / 10 ** 18).toFixed(4);
+    } catch (ex) {
+      return ex;
+    }
+  };
+  _getOutputForSTRBPT = async (web3, amountIn, account) => {
+    let wpeLPExchange = new web3.eth.Contract(
+      config.WPEbptAddressABI,
+      config.STRBPTbptAddress
+    );
+    var amountToSend = web3.utils.toWei(amountIn, 'ether');
+
+    try {
+      const amount = await wpeLPExchange.methods
+        .getAmountFor(amountToSend) //[assetIn.address, assetOut.address])
+        .call({ from: account.address });
+      // console.log(amount);
+      return (amount / 10 ** 18).toFixed(4);
+    } catch (ex) {
+      return ex;
+    }
+  };
+  _getOutputForPIXELBPT = async (web3, amountIn, account) => {
+    let wpeLPExchange = new web3.eth.Contract(
+      config.WPEbptAddressABI,
+      config.PIXELBPTbptAddress
+    );
+    var amountToSend = web3.utils.toWei(amountIn, 'ether');
+
+    try {
+      const amount = await wpeLPExchange.methods
+        .getAmountFor(amountToSend) //[assetIn.address, assetOut.address])
+        .call({ from: account.address });
+      // console.log(amount);
+      return (amount / 10 ** 18).toFixed(4);
+    } catch (ex) {
+      return ex;
+    }
+  };
   _getOutputForWPEBPT = async (web3, amountIn, account) => {
     let wpeLPExchange = new web3.eth.Contract(
       config.WPEbptAddressABI,
@@ -2365,7 +2530,7 @@ class Store {
     if (assetIn.label == 'WPE+ETH') {
       realIn = assets.find((i) => i.label == 'WPE');
     }
-    if (assetOut.label == 'WPEBPT') {
+    if (assetOut.label == 'WPEBPT' || assetOut.label == 'YFUBPT' || assetOut.label == 'PIXELBPT' || assetOut.label == 'STRBPT') {
       this._checkApprovalLiquidityBPT(
         realIn,
         assetOut,
@@ -2429,6 +2594,25 @@ class Store {
       value,
       account
     );
+    if(asset.label == "YFUBPT"){
+      ethValue = await this._getOutputForYFUBPTwTokenEthVal(
+        web3,
+        value,
+        account
+      );
+    }else if(asset.label == "STRBPT"){
+      ethValue = await this._getOutputForSTRBPTwTokenEthVal(
+        web3,
+        value,
+        account
+      );
+    }else if(asset.label == "PIXELBPT"){
+      ethValue = await this._getOutputForPIXELBPTwTokenEthVal(
+        web3,
+        value,
+        account
+      );
+    }
     var amountToSend = web3.utils.toWei(value, 'ether');
     // if (assetIn.decimals !== 18) {
     //   amountToSend = (value * 10 ** asset.decimals).toFixed(0);
@@ -2493,7 +2677,7 @@ class Store {
           return emitter.emit(BUY_LP_RETURNED, res); //EXCHANGEETHFORTOKEN_RETURNED
         }
       );
-    } else if (assetOut.label == 'WPEBPT') {
+    } else if (assetOut.label == 'WPEBPT' || assetOut.label == 'YFUBPT' || assetOut.label == 'PIXELBPT' || assetOut.label == 'STRBPT' ) {
       this._buyWPEBPTWithEthCall(
         assetOut,
         account,

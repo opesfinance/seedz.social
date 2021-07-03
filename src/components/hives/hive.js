@@ -26,7 +26,10 @@ const Hive = (props) => {
     yfuhive: 'YFU',
     wpehive: 'WPE',
     wbtchive: 'WBTC',
-    wpeshive: 'WPE'
+    wpeshive: 'WPE',
+    yfushive: 'WPE',
+    strshive: 'WPE',
+    pixelshive: 'WPE'
   };
 
   const initTotalLockVolume = async () => {
@@ -41,7 +44,7 @@ const Hive = (props) => {
       .getStore('lpTokens')
       .find((e) => e.label === hiveid2LpLabel[props.token.hiveId]);
 
-    // console.log(token);
+    console.log(token);
 
     await store.getLpPrice(token);
     const lpPrice = await store.getLpAmountOut(eth, token, `1`);
