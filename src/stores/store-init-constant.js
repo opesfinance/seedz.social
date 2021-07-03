@@ -879,7 +879,7 @@ const STORE_INIT_CONSTANTS = {
       {
         label: 'WPEBPT',
         labelLP: 'WPE/ETH BPT ',
-        logo: 'WBTC.png',
+        logo: 'BPT.png',
         address: '0x98a498D8e7ce64A873d5029a34F37FdAa3F6F799',
         liquidityPoolAddress: '0xE24281bc68C2a56e19B67b3787Fd5e95937bd970',
         decimals: 18,
