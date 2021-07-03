@@ -247,7 +247,7 @@ class Store {
       if(pool.isSuperHive){
         nftIds = await this.getNFTIds(pool.tokens[0].stakeNFT);
         if (nftIds?.length) {
-          if(pool.tokens[0].selectedNftId == -1){
+          if(pool.tokens[0].selectedNftId == -2){
               pool.tokens[0].selectedNftId = nftIds[0];
           }
           pool.tokens[0].nftIds = nftIds;
@@ -472,7 +472,7 @@ class Store {
       if(pool.isSuperHive){
         nftIds = await this.getNFTIds(pool.tokens[0].stakeNFT);
         if (nftIds?.length) {
-          if(pool.tokens[0].selectedNftId == -1){
+          if(pool.tokens[0].selectedNftId == -2){
               pool.tokens[0].selectedNftId = nftIds[0];
           }
           pool.tokens[0].nftIds = nftIds;
@@ -795,7 +795,7 @@ class Store {
       if(pool.isSuperHive){
         nftIds = await this.getNFTIds(pool.tokens[0].stakeNFT);
         if (nftIds?.length) {
-          if(pool.tokens[0].selectedNftId == -1){
+          if(pool.tokens[0].selectedNftId == -2){
               pool.tokens[0].selectedNftId = nftIds[0];
           }
           pool.tokens[0].nftIds = nftIds;
