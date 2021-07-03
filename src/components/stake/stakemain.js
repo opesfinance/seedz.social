@@ -17,7 +17,7 @@ const StakeMain = (props) => {
   const [lockTime, setLockTime] = useState(0);
   const nftOptions = props.nftIds.map((id) => {
     return {
-      value: id ? id : -1,
+      value: id ? id : -2,
       label: id ? `nft #${id}` : 'new NFT',
     };
   });

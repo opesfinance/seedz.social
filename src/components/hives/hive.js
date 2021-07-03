@@ -26,7 +26,7 @@ const Hive = (props) => {
     yfuhive: 'YFU',
     wpehive: 'WPE',
     wbtchive: 'WBTC',
-    wpeshive: 'WPE'
+    wpeshive: 'WPE',
   };
 
   const initTotalLockVolume = async () => {
@@ -101,7 +101,7 @@ const Hive = (props) => {
 
   return (
     <div className='hive-wrapper card'>
-      <div className='text-right'>
+      {/* <div className='text-right'>
         {props.data?.isSuperHive && (
           <div className='m-1'>
             <NftSelector
@@ -112,7 +112,7 @@ const Hive = (props) => {
             />
           </div>
         )}
-      </div>
+      </div> */}
       <div className={`card-body ${props.data?.isSuperHive && 'pt-0'}`}>
         <div className='hive-header'>
           <div>

@@ -1481,17 +1481,26 @@ class Store {
       asset.rewardsAddress
     );
 
+    if (asset.isSuper) {
+      console.log('nfts ====', asset.nftIds);
+    }
+    if (asset.isSuper && !asset.nftIds?.length) return 0;
+    let id = asset?.isSuper
+      ? asset?.selectedNftId >= 0
+        ? asset.selectedNftId
+        : -1
+      : account.address;
+    console.log('id ====', id);
+
     try {
-      var balance = await boostContract.methods
-        .getBoosterPrice(
-          asset?.selectedNftId >= 0 ? asset.selectedNftId : account.address
-        )
+      let balance = await boostContract.methods
+        .getBoosterPrice(id)
         .call({ from: account.address });
       // console.log(balance);
       // console.log(balance[0]);
       // console.log(balance[1]);
 
-      var boostInfo = [
+      let boostInfo = [
         parseFloat(balance[0]) / 10 ** asset.decimals,
         parseFloat(balance[1]) / 10 ** asset.decimals,
       ];
@@ -1849,24 +1858,24 @@ class Store {
       asset.rewardsAddress
     );
 
-    if (asset?.selectedNftId >= 0) {
-      console.log(asset.rewardsABI);
-      console.log(asset.rewardsAddress);
-    }
+    // if (asset?.selectedNftId >= 0) {
+    //   console.log(asset.rewardsABI);
+    //   console.log(asset.rewardsAddress);
+    // }
 
     try {
       // if (asset?.isSuper) {
       console.log('entra a balance -----', asset.selectedNftId);
       let id =
         asset?.selectedNftId >= 0 ? asset.selectedNftId : account.address;
-      console.log('entra a balance -----', id);
+      // console.log('entra a balance -----', id);
 
       let balance = await erc20Contract.methods
         // .balanceOf(4)
         .balanceOf(id)
         .call({ from: account.address });
       balance = parseFloat(balance) / 10 ** asset.decimals;
-      console.log('balance -----', balance);
+      // console.log('balance -----', balance);
       callback(null, parseFloat(balance));
       // }
     } catch (ex) {
@@ -1922,8 +1931,16 @@ class Store {
       asset.rewardsABI,
       asset.rewardsAddress
     );
-    let id = asset?.selectedNftId >= 0 ? asset.selectedNftId : account.address;
-    console.log('id ====', id);
+    if (asset.isSuper) {
+      // console.log('nfts ====', asset.nftIds, asset?.selectedNftId);
+    }
+    if (asset.isSuper && !asset.nftIds?.length) return 0;
+    let id = asset?.isSuper
+      ? asset?.selectedNftId >= 0
+        ? asset.selectedNftId
+        : -1
+      : account.address;
+    // console.log('id ====', id);
     try {
       var earned = await erc20Contract.methods
         .earned(id)
@@ -3648,12 +3665,17 @@ class Store {
         asset.rewardsABI,
         asset.rewardsAddress
       );
-
+      if (asset.isSuper && asset?.selectedNftId < 0) {
+        return {
+          boosterPrice: 0,
+          newBoostBalance: 0,
+        };
+      }
+      let id =
+        asset?.selectedNftId >= 0 ? asset.selectedNftId : account.address;
+      console.log('id ----', id);
       let results = await boostContract.methods
-        .getBoosterPriceBulk(
-          asset?.selectedNftId >= 0 ? asset.selectedNftId : account.address,
-          +amount
-        )
+        .getBoosterPriceBulk(id, +amount)
         .call({ from: account.address });
 
       // return { boosterPrice: 0.00333 };
@@ -3778,11 +3800,11 @@ class Store {
   getNFTIds = async (nftAddress) => {
     var nftIdsResult = [];
     let walletNftQty = await this.walletNftQty(nftAddress);
-    console.log(walletNftQty);
+    // console.log(walletNftQty);
     // 0 | N
 
     if (!+walletNftQty) return null;
-    console.log(walletNftQty);
+    // console.log(walletNftQty);
     for (var i = 0; i < walletNftQty; i++) {
       nftIdsResult.push(await this.tokenOfOwnerByIndex(i, nftAddress));
     }
