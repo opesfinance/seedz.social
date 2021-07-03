@@ -351,9 +351,10 @@ const Stake = (props) => {
   };
 
   const getBoosterPriceBulk = async (amount) => {
+    console.log('pool.token.selectedNftId', pool.token.selectedNftId);
     let data = await store.getBoosterPriceBulk(pool.token, amount);
-    setCostBoosterETH(data.boosterPrice);
-    setPool({ ...pool, stakeValueNextBooster: data.newBoostBalance });
+    setCostBoosterETH(data?.boosterPrice);
+    setPool({ ...pool, stakeValueNextBooster: data?.newBoostBalance });
   };
 
   const onBuyBoost = (beastModesAmount) => {
@@ -390,17 +391,22 @@ const Stake = (props) => {
   };
 
   const onChangeNft = (el) => {
-    // const pools = store.getStore('rewardPools').map((r) => r);
-    // let currentPool = pools.find(({ id }) => currentPool.id == id);
-    // if (currentPool) currentPool.tokens[0].selectedNftId = +el.value;
-    // console.log(pool);
+    const pools = [...store.getStore('rewardPools')];
+    let currentPool = pools.find(({ id }) => pool.id == id);
+    console.log('currentPool ===========', currentPool);
+    if (currentPool) {
+      currentPool.tokens[0].selectedNftId = +el.value;
+    }
     console.log(el);
     let p = { ...pool };
     p.token.selectedNftId = el.value;
+    console.log('currentPool token ===========', p.token);
+
     setPool(p);
 
-    // store.setStore({ rewardPools: pools });
-    // dispatcher.dispatch({ type: GET_BALANCES, content: {} });
+    store.setStore({ rewardPools: pools });
+    if (+el.value >= 0)
+      dispatcher.dispatch({ type: GET_BALANCES, content: {} });
   };
 
   const onStake = () => {
