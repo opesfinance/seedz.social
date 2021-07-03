@@ -251,6 +251,8 @@ class Store {
               pool.tokens[0].selectedNftId = nftIds[0];
           }
           pool.tokens[0].nftIds = nftIds;
+        }else{
+          pool.tokens[0].selectedNftId = -1;
         }
       }
     }
@@ -476,6 +478,8 @@ class Store {
               pool.tokens[0].selectedNftId = nftIds[0];
           }
           pool.tokens[0].nftIds = nftIds;
+        }else{
+          pool.tokens[0].selectedNftId = -1;
         }
       }
     }
@@ -799,6 +803,8 @@ class Store {
               pool.tokens[0].selectedNftId = nftIds[0];
           }
           pool.tokens[0].nftIds = nftIds;
+        }else{
+          pool.tokens[0].selectedNftId = -1;
         }
       }
     }
