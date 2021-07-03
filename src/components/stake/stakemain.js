@@ -36,7 +36,7 @@ const StakeMain = (props) => {
 
   const onChangeNft = (el) => {
     console.log(el);
-    
+
   };
 
   return (
@@ -49,7 +49,7 @@ const StakeMain = (props) => {
                 <Select
                   options={nftOptions}
                   onChange={onChangeNft}
-                  defaultValue={nftOptions[0]}
+                  defaultValue={nftOptions[1]}
                 />
 
                 {/* <NftSelector

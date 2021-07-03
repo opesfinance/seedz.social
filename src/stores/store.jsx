@@ -1770,7 +1770,7 @@ class Store {
 
     try {
       var beastmodes = await contract.methods
-        .timeLockLevel(asset?.selectedNftId >= 0 ? asset.selectedNftId : '')
+        .timeLockLevel()
         .call({ from: account.address });
       beastmodes = parseFloat(beastmodes[1]);
       callback(null, beastmodes);
