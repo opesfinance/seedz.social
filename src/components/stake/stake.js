@@ -385,8 +385,9 @@ const Stake = (props) => {
     setAmountStakeError(false);
     const selectedToken = pool.token;
     console.log(pool);
+    console.log(amounts);
     setFieldId('');
-    const amount = amounts[selectedToken.id + '_stake'];
+    const amount = amounts[selectedToken.hiveId + '_stake'];
 
     console.log(amount);
     console.log(selectedToken);

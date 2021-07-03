@@ -229,6 +229,7 @@ class Store {
     const pools = store.getStore('rewardPools');
     // .filter(({ isSuperHive }) => isSuperHive);
     const account = store.getStore('account');
+
     let nftIds = await this.getNFTIds();
     console.log('nftIds', nftIds);
 
@@ -1784,7 +1785,7 @@ class Store {
     try {
       var balance = await erc20Contract.methods
         .balanceOf(
-          asset?.selectedNftId >= 0 ? asset.selectedNftId : account.address
+          account.address
         )
         .call({ from: account.address });
       balance = parseFloat(balance) / 10 ** asset.decimals;
@@ -3003,7 +3004,7 @@ class Store {
   stake = (payload) => {
     const account = store.getStore('account');
     const { asset, amount } = payload.content;
-
+    console.log("stake ", asset);
     this._checkApproval(
       asset,
       account,
@@ -3015,18 +3016,80 @@ class Store {
           return emitter.emit(ERROR, err);
         }
 
-        this._callStake(asset, account, amount, (err, res) => {
-          if (err) {
-            return emitter.emit(ERROR, err);
-          }
+        if(asset.isSuper && asset.selectedNftId >= 0){
 
-          console.log(res);
-          return emitter.emit(STAKE_RETURNED, res);
-        });
+          this._callStakeSuper(asset, account, amount, (err, res) => {
+            if (err) {
+              return emitter.emit(ERROR, err);
+            }
+            console.log(res);
+            return emitter.emit(STAKE_RETURNED, res);
+          });
+        }else{
+          this._callStake(asset, account, amount, (err, res) => {
+            if (err) {
+              return emitter.emit(ERROR, err);
+            }
+            console.log(res);
+            return emitter.emit(STAKE_RETURNED, res);
+          });
+        }
       }
     );
   };
+  _callStakeSuper = async (asset, account, amount, callback) => {
+    const web3 = new Web3(store.getStore('web3context').library.provider);
+    console.log('ASSSETR CALL STAKE');
+    console.log(asset);
+    console.log(asset.rewardsABI);
+    const yCurveFiContract = new web3.eth.Contract(
+      asset.rewardsABI,
+      asset.rewardsAddress
+    );
 
+    var amountToSend = web3.utils.toWei(amount, 'ether');
+    if (asset.decimals !== 18) {
+      amountToSend = (amount * 10 ** asset.decimals).toFixed(0);
+    }
+
+    yCurveFiContract.methods
+      .stakeExistingToken(asset.selectedNftId, amountToSend)
+      .send({
+        from: account.address,
+        gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
+      })
+      .on('transactionHash', function (hash) {
+        // console.log(hash);
+        callback(null, hash);
+      })
+      .on('confirmation', function (confirmationNumber, receipt) {
+        // console.log(confirmationNumber, receipt);
+        if (confirmationNumber === 2) {
+          dispatcher.dispatch({ type: GET_BALANCES, content: {} });
+        }
+      })
+      .on('receipt', function (receipt) {
+        // console.log(receipt);
+      })
+      .on('error', function (error) {
+        if (!error.toString().includes('-32601')) {
+          if (error.message) {
+            return callback(error.message);
+          }
+          callback(error);
+        }
+      })
+      .catch((error) => {
+        if (!error.toString().includes('-32601')) {
+          if (error.message) {
+            return callback(error.message);
+          }
+          callback(error);
+        }
+      });
+
+
+  };
   _callStake = async (asset, account, amount, callback) => {
     const web3 = new Web3(store.getStore('web3context').library.provider);
     console.log('ASSSETR CALL STAKE');
@@ -3533,7 +3596,7 @@ class Store {
     const account = store.getStore('account');
     let ierc721Contract = new web3.eth.Contract(
       config.ierC721ENUMERABLE,
-      '0xc16d9049e251b872f269c09c3e9eb56c6d035f5f'
+      config.WPEBPT721Address
     );
 
     try {
@@ -3558,7 +3621,7 @@ class Store {
     const account = store.getStore('account');
     let ierc721Contract = new web3.eth.Contract(
       config.ierC721ENUMERABLE,
-      '0xc16d9049e251b872f269c09c3e9eb56c6d035f5f'
+      config.WPEBPT721Address
     );
 
     try {
@@ -3575,18 +3638,20 @@ class Store {
   };
 
   getNFTIds = async () => {
-    let nftIdsResult;
+    var nftIdsResult = [];
     let walletNftQty = await this.walletNftQty();
     console.log(walletNftQty);
     // 0 | N
 
     if (!+walletNftQty) return null;
     console.log(walletNftQty);
-
-    let nftIdsPromises = new Array(walletNftQty).map((el, i) =>
-      this.tokenOfOwnerByIndex(i)
-    );
-    nftIdsResult = await Promise.all(nftIdsPromises);
+    for(var i = 0; i < walletNftQty; i++){
+      nftIdsResult.push(await this.tokenOfOwnerByIndex(i));
+    }
+    // let nftIdsPromises = new Array(walletNftQty).map((el, i) =>
+    //   this.tokenOfOwnerByIndex(i)
+    // );
+    // nftIdsResult = await Promise.all(nftIdsPromises);
     return nftIdsResult;
     // ['4', '10']
   };

@@ -26,6 +26,7 @@ const Hive = (props) => {
     yfuhive: 'YFU',
     wpehive: 'WPE',
     wbtchive: 'WBTC',
+    wpeshive: 'WPE'
   };
 
   const initTotalLockVolume = async () => {

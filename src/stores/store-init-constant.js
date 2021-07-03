@@ -477,7 +477,7 @@ const STORE_INIT_CONSTANTS = {
       isNormalHive: true,
     },
     {
-      id: 'wbtchive',
+      id: 'wpeshive',
       name: 'Crypto Club Pool',
       website: 'Uniswap',
       description: '',
@@ -522,6 +522,7 @@ const STORE_INIT_CONSTANTS = {
           ethPrice: 0,
           poolRateSymbol: 'Seedz/Week',
           selectedNftId: -1,
+          isSuper: true,
         },
       ],
       isSuperHive: true,
