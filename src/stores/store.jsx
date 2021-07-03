@@ -227,12 +227,31 @@ class Store {
 
   getBalancesPerpetual = async () => {
     const pools = store.getStore('rewardPools');
+    // .filter(({ isSuperHive }) => isSuperHive);
     const account = store.getStore('account');
+    let nftIds = await this.getNFTIds();
+    console.log('nftIds', nftIds);
 
-    const web3 = new Web3(store.getStore('web3context').library.provider);
+    // const web3 = new Web3(store.getStore('web3context').library.provider);
+    const web3 = new Web3(window.ethereum);
 
     const currentBlock = await web3.eth.getBlockNumber();
     store.setStore({ currentBlock });
+
+    for (let i = 0; i < pools.length; i++) {
+      const pool = pools[i];
+      // forof;
+      // console.log(pool.name, pool.isSuperHive);
+      if (pool.isSuperHive && nftIds?.length) {
+        // console.log(pool.name, pool.isSuperHive, nftIds?.length);
+        pool.tokens[0].selectedNftId = nftIds[0];
+      }
+    }
+    // for (const superhive of superhives) {
+    //   for (const token of superhive.tokens) {
+    //     token.selectedNftId = nftIds?.length ? nftIds[0] : token.selectedNftId;
+    //   }
+    // }
 
     async.map(
       pools,
@@ -288,7 +307,7 @@ class Store {
                   // //console.log(err)
                   return callbackInner(err);
                 }
-
+                console.log(token.selectedNftId);
                 token.balance = data[0];
                 token.stakedBalance = data[1];
                 token.rewardsAvailable = data[2];
@@ -431,99 +450,195 @@ class Store {
     );
   };
 
-  getBalances = () => {
+  getBalances = async () => {
     const pools = store.getStore('rewardPools');
     const account = store.getStore('account');
 
-    const web3 = new Web3(store.getStore('web3context').library.provider);
+    let nftIds = await this.getNFTIds();
+
+    // const web3 = new Web3(store.getStore('web3context').library.provider);
+    const web3 = new Web3(window.ethereum);
+
+    for (let i = 0; i < pools.length; i++) {
+      const pool = pools[i];
+
+      if (pool.isSuperHive && nftIds?.length) {
+        pool.tokens[0].selectedNftId = nftIds[0];
+      }
+    }
 
     async.map(
       pools,
       (pool, callback) => {
-        async.map(
-          pool.tokens,
-          (token, callbackInner) => {
-            async.parallel(
-              [
-                (callbackInnerInner) => {
-                  this._getERC20Balance(
-                    web3,
-                    token,
-                    account,
-                    callbackInnerInner
-                  );
-                },
-                (callbackInnerInner) => {
-                  this._getstakedBalance(
-                    web3,
-                    token,
-                    account,
-                    callbackInnerInner
-                  );
-                },
-                (callbackInnerInner) => {
-                  this._getRewardsAvailable(
-                    web3,
-                    token,
-                    account,
-                    callbackInnerInner
-                  );
-                },
-                (callbackInnerInner) => {
-                  this._getUniswapLiquidity(callbackInnerInner);
-                },
-                (callbackInnerInner) => {
-                  this._getBalancerLiquidity(callbackInnerInner);
-                },
-                (callbackInnerInner) => {
-                  this._getRatePerWeek(
-                    web3,
-                    token,
-                    account,
-                    callbackInnerInner
-                  );
-                }, //_getBonusAvailable
-                (callbackInnerInner) => {
-                  this._getBonusAvailable(
-                    web3,
-                    token,
-                    account,
-                    callbackInnerInner
-                  );
-                },
-              ],
-              (err, data) => {
+        pool.isSuperHive
+          ? async.map(
+              pool.tokens,
+              (token, callbackInner) => {
+                async.parallel(
+                  [
+                    (callbackInnerInner) => {
+                      this._getERC20Balance(
+                        web3,
+                        token,
+                        account,
+                        callbackInnerInner
+                      );
+                    },
+                    (callbackInnerInner) => {
+                      this._getstakedBalance(
+                        web3,
+                        token,
+                        account,
+                        callbackInnerInner
+                      );
+                    },
+                    (callbackInnerInner) => {
+                      this._getRewardsAvailable(
+                        web3,
+                        token,
+                        account,
+                        callbackInnerInner
+                      );
+                    },
+                    (callbackInnerInner) => {
+                      this._getUniswapLiquidity(callbackInnerInner);
+                    },
+                    (callbackInnerInner) => {
+                      this._getBalancerLiquidity(callbackInnerInner);
+                    },
+                    (callbackInnerInner) => {
+                      this._getRatePerWeek(
+                        web3,
+                        token,
+                        account,
+                        callbackInnerInner
+                      );
+                    }, //_getBonusAvailable
+                    (callbackInnerInner) => {
+                      this._getBonusAvailable(
+                        web3,
+                        token,
+                        account,
+                        callbackInnerInner
+                      );
+                    },
+                  ],
+                  (err, data) => {
+                    if (err) {
+                      // // console.log(err);
+                      return callbackInner(err);
+                    }
+
+                    token.balance = data[0];
+                    token.stakedBalance = data[1];
+                    token.rewardsAvailable = data[2];
+                    if (pool.id === 'uniswap') {
+                      pool.liquidityValue = data[3];
+                    } else if (pool.id === 'balancer') {
+                      pool.liquidityValue = data[4];
+                    } else {
+                      pool.liquidityValue = 0;
+                    }
+                    pool.ratePerWeek = data[5];
+                    pool.beastModeBonus = data[6];
+                    callbackInner(null, token);
+                  }
+                );
+              },
+              (err, tokensData) => {
                 if (err) {
                   // // console.log(err);
-                  return callbackInner(err);
+                  return callback(err);
                 }
 
-                token.balance = data[0];
-                token.stakedBalance = data[1];
-                token.rewardsAvailable = data[2];
-                if (pool.id === 'uniswap') {
-                  pool.liquidityValue = data[3];
-                } else if (pool.id === 'balancer') {
-                  pool.liquidityValue = data[4];
-                } else {
-                  pool.liquidityValue = 0;
+                pool.tokens = tokensData;
+                callback(null, pool);
+              }
+            )
+          : async.map(
+              pool.tokens,
+              (token, callbackInner) => {
+                async.parallel(
+                  [
+                    (callbackInnerInner) => {
+                      this._getERC20Balance(
+                        web3,
+                        token,
+                        account,
+                        callbackInnerInner
+                      );
+                    },
+                    (callbackInnerInner) => {
+                      this._getstakedBalance(
+                        web3,
+                        token,
+                        account,
+                        callbackInnerInner
+                      );
+                    },
+                    (callbackInnerInner) => {
+                      this._getRewardsAvailable(
+                        web3,
+                        token,
+                        account,
+                        callbackInnerInner
+                      );
+                    },
+                    (callbackInnerInner) => {
+                      this._getUniswapLiquidity(callbackInnerInner);
+                    },
+                    (callbackInnerInner) => {
+                      this._getBalancerLiquidity(callbackInnerInner);
+                    },
+                    (callbackInnerInner) => {
+                      this._getRatePerWeek(
+                        web3,
+                        token,
+                        account,
+                        callbackInnerInner
+                      );
+                    }, //_getBonusAvailable
+                    (callbackInnerInner) => {
+                      this._getBonusAvailable(
+                        web3,
+                        token,
+                        account,
+                        callbackInnerInner
+                      );
+                    },
+                  ],
+                  (err, data) => {
+                    if (err) {
+                      // // console.log(err);
+                      return callbackInner(err);
+                    }
+
+                    token.balance = data[0];
+                    token.stakedBalance = data[1];
+                    token.rewardsAvailable = data[2];
+                    if (pool.id === 'uniswap') {
+                      pool.liquidityValue = data[3];
+                    } else if (pool.id === 'balancer') {
+                      pool.liquidityValue = data[4];
+                    } else {
+                      pool.liquidityValue = 0;
+                    }
+                    pool.ratePerWeek = data[5];
+                    pool.beastModeBonus = data[6];
+                    callbackInner(null, token);
+                  }
+                );
+              },
+              (err, tokensData) => {
+                if (err) {
+                  // // console.log(err);
+                  return callback(err);
                 }
-                pool.ratePerWeek = data[5];
-                pool.beastModeBonus = data[6];
-                callbackInner(null, token);
+
+                pool.tokens = tokensData;
+                callback(null, pool);
               }
             );
-          },
-          (err, tokensData) => {
-            if (err) {
-              // // console.log(err);
-              return callback(err);
-            }
-
-            pool.tokens = tokensData;
-            callback(null, pool);
-          }
-        );
       },
       (err, poolData) => {
         if (err) {
@@ -646,101 +761,214 @@ class Store {
     );
   };
 
-  getBoostBalances = () => {
+  getBoostBalances = async () => {
     const pools = store.getStore('rewardPools');
     const account = store.getStore('account');
 
-    const web3 = new Web3(store.getStore('web3context').library.provider);
+    let nftIds = await this.getNFTIds();
+    console.log('nftIds', nftIds);
+
+    // const web3 = new Web3(store.getStore('web3context').library.provider);
+    const web3 = new Web3(window.ethereum);
+
+    const currentBlock = await web3.eth.getBlockNumber();
+    store.setStore({ currentBlock });
+
+    for (let i = 0; i < pools.length; i++) {
+      const pool = pools[i];
+
+      // console.log(pool.name, pool.isSuperHive);
+      if (pool.isSuperHive && nftIds?.length) {
+        // console.log(pool.name, pool.isSuperHive, nftIds?.length);
+        pool.tokens[0].selectedNftId = nftIds[0];
+      }
+    }
 
     async.map(
       pools,
       (pool, callback) => {
         if (pool.boost === true) {
-          async.map(
-            pool.tokens,
-            (token, callbackInner) => {
-              async.parallel(
-                [
-                  (callbackInnerInner) => {
-                    this._getBoosters(web3, token, account, callbackInnerInner);
-                  },
-                  (callbackInnerInner) => {
-                    this._getBoosterCost(
-                      web3,
-                      token,
-                      account,
-                      callbackInnerInner
-                    );
-                  },
-                  (callbackInnerInner) => {
-                    this._getBoostTokenBalance(
-                      web3,
-                      token,
-                      account,
-                      callbackInnerInner
-                    );
-                  },
-                  (callbackInnerInner) => {
-                    this._getboostedBalances(
-                      web3,
-                      token,
-                      account,
-                      callbackInnerInner
-                    );
-                  },
-                  (callbackInnerInner) => {
-                    this._getBoosterPrice(callbackInnerInner);
-                  },
-                  (callbackInnerInner) => {
-                    this._getNextBoostTime(
-                      web3,
-                      token,
-                      account,
-                      callbackInnerInner
-                    );
-                  },
-                  (callbackInnerInner) => {
-                    this._getETHPrice(callbackInnerInner);
-                  },
-                  //(callbackInnerInner) => { this._getBoostBalanceAvailable(web3, token, account, callbackInnerInner) }
-                ],
-                (err, data) => {
+          pool.isSuperHive
+            ? async.map(
+                pool.tokens,
+                (token, callbackInner) => {
+                  async.parallel(
+                    [
+                      (callbackInnerInner) => {
+                        this._getBoosters(
+                          web3,
+                          token,
+                          account,
+                          callbackInnerInner
+                        );
+                      },
+                      (callbackInnerInner) => {
+                        this._getBoosterCost(
+                          web3,
+                          token,
+                          account,
+                          callbackInnerInner
+                        );
+                      },
+                      (callbackInnerInner) => {
+                        this._getBoostTokenBalance(
+                          web3,
+                          token,
+                          account,
+                          callbackInnerInner
+                        );
+                      },
+                      (callbackInnerInner) => {
+                        this._getboostedBalances(
+                          web3,
+                          token,
+                          account,
+                          callbackInnerInner
+                        );
+                      },
+                      (callbackInnerInner) => {
+                        this._getBoosterPrice(callbackInnerInner);
+                      },
+                      (callbackInnerInner) => {
+                        this._getNextBoostTime(
+                          web3,
+                          token,
+                          account,
+                          callbackInnerInner
+                        );
+                      },
+                      (callbackInnerInner) => {
+                        this._getETHPrice(callbackInnerInner);
+                      },
+                      //(callbackInnerInner) => { this._getBoostBalanceAvailable(web3, token, account, callbackInnerInner) }
+                    ],
+                    (err, data) => {
+                      if (err) {
+                        // console.log(err);
+                        return callbackInner(err);
+                      }
+
+                      token.boosters = data[2];
+                      token.costBooster = data[1][0];
+
+                      // console.log(data);
+
+                      // console.log('DATA' + data);
+                      //token.boostBalance = data[0]
+
+                      token.boostBalance = data[2];
+                      //token.costBooster = 11
+                      token.costBoosterUSD = data[4] * data[1][0];
+                      token.currentActiveBooster = data[0];
+                      token.currentBoosterStakeValue = data[3];
+                      token.stakeValueNextBooster = data[1][1];
+                      token.timeToNextBoost = data[5];
+                      token.ethPrice = data[6];
+
+                      callbackInner(null, token);
+                    }
+                  );
+                },
+                (err, tokensData) => {
                   if (err) {
                     // console.log(err);
-                    return callbackInner(err);
+                    return callback(err);
                   }
 
-                  token.boosters = data[2];
-                  token.costBooster = data[1][0];
+                  pool.tokens = tokensData;
+                  callback(null, pool);
+                }
+              )
+            : async.map(
+                pool.tokens,
+                (token, callbackInner) => {
+                  async.parallel(
+                    [
+                      (callbackInnerInner) => {
+                        this._getBoosters(
+                          web3,
+                          token,
+                          account,
+                          callbackInnerInner
+                        );
+                      },
+                      (callbackInnerInner) => {
+                        this._getBoosterCost(
+                          web3,
+                          token,
+                          account,
+                          callbackInnerInner
+                        );
+                      },
+                      (callbackInnerInner) => {
+                        this._getBoostTokenBalance(
+                          web3,
+                          token,
+                          account,
+                          callbackInnerInner
+                        );
+                      },
+                      (callbackInnerInner) => {
+                        this._getboostedBalances(
+                          web3,
+                          token,
+                          account,
+                          callbackInnerInner
+                        );
+                      },
+                      (callbackInnerInner) => {
+                        this._getBoosterPrice(callbackInnerInner);
+                      },
+                      (callbackInnerInner) => {
+                        this._getNextBoostTime(
+                          web3,
+                          token,
+                          account,
+                          callbackInnerInner
+                        );
+                      },
+                      (callbackInnerInner) => {
+                        this._getETHPrice(callbackInnerInner);
+                      },
+                      //(callbackInnerInner) => { this._getBoostBalanceAvailable(web3, token, account, callbackInnerInner) }
+                    ],
+                    (err, data) => {
+                      if (err) {
+                        // console.log(err);
+                        return callbackInner(err);
+                      }
 
-                  // console.log(data);
+                      token.boosters = data[2];
+                      token.costBooster = data[1][0];
 
-                  // console.log('DATA' + data);
-                  //token.boostBalance = data[0]
+                      // console.log(data);
 
-                  token.boostBalance = data[2];
-                  //token.costBooster = 11
-                  token.costBoosterUSD = data[4] * data[1][0];
-                  token.currentActiveBooster = data[0];
-                  token.currentBoosterStakeValue = data[3];
-                  token.stakeValueNextBooster = data[1][1];
-                  token.timeToNextBoost = data[5];
-                  token.ethPrice = data[6];
+                      // console.log('DATA' + data);
+                      //token.boostBalance = data[0]
 
-                  callbackInner(null, token);
+                      token.boostBalance = data[2];
+                      //token.costBooster = 11
+                      token.costBoosterUSD = data[4] * data[1][0];
+                      token.currentActiveBooster = data[0];
+                      token.currentBoosterStakeValue = data[3];
+                      token.stakeValueNextBooster = data[1][1];
+                      token.timeToNextBoost = data[5];
+                      token.ethPrice = data[6];
+
+                      callbackInner(null, token);
+                    }
+                  );
+                },
+                (err, tokensData) => {
+                  if (err) {
+                    // console.log(err);
+                    return callback(err);
+                  }
+
+                  pool.tokens = tokensData;
+                  callback(null, pool);
                 }
               );
-            },
-            (err, tokensData) => {
-              if (err) {
-                // console.log(err);
-                return callback(err);
-              }
-
-              pool.tokens = tokensData;
-              callback(null, pool);
-            }
-          );
         }
       },
       (err, poolData) => {
@@ -940,16 +1168,16 @@ class Store {
   };
 
   getLpAmountOut = async (assetIn, assetOut, amountIn) => {
-    console.log(assetOut);
+    // console.log(assetOut);
     const assets = store.getStore('lpTokens');
 
     var current = assets.find((i) => i.address == assetOut.address);
-    console.log(current);
+    // console.log(current);
     const account = store.getStore('account');
     if (!store.getStore('web3context')) return 0;
     const web3 = new Web3(store.getStore('web3context').library.provider);
     let amountOut;
-    console.log(current);
+    // console.log(current);
     //LP price
     if (assetIn.label === 'ETH') {
       if (current.label == 'WPE') {
@@ -1193,6 +1421,7 @@ class Store {
       return callback(ex);
     }
   };
+
   _getBoosters = async (web3, asset, account, callback) => {
     let boostContract = new web3.eth.Contract(
       asset.rewardsABI,
@@ -1201,15 +1430,18 @@ class Store {
 
     try {
       var balance = await boostContract.methods
-        .numBoostersBought(account.address)
+        .numBoostersBought(
+          asset?.selectedNftId >= 0 ? asset.selectedNftId : account.address
+        )
         .call({ from: account.address });
       balance = parseFloat(balance);
       callback(null, parseFloat(balance));
     } catch (ex) {
       console.log(ex);
-      // return callback(ex);
+      return callback(ex);
     }
   };
+
   _getBoosterCost = async (web3, asset, account, callback) => {
     let boostContract = new web3.eth.Contract(
       asset.rewardsABI,
@@ -1218,7 +1450,9 @@ class Store {
 
     try {
       var balance = await boostContract.methods
-        .getBoosterPrice(account.address)
+        .getBoosterPrice(
+          asset?.selectedNftId >= 0 ? asset.selectedNftId : account.address
+        )
         .call({ from: account.address });
       // console.log(balance);
       // console.log(balance[0]);
@@ -1230,9 +1464,11 @@ class Store {
       ];
       callback(null, boostInfo);
     } catch (ex) {
+      console.log(ex);
       return callback(ex);
     }
   };
+
   _getboostedBalances = async (web3, asset, account, callback) => {
     let boostContract = new web3.eth.Contract(
       asset.rewardsABI,
@@ -1240,25 +1476,29 @@ class Store {
     );
 
     try {
-      var balance = await boostContract.methods
-        .boostedBalances(account.address)
+      let balance = await boostContract.methods
+        .boostedBalances(
+          asset?.selectedNftId >= 0 ? asset.selectedNftId : account.address
+        )
         .call({ from: account.address });
       // console.log(balance);
 
-      var boostInfo = parseFloat(balance) / 10 ** asset.decimals;
+      let boostInfo = parseFloat(balance) / 10 ** asset.decimals;
       callback(null, boostInfo);
     } catch (ex) {
+      console.log(ex);
       return callback(ex);
     }
   };
 
   _getBoostTokenBalance = async (web3, asset, account, callback) => {
     try {
-      var balance = await web3.eth.getBalance(account.address);
+      let balance = await web3.eth.getBalance(account.address);
 
-      var boostInfo = parseFloat(balance) / 10 ** asset.decimals;
+      let boostInfo = parseFloat(balance) / 10 ** asset.decimals;
       callback(null, boostInfo);
     } catch (ex) {
+      console.log(ex);
       return callback(ex);
     }
   };
@@ -1271,7 +1511,9 @@ class Store {
     // console.log('>>>>>>> NEXT BOOST TIME');
     try {
       var time = await boostTokenContract.methods
-        .nextBoostPurchaseTime(account.address)
+        .nextBoostPurchaseTime(
+          asset?.selectedNftId >= 0 ? asset.selectedNftId : account.address
+        )
         .call({ from: account.address });
       // console.log(time);
       // console.log(new Date().getTime() / 1000);
@@ -1279,7 +1521,7 @@ class Store {
       callback(null, boostInfo);
     } catch (ex) {
       console.log(ex);
-      // return callback(ex);
+      return callback(ex);
     }
   };
   _checkApprovalLiquidityBPT = async (
@@ -1541,7 +1783,9 @@ class Store {
 
     try {
       var balance = await erc20Contract.methods
-        .balanceOf(account.address)
+        .balanceOf(
+          asset?.selectedNftId >= 0 ? asset.selectedNftId : account.address
+        )
         .call({ from: account.address });
       balance = parseFloat(balance) / 10 ** asset.decimals;
       // console.log(
@@ -1565,20 +1809,40 @@ class Store {
   };
 
   _getstakedBalance = async (web3, asset, account, callback) => {
+    // si no tiene ningun nft , queda igual
+
+    // console.log('asset.selectedNftId', asset.selectedNftId, asset.name);
+
     let erc20Contract = new web3.eth.Contract(
       asset.rewardsABI,
       asset.rewardsAddress
     );
+
+    // if (asset?.selectedNftId >= 0) {
+    //   console.log(asset.rewardsABI);
+    //   console.log(asset.rewardsAddress);
+    // }
+
     try {
-      var balance = await erc20Contract.methods
-        .balanceOf(account.address)
+      // if (asset?.selectedNftId >= 0) {
+      // console.log('entra a balance -----', asset.selectedNftId);
+      let balance = await erc20Contract.methods
+        // .balanceOf(4)
+        .balanceOf(
+          asset?.selectedNftId >= 0 ? asset.selectedNftId : account.address
+        )
         .call({ from: account.address });
       balance = parseFloat(balance) / 10 ** asset.decimals;
-      // console.log(balance);
+      // console.log('balance -----', balance);
       callback(null, parseFloat(balance));
+      // }
     } catch (ex) {
+      console.log('balance err-----', ex);
       callback(ex);
     }
+
+    // si si tiene nft, entonces [4, 10, 3]
+    // seleccionado ENV: 10
   };
 
   _getBoostBalanceAvailable = async (web3, asset, account, callback) => {
@@ -1628,7 +1892,9 @@ class Store {
 
     try {
       var earned = await erc20Contract.methods
-        .earned(account.address)
+        .earned(
+          asset?.selectedNftId >= 0 ? asset.selectedNftId : account.address
+        )
         .call({ from: account.address });
       earned = parseFloat(earned) / 10 ** asset.decimals;
       callback(null, parseFloat(earned));
@@ -2193,8 +2459,7 @@ class Store {
           return emitter.emit(BUY_LP_RETURNED, res); //EXCHANGEETHFORTOKEN_RETURNED
         }
       );
-    }
-    else if(assetOut.label == 'WPEBPT'){
+    } else if (assetOut.label == 'WPEBPT') {
       this._buyWPEBPTWithEthCall(
         assetOut,
         account,
@@ -2208,8 +2473,7 @@ class Store {
           return emitter.emit(BUY_LP_RETURNED, res); //EXCHANGEETHFORTOKEN_RETURNED
         }
       );
-    }
-    else {
+    } else {
       this._buyLPWithEthCall(
         assetOut,
         account,
@@ -2225,6 +2489,7 @@ class Store {
       );
     }
   };
+
   _buyLPWithTokensEthCall = async (asset, account, amount, value, callback) => {
     const web3 = new Web3(store.getStore('web3context').library.provider);
 
@@ -2507,7 +2772,7 @@ class Store {
     );
     console.log('ASSET IN LP TOKEN CALL');
     console.log(asset);
-    console.log('sldjlkdajsflk');
+
     console.log(token);
     console.log('CONTRATO ', config[contract]);
 
@@ -3272,12 +3537,12 @@ class Store {
     );
 
     try {
-      var balance = await ierc721Contract.methods
+      var nftQty = await ierc721Contract.methods
         .balanceOf(account.address)
         .call({ from: account.address });
 
-      console.log(balance);
-      return balance;
+      console.log(nftQty);
+      return nftQty;
     } catch (error) {
       console.log(error);
       throw error;
@@ -3307,6 +3572,23 @@ class Store {
       console.log(error);
       throw error;
     }
+  };
+
+  getNFTIds = async () => {
+    let nftIdsResult;
+    let walletNftQty = await this.walletNftQty();
+    console.log(walletNftQty);
+    // 0 | N
+
+    if (!+walletNftQty) return null;
+    console.log(walletNftQty);
+
+    let nftIdsPromises = new Array(walletNftQty).map((el, i) =>
+      this.tokenOfOwnerByIndex(i)
+    );
+    nftIdsResult = await Promise.all(nftIdsPromises);
+    return nftIdsResult;
+    // ['4', '10']
   };
 }
 

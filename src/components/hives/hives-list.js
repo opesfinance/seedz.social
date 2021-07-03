@@ -63,7 +63,7 @@ const HivesList = (props) => {
     await Promise.all(promises);
 
     setRewardPools(rewardPools);
-  }, [rewardPools]);
+  }, []);
 
   // const configureReturned = useCallback(() => setLoading(false));
 

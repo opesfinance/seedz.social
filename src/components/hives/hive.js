@@ -8,7 +8,7 @@ import Store from '../../stores/store';
 const { store } = Store;
 
 const Hive = (props) => {
-  console.log(props);
+  // console.log(props);
   const address = `${props.address.substring(0, 5)}...${props.address.substring(
     props.address.length - 4,
     props.address.length
@@ -76,6 +76,7 @@ const Hive = (props) => {
             props.token.address == liquidityPoolAddress
         );
 
+      console.log(props.token.stakedBalance);
       if (assetOut && props.token.stakedBalance) {
         let ethUnitPrice = await store.getLpAmountOut(assetIn, assetOut, `1`);
         let coinEthRelation = ethUnitPrice / props.token.stakedBalance;
@@ -95,7 +96,7 @@ const Hive = (props) => {
 
   useEffect(() => {
     getStakedAmountUsd();
-  }, [stakedAmountUsd]);
+  }, []);
 
   return (
     <div className='hive-wrapper card'>
