@@ -177,9 +177,13 @@ const Stake = (props) => {
       let nftIdsPromises = new Array(walletNftQty).map((el, i) =>
         store.tokenOfOwnerByIndex(i)
       );
-      let nftIdsResult = await Promise.all(nftIdsPromises);
-      // ['4', '10']
-      console.log('nftIdsResult', nftIdsResult);
+      var nftIdsResult = [];
+      // let nftIdsResult = await Promise.all(nftIdsPromises);
+      // // ['4', '10']
+      // console.log('nftIdsResult', nftIdsResult);
+      for(var i = 0; i < walletNftQty; i++){
+        nftIdsResult.push(await store.tokenOfOwnerByIndex(i));
+      }
 
       setNftQty(walletNftQty);
       setNftIds([...nftIds, ...nftIdsResult]);
