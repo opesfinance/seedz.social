@@ -170,19 +170,21 @@ const Stake = (props) => {
   const getNFTs = async () => {
     try {
       if (!pool.data.isSuperHive) return;
-      let walletNftQty = await store.walletNftQty();
+      let walletNftQty = await store.walletNftQty(pool.token.stakeNFT);
       console.log('walletids', !walletNftQty);
       if (!walletNftQty) return setNftQty(0);
 
-      let nftIdsPromises = new Array(walletNftQty).map((el, i) =>
-        store.tokenOfOwnerByIndex(i)
-      );
+      // let nftIdsPromises = new Array(walletNftQty).map((el, i) =>
+      //   store.tokenOfOwnerByIndex(i)
+      // );
       var nftIdsResult = [];
       // let nftIdsResult = await Promise.all(nftIdsPromises);
       // // ['4', '10']
-      // console.log('nftIdsResult', nftIdsResult);
+      console.log("NFTDKLFSJL")
+      console.log('nftIdsResult', nftIdsResult);
+      console.log(pool.token.nftAddress);
       for(var i = 0; i < walletNftQty; i++){
-        nftIdsResult.push(await store.tokenOfOwnerByIndex(i));
+        nftIdsResult.push(await store.tokenOfOwnerByIndex(i,pool.token.stakeNFT));
       }
 
       setNftQty(walletNftQty);

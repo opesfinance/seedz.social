@@ -523,6 +523,8 @@ const STORE_INIT_CONSTANTS = {
           poolRateSymbol: 'Seedz/Week',
           selectedNftId: -1,
           isSuper: true,
+          stakeNFT: '0xD8F16fc27901f77d58A41101B096b47b30C052d2',
+          nftIds: [],
         },
       ],
       isSuperHive: true,

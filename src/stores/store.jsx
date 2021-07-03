@@ -230,8 +230,8 @@ class Store {
     // .filter(({ isSuperHive }) => isSuperHive);
     const account = store.getStore('account');
 
-    let nftIds = await this.getNFTIds();
-    console.log('nftIds', nftIds);
+    // let nftIds = await this.getNFTIds();
+    // console.log('nftIds', nftIds);
 
     // const web3 = new Web3(store.getStore('web3context').library.provider);
     const web3 = new Web3(window.ethereum);
@@ -239,15 +239,20 @@ class Store {
     const currentBlock = await web3.eth.getBlockNumber();
     store.setStore({ currentBlock });
 
+    let nftIds = [];
+
+
     for (let i = 0; i < pools.length; i++) {
       const pool = pools[i];
-      // forof;
-      // console.log(pool.name, pool.isSuperHive);
-      if (pool.isSuperHive && nftIds?.length) {
-        // console.log(pool.name, pool.isSuperHive, nftIds?.length);
-        pool.tokens[0].selectedNftId = nftIds[0];
+      if(pool.isSuperHive){
+        nftIds = await this.getNFTIds(pool.tokens[0].stakeNFT);
+        if (nftIds?.length) {
+          pool.tokens[0].selectedNftId = nftIds[0];
+          pool.tokens[0].nftIds = nftIds;
+        }
       }
     }
+
     // for (const superhive of superhives) {
     //   for (const token of superhive.tokens) {
     //     token.selectedNftId = nftIds?.length ? nftIds[0] : token.selectedNftId;
@@ -455,18 +460,22 @@ class Store {
     const pools = store.getStore('rewardPools');
     const account = store.getStore('account');
 
-    let nftIds = await this.getNFTIds();
+    let nftIds = [];
 
     // const web3 = new Web3(store.getStore('web3context').library.provider);
     const web3 = new Web3(window.ethereum);
 
     for (let i = 0; i < pools.length; i++) {
       const pool = pools[i];
-
-      if (pool.isSuperHive && nftIds?.length) {
-        pool.tokens[0].selectedNftId = nftIds[0];
+      if(pool.isSuperHive){
+        nftIds = await this.getNFTIds(pool.tokens[0].stakeNFT);
+        if (nftIds?.length) {
+          pool.tokens[0].selectedNftId = nftIds[0];
+          pool.tokens[0].nftIds = nftIds;
+        }
       }
     }
+
 
     async.map(
       pools,
@@ -766,8 +775,8 @@ class Store {
     const pools = store.getStore('rewardPools');
     const account = store.getStore('account');
 
-    let nftIds = await this.getNFTIds();
-    console.log('nftIds', nftIds);
+    // let nftIds = await this.getNFTIds();
+    // console.log('nftIds', nftIds);
 
     // const web3 = new Web3(store.getStore('web3context').library.provider);
     const web3 = new Web3(window.ethereum);
@@ -775,13 +784,16 @@ class Store {
     const currentBlock = await web3.eth.getBlockNumber();
     store.setStore({ currentBlock });
 
+    let nftIds = [];
+
     for (let i = 0; i < pools.length; i++) {
       const pool = pools[i];
-
-      // console.log(pool.name, pool.isSuperHive);
-      if (pool.isSuperHive && nftIds?.length) {
-        // console.log(pool.name, pool.isSuperHive, nftIds?.length);
-        pool.tokens[0].selectedNftId = nftIds[0];
+      if(pool.isSuperHive){
+        nftIds = await this.getNFTIds(pool.tokens[0].stakeNFT);
+        if (nftIds?.length) {
+          pool.tokens[0].selectedNftId = nftIds[0];
+          pool.tokens[0].nftIds = nftIds;
+        }
       }
     }
 
@@ -3694,12 +3706,12 @@ class Store {
   /**
    * @returns return the ids available in your wallet
    */
-  walletNftQty = async () => {
+  walletNftQty = async (nftAddress) => {
     const web3 = new Web3(store.getStore('web3context').library.provider);
     const account = store.getStore('account');
     let ierc721Contract = new web3.eth.Contract(
       config.ierC721ENUMERABLE,
-      config.WPEBPT721Address
+      nftAddress
     );
 
     try {
@@ -3719,12 +3731,12 @@ class Store {
    * @param {index} index
    * if no index is provided, it will crash.
    */
-  tokenOfOwnerByIndex = async (index) => {
+  tokenOfOwnerByIndex = async (index, nftAddress) => {
     const web3 = new Web3(store.getStore('web3context').library.provider);
     const account = store.getStore('account');
     let ierc721Contract = new web3.eth.Contract(
       config.ierC721ENUMERABLE,
-      config.WPEBPT721Address
+      nftAddress
     );
 
     try {
@@ -3740,16 +3752,16 @@ class Store {
     }
   };
 
-  getNFTIds = async () => {
+  getNFTIds = async (nftAddress) => {
     var nftIdsResult = [];
-    let walletNftQty = await this.walletNftQty();
+    let walletNftQty = await this.walletNftQty(nftAddress);
     console.log(walletNftQty);
     // 0 | N
 
     if (!+walletNftQty) return null;
     console.log(walletNftQty);
     for(var i = 0; i < walletNftQty; i++){
-      nftIdsResult.push(await this.tokenOfOwnerByIndex(i));
+      nftIdsResult.push(await this.tokenOfOwnerByIndex(i,nftAddress));
     }
     // let nftIdsPromises = new Array(walletNftQty).map((el, i) =>
     //   this.tokenOfOwnerByIndex(i)
