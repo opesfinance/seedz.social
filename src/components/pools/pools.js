@@ -266,8 +266,8 @@ const Pools = (props) => {
 
   const onCreateTransaction = () => {
     if (fromAmount && fromAddress && toAmount && toAddress) {
-      if (selectedAssetBalance < fromAmount)
-        return setError('Not enough balance in this asset');
+      // if (selectedAssetBalance < fromAmount)
+      //   return setError('Not enough balance in this asset');
 
       const assetIn = {
         amount: fromAmount,

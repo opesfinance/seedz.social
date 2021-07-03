@@ -1192,12 +1192,48 @@ class Store {
       }
     } else if (assetIn.label === 'WPE') {
       amountOut = amountIn * (1 / current.priceWPE);
+    } else if (assetIn.label === 'WPE+ETH') {
+      amountOut = await this._getOutputForWPEBPTwToken(web3, amountIn, account);
     } else {
       //stable coin
       amountOut = amountIn * (1 / current.price);
     }
 
     return amountOut;
+  };
+  _getOutputForWPEBPTwToken= async (web3, amountIn, account) => {
+    let wpeLPExchange = new web3.eth.Contract(
+      config.WPEbptAddressABI,
+      config.WPEBPTbptAddress
+    );
+    var amountToSend = web3.utils.toWei(amountIn, 'ether');
+
+    try {
+      const amount = await wpeLPExchange.methods
+        .getAmountForToken(amountToSend)
+        .call({ from: account.address });
+      console.log(amount);
+      return (amount[0] / 10 ** 18).toFixed(4);
+    } catch (ex) {
+      return ex;
+    }
+  };
+  _getOutputForWPEBPTwTokenEthVal = async (web3, amountIn, account) => {
+    let wpeLPExchange = new web3.eth.Contract(
+      config.WPEbptAddressABI,
+      config.WPEBPTbptAddress
+    );
+    var amountToSend = web3.utils.toWei(amountIn, 'ether');
+
+    try {
+      const amount = await wpeLPExchange.methods
+        .getAmountForToken(amountToSend)
+        .call({ from: account.address });
+      console.log(amount);
+      return (amount[1] / 10 ** 18).toFixed(4);
+    } catch (ex) {
+      return ex;
+    }
   };
   _getOutputForWPEBPT = async (web3, amountIn, account) => {
     let wpeLPExchange = new web3.eth.Contract(
@@ -1486,6 +1522,50 @@ class Store {
     } catch (ex) {
       console.log(ex);
       return callback(ex);
+    }
+  };
+  _checkApprovalLiquidityBPT = async (
+    asset,
+    assetOut,
+    account,
+    amount,
+    callback
+  ) => {
+    try {
+      const web3 = new Web3(store.getStore('web3context').library.provider);
+
+      console.log(asset);
+      console.log(assetOut);
+
+      let contractLPSell = config[assetOut.label + 'bptAddress'];
+      console.log(contractLPSell);
+      const erc20Contract = new web3.eth.Contract(
+        config.erc20ABI,
+        asset.address
+      );
+      const allowance = await erc20Contract.methods
+        .allowance(account.address, contractLPSell)
+        .call({ from: account.address });
+
+      const ethAllowance = web3.utils.fromWei(allowance, 'ether');
+
+      if (parseFloat(ethAllowance) < parseFloat(amount)) {
+        await erc20Contract.methods
+          .approve(contractLPSell, web3.utils.toWei('999999999999999', 'ether'))
+          .send({
+            from: account.address,
+            gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
+          });
+        callback();
+      } else {
+        callback();
+      }
+    } catch (error) {
+      // console.log(error);
+      if (error.message) {
+        return callback(error.message);
+      }
+      callback(error);
     }
   };
   _checkApprovalLiquidity = async (
@@ -2243,7 +2323,124 @@ class Store {
       }
     }
   };
+  buyLPWithCombo = (payload) => {
+    const account = store.getStore('account');
+    const { assetIn, assetOut, amountIn, amountOut } = payload.content;
+    const assets = store.getStore('exchangeAssets').tokens;
 
+    console.log(assetOut);
+    var realIn;
+    if(assetIn.label == 'WPE+ETH'){
+        realIn = assets.find((i) => i.label == 'WPE');
+    }
+    if(assetOut.label == 'WPEBPT'){
+      this._checkApprovalLiquidityBPT(
+        realIn,
+        assetOut,
+        account,
+        amountIn,
+        (err) => {
+          if (err) {
+            return emitter.emit(ERROR, err);
+          }
+
+          this._buyWPEBPTWithComboCall(
+            assetOut,
+            account,
+            amountOut,
+            amountIn,
+            (err, res) => {
+              if (err) {
+                return emitter.emit(ERROR, err);
+              }
+
+              return emitter.emit(BUY_LP_RETURNED, res); //EXCHANGEETHFORTOKEN_RETURNED
+            }
+          );
+        }
+      );
+
+    }
+    else {
+      // this._buyLPWithEthCall(
+      //   assetOut,
+      //   account,
+      //   amountOut,
+      //   amountIn,
+      //   (err, res) => {
+      //     if (err) {
+      //       return emitter.emit(ERROR, err);
+      //     }
+      //
+      //     return emitter.emit(BUY_LP_RETURNED, res); //EXCHANGEETHFORTOKEN_RETURNED
+      //   }
+      // );
+    }
+  };
+  _buyWPEBPTWithComboCall = async (asset, account, amount, value, callback) => {
+    const web3 = new Web3(store.getStore('web3context').library.provider);
+
+    let contract = asset.label + 'bptAddress';
+    const coinContract = new web3.eth.Contract(
+      config.WPEbptAddressABI,
+      config[contract]
+    );
+
+    console.log('Amount ', amount);
+    console.log('value ', value);
+    let multiplier = 1.005;
+    const buyAmount = web3.utils.toWei(
+      (+amount).toFixed(18).toString(),
+      'ether'
+    );
+
+    var ethValue = await this._getOutputForWPEBPTwTokenEthVal(web3, value, account);
+    var amountToSend = web3.utils.toWei(value, 'ether');
+    // if (assetIn.decimals !== 18) {
+    //   amountToSend = (value * 10 ** asset.decimals).toFixed(0);
+    // }
+    console.log("ETH VALUE ", ethValue);
+    console.log(buyAmount);
+    console.log(value);
+    coinContract.methods
+      .createLPWithTokens(amountToSend)
+      .send({
+        from: account.address,
+        gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
+        value: web3.utils.toWei(
+          (parseFloat(ethValue) * multiplier).toFixed(18).toString(),
+          'ether'
+        ),
+      })
+      .on('transactionHash', function (hash) {
+        // console.log(hash);
+        callback(null, hash);
+      })
+      .on('confirmation', function (confirmationNumber, receipt) {
+        /*if (confirmationNumber === 2) {
+          dispatcher.dispatch({ type: GET_BALANCES, content: {} });
+        }*/
+      })
+      .on('receipt', function (receipt) {
+        // console.log(receipt);
+      })
+      .on('error', function (error) {
+        if (!error.toString().includes('-32601')) {
+          if (error.message) {
+            return callback(error.message);
+          }
+          callback(error);
+        }
+      })
+      .catch((error) => {
+        if (!error.toString().includes('-32601')) {
+          if (error.message) {
+            return callback(error.message);
+          }
+          callback(error);
+        }
+      });
+  };
   buyLPWithEth = (payload) => {
     const account = store.getStore('account');
     const { assetIn, assetOut, amountIn, amountOut } = payload.content;
@@ -2625,7 +2822,11 @@ class Store {
     if (assetIn.label == 'ETH') {
       //- [ ] BUYLPTOKENSWITHEYTHEREUM
       this.buyLPWithEth(payload);
-    } else {
+    }
+    else if(assetIn.label =='WPE+ETH'){
+      this.buyLPWithCombo(payload);
+    }
+    else {
       //BUYWITHTOKEN
       console.log('buy lp with token');
       this.buyLPWithToken(payload);
