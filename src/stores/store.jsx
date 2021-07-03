@@ -2546,6 +2546,12 @@ class Store {
     var realIn;
     if (assetIn.label == 'WPE+ETH') {
       realIn = assets.find((i) => i.label == 'WPE');
+    }else if (assetIn.label == 'YFU+ETH') {
+      realIn = assets.find((i) => i.label == 'YFU');
+    }else if (assetIn.label == 'PIXEL+ETH') {
+      realIn = assets.find((i) => i.label == 'PIXEL');
+    }else if (assetIn.label == 'STR+ETH') {
+      realIn = assets.find((i) => i.label == 'STR');
     }
     if (assetOut.label == 'WPEBPT' || assetOut.label == 'YFUBPT' || assetOut.label == 'PIXELBPT' || assetOut.label == 'STRBPT') {
       this._checkApprovalLiquidityBPT(
@@ -3057,7 +3063,7 @@ class Store {
     if (assetIn.label == 'ETH') {
       //- [ ] BUYLPTOKENSWITHEYTHEREUM
       this.buyLPWithEth(payload);
-    } else if (assetIn.label == 'WPE+ETH') {
+    } else if (assetIn.label == 'WPE+ETH' || assetIn.label == 'YFU+ETH' || assetIn.label == 'PIXEL+ETH' || assetIn.label == 'STR+ETH' ) {
       this.buyLPWithCombo(payload);
     } else {
       //BUYWITHTOKEN
