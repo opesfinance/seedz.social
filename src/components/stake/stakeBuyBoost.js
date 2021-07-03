@@ -151,7 +151,7 @@ const StakeBuyBoost = (props) => {
             <br />
             <Row>
               <div className='col-sm-8 offset-sm-2'>
-                {(props.pool?.hiveId == 'wbtchive' || !props.isHive) && (
+                {(props.pool?.hiveId == 'wbtchive' || !props.isHive || props.pool.token.isSuper) && (
                   <div>
                     <label htmlFor=''>Number of beasts modes</label>
                     <input

@@ -1770,7 +1770,7 @@ class Store {
 
     try {
       var beastmodes = await contract.methods
-        .timeLockLevel()
+        .timeLockLevel(asset?.selectedNftId >= 0 ? asset.selectedNftId : '')
         .call({ from: account.address });
       beastmodes = parseFloat(beastmodes[1]);
       callback(null, beastmodes);
@@ -2845,9 +2845,8 @@ class Store {
     const { asset, amount, value, beastModesAmount } = payload.content;
 
     // return
-    if (asset.hiveId == 'wbtchive' || !asset.isHive) {
-      console.log('hiiii', payload.content);
-      this._boostcallStake2(
+    if (asset.isSuper){
+      this._boostcallStake2NFT(
         asset,
         account,
         beastModesAmount,
@@ -2859,19 +2858,80 @@ class Store {
 
           return emitter.emit(STAKE_RETURNED, res);
         }
-      );
-    } else {
-      console.log('not hiiii', payload.content);
-      this._boostcallStake(asset, account, amount, value, (err, res) => {
-        if (err) {
-          return emitter.emit(ERROR, err);
-        }
+        );
+    }else{
+      if (asset.hiveId == 'wbtchive' || !asset.isHive) {
+        console.log('hiiii', payload.content);
+        this._boostcallStake2(
+          asset,
+          account,
+          beastModesAmount,
+          value,
+          (err, res) => {
+            if (err) {
+              return emitter.emit(ERROR, err);
+            }
 
-        return emitter.emit(STAKE_RETURNED, res);
-      });
+            return emitter.emit(STAKE_RETURNED, res);
+          }
+        );
+      } else {
+        console.log('not hiiii', payload.content);
+        this._boostcallStake(asset, account, amount, value, (err, res) => {
+          if (err) {
+            return emitter.emit(ERROR, err);
+          }
+
+          return emitter.emit(STAKE_RETURNED, res);
+        });
+      }
     }
-  };
 
+  };
+  _boostcallStake2NFT = async (asset, account, amount, value, callback) => {
+    const web3 = new Web3(store.getStore('web3context').library.provider);
+
+    const boostContract = new web3.eth.Contract(
+      asset.rewardsABI,
+      asset.rewardsAddress
+    );
+
+    boostContract.methods
+      .bulkBeastMode(asset.selectedNftId, amount)
+      .send({
+        from: account.address,
+        gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
+        value: web3.utils.toWei(`${value * 1.01}`, 'ether'),
+      })
+      .on('transactionHash', function (hash) {
+        // console.log(hash);
+        callback(null, hash);
+      })
+      .on('confirmation', function (confirmationNumber, receipt) {
+        if (confirmationNumber === 2) {
+          dispatcher.dispatch({ type: GET_BALANCES, content: {} });
+        }
+      })
+      .on('receipt', function (receipt) {
+        // console.log(receipt);
+      })
+      .on('error', function (error) {
+        if (!error.toString().includes('-32601')) {
+          if (error.message) {
+            return callback(error.message);
+          }
+          callback(error);
+        }
+      })
+      .catch((error) => {
+        if (!error.toString().includes('-32601')) {
+          if (error.message) {
+            return callback(error.message);
+          }
+          callback(error);
+        }
+      });
+  };
   _boostcallStake2 = async (asset, account, amount, value, callback) => {
     const web3 = new Web3(store.getStore('web3context').library.provider);
 
@@ -2950,7 +3010,50 @@ class Store {
       callback(error);
     }
   };
+  _boostcallStakeNFT = async (asset, account, amount, value, callback) => {
+    const web3 = new Web3(store.getStore('web3context').library.provider);
 
+    const boostContract = new web3.eth.Contract(
+      asset.rewardsABI,
+      asset.rewardsAddress
+    );
+
+    boostContract.methods
+      .beastMode(asset.selectedNftId)
+      .send({
+        from: account.address,
+        gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
+        value: web3.utils.toWei(value, 'ether'),
+      })
+      .on('transactionHash', function (hash) {
+        // console.log(hash);
+        callback(null, hash);
+      })
+      .on('confirmation', function (confirmationNumber, receipt) {
+        if (confirmationNumber === 2) {
+          dispatcher.dispatch({ type: GET_BALANCES, content: {} });
+        }
+      })
+      .on('receipt', function (receipt) {
+        // console.log(receipt);
+      })
+      .on('error', function (error) {
+        if (!error.toString().includes('-32601')) {
+          if (error.message) {
+            return callback(error.message);
+          }
+          callback(error);
+        }
+      })
+      .catch((error) => {
+        if (!error.toString().includes('-32601')) {
+          if (error.message) {
+            return callback(error.message);
+          }
+          callback(error);
+        }
+      });
+  };
   _boostcallStake = async (asset, account, amount, value, callback) => {
     const web3 = new Web3(store.getStore('web3context').library.provider);
 
@@ -3515,7 +3618,7 @@ class Store {
       );
 
       let results = await boostContract.methods
-        .getBoosterPriceBulk(account.address, +amount)
+        .getBoosterPriceBulk(asset?.selectedNftId >= 0 ? asset.selectedNftId : account.address, +amount)
         .call({ from: account.address });
 
       // return { boosterPrice: 0.00333 };
