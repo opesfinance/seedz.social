@@ -101,7 +101,7 @@ const Stake = (props) => {
 
   const getPool = () =>
     rewardPools.find((p) => p.address === address) ||
-    farmPools.find((p) => p.token.rewardsAddress == address);
+    farmPools.find((p) => p.token.rewardsAddress === address);
 
   const [pool, setPool] = useState(getPool());
 
@@ -132,14 +132,14 @@ const Stake = (props) => {
     unstake: 'stakedBalance',
   };
 
-  const assetIn = store.getStore('poolInTokens').find((i) => i.label == 'ETH');
+  const assetIn = store.getStore('poolInTokens').find((i) => i.label === 'ETH');
 
   const getStakedAmountUsd = async (address, stakedBalance, ethPrice) => {
     try {
       const assetOut = store
         .getStore('exchangeAssets')
         .tokens.find(
-          ({ liquidityPoolAddress }) => address == liquidityPoolAddress
+          ({ liquidityPoolAddress }) => address === liquidityPoolAddress
         );
 
       if (assetOut && stakedBalance) {
@@ -246,7 +246,7 @@ const Stake = (props) => {
     const farmPools = rewardsMapper(store.getStore('farmPools'));
     let pool =
       pools.find((p) => p.address === address) ||
-      farmPools.find((p) => p.token.rewardsAddress == address);
+      farmPools.find((p) => p.token.rewardsAddress === address);
 
     setPool(pool);
 
@@ -330,7 +330,7 @@ const Stake = (props) => {
     freeLoader(null);
 
     setTimeout(() => {
-      if (error?.code != -32000) {
+      if (error?.code !== -32000) {
         setSnackbarMessage(error.toString());
         setSnackbarType('Warning');
       }
@@ -363,7 +363,7 @@ const Stake = (props) => {
     const amount = amounts[selectedToken.id + '_stake'];
 
     const value =
-      costBoosterETH != null
+      costBoosterETH !== null
         ? costBoosterETH
         : (selectedToken.costBooster + 0.0001).toFixed(10).toString();
 
@@ -392,7 +392,7 @@ const Stake = (props) => {
 
   const onChangeNft = (el) => {
     const pools = [...store.getStore('rewardPools')];
-    let currentPool = pools.find(({ id }) => pool.id == id);
+    let currentPool = pools.find(({ id }) => pool.id === id);
     console.log('currentPool ===========', currentPool);
     if (currentPool) {
       currentPool.tokens[0].selectedNftId = +el.value;
@@ -526,7 +526,7 @@ const Stake = (props) => {
           </Col>
 
           <Col className='text-center'>
-            {type == 'stake' && (
+            {type === 'stake' && (
               <button
                 disabled={pool.disableStake || loaders?.staking}
                 className={
@@ -545,9 +545,11 @@ const Stake = (props) => {
                   : 'Approve'}
               </button>
             )}
-            {type == 'unstake' && (
+            {type === 'unstake' && (
               <button
-                disabled={pool.name != 'Crypto Club Pool' || loaders?.unStaking} // meanwhile disable by name. there should be a prop to choose which pools to disableUnstake
+                disabled={
+                  pool.name !== 'Crypto Club Pool' || loaders?.unStaking
+                } // meanwhile disable by name. there should be a prop to choose which pools to disableUnstake
                 onClick={() => {
                   handleLoader(action, 'unStaking');
                 }}
@@ -627,7 +629,7 @@ const Stake = (props) => {
     pool.socialLinks &&
     Object.keys(pool.socialLinks).map((key) => {
       const icons =
-        localStorage['theme'] == 'dark-mode' ? darkIcons : lightIcons;
+        localStorage['theme'] === 'dark-mode' ? darkIcons : lightIcons;
       return (
         <a
           key={key}

@@ -18,7 +18,7 @@ const { emitter, dispatcher, store } = Store;
 
 const FarmsList = (props) => {
   const [farmPools, setFarmPools] = useState(store.getStore('farmPools'));
-  const [account, _] = useState(store.getStore('account'));
+  // const [account, _] = useState(store.getStore('account'));
   // const [loading, setLoading] = useState(!(account && farmPools));
 
   useEffect(() => {

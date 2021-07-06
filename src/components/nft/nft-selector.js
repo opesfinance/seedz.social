@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Dropdown } from 'react-bootstrap';
-import Store from '../../stores/store';
+// import Store from '../../stores/store';
 
 // import {
 //   // CONFIGURE_RETURNED,
@@ -12,7 +12,7 @@ import Store from '../../stores/store';
 //   STAKE_RETURNED,
 // } from '../../constants/constants';
 
-const { emitter, dispatcher, store } = Store;
+// const { emitter, dispatcher, store } = Store;
 
 const NftSelector = (props) => {
   const [fromToggleContents, setFromToggleContents] = useState();

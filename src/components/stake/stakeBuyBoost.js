@@ -151,7 +151,9 @@ const StakeBuyBoost = (props) => {
             <br />
             <Row>
               <div className='col-sm-8 offset-sm-2'>
-                {(props.pool?.hiveId == 'wbtchive' || !props.isHive || props.pool.token.isSuper) && (
+                {(props.pool?.hiveId === 'wbtchive' ||
+                  !props.isHive ||
+                  props.pool.token.isSuper) && (
                   <div>
                     <label htmlFor=''>Number of beasts modes</label>
                     <input
@@ -170,7 +172,7 @@ const StakeBuyBoost = (props) => {
                     type='button'
                     className='btn btn-primary bg-main-blue'
                     disabled={
-                      ((props.pool?.hiveId == 'wbtchive' || !props.isHive) &&
+                      ((props.pool?.hiveId === 'wbtchive' || !props.isHive) &&
                         !beastModesAmount) ||
                       +beastModesAmount > 50 ||
                       props.loaders?.beastModing

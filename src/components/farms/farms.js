@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { withNamespaces } from 'react-i18next';
-import { AiOutlineWarning } from 'react-icons/ai';
+// import { AiOutlineWarning } from 'react-icons/ai';
 
 import FarmsList from './farms-list';
 

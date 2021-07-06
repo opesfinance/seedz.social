@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 const ImportScript = () => {
   const style = localStorage.getItem('theme');
-  const tvkTheme = style && style == 'dark-mode' ? 'dark' : 'light';
+  const tvkTheme = style && style === 'dark-mode' ? 'dark' : 'light';
   useEffect(() => {
     const script = document.createElement('script');
     // script.setAttribute('src', 'https://s3.tradingview.com/tv.js');
@@ -26,7 +26,7 @@ const ImportScript = () => {
         width: '100%',
         height: '100%',
         locale: 'en',
-        colorTheme: tvkTheme == 'light' ? 'light' : 'dark',
+        colorTheme: tvkTheme === 'light' ? 'light' : 'dark',
         gridLineColor: '#2A2E39',
         trendLineColor: '#1976D2',
         fontColor: '#787B86',

@@ -48,13 +48,13 @@ const dropdownOptions = (options) => {
 
 const Exchange = (props) => {
   const [fromOptions, setFromOptions] = useState(
-    store.getStore('exchangeAssets').tokens.filter((a) => a.group == 'inputs')
+    store.getStore('exchangeAssets').tokens.filter((a) => a.group === 'inputs')
   );
   const [toOptions, setToOptions] = useState(
     store
       .getStore('exchangeAssets')
       .tokens.filter(
-        (a) => a.group == 'outputs' && a.availableViews.includes('exchange')
+        (a) => a.group === 'outputs' && a.availableViews.includes('exchange')
       )
   );
   const [fromAmount, setFromAmount] = useState('0');
@@ -82,18 +82,18 @@ const Exchange = (props) => {
   const [tvk, setTvk] = useState(); // trading view key (for charts)
   const style = localStorage.getItem('theme');
   const [tvkTheme, setTvkTheme] = useState(
-    style && style == 'dark-mode' ? 'Dark' : 'Light'
+    style && style === 'dark-mode' ? 'Dark' : 'Light'
   ); // trading view key (for charts)
 
   const [addingTokenToMetamask, setAddingTokenToMetamask] = useState(false);
 
   const assetIn = store
     .getStore('exchangeAssets')
-    .tokens.find((i) => i.label == 'USDC'); //USDC
+    .tokens.find((i) => i.label === 'USDC'); //USDC
 
   const assetsOut = store
     .getStore('exchangeAssets')
-    .tokens.filter((a) => a.box == 'true');
+    .tokens.filter((a) => a.box === 'true');
 
   const pricePromises = async () => {
     let promises = assetsOut.map((assetOut) =>
@@ -108,9 +108,9 @@ const Exchange = (props) => {
     for (const assetLabel of ['ETH', 'WPE']) {
       let current = store
         .getStore('exchangeAssets')
-        .tokens.find((i) => i.label == assetLabel);
+        .tokens.find((i) => i.label === assetLabel);
 
-      let boxToModify = newBoxes.find((b) => b.label == assetLabel);
+      let boxToModify = newBoxes.find((b) => b.label === assetLabel);
       if (boxToModify)
         boxToModify.value = `\$ ${parseFloat(current.price).toFixed(4)}`;
     }
@@ -168,8 +168,8 @@ const Exchange = (props) => {
   const calculate = async () => {
     let assetIn, amountOut, assetOut;
     if (fromAddress)
-      assetIn = fromOptions.find((i) => i.address == fromAddress);
-    if (toAddress) assetOut = toOptions.find((i) => i.address == toAddress);
+      assetIn = fromOptions.find((i) => i.address === fromAddress);
+    if (toAddress) assetOut = toOptions.find((i) => i.address === toAddress);
 
     if (fromAmount && +fromAmount > 0 && assetIn && assetOut) {
       amountOut = await store.getAmountOut(assetIn, assetOut, fromAmount);
@@ -182,8 +182,8 @@ const Exchange = (props) => {
     let assetIn, amountOut, assetOut;
 
     if (fromAddress)
-      assetIn = fromOptions.find((i) => i.address == fromAddress);
-    if (toAddress) assetOut = toOptions.find((i) => i.address == toAddress);
+      assetIn = fromOptions.find((i) => i.address === fromAddress);
+    if (toAddress) assetOut = toOptions.find((i) => i.address === toAddress);
 
     amountOut = await store.getAmountOut(assetIn, assetOut, '1');
     console.log(assetIn);
@@ -265,11 +265,11 @@ const Exchange = (props) => {
 
       const assetIn = {
         amount: `${fromAmount}`,
-        asset: fromOptions.find((i) => i.address == fromAddress),
+        asset: fromOptions.find((i) => i.address === fromAddress),
       };
       const assetOut = {
         amount: `${toAmount}`,
-        asset: toOptions.find((i) => i.address == toAddress),
+        asset: toOptions.find((i) => i.address === toAddress),
       };
 
       console.log('assetIn --', assetIn);

@@ -53,7 +53,7 @@ const Pools = (props) => {
     store
       .getStore(props.assetsStoreKey)
       .tokens.filter(
-        (a) => a.group == 'outputs' && a.availableViews.includes('pools')
+        (a) => a.group === 'outputs' && a.availableViews.includes('pools')
       )
   );
   const [fromAmount, setFromAmount] = useState('0');
@@ -81,7 +81,7 @@ const Pools = (props) => {
   const [doingTransaction, setDoingTransaction] = useState(false);
   const [selectedAssetBalance, setSelectedAssetBalance] = useState(0);
 
-  const assetIn = store.getStore('poolInTokens').find((i) => i.label == 'ETH');
+  const assetIn = store.getStore('poolInTokens').find((i) => i.label === 'ETH');
 
   const pricePromises = async () => {
     const assetsOut = store.getStore('lpTokens');
@@ -147,8 +147,8 @@ const Pools = (props) => {
   const calculate = async () => {
     let assetIn, amountOut, assetOut;
     if (fromAddress)
-      assetIn = fromOptions.find((i) => i.address == fromAddress);
-    if (toAddress) assetOut = toOptions.find((i) => i.address == toAddress);
+      assetIn = fromOptions.find((i) => i.address === fromAddress);
+    if (toAddress) assetOut = toOptions.find((i) => i.address === toAddress);
 
     if (fromAmount && +fromAmount > 0 && assetIn && assetOut) {
       amountOut = await store.getLpAmountOut(assetIn, assetOut, fromAmount);
@@ -161,8 +161,8 @@ const Pools = (props) => {
     let assetIn, amountOut, assetOut;
 
     if (fromAddress)
-      assetIn = fromOptions.find((i) => i.address == fromAddress);
-    if (toAddress) assetOut = toOptions.find((i) => i.address == toAddress);
+      assetIn = fromOptions.find((i) => i.address === fromAddress);
+    if (toAddress) assetOut = toOptions.find((i) => i.address === toAddress);
 
     // console.log(assetIn, assetOut);
 
@@ -213,10 +213,10 @@ const Pools = (props) => {
   };
 
   const validatePurchaseable = () => {
-    const assetIn = fromOptions.find(({ address }) => address == fromAddress);
+    const assetIn = fromOptions.find(({ address }) => address === fromAddress);
     const assetOut = toOptions.find(
       ({ liquidityPoolAddress, address }) =>
-        liquidityPoolAddress == toAddress || address == toAddress
+        liquidityPoolAddress === toAddress || address === toAddress
     );
 
     if (
@@ -271,11 +271,11 @@ const Pools = (props) => {
 
       const assetIn = {
         amount: fromAmount,
-        asset: fromOptions.find((i) => i.address == fromAddress),
+        asset: fromOptions.find((i) => i.address === fromAddress),
       };
       const assetOut = {
         amount: toAmount,
-        asset: toOptions.find((i) => i.address == toAddress),
+        asset: toOptions.find((i) => i.address === toAddress),
       };
 
       const amount = assetIn.amount;
