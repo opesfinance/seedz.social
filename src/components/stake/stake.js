@@ -131,34 +131,6 @@ const Stake = (props) => {
     stake: 'balance',
     unstake: 'stakedBalance',
   };
-
-  const assetIn = store.getStore('poolInTokens').find((i) => i.label === 'ETH');
-
-  const getStakedAmountUsd = async (address, stakedBalance, ethPrice) => {
-    try {
-      const assetOut = store
-        .getStore('exchangeAssets')
-        .tokens.find(
-          ({ liquidityPoolAddress }) => address === liquidityPoolAddress
-        );
-
-      if (assetOut && stakedBalance) {
-        let ethUnitPrice = await store.getLpAmountOut(assetIn, assetOut, `1`);
-        let coinEthRelation = ethUnitPrice / stakedBalance;
-        let ethStakedPrice = 1 / coinEthRelation;
-        let stakedAmountUsd = ethStakedPrice * ethPrice;
-        // console.log(stakedAmountUsd);
-        return stakedAmountUsd;
-        // setStakedAmountUsd((+stakedAmountUsd).toFixed(3));
-      } else {
-        return 0;
-      }
-    } catch (error) {
-      // console.log(error);
-      throw error;
-    }
-  };
-
   const getStakeAllowance = async () => {
     let stakeAllowance = await store.checkAllowance(
       pool.token,
