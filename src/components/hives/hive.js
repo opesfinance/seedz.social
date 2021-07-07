@@ -50,37 +50,8 @@ const Hive = (props) => {
     props.history.push('/stake/' + props.address);
   }
 
-  const assetIn = store.getStore('poolInTokens').find((i) => i.label == 'ETH');
-
-  const getStakedAmountUsd = async () => {
-    try {
-      const assetOut = store
-        .getStore('exchangeAssets')
-        .tokens.find(
-          ({ liquidityPoolAddress }) =>
-            props.token.address == liquidityPoolAddress
-        );
-
-      console.log(props.token.stakedBalance);
-      if (assetOut && props.token.stakedBalance) {
-        let ethUnitPrice = await store.getLpAmountOut(assetIn, assetOut, `1`);
-        let coinEthRelation = ethUnitPrice / props.token.stakedBalance;
-        let ethStakedPrice = 1 / coinEthRelation;
-        let stakedAmountUsd = ethStakedPrice * props.token?.ethPrice;
-        // let ethUnitPrice = await store.getAmountOut(assetIn, assetOut, `1`);
-        // console.log(stakedAmountUsd, ethUnitPrice, props.name);
-        // console.log(assetOut);
-        return setStakedAmountUsd((+stakedAmountUsd).toFixed(3));
-      }
-      setStakedAmountUsd(0);
-    } catch (error) {
-      // console.log(error);
-      throw error;
-    }
-  };
-
   useEffect(() => {
-    getStakedAmountUsd();
+    store.getStakedAmountUsd(props.token).then(setStakedAmountUsd);
   }, []);
 
   return (

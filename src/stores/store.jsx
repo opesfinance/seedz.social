@@ -3271,6 +3271,35 @@ class Store {
     return nftIdsResult;
     // ['4', '10']
   };
+
+  /**
+   * Returns the staked amount of a given token.
+   * @param {Token} token
+   * @returns {Number} stakedAmount
+   */
+  getStakedAmountUsd = async (token) => {
+    const assetIn = store
+      .getStore('poolInTokens')
+      .find((i) => i.label == 'ETH');
+    try {
+      const assetOut = store
+        .getStore('exchangeAssets')
+        .tokens.find(
+          ({ liquidityPoolAddress }) => token.address == liquidityPoolAddress
+        );
+
+      if (assetOut && token.stakedBalance) {
+        let ethUnitPrice = await store.getLpAmountOut(assetIn, assetOut, `1`);
+        let coinEthRelation = ethUnitPrice / token.stakedBalance;
+        let ethStakedPrice = 1 / coinEthRelation;
+        let stakedAmountUsd = ethStakedPrice * token?.ethPrice;
+        return +stakedAmountUsd;
+      }
+      return 0;
+    } catch (error) {
+      throw error;
+    }
+  };
 }
 
 var store = new Store();

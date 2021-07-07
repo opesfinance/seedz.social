@@ -250,11 +250,7 @@ const Stake = (props) => {
 
     setPool(pool);
 
-    const stakedAmountUsd = await getStakedAmountUsd(
-      pool.token.address,
-      pool.token.stakedBalance,
-      pool.token.ethPrice
-    );
+    const stakedAmountUsd = await store.getStakedAmountUsd(pool.token);
     setStakedAmountUsd((+stakedAmountUsd).toFixed(3));
   };
 
