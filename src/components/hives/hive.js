@@ -29,36 +29,17 @@ const Hive = (props) => {
     wpeshive: 'WPE',
     yfushive: 'WPE',
     strshive: 'WPE',
-    pixelshive: 'WPE'
+    pixelshive: 'WPE',
   };
 
   const initTotalLockVolume = async () => {
     if (!!props.token.disableStake) return;
-
-    const eth = store
-      .getStore('exchangeAssets')
-      .tokens.find((e) => e.label === 'ETH');
-    const ethPrice = await store.getETHPrice();
-
-    const token = store
-      .getStore('lpTokens')
-      .find((e) => e.label === hiveid2LpLabel[props.token.hiveId]);
-
-    console.log(token);
-
-    await store.getLpPrice(token);
-    const lpPrice = await store.getLpAmountOut(eth, token, `1`);
-    const price = ethPrice / lpPrice;
-    if (!price) return;
-
-    const supplyToken = store
-      .getStore('rewardPools')
-      .map((x) => x.tokens)
-      .flat()
-      .find(({ address }) => props.token.address === address);
-
-    const totalSupply = await store.getTotalSupply(supplyToken);
-    setTotalLockVolume(totalSupply * price);
+    setTotalLockVolume(
+      await store.getTotalLockVolume(
+        hiveid2LpLabel[props.token.hiveId],
+        props.token
+      )
+    );
   };
   useEffect(() => {
     initTotalLockVolume();

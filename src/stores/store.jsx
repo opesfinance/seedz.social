@@ -3142,6 +3142,35 @@ class Store {
     }
   };
 
+  /**
+   * Function that returns the total lock volume of a pool.
+   * @param {String} lpLabel label of the lpToken which will be used to get price.
+   * @param {Token} pool token which will be used to get Total Supply.
+   * @returns {Number} value of the total lock volume.
+   */
+  getTotalLockVolume = async (lpLabel, pool) => {
+    const eth = store
+      .getStore('exchangeAssets')
+      .tokens.find((e) => e.label === 'ETH');
+    const ethPrice = await store.getETHPrice();
+    const token = store.getStore('lpTokens').find((e) => e.label === lpLabel);
+
+    await store.getLpPrice(token);
+    const lpPrice = await store.getLpAmountOut(eth, token, `1`);
+    const price = ethPrice / lpPrice;
+    if (!price) return 0;
+    const supplyToken = store
+      .getStore('rewardPools')
+      .map((x) => x.tokens)
+      .flat()
+      .find(
+        ({ address, tokenAddress }) =>
+          pool.address === address || pool.address === tokenAddress
+      );
+    const totalSupply = await store.getTotalSupply(supplyToken);
+    return totalSupply * price;
+  };
+
   getLockTime = async (address) => {
     const web3 = new Web3(store.getStore('web3context').library.provider);
     const account = store.getStore('account');
