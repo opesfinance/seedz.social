@@ -3300,6 +3300,39 @@ class Store {
       throw error;
     }
   };
+
+  /**
+   * Adds seeds to a given pool.
+   * @param {Pool} pool Seeds will be added to this pool
+   * @returns
+   */
+  addSeeds = async (pool) =>
+    new Promise((res, rej) => {
+      let provider = new Web3(store.getStore('web3context').library.provider);
+      provider = provider.currentProvider;
+      provider.sendAsync(
+        {
+          method: 'metamask_watchAsset',
+          params: {
+            type: 'ERC20',
+            options: {
+              address: pool.tokenAddress,
+              symbol: pool.tokenSymbol,
+              decimals: 18,
+              image: '',
+            },
+          },
+          id: Math.round(Math.random() * 100000),
+        },
+        (err, added) => {
+          if (err || 'error' in added) {
+            emitter.emit(ERROR, 'There was a problem adding the token.');
+            return rej(err);
+          }
+          return res(added);
+        }
+      );
+    });
 }
 
 var store = new Store();

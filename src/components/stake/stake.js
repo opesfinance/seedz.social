@@ -231,49 +231,10 @@ const Stake = (props) => {
   };
 
   const onAddSeeds = async (pool, loaderKey) => {
-    // console.log(pool);
-    // return console.log(loaderKey);
-    let provider = new Web3(store.getStore('web3context').library.provider);
-    provider = provider.currentProvider;
-    provider.sendAsync(
-      {
-        method: 'metamask_watchAsset',
-        params: {
-          type: 'ERC20',
-          options: {
-            address: pool.tokenAddress,
-            symbol: pool.tokenSymbol,
-            decimals: 18,
-            image: '',
-          },
-        },
-        id: Math.round(Math.random() * 100000),
-      },
-      (err, added) => {
-        freeLoader(loaderKey);
-        console.log('provider returned', err, added);
-        if (err || 'error' in added) {
-          return emitter.emit(ERROR, 'There was a problem adding the token.');
-        }
-      }
-    );
-  };
-
-  const onAddPool = async (pool) => {
-    let provider = new Web3(store.getStore('web3context').library.provider);
-    provider = provider.currentProvider;
-    provider.sendAsync({
-      method: 'metamask_watchAsset',
-      params: {
-        type: 'ERC20',
-        options: {
-          address: pool.address,
-          symbol: pool.symbol,
-          decimals: 18,
-          image: '',
-        },
-      },
-    });
+    store
+      .addSeeds(pool)
+      .catch(() => {})
+      .finally(() => freeLoader(loaderKey));
   };
 
   const showHash = (txHash) => {
