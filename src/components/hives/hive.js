@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import CountDown from '../utils/countDown';
-import NftSelector from '../nft/nft-selector';
+import NftSelector from '../utils/NftSelector';
 
 import './hive.scss';
 import { withRouter } from 'react-router-dom';
@@ -68,6 +68,11 @@ const Hive = (props) => {
           </div>
         )}
       </div> */}
+      {props.token.isSuper ? (
+        <NftSelector pool={props.data} onChange={() => {}} />
+      ) : (
+        ''
+      )}
       <div className={`card-body ${props.data?.isSuperHive && 'pt-0'}`}>
         <div className='hive-header'>
           <div>

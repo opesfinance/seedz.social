@@ -13,7 +13,6 @@ import NftSelector from '../utils/NftSelector';
 const { store } = Store;
 
 const StakeMain = (props) => {
-  // console.log(props);
   const [lockTime, setLockTime] = useState(0);
 
   useEffect(() => {
@@ -32,11 +31,7 @@ const StakeMain = (props) => {
           <div className='my-1'>
             <div className='row'>
               <div className='col-md-2'>
-                <NftSelector
-                  {...props}
-                  ids={props.nftIds}
-                  onChange={props.onChangeNft}
-                />
+                <NftSelector pool={props.pool} onChange={props.onChangeNft} />
               </div>
             </div>
           </div>

@@ -3,35 +3,64 @@ import Select from 'react-select';
 import Store from '../../stores/store';
 const { store } = Store;
 
-const NftSelector = (props) => {
-  const nftOptions = props.ids.map((id) => {
-    return {
-      value: id ? id : -2,
-      label: id ? `nft #${id}` : 'new NFT',
-    };
+const NftSelector = ({ onChange, pool }) => {
+  const [nftOptions, setNftOptions] = useState([
+    {
+      value: -2,
+      label: 'new NFT',
+    },
+  ]);
+
+  const [selectedNftOption, setSelectedNftOption] = useState({
+    value: -2,
+    label: 'new NFT',
   });
-  const [selectedNftOption, setSelectedNftOption] = useState(
-    nftOptions[nftOptions.length - 1]
-  );
+
+  const getNFTs = async () => {
+    var nftIdsResult = [''];
+    try {
+      let walletNftQty = await store.walletNftQty(pool.token.stakeNFT);
+
+      for (var i = 0; i < walletNftQty; i++) {
+        nftIdsResult.push(
+          await store.tokenOfOwnerByIndex(i, pool.token.stakeNFT)
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    return nftIdsResult;
+  };
 
   useEffect(() => {
-    let nftId = store.loadNFTId(props.match.params.address);
-    setSelectedNftOption(
-      nftOptions.find(
-        ({ value }, ix) => value === nftId || ix === nftOptions.length - 1
-      )
-    );
+    getNFTs().then((nfts) => {
+      setNftOptions(
+        nfts.map((id) => {
+          return {
+            value: id ? id : -2,
+            label: id ? `nft #${id}` : 'new NFT',
+          };
+        })
+      );
+
+      let nftId = store.loadNFTId(pool.address);
+      setSelectedNftOption(
+        nftOptions.find(
+          ({ value }, ix) => value === nftId || ix === nftOptions.length - 1
+        )
+      );
+    });
   }, []);
 
   const onChangeNft = (el) => {
-    store.saveNFTId(props.match.params.address, el.value);
-    props.onChangeNft(el);
+    store.saveNFTId(pool.address, el.value);
+    onChangeNft(el);
   };
 
   return (
     <Select
       options={nftOptions}
-      onChange={onChangeNft}
+      onChange={onChange}
       defaultValue={selectedNftOption}
     />
   );
