@@ -62,12 +62,8 @@ const Stake = (props) => {
     stake: false,
   });
 
-  const [nftQty, setNftQty] = useState(false);
-  const [nftIds, setNftIds] = useState(['']);
-
   const handleLoader = (method, loaderKey, params) => {
     let p = params || [];
-    console.log(p);
     let l = { ...loaders };
     l[loaderKey] = true;
     setLoaders(l);
@@ -140,43 +136,12 @@ const Stake = (props) => {
     // console.log(+stakeAllowance);
   };
 
-  const getNFTs = async () => {
-    try {
-      if (!pool.data.isSuperHive) return;
-      let walletNftQty = await store.walletNftQty(pool.token.stakeNFT);
-      console.log('walletids', !walletNftQty);
-      if (!walletNftQty) return setNftQty(0);
-
-      // let nftIdsPromises = new Array(walletNftQty).map((el, i) =>
-      //   store.tokenOfOwnerByIndex(i)
-      // );
-      var nftIdsResult = [];
-      // let nftIdsResult = await Promise.all(nftIdsPromises);
-      // // ['4', '10']
-      console.log('NFTDKLFSJL');
-      console.log('nftIdsResult', nftIdsResult);
-      console.log(pool.token.nftAddress);
-      for (var i = 0; i < walletNftQty; i++) {
-        nftIdsResult.push(
-          await store.tokenOfOwnerByIndex(i, pool.token.stakeNFT)
-        );
-      }
-
-      setNftQty(walletNftQty);
-      setNftIds([...nftIds, ...nftIdsResult]);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     if (!pool) props.history.push('/');
 
     // console.log(pool);
 
     getStakeAllowance();
-
-    getNFTs();
 
     store.getStore('currentPool');
 
@@ -320,19 +285,9 @@ const Stake = (props) => {
   };
 
   const onChangeNft = (el) => {
-    const pools = [...store.getStore('rewardPools')];
-    let currentPool = pools.find(({ id }) => pool.id === id);
-    if (currentPool) {
-      currentPool.tokens[0].selectedNftId = +el.value;
-    }
     let p = { ...pool };
     p.token.selectedNftId = el.value;
-
     setPool(p);
-
-    store.setStore({ rewardPools: pools });
-    if (+el.value >= 0)
-      dispatcher.dispatch({ type: GET_BALANCES, content: {} });
   };
 
   const onStake = () => {
@@ -605,7 +560,6 @@ const Stake = (props) => {
       loaders={loaders}
       stakedAmountUsd={stakedAmountUsd}
       onAddSeeds={onAddSeeds}
-      nftIds={nftIds}
       onChangeNft={onChangeNft}
     />
   );

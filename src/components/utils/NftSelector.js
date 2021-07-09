@@ -54,6 +54,16 @@ const NftSelector = ({ onChange, pool }) => {
 
   const onChangeNft = (el) => {
     store.saveNFTId(pool.address, el.value);
+    const pools = [...store.getStore('rewardPools')];
+    let currentPool = pools.find(({ id }) => pool.id === id);
+    if (currentPool) {
+      currentPool.tokens[0].selectedNftId = +el.value;
+    }
+    let p = { ...pool };
+    p.token.selectedNftId = el.value;
+    store.setStore({ rewardPools: pools });
+    if (+el.value >= 0)
+      dispatcher.dispatch({ type: GET_BALANCES, content: {} });
     onChangeNft(el);
   };
 
