@@ -335,10 +335,6 @@ class Store {
     for (let i = 0; i < pools.length; i++) {
       const pool = pools[i];
       if (pool.isSuperHive) {
-        console.log(
-          'pool.tokens[0].selectedNftId ------',
-          pool.tokens[0].selectedNftId
-        );
         nftIds = await this.getNFTIds(pool.tokens[0].stakeNFT);
         if (nftIds?.length) {
           if (pool.tokens[0].selectedNftId == -2) {
@@ -348,10 +344,6 @@ class Store {
         } else {
           pool.tokens[0].selectedNftId = -1;
         }
-        console.log(
-          'pool.tokens[0].selectedNftId ------',
-          pool.tokens[0].selectedNftId
-        );
       }
     }
 
@@ -3333,6 +3325,13 @@ class Store {
         }
       );
     });
+
+  saveNFTId = (tokenId, nftId) => {
+    localStorage.setItem(`${tokenId}/nftId`, nftId);
+  };
+  loadNFTId = (tokenId) => {
+    return localStorage.getItem(`${tokenId}/nftId`);
+  };
 }
 
 var store = new Store();

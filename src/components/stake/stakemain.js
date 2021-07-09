@@ -8,32 +8,21 @@ import Store from '../../stores/store';
 import CountDown from '../utils/countDown';
 import GasPrice from '../utils/gasPrice';
 // import NftSelector from '../nft/nft-selector';
-import Select from 'react-select';
+import NftSelector from '../utils/NftSelector';
 
 const { store } = Store;
 
 const StakeMain = (props) => {
   // console.log(props);
   const [lockTime, setLockTime] = useState(0);
-  const nftOptions = props.nftIds.map((id) => {
-    return {
-      value: id ? id : -2,
-      label: id ? `nft #${id}` : 'new NFT',
-    };
-  });
-  // const [opts] = useState(nftOptions);
-
-  // console.log('nftOptions --', nftOptions);
 
   useEffect(() => {
-    const initLockTime = async () => {
-      const { address } = props.pool;
-      // console.log(props.pool);
-      const timestamp = await store.getLockTime(address);
-      console.log(timestamp);
-      setLockTime(timestamp);
-    };
-    initLockTime();
+    // const initLockTime = async () => {
+    //   const { address } = props.pool;
+    //   const timestamp = await store.getLockTime(address);
+    //   setLockTime(timestamp);
+    // };
+    // initLockTime();
   }, []);
 
   return (
@@ -43,18 +32,11 @@ const StakeMain = (props) => {
           <div className='my-1'>
             <div className='row'>
               <div className='col-md-2'>
-                <Select
-                  options={nftOptions}
+                <NftSelector
+                  {...props}
+                  ids={props.nftIds}
                   onChange={props.onChangeNft}
-                  defaultValue={nftOptions[nftOptions.length - 1]}
                 />
-
-                {/* <NftSelector
-              data={props.data}
-              ddOptions={store
-                .getStore('exchangeAssets')
-                .tokens.filter((a) => a.group == 'inputs')}
-            /> */}
               </div>
             </div>
           </div>

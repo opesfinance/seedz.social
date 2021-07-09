@@ -322,14 +322,11 @@ const Stake = (props) => {
   const onChangeNft = (el) => {
     const pools = [...store.getStore('rewardPools')];
     let currentPool = pools.find(({ id }) => pool.id === id);
-    console.log('currentPool ===========', currentPool);
     if (currentPool) {
       currentPool.tokens[0].selectedNftId = +el.value;
     }
-    console.log(el);
     let p = { ...pool };
     p.token.selectedNftId = el.value;
-    console.log('currentPool token ===========', p.token);
 
     setPool(p);
 
@@ -339,17 +336,11 @@ const Stake = (props) => {
   };
 
   const onStake = () => {
-    console.log('staking ------------!', pool.token.selectedNftId);
     setAmountError(false);
     setAmountStakeError(false);
     const selectedToken = pool.token;
-    console.log(pool);
-    console.log(amounts);
     setFieldId('');
     const amount = amounts[selectedToken.hiveId + '_stake'];
-
-    console.log(amount);
-    console.log(selectedToken);
 
     if (amount > 0) {
       dispatcher.dispatch({
@@ -364,12 +355,10 @@ const Stake = (props) => {
   };
 
   const onUnstake = () => {
-    console.log('unstaking ------------');
     setAmountError(false);
     setAmountStakeError(false);
     setFieldId('');
     const amount = amounts[pool.id + '_unstake'];
-    console.log(amounts);
     if (amount > 0) {
       // setLoading(true);
       dispatcher.dispatch({
@@ -498,12 +487,8 @@ const Stake = (props) => {
   };
 
   const onChange = (event) => {
-    // console.log('onchange ------------', event.target.value);
-    // console.log('current amounts ------------', amounts);
-    // console.log('event.target.id', event.target.id);
     let newAmount = {};
     newAmount[event.target.id] = event.target.value;
-    // console.log('newamount ------------', newAmount);
     setAmountStakeError(false);
     setAmounts({ ...amounts, ...newAmount });
   };
@@ -513,12 +498,8 @@ const Stake = (props) => {
       Math.floor((balance === '' ? '0' : balance) * 1000000000) / 1000000000
     ).toFixed(9);
     const newAmounts = { ...amounts };
-    console.log('newAmounts ---', newAmounts);
-    console.log('balance ---', balance);
-    console.log('pool ---', pool);
     newAmounts[`${id}_${type}`] = rounded;
 
-    console.log('newAmounts --------', newAmounts);
     setAmounts(newAmounts);
   };
 
