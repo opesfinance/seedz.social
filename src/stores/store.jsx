@@ -204,7 +204,7 @@ class Store {
       if (pool.isSuperHive) {
         nftIds = await this.getNFTIds(pool.tokens[0].stakeNFT);
         if (nftIds?.length) {
-          if (pool.tokens[0].selectedNftId == -2) {
+          if (pool.tokens[0].selectedNftId === -2) {
             pool.tokens[0].selectedNftId = nftIds[0];
           }
           pool.tokens[0].nftIds = nftIds;
@@ -337,7 +337,7 @@ class Store {
       if (pool.isSuperHive) {
         nftIds = await this.getNFTIds(pool.tokens[0].stakeNFT);
         if (nftIds?.length) {
-          if (pool.tokens[0].selectedNftId == -2) {
+          if (pool.tokens[0].selectedNftId === -2) {
             pool.tokens[0].selectedNftId = nftIds[0];
           }
           pool.tokens[0].nftIds = nftIds;
@@ -469,7 +469,7 @@ class Store {
       if (pool.isSuperHive) {
         nftIds = await this.getNFTIds(pool.tokens[0].stakeNFT);
         if (nftIds?.length) {
-          if (pool.tokens[0].selectedNftId == -2) {
+          if (pool.tokens[0].selectedNftId === -2) {
             pool.tokens[0].selectedNftId = nftIds[0];
           }
           pool.tokens[0].nftIds = nftIds;
@@ -516,7 +516,7 @@ class Store {
 
   getPrice = async (assetIn, assetOut) => {
     try {
-      if (assetIn.label == assetOut.label) return 0;
+      if (assetIn.label === assetOut.label) return 0;
       // console.log(assetIn, assetOut);
       // console.log(
       //   'in',
@@ -534,7 +534,7 @@ class Store {
 
       //const { assetIn, assetOut} = payload.content;
       let route = [];
-      if (assetIn.label != 'ETH') {
+      if (assetIn.label !== 'ETH') {
         route.push(assetIn.address);
       }
       route = route.concat([
@@ -561,19 +561,19 @@ class Store {
 
       //ETH price
 
-      var currentETH = assets.find((i) => i.label == 'ETH');
+      var currentETH = assets.find((i) => i.label === 'ETH');
       currentETH.price =
         100 / (test[test.length - 3] / 10 ** currentETH.decimals).toFixed(4);
 
       //WPE price
 
-      var currentWPE = assets.find((i) => i.label == 'WPE');
+      var currentWPE = assets.find((i) => i.label === 'WPE');
       var wpeTemp = (test[test.length - 2] / 10 ** currentWPE.decimals).toFixed(
         4
       );
       currentWPE.price = 100 / wpeTemp;
 
-      var current = assets.find((i) => i.address == assetOut.address);
+      var current = assets.find((i) => i.address === assetOut.address);
       current.price = price;
       return !Number.isNaN(price) ? price : 0;
     } catch (error) {
@@ -590,19 +590,19 @@ class Store {
     const assets = store.getStore('lpTokens');
     let price;
     // console.log(assetOut);
-    if (assetOut.label == 'ETH' || assetOut.label == 'WPE') {
+    if (assetOut.label === 'ETH' || assetOut.label === 'WPE') {
       const temp = { label: 'STR' };
       let test = await this._getLPprice(web3, temp, account); //set an LP token address for the moment
       price = (test[test.length - 3] / 100 / 10 ** 6).toFixed(4);
 
-      if (assetOut.label == 'ETH') {
+      if (assetOut.label === 'ETH') {
         const priceETH = (test[test.length - 2] / 100 / 10 ** 18).toFixed(4);
-        const eth = assets.find((i) => i.label == 'ETH');
+        const eth = assets.find((i) => i.label === 'ETH');
         eth.price = price / priceETH;
         price = eth.price;
       } else {
         const priceWPE = (test[test.length - 1] / 100 / 10 ** 18).toFixed(4);
-        const wpe = assets.find((i) => i.label == 'WPE');
+        const wpe = assets.find((i) => i.label === 'WPE');
         wpe.price = price / priceWPE;
         price = wpe.price;
       }
@@ -614,7 +614,7 @@ class Store {
       price = (test[test.length - 3] / 100 / 10 ** 6).toFixed(4);
       const priceETH = (test[test.length - 2] / 100 / 10 ** 18).toFixed(4);
       const priceWPE = (test[test.length - 1] / 100 / 10 ** 18).toFixed(4);
-      const current = assets.find((i) => i.address == assetOut.address);
+      const current = assets.find((i) => i.address === assetOut.address);
 
       current.price = !Number.isNaN(price) ? price : 0;
       current.priceETH = !Number.isNaN(priceETH) ? priceETH : 0;
@@ -642,30 +642,30 @@ class Store {
       if (!store.getStore('web3context')) return 0;
       const web3 = new Web3(store.getStore('web3context').library.provider);
       const assets = store.getStore('exchangeAssets').tokens;
-      var current = assets.find((i) => i.address == assetOut.address);
+      var current = assets.find((i) => i.address === assetOut.address);
       //const { assetIn, assetOut} = payload.content;
 
       var inputToken = assetIn;
       var outputToken = assetOut;
       var midRoute = current.route;
 
-      if (assetIn.group == 'outputs') {
+      if (assetIn.group === 'outputs') {
         inputToken = assetOut;
         outputToken = assetIn;
-        var temp = assets.find((i) => i.address == outputToken.address);
+        var temp = assets.find((i) => i.address === outputToken.address);
         midRoute = temp.route;
       }
 
       var route = [];
 
-      if (inputToken.label != 'ETH') {
+      if (inputToken.label !== 'ETH') {
         route.push(inputToken.address);
       }
       //Default route
       route = route.concat(midRoute);
       route.push(outputToken.address);
 
-      if (assetIn.group == 'outputs') {
+      if (assetIn.group === 'outputs') {
         route = route.reverse();
       }
 
@@ -702,7 +702,7 @@ class Store {
     // console.log(assetOut);
     const assets = store.getStore('lpTokens');
 
-    var current = assets.find((i) => i.address == assetOut.address);
+    var current = assets.find((i) => i.address === assetOut.address);
     // console.log(current);
     const account = store.getStore('account');
     if (!store.getStore('web3context')) return 0;
@@ -711,17 +711,17 @@ class Store {
     // console.log(current);
     //LP price
     if (assetIn.label === 'ETH') {
-      if (current.label == 'WPE') {
+      if (current.label === 'WPE') {
         amountOut = await this._getOutputForWPELP(web3, amountIn, account);
-      } else if (current.label == 'WBTC') {
+      } else if (current.label === 'WBTC') {
         amountOut = await this._getOutputForWBTCLP(web3, amountIn, account);
-      } else if (current.label == 'WPEBPT') {
+      } else if (current.label === 'WPEBPT') {
         amountOut = await this._getOutputForWPEBPT(web3, amountIn, account);
-      } else if (current.label == 'YFUBPT') {
+      } else if (current.label === 'YFUBPT') {
         amountOut = await this._getOutputForYFUBPT(web3, amountIn, account);
-      } else if (current.label == 'PIXELBPT') {
+      } else if (current.label === 'PIXELBPT') {
         amountOut = await this._getOutputForPIXELBPT(web3, amountIn, account);
-      } else if (current.label == 'STRBPT') {
+      } else if (current.label === 'STRBPT') {
         amountOut = await this._getOutputForSTRBPT(web3, amountIn, account);
       } else {
         // console.log(current);
@@ -1725,16 +1725,16 @@ class Store {
 
   exchange = (payload) => {
     const { assetIn, assetOut, amountIn, amountOut } = payload.content;
-    if (assetIn.group == 'inputs') {
+    if (assetIn.group === 'inputs') {
       // buscar en que gerupo
-      if (assetIn.label == 'ETH') {
+      if (assetIn.label === 'ETH') {
         this.buyWithEth(payload);
       } else {
         this.buyWithToken(payload);
       }
     } // vender tokens
     else {
-      if (assetOut.label == 'ETH') {
+      if (assetOut.label === 'ETH') {
         this.sellWithTokenToEth(payload);
       } else {
         this.sellWithToken(payload);
@@ -1749,20 +1749,20 @@ class Store {
 
     console.log(assetOut);
     var realIn;
-    if (assetIn.label == 'WPE+ETH') {
-      realIn = assets.find((i) => i.label == 'WPE');
-    } else if (assetIn.label == 'YFU+ETH') {
-      realIn = assets.find((i) => i.label == 'YFU');
-    } else if (assetIn.label == 'PIXEL+ETH') {
-      realIn = assets.find((i) => i.label == 'PIXEL');
-    } else if (assetIn.label == 'STR+ETH') {
-      realIn = assets.find((i) => i.label == 'STR');
+    if (assetIn.label === 'WPE+ETH') {
+      realIn = assets.find((i) => i.label === 'WPE');
+    } else if (assetIn.label === 'YFU+ETH') {
+      realIn = assets.find((i) => i.label === 'YFU');
+    } else if (assetIn.label === 'PIXEL+ETH') {
+      realIn = assets.find((i) => i.label === 'PIXEL');
+    } else if (assetIn.label === 'STR+ETH') {
+      realIn = assets.find((i) => i.label === 'STR');
     }
     if (
-      assetOut.label == 'WPEBPT' ||
-      assetOut.label == 'YFUBPT' ||
-      assetOut.label == 'PIXELBPT' ||
-      assetOut.label == 'STRBPT'
+      assetOut.label === 'WPEBPT' ||
+      assetOut.label === 'YFUBPT' ||
+      assetOut.label === 'PIXELBPT' ||
+      assetOut.label === 'STRBPT'
     ) {
       this._checkApprovalLiquidityBPT(
         realIn,
@@ -1828,19 +1828,19 @@ class Store {
       value,
       account
     );
-    if (asset.label == 'YFUBPT') {
+    if (asset.label === 'YFUBPT') {
       ethValue = await this._getOutputForYFUBPTwTokenEthVal(
         web3,
         value,
         account
       );
-    } else if (asset.label == 'STRBPT') {
+    } else if (asset.label === 'STRBPT') {
       ethValue = await this._getOutputForSTRBPTwTokenEthVal(
         web3,
         value,
         account
       );
-    } else if (asset.label == 'PIXELBPT') {
+    } else if (asset.label === 'PIXELBPT') {
       ethValue = await this._getOutputForPIXELBPTwTokenEthVal(
         web3,
         value,
@@ -1898,7 +1898,7 @@ class Store {
     const account = store.getStore('account');
     const { assetIn, assetOut, amountIn, amountOut } = payload.content;
     console.log(assetOut);
-    if (assetOut.label == 'WPE' || assetOut.label == 'WBTC') {
+    if (assetOut.label === 'WPE' || assetOut.label === 'WBTC') {
       this._buyWPELPWithEthCall(
         assetOut,
         account,
@@ -1913,10 +1913,10 @@ class Store {
         }
       );
     } else if (
-      assetOut.label == 'WPEBPT' ||
-      assetOut.label == 'YFUBPT' ||
-      assetOut.label == 'PIXELBPT' ||
-      assetOut.label == 'STRBPT'
+      assetOut.label === 'WPEBPT' ||
+      assetOut.label === 'YFUBPT' ||
+      assetOut.label === 'PIXELBPT' ||
+      assetOut.label === 'STRBPT'
     ) {
       this._buyWPEBPTWithEthCall(
         assetOut,
@@ -2134,7 +2134,7 @@ class Store {
     console.log('Amount ', amount);
     console.log('value ', value);
     let multiplier = 1.005;
-    if (asset.label == 'PIXEL') {
+    if (asset.label === 'PIXEL') {
       multiplier = 1.01;
     }
     const buyAmount = web3.utils.toWei(
@@ -2280,14 +2280,14 @@ class Store {
 
   buyLP = (payload) => {
     const { assetIn } = payload.content;
-    if (assetIn.label == 'ETH') {
+    if (assetIn.label === 'ETH') {
       //- [ ] BUYLPTOKENSWITHEYTHEREUM
       this.buyLPWithEth(payload);
     } else if (
-      assetIn.label == 'WPE+ETH' ||
-      assetIn.label == 'YFU+ETH' ||
-      assetIn.label == 'PIXEL+ETH' ||
-      assetIn.label == 'STR+ETH'
+      assetIn.label === 'WPE+ETH' ||
+      assetIn.label === 'YFU+ETH' ||
+      assetIn.label === 'PIXEL+ETH' ||
+      assetIn.label === 'STR+ETH'
     ) {
       this.buyLPWithCombo(payload);
     } else {
@@ -2323,7 +2323,7 @@ class Store {
         }
       );
     } else {
-      if (asset.hiveId == 'wbtchive' || !asset.isHive) {
+      if (asset.hiveId === 'wbtchive' || !asset.isHive) {
         console.log('hiiii', payload.content);
         this._boostcallStake2(
           asset,
@@ -3272,12 +3272,12 @@ class Store {
   getStakedAmountUsd = async (token) => {
     const assetIn = store
       .getStore('poolInTokens')
-      .find((i) => i.label == 'ETH');
+      .find((i) => i.label === 'ETH');
     try {
       const assetOut = store
         .getStore('exchangeAssets')
         .tokens.find(
-          ({ liquidityPoolAddress }) => token.address == liquidityPoolAddress
+          ({ liquidityPoolAddress }) => token.address === liquidityPoolAddress
         );
 
       if (assetOut && token.stakedBalance) {
