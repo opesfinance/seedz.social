@@ -19,6 +19,7 @@ const Hive = (props) => {
   );
   const [totalLockVolume, setTotalLockVolume] = useState(0);
 
+  // this does the match btwn lpTokens for its total lock volume
   const hiveid2LpLabel = {
     strhive: 'STR',
     pixelhive: 'PIXEL',
@@ -26,10 +27,10 @@ const Hive = (props) => {
     yfuhive: 'YFU',
     wpehive: 'WPE',
     wbtchive: 'WBTC',
-    wpeshive: 'WPE',
-    yfushive: 'WPE',
-    strshive: 'WPE',
-    pixelshive: 'WPE'
+    wpeshive: 'WPEBPT',
+    yfushive: 'YFUBPT',
+    strshive: 'STRBPT',
+    pixelshive: 'PIXELBPT',
   };
 
   const initTotalLockVolume = async () => {
@@ -44,8 +45,6 @@ const Hive = (props) => {
       .getStore('lpTokens')
       .find((e) => e.label === hiveid2LpLabel[props.token.hiveId]);
 
-    console.log(token);
-
     await store.getLpPrice(token);
     const lpPrice = await store.getLpAmountOut(eth, token, `1`);
     const price = ethPrice / lpPrice;
@@ -57,9 +56,25 @@ const Hive = (props) => {
       .flat()
       .find(({ address }) => props.token.address === address);
 
+    // console.log('------------------------------------------------');
+    // console.log('------------------------------------------------');
+    // console.log('------------------------------------------------');
+    // console.log('props.token.hiveId', props.token.hiveId);
+    // console.log('token', token, props.token.address);
+    // console.log('supplyToken ---', supplyToken);
+    // console.log('lpprice ---', lpprice);
+    // console.log('lpPrice ---', lpPrice);
+    // console.log('------------------------------------------------');
+    // console.log('------------------------------------------------');
+    // console.log('------------------------------------------------');
+    // console.log('------------------------------------------------');
+    // console.log('------------------------------------------------');
+    // console.log('------------------------------------------------');
+
     const totalSupply = await store.getTotalSupply(supplyToken);
     setTotalLockVolume(totalSupply * price);
   };
+
   useEffect(() => {
     initTotalLockVolume();
   }, [props.id]);
