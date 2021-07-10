@@ -161,6 +161,7 @@ const STORE_INIT_CONSTANTS = {
           name: 'iUPixel/WPE POOL',
           address: '0x469485cA145D850c0e54367076558dC72b5DCe19',
           symbol: 'PIXEL-LP',
+          disableStake: true,
           liquidityLink:
             'https://uniswap.info/pair/0x469485cA145D850c0e54367076558dC72b5DCe19',
           abi: config.erc20ABI,
@@ -219,6 +220,7 @@ const STORE_INIT_CONSTANTS = {
           name: 'YFU/WPE POOL',
           address: '0x8dc082087ee75b528dfd4e68fa28966666de1a60',
           symbol: 'YFU-LP',
+          disableStake: true,
           liquidityLink:
             'https://uniswap.info/pair/0x8dc082087ee75b528dfd4e68fa28966666de1a60',
           abi: config.erc20ABI,
@@ -277,6 +279,7 @@ const STORE_INIT_CONSTANTS = {
           name: 'Missions Fund/WPE POOL',
           address: '0xEcEa1bAe3Bb692510693FAc2932C32BeB1FA866E',
           symbol: 'LIFT-LP',
+          disableStake: true,
           liquidityLink:
             'https://uniswap.info/pair/0xEcEa1bAe3Bb692510693FAc2932C32BeB1FA866E',
           abi: config.erc20ABI,
@@ -332,6 +335,7 @@ const STORE_INIT_CONSTANTS = {
           name: 'Starwire/WPE POOL',
           address: '0x8eAA970BE66D4DE446453AEA538173382C2CACE8',
           symbol: 'STR-LP',
+          disableStake: true,
           liquidityLink:
             'https://uniswap.info/pair/0x8eAA970BE66D4DE446453AEA538173382C2CACE8',
           abi: config.erc20ABI,
@@ -391,6 +395,7 @@ const STORE_INIT_CONSTANTS = {
           name: 'WPE-LP',
           address: '0x75F89FfbE5C25161cBC7e97c988c9F391EaeFAF9',
           symbol: 'UNI-v2',
+          disableStake: true,
           liquidityLink:
             'https://app.uniswap.org/#/add/ETH/0xd075e95423c5c4ba1e122cae0f4cdfa19b82881b',
           abi: config.erc20ABI,
@@ -442,6 +447,7 @@ const STORE_INIT_CONSTANTS = {
           name: 'Crypto Club Pool',
           address: '0x0731ee4cf7376A1bd5A78199ac9BEdc8213DeF24',
           symbol: 'UNI-v2',
+          disableStake: true,
           liquidityLink:
             'https://app.uniswap.org/#/add/ETH/0x0731ee4cf7376A1bd5A78199ac9BEdc8213DeF24',
           abi: config.erc20ABI,
@@ -493,6 +499,7 @@ const STORE_INIT_CONSTANTS = {
           name: 'WPE ETH Super Hive',
           address: '0xE24281bc68C2a56e19B67b3787Fd5e95937bd970',
           symbol: 'UNI-v2',
+          disableStake: true,
           liquidityLink:
             'https://app.uniswap.org/#/add/ETH/0x0731ee4cf7376A1bd5A78199ac9BEdc8213DeF24',
           abi: config.erc20ABI,
@@ -547,6 +554,7 @@ const STORE_INIT_CONSTANTS = {
           name: 'YFU ETH Super Hive',
           address: '0x9f2b223da9f3911698c9b90ecdf3ffee37dd54a8',
           symbol: 'YFU-BPT',
+          disableStake: false,
           liquidityLink:
             'https://app.uniswap.org/#/add/ETH/0x0731ee4cf7376A1bd5A78199ac9BEdc8213DeF24',
           abi: config.erc20ABI,
@@ -601,6 +609,7 @@ const STORE_INIT_CONSTANTS = {
           name: 'PIXEL ETH Super Hive',
           address: '0x60B4601cDdDc4467f31b1F770cb93c51dC7dC728',
           symbol: 'PIXEL-BPT',
+          disableStake: false,
           liquidityLink:
             'https://app.uniswap.org/#/add/ETH/0x0731ee4cf7376A1bd5A78199ac9BEdc8213DeF24',
           abi: config.erc20ABI,
@@ -655,6 +664,7 @@ const STORE_INIT_CONSTANTS = {
           name: 'STR ETH Super Hive',
           address: '0x8e9690E135005E415BD050B11768615DE43fe5f8',
           symbol: 'STR-BPT',
+          disableStake: false,
           liquidityLink:
             'https://app.uniswap.org/#/add/ETH/0x0731ee4cf7376A1bd5A78199ac9BEdc8213DeF24',
           abi: config.erc20ABI,
@@ -834,7 +844,7 @@ const STORE_INIT_CONSTANTS = {
           imageLogo: 'STR',
           abi: config.erc20ABI,
           decimals: 18,
-          tokenAddress: '0x11c1a6b3ed6bb362954b29d3183cfa97a0c806aa', //STR
+          tokenAddress: '0x11c1a6b3ed6bb362954b29d3183cfa97a0c806aa', //STR == str lptoken
           tokenSymbol: 'STR',
           rewardsAddress: config.farmstr, //config.farmsRewardAddress,
           rewardsABI: config.farmsRewardsAbi,
@@ -900,7 +910,7 @@ const STORE_INIT_CONSTANTS = {
         logo: 'WPE.png',
         address: 'WPE+ETH',
         decimals: 18,
-        group: 'inputs',
+        group: '',
         box: 'false',
         availableViews: [],
         denomination: 'USD',
@@ -911,7 +921,7 @@ const STORE_INIT_CONSTANTS = {
         logo: 'WPE.png',
         address: 'STR+ETH',
         decimals: 18,
-        group: 'inputs',
+        group: '',
         box: 'false',
         availableViews: ['pools'],
         denomination: 'USD',
@@ -922,7 +932,7 @@ const STORE_INIT_CONSTANTS = {
         logo: 'WPE.png',
         address: 'YFU+ETH',
         decimals: 18,
-        group: 'inputs',
+        group: '',
         box: 'false',
         availableViews: ['pools'],
         denomination: 'USD',
@@ -933,7 +943,7 @@ const STORE_INIT_CONSTANTS = {
         logo: 'WPE.png',
         address: 'PUXEL+ETH',
         decimals: 18,
-        group: 'inputs',
+        group: '',
         box: 'false',
         availableViews: ['pools'],
         denomination: 'USD',
@@ -943,8 +953,8 @@ const STORE_INIT_CONSTANTS = {
         label: 'STR',
         labelLP: 'STR/WPE LP',
         logo: 'STR.png',
-        address: '0x11C1a6B3Ed6Bb362954b29d3183cfA97A0c806Aa',
-        liquidityPoolAddress: '0x8eAA970BE66D4DE446453AEA538173382C2CACE8',
+        address: '0x11C1a6B3Ed6Bb362954b29d3183cfA97A0c806Aa', // lp token
+        liquidityPoolAddress: '0x8eAA970BE66D4DE446453AEA538173382C2CACE8', // hive.token[0].address
         decimals: 18,
         group: 'outputs',
         box: 'true',
@@ -961,8 +971,8 @@ const STORE_INIT_CONSTANTS = {
         label: 'PIXEL',
         labelLP: 'PIXEL/WPE LP',
         logo: 'PIXEL.png',
-        address: '0x89045d0Af6A12782Ec6f701eE6698bEaF17d0eA2',
-        liquidityPoolAddress: '0x469485cA145D850c0e54367076558dC72b5DCe19',
+        address: '0x89045d0Af6A12782Ec6f701eE6698bEaF17d0eA2', // lptoken
+        liquidityPoolAddress: '0x469485cA145D850c0e54367076558dC72b5DCe19', // hive.token[0].address
         decimals: 18,
         group: 'outputs',
         box: 'true',
