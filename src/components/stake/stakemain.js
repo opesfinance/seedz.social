@@ -242,7 +242,9 @@ const StakeMain = (props) => {
               <Row className='pt-4'>
                 <Col className='text-center'>
                   <button
-                    disabled={props.loaders?.claimingRewards}
+                    disabled={
+                      !props.pool.myRewards || props.loaders?.claimingRewards
+                    }
                     className='btn btn-primary bg-main-blue main-btn'
                     onClick={() => {
                       props.handleLoader(props.onClaim, 'claimingRewards', [
