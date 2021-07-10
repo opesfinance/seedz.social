@@ -259,6 +259,7 @@ const Pools = (props) => {
     }
   };
 
+  // event key es el address
   const onSelectAssetOut = (eventKey) => {
     const { label, address, logo, labelLP } = toOptions.find(
       ({ address, liquidityPoolAddress }) =>
