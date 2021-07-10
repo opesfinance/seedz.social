@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import { Col, Row, Card } from 'react-bootstrap';
 
@@ -10,10 +10,10 @@ import GasPrice from '../utils/gasPrice';
 // import NftSelector from '../nft/nft-selector';
 import NftSelector from '../utils/NftSelector';
 
-const { store } = Store;
+// const { store } = Store;
 
 const StakeMain = (props) => {
-  const [lockTime, setLockTime] = useState(0);
+  // const [lockTime, setLockTime] = useState(0);
 
   useEffect(() => {
     // const initLockTime = async () => {

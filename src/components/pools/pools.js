@@ -103,7 +103,7 @@ const Pools = (props) => {
     let newBoxes = boxes.map((b, i) => {
       return {
         ...b,
-        value: `\$ ${(ethPrice / parseFloat(results[i])).toFixed(4)}`,
+        value: `$ ${(ethPrice / parseFloat(results[i])).toFixed(4)}`,
         intVal: results[i],
       };
     });

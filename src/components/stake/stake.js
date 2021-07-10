@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography, TextField, InputAdornment } from '@material-ui/core';
 // import axios from 'axios';
-import Web3 from 'web3';
+// import Web3 from 'web3';
 
 import Loader from '../loader/loader';
 import Snackbar from '../snackbar/snackbar';
@@ -84,16 +84,12 @@ const Stake = (props) => {
   const address = props.match.params.address;
 
   // const [account] = useState(store.getStore('account'));
-  const [timeForReduction, setTimeForReduction] = useState('');
+  const [timeForReduction] = useState('');
   // const [themeType, setThemeType] = useState(store.getStore('themeType'));
 
-  const [rewardPools, setRewardPools] = useState(
-    rewardsMapper(store.getStore('rewardPools'))
-  );
+  const [rewardPools] = useState(rewardsMapper(store.getStore('rewardPools')));
 
-  const [farmPools, setFarmPools] = useState(
-    rewardsMapper(store.getStore('farmPools'))
-  );
+  const [farmPools] = useState(rewardsMapper(store.getStore('farmPools')));
 
   const getPool = () =>
     rewardPools.find((p) => p.address === address) ||
@@ -119,7 +115,7 @@ const Stake = (props) => {
   initialAmounts[`${pool.token.id}_stake`] = '0.000000000';
   initialAmounts[`${pool.token.id}_unstake`] = '0.000000000';
   const [amounts, setAmounts] = useState(initialAmounts);
-  const [amountError, setAmountError] = useState(false);
+  // const [amountError, setAmountError] = useState(false);
   const [costBoosterETH, setCostBoosterETH] = useState(null);
   const [stakedAmountUsd, setStakedAmountUsd] = useState(0);
 
@@ -252,7 +248,7 @@ const Stake = (props) => {
   };
 
   const onBuyBoost = (beastModesAmount) => {
-    setAmountError(false);
+    // setAmountError(false);
     const selectedToken = pool.token;
     const amount = amounts[selectedToken.id + '_stake'];
 
@@ -291,7 +287,7 @@ const Stake = (props) => {
   };
 
   const onStake = () => {
-    setAmountError(false);
+    // setAmountError(false);
     setAmountStakeError(false);
     const selectedToken = pool.token;
     setFieldId('');
@@ -310,7 +306,7 @@ const Stake = (props) => {
   };
 
   const onUnstake = () => {
-    setAmountError(false);
+    // setAmountError(false);
     setAmountStakeError(false);
     setFieldId('');
     const amount = amounts[pool.id + '_unstake'];

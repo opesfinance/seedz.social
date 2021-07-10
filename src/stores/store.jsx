@@ -1408,11 +1408,11 @@ class Store {
     const contract = config.exchangeAddress;
     return new Promise((res, rej) => {
       try {
-        this._callApproval(asset, account, 0, contract, null,
-          (err) => err ? rej(err) : res()
+        this._callApproval(asset, account, 0, contract, null, (err) =>
+          err ? rej(err) : res()
         );
       } catch (e) {
-        console.log("error");
+        console.log('error');
         rej(e);
       }
     });

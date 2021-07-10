@@ -106,7 +106,7 @@ const Exchange = (props) => {
     let results = await Promise.all(promises);
 
     let newBoxes = boxes.map((b, i) => {
-      return { ...b, value: `\$ ${parseFloat(results[i]).toFixed(4)}` };
+      return { ...b, value: `$ ${parseFloat(results[i]).toFixed(4)}` };
     });
 
     for (const assetLabel of ['ETH', 'WPE']) {
@@ -116,7 +116,7 @@ const Exchange = (props) => {
 
       let boxToModify = newBoxes.find((b) => b.label === assetLabel);
       if (boxToModify)
-        boxToModify.value = `\$ ${parseFloat(current.price).toFixed(4)}`;
+        boxToModify.value = `$ ${parseFloat(current.price).toFixed(4)}`;
     }
 
     setBoxValues(newBoxes);
@@ -219,7 +219,6 @@ const Exchange = (props) => {
   };
 
   const onChangeAssetForChart = (tradingViewKey) => {
-    console.log(tradingViewKey);
     if (tradingViewKey) setTvk(tradingViewKey);
   };
 
