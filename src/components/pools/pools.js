@@ -14,6 +14,7 @@ import {
 
 import './pools.scss';
 import Store from '../../stores/store';
+import config from '../../config';
 const { emitter, dispatcher, store } = Store;
 
 const boxColorMapper = {
@@ -46,6 +47,9 @@ const dropdownOptions = (options) => {
 };
 
 const Pools = (props) => {
+  const [approved, setApproved] = useState(false);
+  const [approveExecuting, setApproveExecuting] = useState(false);
+
   const [fromOptions, setFromOptions] = useState(
     store.getStore('poolInTokens')
   );
@@ -99,13 +103,38 @@ const Pools = (props) => {
     let newBoxes = boxes.map((b, i) => {
       return {
         ...b,
-        value: `\$ ${(ethPrice / parseFloat(results[i])).toFixed(4)}`,
+        value: `$ ${(ethPrice / parseFloat(results[i])).toFixed(4)}`,
         intVal: results[i],
       };
     });
 
     setBoxValues(newBoxes);
   };
+
+  const checkAllowance = async () => {
+    const allowance = await store.checkAllowance(
+      { address: fromAddress },
+      config.exchangeAddress
+    );
+
+    setApproved(allowance > 0);
+  };
+
+  const approve = () => {
+    setApproveExecuting(true);
+    store
+      .askApproval({ address: fromAddress })
+      .then(checkAllowance)
+      .catch((e) => {
+        console.log('not approved');
+        console.log(e);
+      })
+      .then(() => setApproveExecuting(false));
+  };
+
+  useEffect(() => {
+    checkAllowance();
+  }, [fromAddress]);
 
   useEffect(() => {
     pricePromises();
@@ -230,6 +259,7 @@ const Pools = (props) => {
     }
   };
 
+  // event key es el address
   const onSelectAssetOut = (eventKey) => {
     const { label, address, logo, labelLP } = toOptions.find(
       ({ address, liquidityPoolAddress }) =>
@@ -424,8 +454,17 @@ const Pools = (props) => {
                 <div className='text-center'>
                   {error && error.length && <div>{error}</div>}
                   <button
+                    className={'btn btn-primary mt-3 main-btn mr-4'}
+                    disabled={approved || approveExecuting}
+                    onClick={approve}
+                  >
+                    Approve
+                  </button>
+                  <button
                     className='btn btn-primary mt-3 main-btn'
-                    disabled={(error && error.length) || doingTransaction}
+                    disabled={
+                      (error && error.length) || doingTransaction || !approved
+                    }
                     onClick={onCreateTransaction}
                   >
                     {doingTransaction

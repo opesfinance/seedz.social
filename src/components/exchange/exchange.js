@@ -4,6 +4,7 @@ import { IconContext } from 'react-icons';
 import { InputGroup, Dropdown, Form } from 'react-bootstrap';
 import TradingViewWidget from 'react-tradingview-widget';
 import Web3 from 'web3';
+import config from '../../config';
 
 import { ERROR, EXCHANGE_RETURNED } from '../../constants/constants';
 
@@ -87,6 +88,9 @@ const Exchange = (props) => {
 
   const [addingTokenToMetamask, setAddingTokenToMetamask] = useState(false);
 
+  const [approved, setApproved] = useState(false);
+  const [approveExecuting, setApproveExecuting] = useState(false);
+
   const assetIn = store
     .getStore('exchangeAssets')
     .tokens.find((i) => i.label === 'USDC'); //USDC
@@ -102,7 +106,7 @@ const Exchange = (props) => {
     let results = await Promise.all(promises);
 
     let newBoxes = boxes.map((b, i) => {
-      return { ...b, value: `\$ ${parseFloat(results[i]).toFixed(4)}` };
+      return { ...b, value: `$ ${parseFloat(results[i]).toFixed(4)}` };
     });
 
     for (const assetLabel of ['ETH', 'WPE']) {
@@ -112,7 +116,7 @@ const Exchange = (props) => {
 
       let boxToModify = newBoxes.find((b) => b.label === assetLabel);
       if (boxToModify)
-        boxToModify.value = `\$ ${parseFloat(current.price).toFixed(4)}`;
+        boxToModify.value = `$ ${parseFloat(current.price).toFixed(4)}`;
     }
 
     setBoxValues(newBoxes);
@@ -146,10 +150,14 @@ const Exchange = (props) => {
       emitter.removeListener(EXCHANGE_RETURNED, handleExchangeReturned);
     };
   }, []);
+
+  useEffect(() => {
+    checkAllowance();
+  }, [fromAddress]);
   const handleResponse = (err) => {
     if (/(gas required exceeds allowance)|(execution reverted)/.test(err)) {
       setError('Gas required exceeds allowance');
-      alert(JSON.stringify(err));
+      setDoingTransaction(false);
     } else {
       console.log('err ----------', err);
       setDoingTransaction(false);
@@ -211,8 +219,15 @@ const Exchange = (props) => {
   };
 
   const onChangeAssetForChart = (tradingViewKey) => {
-    console.log(tradingViewKey);
     if (tradingViewKey) setTvk(tradingViewKey);
+  };
+
+  const checkAllowance = async () => {
+    const allowance = await store.checkAllowance(
+      { address: fromAddress },
+      config.exchangeAddress
+    );
+    setApproved(allowance > 0);
   };
 
   const onSelectAssetIn = async (eventKey) => {
@@ -296,6 +311,18 @@ const Exchange = (props) => {
     } else {
       setError('Select both tokens and a value for each');
     }
+  };
+
+  const approve = async () => {
+    setApproveExecuting(true);
+    store
+      .askApproval({ address: fromAddress })
+      .then(checkAllowance)
+      .catch((e) => {
+        console.log('not approved');
+        console.log(e);
+      })
+      .then(() => setApproveExecuting(false));
   };
 
   const swapClickHandler = async () => {
@@ -494,8 +521,17 @@ const Exchange = (props) => {
                 <div className='text-center'>
                   {error && error.length && <div>{error}</div>}
                   <button
+                    className='btn btn-primary mt-3 main-btn mr-4'
+                    disabled={approved || approveExecuting}
+                    onClick={approve}
+                  >
+                    Approve
+                  </button>
+                  <button
                     className='btn btn-primary mt-3 main-btn'
-                    disabled={(error && error.length) || doingTransaction}
+                    disabled={
+                      (error && error.length) || doingTransaction || !approved
+                    }
                     onClick={onExchange}
                   >
                     {doingTransaction ? 'loading ...' : 'Swap'}

@@ -19,6 +19,7 @@ const Hive = (props) => {
   );
   const [totalLockVolume, setTotalLockVolume] = useState(0);
 
+  // this does the match btwn lpTokens for its total lock volume
   const hiveid2LpLabel = {
     strhive: 'STR',
     pixelhive: 'PIXEL',
@@ -26,10 +27,10 @@ const Hive = (props) => {
     yfuhive: 'YFU',
     wpehive: 'WPE',
     wbtchive: 'WBTC',
-    wpeshive: 'WPE',
-    yfushive: 'WPE',
-    strshive: 'WPE',
-    pixelshive: 'WPE',
+    wpeshive: 'WPEBPT',
+    yfushive: 'YFUBPT',
+    strshive: 'STRBPT',
+    pixelshive: 'PIXELBPT',
   };
 
   const initTotalLockVolume = async () => {
@@ -41,6 +42,7 @@ const Hive = (props) => {
       )
     );
   };
+
   useEffect(() => {
     initTotalLockVolume();
   }, [props.id]);
@@ -127,7 +129,7 @@ const Hive = (props) => {
               Lockup Time
             </div>
             <div className='text-right main-blue'>
-              {props.address == '0x9411aE40e4EefE2BDCF6F4e2beC81BEb7682bC63'
+              {props.address === '0x9411aE40e4EefE2BDCF6F4e2beC81BEb7682bC63'
                 ? '2'
                 : '12'}{' '}
               months

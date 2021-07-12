@@ -1399,6 +1399,26 @@ class Store {
   };
 
   /**
+   * Asks for permission for spending a token.
+   * @param {Token} asset Object with address attribute which corresponds to the token you are asking for permission
+   * @return {Promise} A promise which is resolved when metamask finishs asking for aproval, regardless if is approve or not.
+   */
+  askApproval = async (asset) => {
+    const account = store.getStore('account');
+    const contract = config.exchangeAddress;
+    return new Promise((res, rej) => {
+      try {
+        this._callApproval(asset, account, 0, contract, null, (err) =>
+          err ? rej(err) : res()
+        );
+      } catch (e) {
+        console.log('error');
+        rej(e);
+      }
+    });
+  };
+
+  /**
    * -------------------------
    * EXCHANGE LOGIC
    * ----------------------------
@@ -2797,41 +2817,79 @@ class Store {
       asset.rewardsAddress
     );
 
-    yCurveFiContract.methods
-      .getReward()
-      .send({
-        from: account.address,
-        gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
-      })
-      .on('transactionHash', function (hash) {
-        // console.log(hash);
-        callback(null, hash);
-      })
-      .on('confirmation', function (confirmationNumber, receipt) {
-        // console.log(confirmationNumber, receipt);
-        if (confirmationNumber === 2) {
-          dispatcher.dispatch({ type: GET_BALANCES, content: {} });
-        }
-      })
-      .on('receipt', function (receipt) {
-        // console.log(receipt);
-      })
-      .on('error', function (error) {
-        if (!error.toString().includes('-32601')) {
-          if (error.message) {
-            return callback(error.message);
+    if (asset?.selectedNftId >= 0) {
+      yCurveFiContract.methods
+        .getReward(asset?.selectedNftId)
+        .send({
+          from: account.address,
+          gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
+        })
+        .on('transactionHash', function (hash) {
+          // console.log(hash);
+          callback(null, hash);
+        })
+        .on('confirmation', function (confirmationNumber, receipt) {
+          // console.log(confirmationNumber, receipt);
+          if (confirmationNumber === 2) {
+            dispatcher.dispatch({ type: GET_BALANCES, content: {} });
           }
-          callback(error);
-        }
-      })
-      .catch((error) => {
-        if (!error.toString().includes('-32601')) {
-          if (error.message) {
-            return callback(error.message);
+        })
+        .on('receipt', function (receipt) {
+          // console.log(receipt);
+        })
+        .on('error', function (error) {
+          if (!error.toString().includes('-32601')) {
+            if (error.message) {
+              return callback(error.message);
+            }
+            callback(error);
           }
-          callback(error);
-        }
-      });
+        })
+        .catch((error) => {
+          if (!error.toString().includes('-32601')) {
+            if (error.message) {
+              return callback(error.message);
+            }
+            callback(error);
+          }
+        });
+    } else {
+      yCurveFiContract.methods
+        .getReward()
+        .send({
+          from: account.address,
+          gasPrice: web3.utils.toWei(await this._getGasPrice(), 'gwei'),
+        })
+        .on('transactionHash', function (hash) {
+          // console.log(hash);
+          callback(null, hash);
+        })
+        .on('confirmation', function (confirmationNumber, receipt) {
+          // console.log(confirmationNumber, receipt);
+          if (confirmationNumber === 2) {
+            dispatcher.dispatch({ type: GET_BALANCES, content: {} });
+          }
+        })
+        .on('receipt', function (receipt) {
+          // console.log(receipt);
+        })
+        .on('error', function (error) {
+          if (!error.toString().includes('-32601')) {
+            if (error.message) {
+              return callback(error.message);
+            }
+            callback(error);
+          }
+        })
+        .catch((error) => {
+          if (!error.toString().includes('-32601')) {
+            if (error.message) {
+              return callback(error.message);
+            }
+            callback(error);
+          }
+        });
+    }
   };
 
   exit = (payload) => {
