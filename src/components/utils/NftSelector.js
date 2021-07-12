@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import Store from '../../stores/store';
-import { GET_BALANCES } from '../../constants';
+import { GET_BALANCES } from '../../constants/constants';
+
 const { store, dispatcher } = Store;
 
 const NftSelector = ({ onChange, pool }) => {
