@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import Store from '../../stores/store';
-import { GET_BALANCES } from '../../constants/constants';
+import { GET_BALANCES_RETURNED } from '../../constants/constants';
 
-const { store, dispatcher } = Store;
+const { store, dispatcher, emitter } = Store;
 
 const NftSelector = ({ onChange, pool }) => {
   const [nftOptions, setNftOptions] = useState([
@@ -18,62 +18,33 @@ const NftSelector = ({ onChange, pool }) => {
     label: 'new NFT',
   });
 
-  const getNFTs = async () => {
-    var nftIdsResult = [''];
-    try {
-      let walletNftQty = await store.walletNftQty(pool.token.stakeNFT);
-
-      for (var i = 0; i < walletNftQty; i++) {
-        nftIdsResult.push(
-          await store.tokenOfOwnerByIndex(i, pool.token.stakeNFT)
-        );
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    return nftIdsResult;
-  };
-
   useEffect(() => {
-    getNFTs().then((nfts) => {
-      setNftOptions(
-        nfts.map((id) => {
-          return {
-            value: id ? id : -2,
-            label: id ? `nft #${id}` : 'new NFT',
-          };
-        })
-      );
-
-      let nftId = store.loadNFTId(pool.address);
+    store.tokenNFTs(pool).then(({ nftIds, selectedId }) => {
+      const options = nftIds.map((id) => {
+        return {
+          value: id ? id : -2,
+          label: id ? `nft #${id}` : 'new NFT',
+        };
+      });
+      setNftOptions(options);
       setSelectedNftOption(
-        nftOptions.find(
-          ({ value }, ix) => value === nftId || ix === nftOptions.length - 1
-        )
+        options.find(({ value }) => value == +selectedId) ||
+          options[options.length - 1]
       );
     });
   }, []);
 
   const onChangeNft = (el) => {
-    store.saveNFTId(pool.address, el.value);
-    const pools = [...store.getStore('rewardPools')];
-    let currentPool = pools.find(({ id }) => pool.id === id);
-    if (currentPool) {
-      currentPool.tokens[0].selectedNftId = +el.value;
-    }
-    let p = { ...pool };
-    p.token.selectedNftId = el.value;
-    store.setStore({ rewardPools: pools });
-    if (+el.value >= 0)
-      dispatcher.dispatch({ type: GET_BALANCES, content: {} });
-    onChangeNft(el);
+    setSelectedNftOption(el);
+    store.saveNFTId(pool, 0, el.value);
+    onChange(el);
   };
 
   return (
     <Select
+      value={selectedNftOption}
       options={nftOptions}
-      onChange={onChange}
-      defaultValue={selectedNftOption}
+      onChange={onChangeNft}
     />
   );
 };

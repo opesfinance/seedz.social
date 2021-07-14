@@ -44,8 +44,6 @@ export const _getstakedBalance = async (web3, asset, account, callback) => {
   );
 
   try {
-    // if (asset?.isSuper) {
-    console.log('entra a balance -----', asset.selectedNftId);
     let id = asset?.selectedNftId >= 0 ? asset.selectedNftId : account.address;
     // console.log('entra a balance -----', id);
 
@@ -277,16 +275,12 @@ export const _getBoosterCost = async (web3, asset, account, callback) => {
     asset.rewardsAddress
   );
 
-  if (asset.isSuper) {
-    console.log('nfts ====', asset.nftIds);
-  }
   if (asset.isSuper && !asset.nftIds?.length) return 0;
   let id = asset?.isSuper
     ? asset?.selectedNftId >= 0
       ? asset.selectedNftId
       : -1
     : account.address;
-  console.log('id ====', id);
 
   try {
     let balance = await boostContract.methods
