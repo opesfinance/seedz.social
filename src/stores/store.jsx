@@ -194,28 +194,13 @@ class Store {
     const currentBlock = await web3.eth.getBlockNumber();
     store.setStore({ currentBlock });
 
-    let nftIds = [];
-
-    // this loop sets the selected nft for each pool.
-    // to do - store the nft selection in localstorage
-    // nft by pool
-    for (let i = 0; i < pools.length; i++) {
-      const pool = pools[i];
-      if (pool.isSuperHive) {
-        nftIds = await this.getNFTIds(pool.tokens[0].stakeNFT);
-        if (nftIds?.length) {
-          if (pool.tokens[0].selectedNftId === -2) {
-            pool.tokens[0].selectedNftId = nftIds[0];
-          }
-          pool.tokens[0].nftIds = nftIds;
-        } else {
-          pool.tokens[0].selectedNftId = -1;
-        }
-      }
-    }
-
     try {
       let poolsPromises = pools.map(async (pool) => {
+        if (pool.isSuperHive)
+          pool.tokens[0] = {
+            ...pool.tokens[0],
+            ...(await store.tokenNFTs(pool)),
+          };
         let tokenPromises = pool.tokens.map(async (token) => {
           // console.log(web3, token, account);
           let methodPromises = methods.map((method) =>
@@ -326,29 +311,15 @@ class Store {
     ];
     const pools = store.getStore('rewardPools');
     const account = store.getStore('account');
-
-    let nftIds = [];
-
     const web3 = new Web3(store.getStore('web3context').library.provider);
-    // const web3 = new Web3(window.ethereum);
-
-    for (let i = 0; i < pools.length; i++) {
-      const pool = pools[i];
-      if (pool.isSuperHive) {
-        nftIds = await this.getNFTIds(pool.tokens[0].stakeNFT);
-        if (nftIds?.length) {
-          if (pool.tokens[0].selectedNftId === -2) {
-            pool.tokens[0].selectedNftId = nftIds[0];
-          }
-          pool.tokens[0].nftIds = nftIds;
-        } else {
-          pool.tokens[0].selectedNftId = -1;
-        }
-      }
-    }
 
     try {
       let poolsPromises = pools.map(async (pool) => {
+        if (pool.isSuperHive)
+          pool.tokens[0] = {
+            ...pool.tokens[0],
+            ...(await store.tokenNFTs(pool)),
+          };
         let tokenPromises = pool.tokens.map(async (token) => {
           // console.log(web3, token, account);
           let methodPromises = methods.map((method) =>
@@ -453,34 +424,19 @@ class Store {
     const pools = store.getStore('rewardPools');
     const account = store.getStore('account');
 
-    // let nftIds = await this.getNFTIds();
-    // console.log('nftIds', nftIds);
-
     const web3 = new Web3(store.getStore('web3context').library.provider);
     // const web3 = new Web3(window.ethereum);
 
     const currentBlock = await web3.eth.getBlockNumber();
     store.setStore({ currentBlock });
 
-    let nftIds = [];
-
-    for (let i = 0; i < pools.length; i++) {
-      const pool = pools[i];
-      if (pool.isSuperHive) {
-        nftIds = await this.getNFTIds(pool.tokens[0].stakeNFT);
-        if (nftIds?.length) {
-          if (pool.tokens[0].selectedNftId === -2) {
-            pool.tokens[0].selectedNftId = nftIds[0];
-          }
-          pool.tokens[0].nftIds = nftIds;
-        } else {
-          pool.tokens[0].selectedNftId = -1;
-        }
-      }
-    }
-
     try {
       let poolsPromises = pools.map(async (pool) => {
+        if (pool.isSuperHive)
+          pool.tokens[0] = {
+            ...pool.tokens[0],
+            ...(await store.tokenNFTs(pool)),
+          };
         let tokenPromises = pool.tokens.map(async (token) => {
           let methodPromises = methods.map((method) =>
             balancesLib[method](web3, token, account)
@@ -3269,8 +3225,6 @@ class Store {
       var nftQty = await ierc721Contract.methods
         .balanceOf(account.address)
         .call({ from: account.address });
-
-      console.log(nftQty);
       return nftQty;
     } catch (error) {
       console.log(error);
@@ -3384,11 +3338,31 @@ class Store {
       );
     });
 
-  saveNFTId = (tokenId, nftId) => {
-    localStorage.setItem(`${tokenId}/nftId`, nftId);
+  saveNFTId = (pool, ix, nftId) => {
+    console.log(pool);
+    console.log(`${pool.address}/nftId`);
+    localStorage.setItem(pool.address + '/nftId', nftId.toString());
+    pool.tokens[ix].selectedNftId = nftId;
+    if (+nftId >= 0) dispatcher.dispatch({ type: GET_BALANCES, content: {} });
   };
-  loadNFTId = (tokenId) => {
-    return localStorage.getItem(`${tokenId}/nftId`);
+
+  /**
+   * Return an Object with the nftIds and the selectedToken of a given token in
+   * pool.
+   * @param {Pool} pool Pool that will be queried.
+   * @param {Number} ix Index of the token that will be queried. Default to 0.
+   * @returns {Object}
+   */
+  tokenNFTs = async (pool, ix = 0) => {
+    const selectedId = localStorage.getItem(`${pool.address}/nftId`);
+    const nftIds = (await this.getNFTIds(pool.tokens[ix].stakeNFT)) || [];
+    nftIds.push(2);
+    nftIds.push('');
+    return {
+      nftIds,
+      selectedId:
+        nftIds.length > 0 ? (selectedId ? selectedId : nftIds[0]) : -1,
+    };
   };
 }
 
