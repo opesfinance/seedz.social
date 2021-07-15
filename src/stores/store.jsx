@@ -3356,7 +3356,6 @@ class Store {
   tokenNFTs = async (pool, ix = 0) => {
     const selectedId = localStorage.getItem(`${pool.address}/nftId`);
     const nftIds = (await this.getNFTIds(pool.tokens[ix].stakeNFT)) || [];
-    nftIds.push(2);
     nftIds.push('');
     return {
       nftIds,
