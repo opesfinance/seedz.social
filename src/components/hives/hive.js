@@ -70,11 +70,11 @@ const Hive = (props) => {
           </div>
         )}
       </div> */}
-      {props.token.isSuper ? (
+      {/* {props.token.isSuper ? (
         <NftSelector pool={props.data} onChange={() => {}} />
       ) : (
         ''
-      )}
+      )} */}
       <div className={`card-body ${props.data?.isSuperHive && 'pt-0'}`}>
         <div className='hive-header'>
           <div>
