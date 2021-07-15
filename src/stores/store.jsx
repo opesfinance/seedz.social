@@ -3338,11 +3338,21 @@ class Store {
       );
     });
 
-  saveNFTId = (pool, ix, nftId) => {
-    console.log(pool);
-    console.log(`${pool.address}/nftId`);
-    localStorage.setItem(pool.address + '/nftId', nftId.toString());
-    pool.tokens[ix].selectedNftId = nftId;
+  saveNFTId = (pool, nftId) => {
+    let account = store.getStore('account');
+    if (!account) return;
+    localStorage.setItem(
+      account.address + '/' + pool.address + '/nftId',
+      nftId.toString()
+    );
+    const pools = [...store.getStore('rewardPools')];
+    let currentPool = pools.find(({ id }) => pool.id === id);
+    if (currentPool) {
+      currentPool.tokens[0].selectedNftId = nftId;
+    }
+    let p = { ...pool };
+    p.token.selectedNftId = nftId;
+    store.setStore({ rewardPools: pools });
     if (+nftId >= 0) dispatcher.dispatch({ type: GET_BALANCES, content: {} });
   };
 

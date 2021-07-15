@@ -6,45 +6,59 @@ import { GET_BALANCES_RETURNED } from '../../constants/constants';
 const { store, dispatcher, emitter } = Store;
 
 const NftSelector = ({ onChange, pool }) => {
-  const [nftOptions, setNftOptions] = useState([
-    {
-      value: -2,
-      label: 'new NFT',
-    },
-  ]);
+  const [nftsIds, setNftsIds] = useState([-2]);
+  const [selectedId, setSelectedId] = useState(-2);
 
-  const [selectedNftOption, setSelectedNftOption] = useState({
-    value: -2,
-    label: 'new NFT',
-  });
+  const getNFTs = async () => {
+    var nftIdsResult = [-1];
+    try {
+      let walletNftQty = await store.walletNftQty(pool.token.stakeNFT);
+
+      for (var i = 0; i < walletNftQty; i++) {
+        nftIdsResult.push(
+          await store.tokenOfOwnerByIndex(i, pool.token.stakeNFT)
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    return nftIdsResult;
+  };
 
   useEffect(() => {
-    store.tokenNFTs(pool).then(({ nftIds, selectedId }) => {
-      const options = nftIds.map((id) => {
-        return {
-          value: id ? id : -2,
-          label: id ? `nft #${id}` : 'new NFT',
-        };
-      });
-      setNftOptions(options);
-      setSelectedNftOption(
-        options.find(({ value }) => value == +selectedId) ||
-          options[options.length - 1]
+    getNFTs().then((ids) => {
+      setNftsIds(ids);
+      let account = store.getStore('account');
+      if (!account) return;
+      let selectedId = localStorage.getItem(
+        `${account.address}/${pool.address}/nftId`
       );
+      if (
+        !(ids.includes(selectedId) || ids.includes(+selectedId)) ||
+        ids.length === 0
+      )
+        setSelectedId(-2);
+      else setSelectedId(selectedId);
     });
   }, []);
 
   const onChangeNft = (el) => {
-    setSelectedNftOption(el);
-    store.saveNFTId(pool, 0, el.value);
+    setSelectedId(+el.value);
+    store.saveNFTId(pool, +el.value);
     onChange(el);
   };
 
   return (
     <Select
-      value={selectedNftOption}
-      options={nftOptions}
+      options={nftsIds.map((id) => ({
+        value: id > 0 ? id : -2,
+        label: id > 0 ? `nft #${id}` : 'new NFT',
+      }))}
       onChange={onChangeNft}
+      value={{
+        value: selectedId > 0 ? selectedId : -2,
+        label: selectedId > 0 ? `nft #${selectedId}` : 'new NFT',
+      }}
     />
   );
 };
