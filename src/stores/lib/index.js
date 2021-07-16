@@ -77,15 +77,11 @@ export const _getRewardsAvailable = async (web3, asset, account, callback) => {
     asset.rewardsABI,
     asset.rewardsAddress
   );
+  let id = account.address;
   if (asset.isSuper) {
-    // console.log('nfts ====', asset.nftIds, asset?.selectedNftId);
+    if (!asset.nftIds?.length || asset.selectedNftId < 0) return 0;
+    id = asset.selectedNftId;
   }
-  if (asset.isSuper && !asset.nftIds?.length) return 0;
-  let id = asset?.isSuper
-    ? asset?.selectedNftId >= 0
-      ? asset.selectedNftId
-      : -1
-    : account.address;
   // console.log('id ====', id);
   try {
     var earned = await erc20Contract.methods
@@ -275,12 +271,11 @@ export const _getBoosterCost = async (web3, asset, account, callback) => {
     asset.rewardsAddress
   );
 
-  if (asset.isSuper && !asset.nftIds?.length) return 0;
-  let id = asset?.isSuper
-    ? asset?.selectedNftId >= 0
-      ? asset.selectedNftId
-      : -1
-    : account.address;
+  let id = account.address;
+  if (asset.isSuper) {
+    if (!asset.nftIds?.length || asset.selectedNftId < 0) return 0;
+    id = asset.selectedNftId;
+  }
 
   try {
     let balance = await boostContract.methods
