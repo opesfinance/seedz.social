@@ -249,7 +249,7 @@ class Store {
         return balance / 10 ** 18;
       }
 
-      return await this._getERC20Balance(web3, token, account, null);
+      return await balancesLib._getERC20Balance(web3, token, account, null);
     } catch (error) {
       return 0;
     }
