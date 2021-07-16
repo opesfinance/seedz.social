@@ -53,6 +53,8 @@ const Pools = (props) => {
   const [fromOptions, setFromOptions] = useState(
     store.getStore('poolInTokens')
   );
+
+  // exchangeAssets
   const [toOptions, setToOptions] = useState(
     store
       .getStore(props.assetsStoreKey)
@@ -98,7 +100,6 @@ const Pools = (props) => {
       store.getLpAmountOut(assetIn, assetOut, `1`)
     );
     let results = await Promise.all(promises);
-    console.log(results);
 
     let newBoxes = boxes.map((b, i) => {
       return {

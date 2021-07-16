@@ -1008,7 +1008,7 @@ class Store {
   };
 
   _checkApprovalLiquidityBPT = async (
-    asset,
+    asset, // real in YFU, STR, PIXEL
     assetOut,
     account,
     amount,
@@ -1135,18 +1135,39 @@ class Store {
   };
 
   checkAllowance = async (asset, contract) => {
+    console.log('asset ----------', typeof asset.address, asset.address);
+    let allowance;
+
     try {
       const account = store.getStore('account');
       const web3 = new Web3(store.getStore('web3context').library.provider);
-      // console.log(asset);
+      const assets = store.getStore('exchangeAssets').tokens;
+
+      let isCombo = ['WPE+ETH', 'YFU+ETH', 'PIXEL+ETH', 'STR+ETH'].includes(
+        asset.address
+      );
+
+      if (isCombo) {
+        if (asset.address === 'WPE+ETH') {
+          asset = assets.find((i) => i.label === 'WPE');
+        } else if (asset.address === 'YFU+ETH') {
+          asset = assets.find((i) => i.label === 'YFU');
+        } else if (asset.address === 'PIXEL+ETH') {
+          asset = assets.find((i) => i.label === 'PIXEL');
+        } else if (asset.address === 'STR+ETH') {
+          asset = assets.find((i) => i.label === 'STR');
+        }
+        contract = config[asset.label + 'BPTbptAddress'];
+      }
+
       const erc20Contract = new web3.eth.Contract(
         config.erc20ABI,
         asset.address
       );
-      const allowance = await erc20Contract.methods
+
+      allowance = await erc20Contract.methods
         .allowance(account.address, contract)
         .call({ from: account.address });
-
       return allowance;
     } catch (error) {
       console.log(error);
@@ -1303,7 +1324,6 @@ class Store {
     }
   };
 
-  // apparently this is not used anywhere
   _callApproval = async (
     asset,
     account,
@@ -1361,7 +1381,26 @@ class Store {
    */
   askApproval = async (asset) => {
     const account = store.getStore('account');
-    const contract = config.exchangeAddress;
+    let contract = config.exchangeAddress;
+    const assets = store.getStore('exchangeAssets').tokens;
+
+    let isCombo = ['WPE+ETH', 'YFU+ETH', 'PIXEL+ETH', 'STR+ETH'].includes(
+      asset.address
+    );
+
+    if (isCombo) {
+      if (asset.address === 'WPE+ETH') {
+        asset = assets.find((i) => i.label === 'WPE');
+      } else if (asset.address === 'YFU+ETH') {
+        asset = assets.find((i) => i.label === 'YFU');
+      } else if (asset.address === 'PIXEL+ETH') {
+        asset = assets.find((i) => i.label === 'PIXEL');
+      } else if (asset.address === 'STR+ETH') {
+        asset = assets.find((i) => i.label === 'STR');
+      }
+      contract = config[asset.label + 'BPTbptAddress'];
+    }
+
     return new Promise((res, rej) => {
       try {
         this._callApproval(asset, account, 0, contract, null, (err) =>
@@ -1724,7 +1763,7 @@ class Store {
     const assets = store.getStore('exchangeAssets').tokens;
 
     console.log(assetOut);
-    var realIn;
+    let realIn;
     if (assetIn.label === 'WPE+ETH') {
       realIn = assets.find((i) => i.label === 'WPE');
     } else if (assetIn.label === 'YFU+ETH') {
@@ -1765,20 +1804,6 @@ class Store {
           );
         }
       );
-    } else {
-      // this._buyLPWithEthCall(
-      //   assetOut,
-      //   account,
-      //   amountOut,
-      //   amountIn,
-      //   (err, res) => {
-      //     if (err) {
-      //       return emitter.emit(ERROR, err);
-      //     }
-      //
-      //     return emitter.emit(BUY_LP_RETURNED, res); //EXCHANGEETHFORTOKEN_RETURNED
-      //   }
-      // );
     }
   };
 
