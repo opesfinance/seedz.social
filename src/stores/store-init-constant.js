@@ -941,7 +941,7 @@ const STORE_INIT_CONSTANTS = {
       {
         label: 'PIXEL+ETH',
         logo: 'WPE.png',
-        address: 'PUXEL+ETH',
+        address: 'PIXEL+ETH',
         decimals: 18,
         group: '',
         box: 'false',
