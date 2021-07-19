@@ -135,7 +135,7 @@ class Store {
       '_getstakedBalance',
       '_getRewardsAvailable',
       '_getRatePerWeek',
-      '_getBonusAvailable',
+      // '_getBonusAvailable',
     ];
 
     const pools = store.getStore('farmPools');
