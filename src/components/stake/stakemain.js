@@ -266,7 +266,7 @@ const StakeMain = (props) => {
               <button
                 type='button'
                 className='btn btn-primary bg-main-blue main-btn'
-                disabled={props.pool.disableStake}
+                // disabled={props.pool.disableStake}
                 onClick={() => props.navigateInternal('buyboost')}
               >
                 Beast Mode

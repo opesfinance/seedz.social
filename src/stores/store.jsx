@@ -238,6 +238,8 @@ class Store {
    * @param {Token} token from which balance will be retrieved
    */
   getAssetBalance = async (token) => {
+    const assets = store.getStore('exchangeAssets').tokens;
+
     try {
       const account = store.getStore('account');
       const web3 = new Web3(store.getStore('web3context').library.provider);
@@ -247,6 +249,14 @@ class Store {
       if (token.label === 'ETH') {
         balance = await web3.eth.getBalance(account.address);
         return balance / 10 ** 18;
+      }
+
+      let isCombo = ['WPE+ETH', 'YFU+ETH', 'PIXEL+ETH', 'STR+ETH'].includes(
+        token.label
+      );
+      if (isCombo) {
+        // we want WPE, YFU, PIXEL, STR
+        token = assets.find((i) => i.label === token.label.split('+')[0]);
       }
 
       return await balancesLib._getERC20Balance(web3, token, account, null);
@@ -1135,7 +1145,7 @@ class Store {
   };
 
   checkAllowance = async (asset, contract) => {
-    console.log('asset ----------', typeof asset.address, asset.address);
+    console.log('check allowance asset ----------', asset);
     let allowance;
 
     try {
@@ -1160,6 +1170,7 @@ class Store {
         contract = config[asset.label + 'BPTbptAddress'];
       }
 
+      console.log('check allowance asset ----------', asset);
       const erc20Contract = new web3.eth.Contract(
         config.erc20ABI,
         asset.address
@@ -1387,19 +1398,12 @@ class Store {
     let isCombo = ['WPE+ETH', 'YFU+ETH', 'PIXEL+ETH', 'STR+ETH'].includes(
       asset.address
     );
-
     if (isCombo) {
-      if (asset.address === 'WPE+ETH') {
-        asset = assets.find((i) => i.label === 'WPE');
-      } else if (asset.address === 'YFU+ETH') {
-        asset = assets.find((i) => i.label === 'YFU');
-      } else if (asset.address === 'PIXEL+ETH') {
-        asset = assets.find((i) => i.label === 'PIXEL');
-      } else if (asset.address === 'STR+ETH') {
-        asset = assets.find((i) => i.label === 'STR');
-      }
+      // we want WPE, YFU, PIXEL, STR
+      asset = assets.find((i) => i.label === asset.address.split('+')[0]);
       contract = config[asset.label + 'BPTbptAddress'];
     }
+    console.log(asset);
 
     return new Promise((res, rej) => {
       try {
