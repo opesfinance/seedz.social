@@ -9,7 +9,7 @@ const NftSelector = ({ onChange, pool }) => {
   const [selectedId, setSelectedId] = useState(-2);
 
   const getNFTs = async () => {
-    var nftIdsResult = [-1, 0];
+    var nftIdsResult = [-1];
     try {
       let walletNftQty = await store.walletNftQty(pool.token.stakeNFT);
 
