@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import Store from '../../stores/store';
-import { GET_BALANCES_RETURNED } from '../../constants/constants';
 
-const { store, dispatcher, emitter } = Store;
+const { store } = Store;
 
 const NftSelector = ({ onChange, pool }) => {
   const [nftsIds, setNftsIds] = useState([-2]);
   const [selectedId, setSelectedId] = useState(-2);
 
   const getNFTs = async () => {
-    var nftIdsResult = [-1];
+    var nftIdsResult = [-1, 0];
     try {
       let walletNftQty = await store.walletNftQty(pool.token.stakeNFT);
 
@@ -30,8 +29,8 @@ const NftSelector = ({ onChange, pool }) => {
       setNftsIds(ids);
       let account = store.getStore('account');
       if (!account) return;
-      let selectedId = localStorage.getItem(
-        `${account.address}/${pool.address}/nftId`
+      let selectedId = Number(
+        localStorage.getItem(`${account.address}/${pool.address}/nftId`)
       );
       if (
         !(ids.includes(selectedId) || ids.includes(+selectedId)) ||
@@ -49,17 +48,19 @@ const NftSelector = ({ onChange, pool }) => {
   };
 
   return (
-    <Select
-      options={nftsIds.map((id) => ({
-        value: id > 0 ? id : -2,
-        label: id > 0 ? `nft #${id}` : 'new NFT',
-      }))}
-      onChange={onChangeNft}
-      value={{
-        value: selectedId > 0 ? selectedId : -2,
-        label: selectedId > 0 ? `nft #${selectedId}` : 'new NFT',
-      }}
-    />
+    <>
+      <Select
+        options={nftsIds.map((id) => ({
+          value: id >= 0 ? id : -2,
+          label: id >= 0 ? `nft #${id}` : 'new NFT',
+        }))}
+        onChange={onChangeNft}
+        value={{
+          value: selectedId >= 0 ? selectedId : -2,
+          label: selectedId >= 0 ? `nft #${selectedId}` : 'new NFT',
+        }}
+      />
+    </>
   );
 };
 
