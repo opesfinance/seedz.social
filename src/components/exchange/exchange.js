@@ -223,11 +223,18 @@ const Exchange = (props) => {
   };
 
   const checkAllowance = async () => {
-    const allowance = await store.checkAllowance(
-      { address: fromAddress },
-      config.exchangeAddress
-    );
-    setApproved(allowance > 0);
+    const token = fromOptions.find(({ address }) => fromAddress === address);
+    const { label } = token;
+
+    if (label === 'ETH') {
+      setApproved(true);
+    } else {
+      const allowance = await store.checkAllowance(
+        { address: fromAddress },
+        config.exchangeAddress
+      );
+      setApproved(allowance > 0);
+    }
   };
 
   const onSelectAssetIn = async (eventKey) => {

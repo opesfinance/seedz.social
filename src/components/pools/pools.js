@@ -113,12 +113,18 @@ const Pools = (props) => {
   };
 
   const checkAllowance = async () => {
-    const allowance = await store.checkAllowance(
-      { address: fromAddress },
-      config.exchangeAddress
-    );
+    const token = fromOptions.find(({ address }) => fromAddress === address);
+    const { label } = token;
 
-    setApproved(allowance > 0);
+    if (label === 'ETH') {
+      setApproved(true);
+    } else {
+      const allowance = await store.checkAllowance(
+        { address: fromAddress },
+        config.exchangeAddress
+      );
+      setApproved(allowance > 0);
+    }
   };
 
   const approve = () => {
@@ -348,6 +354,17 @@ const Pools = (props) => {
     setToToggleContents(tempFromToggle);
   };
 
+  const maxFromAmount = async () => {
+    const token = fromOptions.find(({ address }) => fromAddress === address);
+    let balance = '' + (await store.getAssetBalance(token));
+    if (balance.includes('.')) {
+      balance = `${balance.split('.')[0]}.${balance
+        .split('.')[1]
+        .substring(0, 5)}`;
+    }
+    setFromAmount(balance);
+  };
+
   const boxesLayout = (
     <div className=' row'>
       {boxes.map((b) => {
@@ -392,7 +409,15 @@ const Pools = (props) => {
               <div className='card-body'>
                 <div className='d-flex justify-content-between align-items-end'>
                   <h4>Buy Pool Tokens</h4>
-                  <span className='pull-right small'>
+                  <span
+                    className='pull-right mb-1'
+                    style={{
+                      fontSize: '1rem',
+                      cursor: 'pointer',
+                      color: '#7f63f4',
+                    }}
+                    onClick={maxFromAmount}
+                  >
                     Your balance: {selectedAssetBalance}{' '}
                   </span>
                 </div>

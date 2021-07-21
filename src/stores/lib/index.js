@@ -12,6 +12,8 @@ import config from '../../config';
 export const _getERC20Balance = async (web3, asset, account, callback) => {
   let erc20Contract = new web3.eth.Contract(config.erc20ABI, asset.address);
 
+  console.log(asset);
+
   try {
     var balance = await erc20Contract.methods
       .balanceOf(account.address)
@@ -32,6 +34,7 @@ export const _getERC20Balance = async (web3, asset, account, callback) => {
     if (callback && typeof callback === 'function') {
       callback(ex);
     } else {
+      console.log(ex);
       throw ex;
     }
   }
