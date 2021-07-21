@@ -15,7 +15,7 @@ import {
 import './pools.scss';
 import Store from '../../stores/store';
 import config from '../../config';
-import NftSelector from '../utils/NftSelector';
+import NftSelector, { ConfirmNft } from '../utils/NftSelector';
 const { emitter, dispatcher, store } = Store;
 
 const boxColorMapper = {
@@ -50,6 +50,7 @@ const dropdownOptions = (options) => {
 const Pools = (props) => {
   const [approved, setApproved] = useState(false);
   const [approveExecuting, setApproveExecuting] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const [fromOptions, setFromOptions] = useState(
     store.getStore('poolInTokens')
@@ -334,18 +335,20 @@ const Pools = (props) => {
 
       const amount = assetIn.amount;
       if (amount > 0) {
+        setShowConfirm(true);
         setDoingTransaction(true);
 
-        //this.setState({ loading: true });
-        dispatcher.dispatch({
-          type: BUY_LP,
-          content: {
-            assetIn: assetIn.asset,
-            assetOut: assetOut.asset,
-            amountIn: assetIn.amount,
-            amountOut: assetOut.amount,
-          },
-        });
+        if (superHive.isSuper) setShowConfirm(true);
+        else
+          dispatcher.dispatch({
+            type: BUY_LP,
+            content: {
+              assetIn: assetIn.asset,
+              assetOut: assetOut.asset,
+              amountIn: assetIn.amount,
+              amountOut: assetOut.amount,
+            },
+          });
       } else {
         setError('Select both tokens and a value for each');
       }
@@ -413,9 +416,43 @@ const Pools = (props) => {
   // const unitPrice = () => {
   //   return <h1>{toAmount}</h1>;
   // };
+  const continueConfirm = () => {
+    setShowConfirm(false);
+    if (!fromAmount || !fromAddress || !toAmount || !toAddress) return;
+    const assetIn = {
+      amount: fromAmount,
+      asset: fromOptions.find((i) => i.address === fromAddress),
+    };
+    const assetOut = {
+      amount: toAmount,
+      asset: toOptions.find((i) => i.address === toAddress),
+    };
+    dispatcher.dispatch({
+      type: BUY_LP,
+      content: {
+        assetIn: assetIn.asset,
+        assetOut: assetOut.asset,
+        amountIn: assetIn.amount,
+        amountOut: assetOut.amount,
+      },
+    });
+  };
+
+  const cancelConfirm = () => {
+    setShowConfirm(false);
+    setDoingTransaction(false);
+  };
 
   return (
     <div>
+      {showConfirm && 'aajaajjajajajajajajajjaajaj'}
+      {showConfirm && (
+        <ConfirmNft
+          show={true}
+          onCancel={cancelConfirm}
+          onContinue={continueConfirm}
+        />
+      )}
       <div className='pageHeader my-auto'>Buy Pool Tokens</div>
 
       <div className='ml-sm-5 p-sm-5 ml-5 p-1 pb-5'>
