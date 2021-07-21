@@ -15,6 +15,7 @@ import {
 import './pools.scss';
 import Store from '../../stores/store';
 import config from '../../config';
+import NftSelector from '../utils/NftSelector';
 const { emitter, dispatcher, store } = Store;
 
 const boxColorMapper = {
@@ -69,6 +70,7 @@ const Pools = (props) => {
     props.match.params.selectedPool || toOptions[0].address;
 
   const [toAddress, setToAddress] = useState(initialToAddress);
+  const [superHive, setSuperHive] = useState({ isSuper: false, pool: null });
   const [error, setError] = useState('');
   const [unitPrice, setUnitPrice] = useState('');
   const [boxes, setBoxValues] = useState([
@@ -272,6 +274,21 @@ const Pools = (props) => {
       ({ address, liquidityPoolAddress }) =>
         eventKey === address || eventKey === liquidityPoolAddress
     );
+    const assets = store.getStore('exchangeAssets').tokens;
+    const poolAddress = assets.find(
+      (x) => x.address === eventKey || x.liquidityPoolAddress === eventKey
+    ).liquidityPoolAddress;
+
+    const rewardPools = store.getStore('rewardPools');
+    const pool = rewardPools.find(
+      (x) => x.tokens?.[0]?.address === poolAddress
+    );
+    if (pool?.isSuperHive && pool.tokens) {
+      pool.token = pool.tokens[0];
+      setSuperHive({ isSuper: pool.isSuperHive, pool });
+    } else {
+      setSuperHive({ isSuper: false, pool: null });
+    }
 
     // console.log(label, labelLP, onlyPurchaseableWith, fromAddress);
     // if (onlyPurchaseableWith) {
@@ -406,6 +423,9 @@ const Pools = (props) => {
         <div className='row'>
           <div className='col-md-6 offset-md-3'>
             <div className='exchange-wrapper mt-5 card'>
+              {superHive.isSuper && (
+                <NftSelector pool={superHive.pool} onChange={() => {}} />
+              )}
               <div className='card-body'>
                 <div className='d-flex justify-content-between align-items-end'>
                   <h4>Buy Pool Tokens</h4>
