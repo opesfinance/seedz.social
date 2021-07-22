@@ -44,6 +44,7 @@ import {
 
 // import { AiFillChrome } from 'react-icons/ai';
 import { IoGlobeSharp } from 'react-icons/io5';
+import { ConfirmNft } from '../utils/NftSelector';
 
 const { emitter, dispatcher, store } = Store;
 
@@ -61,6 +62,7 @@ const Stake = (props) => {
   const [allowance, setAllowance] = useState({
     stake: false,
   });
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const handleLoader = (method, loaderKey, params) => {
     let p = params || [];
@@ -286,7 +288,21 @@ const Stake = (props) => {
     setPool(p);
   };
 
-  const onStake = () => {
+  const rejectStake = () => {
+    setShowConfirm(false);
+    freeLoader();
+  };
+
+  const confirmStake = () => {
+    setShowConfirm(false);
+    const selectedToken = pool.token;
+    const amount = amounts[selectedToken.hiveId + '_stake'];
+    dispatcher.dispatch({
+      type: STAKE,
+      content: { asset: pool.token, amount },
+    });
+  };
+  const onStake = async () => {
     // setAmountError(false);
     setAmountStakeError(false);
     const selectedToken = pool.token;
@@ -294,10 +310,7 @@ const Stake = (props) => {
     const amount = amounts[selectedToken.hiveId + '_stake'];
 
     if (amount > 0) {
-      dispatcher.dispatch({
-        type: STAKE,
-        content: { asset: pool.token, amount },
-      });
+      setShowConfirm(true);
     } else {
       setFieldId(selectedToken.id + '_stake');
       setAmountStakeError(true);
@@ -409,7 +422,7 @@ const Stake = (props) => {
               >
                 {loaders?.staking
                   ? 'Complete in metamask'
-                  : allowance['stake']
+                  : true //allowance['stake'] //TODO: cambiar
                   ? type
                   : 'Approve'}
               </button>
@@ -562,6 +575,14 @@ const Stake = (props) => {
 
   return (
     <>
+      {/* ConfirmNft only uses absolute position so  it can be place anywhere */}
+      {showConfirm && (
+        <ConfirmNft
+          show={showConfirm}
+          onCancel={rejectStake}
+          onContinue={confirmStake}
+        />
+      )}
       {stakeHeader}
       <div
         className='m-5'

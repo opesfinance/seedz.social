@@ -445,13 +445,8 @@ const Pools = (props) => {
 
   return (
     <div>
-      {showConfirm && 'aajaajjajajajajajajajjaajaj'}
       {showConfirm && (
-        <ConfirmNft
-          show={true}
-          onCancel={cancelConfirm}
-          onContinue={continueConfirm}
-        />
+        <ConfirmNft onCancel={cancelConfirm} onContinue={continueConfirm} />
       )}
       <div className='pageHeader my-auto'>Buy Pool Tokens</div>
 

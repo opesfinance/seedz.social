@@ -72,7 +72,7 @@ const NftSelector = ({ onChange, pool }) => {
 
 export default NftSelector;
 
-export const ConfirmNft = ({ onContinue, onCancel, show }) => {
+export const ConfirmNft = ({ onContinue, onCancel, show = true }) => {
   const [open, setOpen] = useState(show);
 
   const nftOption = nftId >= 0 ? `nft #${nftId}` : 'new NFT';
