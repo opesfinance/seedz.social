@@ -310,7 +310,12 @@ const Stake = (props) => {
     const amount = amounts[selectedToken.hiveId + '_stake'];
 
     if (amount > 0) {
-      setShowConfirm(true);
+      if (pool.isSuper) setShowConfirm(true);
+      else
+        dispatcher.dispatch({
+          type: STAKE,
+          content: { asset: pool.token, amount },
+        });
     } else {
       setFieldId(selectedToken.id + '_stake');
       setAmountStakeError(true);
@@ -422,7 +427,7 @@ const Stake = (props) => {
               >
                 {loaders?.staking
                   ? 'Complete in metamask'
-                  : true //allowance['stake'] //TODO: cambiar
+                  : allowance['stake']
                   ? type
                   : 'Approve'}
               </button>
