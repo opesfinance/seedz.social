@@ -72,13 +72,13 @@ const Pools = (props) => {
   const [error, setError] = useState('');
   const [unitPrice, setUnitPrice] = useState('');
   const [boxes, setBoxValues] = useState([
-    { label: 'STR LP', value: '$ 0.00', color: 'pink' },
-    { label: 'PIXEL LP', value: '$ 0.00', color: 'orange' },
+    { label: 'STRBPT LP', value: '$ 0.00', color: 'pink' },
+    { label: 'PIXELBPT LP', value: '$ 0.00', color: 'orange' },
     { label: 'LIFT LP', value: '$ 0.00', color: 'purple' },
-    { label: 'YFU LP', value: '$ 0.00', color: 'green' },
+    { label: 'YFUBPT LP', value: '$ 0.00', color: 'green' },
     // { label: 'ETH', value: '$ 0.00', color: 'orange' },
     { label: 'WPE/ETH', value: '$ 0.00', color: 'purple' },
-    { label: 'WPE/WBTC', value: '$ 0.00', color: 'orange' },
+    { label: 'WPE/WPEBPT', value: '$ 0.00', color: 'orange' },
   ]);
 
   const [fromToggleContents, setFromToggleContents] = useState('Choose');

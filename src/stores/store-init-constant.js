@@ -1202,7 +1202,7 @@ const STORE_INIT_CONSTANTS = {
     {
       label: 'STR',
       address: '0x11C1a6B3Ed6Bb362954b29d3183cfA97A0c806Aa',
-      box: true, // shows its box price in pool view
+      box: false, // shows its box price in pool view
       decimals: 18,
       price: 0.0,
       priceETH: 0.0,
@@ -1211,6 +1211,24 @@ const STORE_INIT_CONSTANTS = {
     {
       label: 'PIXEL',
       address: '0x89045d0Af6A12782Ec6f701eE6698bEaF17d0eA2',
+      box: false, // shows its box price in pool view
+      decimals: 18,
+      price: 0.0,
+      priceETH: 0.0,
+      priceWPE: 0.0,
+    },
+    {
+      label: 'STRBPT',
+      address: '0x8e9690E135005E415BD050B11768615DE43fe5f8',
+      box: true, // shows its box price in pool view
+      decimals: 18,
+      price: 0.0,
+      priceETH: 0.0,
+      priceWPE: 0.0,
+    },
+    {
+      label: 'PIXELBPT',
+      address: '0x69dD1ef819Afde481d81E6C1C1Bb91CabCFe780f',
       box: true, // shows its box price in pool view
       decimals: 18,
       price: 0.0,
@@ -1229,7 +1247,7 @@ const STORE_INIT_CONSTANTS = {
     {
       label: 'YFU',
       address: '0xa279dab6ec190eE4Efce7Da72896EB58AD533262',
-      box: true, // shows its box price in pool view
+      box: false, // shows its box price in pool view
       decimals: 18,
       price: 0.0,
       priceETH: 0.0,
@@ -1239,6 +1257,15 @@ const STORE_INIT_CONSTANTS = {
       label: 'ETH',
       address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
       box: false, // shows its box price in pool view
+      decimals: 18,
+      price: 0.0,
+      priceETH: 0.0,
+      priceWPE: 0.0,
+    },
+    {
+      label: 'YFUBPT',
+      address: '0x9f2b223da9f3911698c9b90ecdf3ffee37dd54a8',
+      box: true, // shows its box price in pool view
       decimals: 18,
       price: 0.0,
       priceETH: 0.0,
@@ -1262,37 +1289,11 @@ const STORE_INIT_CONSTANTS = {
       priceETH: 0.0,
       priceWPE: 0.0,
     },
-    {
-      label: 'YFUBPT',
-      address: '0x9f2b223da9f3911698c9b90ecdf3ffee37dd54a8',
-      box: true, // shows its box price in pool view
-      decimals: 18,
-      price: 0.0,
-      priceETH: 0.0,
-      priceWPE: 0.0,
-    },
-    {
-      label: 'PIXELBPT',
-      address: '0x69dD1ef819Afde481d81E6C1C1Bb91CabCFe780f',
-      box: true, // shows its box price in pool view
-      decimals: 18,
-      price: 0.0,
-      priceETH: 0.0,
-      priceWPE: 0.0,
-    },
-    {
-      label: 'STRBPT',
-      address: '0x8e9690E135005E415BD050B11768615DE43fe5f8',
-      box: true, // shows its box price in pool view
-      decimals: 18,
-      price: 0.0,
-      priceETH: 0.0,
-      priceWPE: 0.0,
-    },
+
     {
       label: 'WBTC',
       address: '0x0731ee4cf7376A1bd5A78199ac9BEdc8213DeF24',
-      box: true, // shows its box price in pool view
+      box: false, // shows its box price in pool view
       decimals: 18,
       onlyPurchaseableWith: ['ETH'],
       denomination: 'ETH',
